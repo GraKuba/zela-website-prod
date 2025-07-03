@@ -1,0 +1,23 @@
+{% extends "website/layouts/base.html" %} {% load static %} {% block title%}Zela Blog - Tips, news and household inspiration{% endblock %} {% block content %}
+<div class="min-h-screen bg-white">
+  <!-- Navigation -->
+  {% include "website/fragments/navbar.html" %}
+
+  <!-- Hero Section -->
+  {% include "website/components/page-blog/hero-section.html" %}
+
+  <!-- Filter/Search Bar -->
+  {% include "website/components/page-blog/search-filter.html" %}
+
+  <!-- Article Cards -->
+  {% include "website/components/page-blog/article-grid.html" %}
+
+  <!-- Pagination -->
+  {% include "website/components/page-blog/pagination.html" %}
+
+  <!-- Newsletter Banner -->
+  {% include "website/components/page-blog/newsletter-banner.html" %}
+</div>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %} {% endblock %}

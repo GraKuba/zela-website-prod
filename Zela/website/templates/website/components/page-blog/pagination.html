@@ -1,0 +1,73 @@
+{% load static %}
+
+<!-- Pagination Section -->
+<section class="bg-white py-8 md:py-12 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-center space-x-2 md:space-x-4">
+      <!-- Previous Button (disabled on first page) -->
+      <button
+        class="px-4 py-2 text-[#4A5A70] bg-gray-100 rounded-lg cursor-not-allowed opacity-50"
+        disabled
+      >
+        <svg
+          class="w-4 h-4 mr-2 inline"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          ></path>
+        </svg>
+        Previous
+      </button>
+
+      <!-- Page Numbers -->
+      <div class="flex space-x-1 md:space-x-2">
+        <!-- Page 1 (current) -->
+        <button
+          class="w-10 h-10 bg-[#011E41] text-[#FDEA00] rounded-lg font-semibold"
+        >
+          1
+        </button>
+
+        <!-- Page 2 -->
+        <button
+          class="w-10 h-10 bg-white text-[#011E41] border border-gray-300 rounded-lg font-semibold hover:bg-[#F5F5F5] transition-colors"
+        >
+          2
+        </button>
+
+        <!-- Page 3 -->
+        <button
+          class="w-10 h-10 bg-white text-[#011E41] border border-gray-300 rounded-lg font-semibold hover:bg-[#F5F5F5] transition-colors"
+        >
+          3
+        </button>
+      </div>
+
+      <!-- Next Button -->
+      <button
+        class="px-4 py-2 text-[#011E41] bg-white border border-gray-300 rounded-lg hover:bg-[#F5F5F5] transition-colors"
+      >
+        Next
+        <svg
+          class="w-4 h-4 ml-2 inline"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>

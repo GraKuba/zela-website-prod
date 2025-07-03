@@ -1,0 +1,20 @@
+{% extends "website/layouts/base.html" %} {% load static %} {% block title%}Contact Zela - Get in Touch{% endblock %} {% block content %}
+<div class="min-h-screen bg-white">
+  <!-- Navigation -->
+  {% include "website/fragments/navbar.html" %}
+
+  <!-- Hero Header -->
+  {% include "website/components/page-contact/hero-header.html" %}
+
+  <!-- Quick-Help Banner -->
+  {% include "website/components/page-contact/quick-help-banner.html" %}
+
+  <!-- Contact Form -->
+  {% include "website/components/page-contact/contact-form.html" %}
+
+  <!-- Contact Options Grid -->
+  {% include "website/components/page-contact/contact-options-grid.html" %}
+</div>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %} {% endblock %}

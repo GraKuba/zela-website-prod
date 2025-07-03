@@ -94,98 +94,14 @@
         </ul>
 
         <!-- CTA Button -->
-        <div class="relative">
-          <a
-            href="/providers/apply"
-            class="bg-[#011E41] text-[#FDEA00] font-semibold px-8 py-4 rounded-full text-xl shadow-lg hover:bg-[#022951] hover:scale-[1.04] transition-all duration-300 inline-flex items-center gap-3 relative overflow-hidden"
-            data-ripple
-            hx-get="/providers/apply"
-            hx-target="body"
-            hx-swap="outerHTML"
-          >
-            Apply as a Service Pro
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </a>
-        </div>
+        {% include 'website/fragments/cta-button.html' with href='/providers/apply' text='Apply as a Service Pro' hx_get='/providers/apply' hx_target='body' hx_swap='outerHTML' %}
       </div>
     </div>
   </div>
 </section>
 
-<!-- Ripple Effect Script for CTA Button -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Add ripple effect to buttons with data-ripple attribute
-    const rippleButtons = document.querySelectorAll("[data-ripple]");
-
-    rippleButtons.forEach((button) => {
-      button.addEventListener("click", function (e) {
-        // Create ripple element
-        const ripple = document.createElement("span");
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-
-        // Style the ripple
-        ripple.style.cssText = `
-                    position: absolute;
-                    width: ${size}px;
-                    height: ${size}px;
-                    left: ${x}px;
-                    top: ${y}px;
-                    background: rgba(253, 234, 0, 0.3);
-                    border-radius: 50%;
-                    transform: scale(0);
-                    animation: ripple-animation 0.6s ease-out;
-                    pointer-events: none;
-                `;
-
-        // Add to button
-        this.appendChild(ripple);
-
-        // Remove after animation
-        setTimeout(() => {
-          if (ripple.parentNode) {
-            ripple.parentNode.removeChild(ripple);
-          }
-        }, 600);
-      });
-    });
-  });
-</script>
-
-<!-- Ripple Animation Styles -->
+<!-- Section-specific styles -->
 <style>
-  @keyframes ripple-animation {
-    from {
-      transform: scale(0);
-      opacity: 1;
-    }
-    to {
-      transform: scale(1);
-      opacity: 0;
-    }
-  }
-
-  /* Ensure button maintains relative positioning for ripple */
-  [data-ripple] {
-    position: relative;
-    overflow: hidden;
-  }
-
   /* Subtle entrance animation */
   #provider-callout {
     opacity: 0;
@@ -208,18 +124,6 @@
     #provider-callout {
       opacity: 1;
       animation: none;
-    }
-
-    [data-ripple]:hover {
-      transform: none !important;
-    }
-
-    @keyframes ripple-animation {
-      from,
-      to {
-        transform: scale(0);
-        opacity: 0;
-      }
     }
   }
 </style>

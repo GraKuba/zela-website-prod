@@ -1,219 +1,102 @@
 {% load static %}
 <!-- Blog / Resources Teaser Section -->
-<section class="py-24 bg-[#F5F5F5] max-w-[1280px] mx-auto" id="blog-teaser">
-  <div class="max-w-6xl">
-    <!-- Section Heading -->
-    <div class="text-center mb-16">
-      <h2 class="text-5xl font-bold text-[#011E41] mb-4 leading-tight">
-        Latest Household Tips & News
-      </h2>
-    </div>
+<section class="py-16 bg-white max-w-[1280px] mx-auto px-6" id="blog-teaser">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-12">
+      <!-- Empty left space for layout balance -->
+      <div class="w-32"></div>
 
-    <!-- Article Cards Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-      <!-- Article Card 1 -->
-      <a
-        href="#"
-        class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2"
-        data-aos="fade-up"
-        data-aos-delay="100"
-        hx-get="/blog/trustworthy-cleaner"
+      <!-- Center Content -->
+      <div class="text-center">
+        <p
+          class="text-sm font-semibold text-[#4A5A70] uppercase tracking-wide mb-4"
+        >
+          SOMETHING TO READ
+        </p>
+        <h2 class="text-5xl font-bold text-[#011E41] leading-tight">
+          Latest Blog & Insights
+        </h2>
+      </div>
+
+      <!-- See All Blogs Button -->
+      <button
+        class="border border-[#011E41] text-[#011E41] px-6 py-2 rounded-full font-medium hover:bg-[#011E41] hover:text-[#FDEA00] transition-all duration-300"
+        hx-get="/blog/"
         hx-target="body"
         hx-swap="outerHTML"
       >
-        <div class="overflow-hidden">
+        SEE ALL BLOGS
+      </button>
+    </div>
+
+    <!-- Article Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Article Card 1 -->
+      <a
+        href="#"
+        class="group block hover:scale-[1.02] transition-transform duration-300"
+        hx-get="/blog/saas-marketing-guide"
+        hx-target="body"
+        hx-swap="outerHTML"
+      >
+        <div class="overflow-hidden rounded-2xl mb-4">
           <img
             src="{% static 'beatriz.webp' %}"
-            alt="Handshake over cleaning gloves"
-            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+            alt="Forest path with wooden walkway"
+            class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
           />
         </div>
-        <div class="p-6">
-          <h3 class="text-xl font-bold text-[#011E41] mb-3 leading-tight">
-            How to Choose a Trustworthy Cleaner
-          </h3>
-          <p class="text-[#4A5A70] leading-relaxed">
-            Five questions to ask before letting anyone into your home…
-          </p>
-        </div>
+        <h3 class="text-xl font-bold text-[#011E41] mb-2 leading-tight">
+          The Ultimate Guide to SaaS Marketing
+        </h3>
+        <p class="text-[#4A5A70] text-sm">Mar 23, 2025</p>
       </a>
 
       <!-- Article Card 2 -->
       <a
         href="#"
-        class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2"
-        data-aos="fade-up"
-        data-aos-delay="200"
-        hx-get="/blog/garden-hacks-angola"
+        class="group block hover:scale-[1.02] transition-transform duration-300"
+        hx-get="/blog/saas-growth-trends"
         hx-target="body"
         hx-swap="outerHTML"
       >
-        <div class="overflow-hidden">
+        <div class="overflow-hidden rounded-2xl mb-4">
           <img
             src="{% static 'pedro.webp' %}"
-            alt="Gardener watering potted plants"
-            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+            alt="Clean white desk with papers and decor"
+            class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
           />
         </div>
-        <div class="p-6">
-          <h3 class="text-xl font-bold text-[#011E41] mb-3 leading-tight">
-            Garden Hacks for Angola's Dry Season
-          </h3>
-          <p class="text-[#4A5A70] leading-relaxed">
-            Lush lawns and happy plants—even when the rain takes a break.
-          </p>
-        </div>
+        <h3 class="text-xl font-bold text-[#011E41] mb-2 leading-tight">
+          5 Key Trends in SaaS Growth for 2025
+        </h3>
+        <p class="text-[#4A5A70] text-sm">Mar 16, 2025</p>
       </a>
 
       <!-- Article Card 3 -->
       <a
         href="#"
-        class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2"
-        data-aos="fade-up"
-        data-aos-delay="300"
-        hx-get="/blog/vetting-process"
+        class="group block hover:scale-[1.02] transition-transform duration-300"
+        hx-get="/blog/data-driven-strategies"
         hx-target="body"
         hx-swap="outerHTML"
       >
-        <div class="overflow-hidden">
+        <div class="overflow-hidden rounded-2xl mb-4">
           <img
             src="{% static 'orlando.webp' %}"
-            alt="Clipboard with checkmarks"
-            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
+            alt="Green cocktail with mint garnish"
+            class="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
           />
         </div>
-        <div class="p-6">
-          <h3 class="text-xl font-bold text-[#011E41] mb-3 leading-tight">
-            Inside Zela's Vetting Process
-          </h3>
-          <p class="text-[#4A5A70] leading-relaxed">
-            From ID checks to practical tests—see how we keep quality high.
-          </p>
-        </div>
-      </a>
-    </div>
-
-    <!-- CTA Button -->
-    <div class="text-center">
-      <a
-        href="/blog/"
-        class="bg-[#011E41] text-[#FDEA00] font-semibold px-8 py-4 rounded-full text-xl shadow-lg hover:bg-[#022951] hover:scale-[1.02] transition-all duration-300 inline-flex items-center gap-3 relative overflow-hidden"
-        data-ripple
-        hx-get="/blog/"
-        hx-target="body"
-        hx-swap="outerHTML"
-      >
-        Visit the Blog
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M17 8l4 4m0 0l-4 4m4-4H3"
-          />
-        </svg>
+        <h3 class="text-xl font-bold text-[#011E41] mb-2 leading-tight">
+          How Data-Driven Strategies Are Important
+        </h3>
+        <p class="text-[#4A5A70] text-sm">Feb 16, 2025</p>
       </a>
     </div>
   </div>
 </section>
-
-<!-- Ripple Effect for CTA Button -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Reuse ripple effect from provider callout
-    const rippleButtons = document.querySelectorAll("[data-ripple]");
-
-    rippleButtons.forEach((button) => {
-      button.addEventListener("click", function (e) {
-        // Only add ripple if it doesn't already exist
-        if (this.querySelector(".ripple-effect")) return;
-
-        const ripple = document.createElement("span");
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-
-        ripple.classList.add("ripple-effect");
-        ripple.style.cssText = `
-                    position: absolute;
-                    width: ${size}px;
-                    height: ${size}px;
-                    left: ${x}px;
-                    top: ${y}px;
-                    background: rgba(253, 234, 0, 0.3);
-                    border-radius: 50%;
-                    transform: scale(0);
-                    animation: ripple-animation 0.6s ease-out;
-                    pointer-events: none;
-                `;
-
-        this.appendChild(ripple);
-
-        setTimeout(() => {
-          if (ripple.parentNode) {
-            ripple.parentNode.removeChild(ripple);
-          }
-        }, 600);
-      });
-    });
-  });
-</script>
-
-<!-- Additional Styles for Blog Teaser -->
-<style>
-  /* Image hover zoom effect */
-  .overflow-hidden img {
-    transition: transform 0.3s ease;
-  }
-
-  /* Card entrance animations */
-  [data-aos="fade-up"] {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.8s ease;
-  }
-
-  [data-aos="fade-up"].aos-animate {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Staggered animation delays */
-  [data-aos-delay="100"] {
-    transition-delay: 0.1s;
-  }
-
-  [data-aos-delay="200"] {
-    transition-delay: 0.2s;
-  }
-
-  [data-aos-delay="300"] {
-    transition-delay: 0.3s;
-  }
-
-  /* Reduced motion support */
-  @media (prefers-reduced-motion: reduce) {
-    [data-aos] {
-      opacity: 1 !important;
-      transform: none !important;
-      transition: none !important;
-    }
-
-    img {
-      transition: none !important;
-    }
-
-    .hover\:scale-105:hover {
-      transform: none !important;
-    }
-  }
-</style>

@@ -1,0 +1,95 @@
+{% load static %}
+
+<!-- Search and Filter Section -->
+<section class="bg-[#F5F5F5] py-8 md:py-12 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div
+      x-data="{ 
+            searchTerm: '',
+            selectedCategory: 'All categories',
+            categories: ['All categories', 'Cleaning', 'Garden', 'News', 'DIY']
+        }"
+      class="flex flex-col md:flex-row gap-4 md:gap-6 items-center justify-center"
+    >
+      <!-- Search Input -->
+      <div class="relative w-full md:w-96">
+        <div
+          class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+        >
+          <svg
+            class="h-5 w-5 text-[#4A5A70]"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+          </svg>
+        </div>
+        <input
+          type="text"
+          x-model="searchTerm"
+          placeholder="Search articles…"
+          class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full text-[#011E41] placeholder-[#4A5A70] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors"
+        />
+      </div>
+
+      <!-- Category Dropdown -->
+      <div class="relative w-full md:w-auto" x-data="{ open: false }">
+        <button
+          @click="open = !open"
+          class="w-full md:w-48 bg-white border border-gray-300 rounded-full px-6 py-3 text-left text-[#011E41] focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors flex items-center justify-between"
+        >
+          <span x-text="selectedCategory"></span>
+          <svg
+            class="w-5 h-5 text-[#4A5A70]"
+            :class="{'rotate-180': open}"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"
+            ></path>
+          </svg>
+        </button>
+
+        <div
+          x-show="open"
+          @click.away="open = false"
+          x-transition:enter="transition ease-out duration-100"
+          x-transition:enter-start="transform opacity-0 scale-95"
+          x-transition:enter-end="transform opacity-100 scale-100"
+          x-transition:leave="transition ease-in duration-75"
+          x-transition:leave-start="transform opacity-100 scale-100"
+          x-transition:leave-end="transform opacity-0 scale-95"
+          class="absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-2xl shadow-lg"
+        >
+          <template x-for="category in categories" :key="category">
+            <button
+              @click="selectedCategory = category; open = false"
+              class="w-full text-left px-6 py-3 text-[#011E41] hover:bg-[#F5F5F5] first:rounded-t-2xl last:rounded-b-2xl transition-colors"
+              :class="{'bg-[#FDEA00] text-[#011E41] font-semibold': selectedCategory === category}"
+            >
+              <span x-text="category"></span>
+            </button>
+          </template>
+        </div>
+      </div>
+
+      <!-- Filter Button (Mobile) -->
+      <button
+        class="md:hidden w-full bg-[#011E41] text-[#FDEA00] py-3 px-6 rounded-full font-semibold hover:bg-[#022951] transition-colors"
+      >
+        Apply Filters
+      </button>
+    </div>
+  </div>
+</section>

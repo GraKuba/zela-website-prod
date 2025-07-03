@@ -1,0 +1,61 @@
+{% load static %}
+
+<!-- Header with Logo and Navigation -->
+<header
+  class="w-full flex items-center justify-between px-8 py-6 mx-auto max-w-[1280px] z-20 relative"
+>
+  <!-- Logo -->
+  <div class="flex items-center">
+    <a href="/" class="flex items-center">
+      <img src="{% static 'zela-logo.png' %}" alt="Zela" class="h-12 w-auto" />
+    </a>
+  </div>
+
+  <!-- Navigation Links -->
+  <nav class="hidden md:flex items-center gap-8">
+    <a
+      href="/"
+      class="text-[#4A5A70] hover:text-[#011E41] transition-colors font-medium"
+    >
+      Home
+    </a>
+    <a
+      href="/about/"
+      class="text-[#4A5A70] hover:text-[#011E41] transition-colors font-medium"
+    >
+      About
+    </a>
+    <a
+      href="/services/"
+      class="text-[#4A5A70] hover:text-[#011E41] transition-colors font-medium"
+    >
+      Services
+    </a>
+    <a
+      href="/pricing/"
+      class="text-[#4A5A70] hover:text-[#011E41] transition-colors font-medium"
+    >
+      Pricing
+    </a>
+    <a
+      href="/contact/"
+      class="text-[#4A5A70] hover:text-[#011E41] transition-colors font-medium"
+    >
+      Contact
+    </a>
+  </nav>
+
+  <!-- CTA Buttons -->
+  <div class="flex items-center gap-4">
+    <button
+      class="border border-[#011E41] text-[#011E41] px-6 py-2 rounded-full font-semibold hover:bg-[#011E41] hover:text-white transition-colors"
+    >
+      Log In
+    </button>
+    <button
+      class="bg-[#011E41] text-[#FDEA00] px-6 py-2 rounded-full font-semibold hover:bg-[#022951] transition-colors shadow-lg"
+    >
+      Sign Up
+    </button>
+  </div>
+</header>

@@ -1,6 +1,6 @@
 {% extends "website/layouts/base.html" %} {% load static %} {% block content %}
 <div class="min-h-screen bg-white">
-  {% include "website/components/navbar.html" %}
+  {% include "website/fragments/navbar.html" %}
 
   <!-- Hero Section with Provider Cards -->
   {% include "website/components/hero.html" %}
@@ -23,11 +23,12 @@
   <!-- FAQ Accordion Section -->
   {% include "website/components/faq-accordion.html" %}
 
+  <!-- CTA Banner -->
+  {% include "website/components/app-banner.html" %}
+
   <!-- Blog Teaser Section -->
   {% include "website/components/blog-teaser.html" %}
 
-  <!-- App Coming Soon Banner -->
-  {% include "website/components/app-banner.html" %}
 </div>
 
 <!-- Global Footer -->
