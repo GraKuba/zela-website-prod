@@ -1,0 +1,457 @@
+{% load static %}
+<!-- FAQ Accordion Section -->
+<section class="py-24 bg-white max-w-[1280px] mx-auto" id="faq">
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Section Heading -->
+    <div class="text-center mb-16">
+      <p
+        class="text-sm font-semibold text-[#FDEA00] uppercase tracking-wider mb-2"
+      >
+        UNSURE ABOUT ANYTHING?
+      </p>
+      <h2 class="text-5xl font-bold text-[#011E41] mb-4 leading-tight">
+        Frequently Asked Questions
+      </h2>
+    </div>
+
+    <!-- Two-column layout: Photo + FAQ -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+      <!-- Left Column - Photo -->
+      <div class="order-2 lg:order-1">
+        <div class="relative">
+          <img
+            src="{% static 'faq/south_african_cleaner.webp' %}"
+            alt="Professional cleaner providing quality service"
+            class="w-full h-auto rounded-2xl shadow-lg object-cover"
+          />
+          <!-- Optional overlay for better text contrast if needed -->
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-2xl"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Right Column - FAQ Accordion -->
+      <div class="order-1 lg:order-2">
+        <div class="space-y-4" x-data="faqAccordion()">
+          <!-- FAQ Item 1 -->
+          <div
+            class="border rounded-2xl overflow-hidden shadow-sm transition-all duration-500 ease-out"
+            :class="openItem === 0 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
+          >
+            <button
+              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              @click="toggle(0)"
+              :aria-expanded="openItem === 0"
+              aria-controls="faq-answer-1"
+            >
+              <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                  Can I cancel or reschedule?
+                </h3>
+                <svg
+                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  :class="{'rotate-180': openItem === 0}"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </button>
+            <div
+              x-show="openItem === 0"
+              x-transition:enter="transition-all duration-500 ease-out"
+              x-transition:enter-start="max-h-0"
+              x-transition:enter-end="max-h-96"
+              x-transition:leave="transition-all duration-500 ease-out"
+              x-transition:leave-start="max-h-96"
+              x-transition:leave-end="max-h-0"
+              class="overflow-hidden"
+              id="faq-answer-1"
+              role="region"
+            >
+              <div class="px-6 pb-5 pt-2">
+                <p class="text-[#4A5A70] leading-relaxed">
+                  Yes—free up to 12 h before the visit. Inside 12 h a small
+                  late-change fee applies.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 2 -->
+          <div
+            class="border rounded-2xl overflow-hidden shadow-sm transition-all duration-500 ease-out"
+            :class="openItem === 1 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
+          >
+            <button
+              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              @click="toggle(1)"
+              :aria-expanded="openItem === 1"
+              aria-controls="faq-answer-2"
+            >
+              <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                  Do I need to supply cleaning products?
+                </h3>
+                <svg
+                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  :class="{'rotate-180': openItem === 1}"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </button>
+            <div
+              x-show="openItem === 1"
+              x-transition:enter="transition-all duration-500 ease-out"
+              x-transition:enter-start="max-h-0"
+              x-transition:enter-end="max-h-96"
+              x-transition:leave="transition-all duration-500 ease-out"
+              x-transition:leave-start="max-h-96"
+              x-transition:leave-end="max-h-0"
+              class="overflow-hidden"
+              id="faq-answer-2"
+              role="region"
+            >
+              <div class="px-6 pb-5 pt-2">
+                <p class="text-[#4A5A70] leading-relaxed">
+                  Your Zela pro arrives with eco-friendly supplies; you can also
+                  request they use your own.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 3 -->
+          <div
+            class="border rounded-2xl overflow-hidden shadow-sm transition-all duration-500 ease-out"
+            :class="openItem === 2 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
+          >
+            <button
+              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              @click="toggle(2)"
+              :aria-expanded="openItem === 2"
+              aria-controls="faq-answer-3"
+            >
+              <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                  How are workers vetted?
+                </h3>
+                <svg
+                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  :class="{'rotate-180': openItem === 2}"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </button>
+            <div
+              x-show="openItem === 2"
+              x-transition:enter="transition-all duration-500 ease-out"
+              x-transition:enter-start="max-h-0"
+              x-transition:enter-end="max-h-96"
+              x-transition:leave="transition-all duration-500 ease-out"
+              x-transition:leave-start="max-h-96"
+              x-transition:leave-end="max-h-0"
+              class="overflow-hidden"
+              id="faq-answer-3"
+              role="region"
+            >
+              <div class="px-6 pb-5 pt-2">
+                <p class="text-[#4A5A70] leading-relaxed">
+                  We run ID checks, in-person interviews, reference calls and
+                  skills tests. Only the top 20% pass.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 4 -->
+          <div
+            class="border rounded-2xl overflow-hidden shadow-sm transition-all duration-500 ease-out"
+            :class="openItem === 3 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
+          >
+            <button
+              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              @click="toggle(3)"
+              :aria-expanded="openItem === 3"
+              aria-controls="faq-answer-4"
+            >
+              <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                  How do I pay?
+                </h3>
+                <svg
+                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  :class="{'rotate-180': openItem === 3}"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </button>
+            <div
+              x-show="openItem === 3"
+              x-transition:enter="transition-all duration-500 ease-out"
+              x-transition:enter-start="max-h-0"
+              x-transition:enter-end="max-h-96"
+              x-transition:leave="transition-all duration-500 ease-out"
+              x-transition:leave-start="max-h-96"
+              x-transition:leave-end="max-h-0"
+              class="overflow-hidden"
+              id="faq-answer-4"
+              role="region"
+            >
+              <div class="px-6 pb-5 pt-2">
+                <p class="text-[#4A5A70] leading-relaxed">
+                  Secure online checkout via Paystack or PayPal. We don't accept
+                  cash.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 5 -->
+          <div
+            class="border rounded-2xl overflow-hidden shadow-sm transition-all duration-500 ease-out"
+            :class="openItem === 4 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
+          >
+            <button
+              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              @click="toggle(4)"
+              :aria-expanded="openItem === 4"
+              aria-controls="faq-answer-5"
+            >
+              <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                  Is Zela available outside Luanda?
+                </h3>
+                <svg
+                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  :class="{'rotate-180': openItem === 4}"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </button>
+            <div
+              x-show="openItem === 4"
+              x-transition:enter="transition-all duration-500 ease-out"
+              x-transition:enter-start="max-h-0"
+              x-transition:enter-end="max-h-96"
+              x-transition:leave="transition-all duration-500 ease-out"
+              x-transition:leave-start="max-h-96"
+              x-transition:leave-end="max-h-0"
+              class="overflow-hidden"
+              id="faq-answer-5"
+              role="region"
+            >
+              <div class="px-6 pb-5 pt-2">
+                <p class="text-[#4A5A70] leading-relaxed">
+                  We launch in Luanda first and expand to Benguela & Lubango in
+                  late 2025—join the wait-list!
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Item 6 -->
+          <div
+            class="border rounded-2xl overflow-hidden shadow-sm transition-all duration-500 ease-out"
+            :class="openItem === 5 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
+          >
+            <button
+              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              @click="toggle(5)"
+              :aria-expanded="openItem === 5"
+              aria-controls="faq-answer-6"
+            >
+              <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                  Should I tip?
+                </h3>
+                <svg
+                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  :class="{'rotate-180': openItem === 5}"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
+            </button>
+            <div
+              x-show="openItem === 5"
+              x-transition:enter="transition-all duration-500 ease-out"
+              x-transition:enter-start="max-h-0"
+              x-transition:enter-end="max-h-96"
+              x-transition:leave="transition-all duration-500 ease-out"
+              x-transition:leave-start="max-h-96"
+              x-transition:leave-end="max-h-0"
+              class="overflow-hidden"
+              id="faq-answer-6"
+              role="region"
+            >
+              <div class="px-6 pb-5 pt-2">
+                <p class="text-[#4A5A70] leading-relaxed">
+                  Tipping is optional and can be added during rating. 100% goes
+                  to your service pro.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Micro-CTA -->
+        <div class="text-center mt-12">
+          <a
+            href="mailto:support@zela.co.ao"
+            class="text-sm font-medium text-[#011E41] hover:text-[#022951] hover:underline transition-colors inline-flex items-center gap-1"
+            hx-get="/contact"
+            hx-target="body"
+            hx-swap="outerHTML"
+          >
+            Still have questions? Contact Support
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Alpine.js FAQ Accordion Component -->
+<script>
+  function faqAccordion() {
+    return {
+      openItem: null, // Start with all items closed
+
+      toggle(index) {
+        // If clicking the same item that's open, close it
+        if (this.openItem === index) {
+          this.openItem = null;
+        } else {
+          // Otherwise, open the clicked item (closing any other)
+          this.openItem = index;
+        }
+      },
+
+      // Keyboard navigation support
+      init() {
+        // Add keyboard event listeners for accessibility
+        this.$nextTick(() => {
+          const buttons = this.$el.querySelectorAll("button[aria-controls]");
+          buttons.forEach((button, index) => {
+            button.addEventListener("keydown", (e) => {
+              switch (e.key) {
+                case "ArrowDown":
+                  e.preventDefault();
+                  const nextButton = buttons[index + 1] || buttons[0];
+                  nextButton.focus();
+                  break;
+                case "ArrowUp":
+                  e.preventDefault();
+                  const prevButton =
+                    buttons[index - 1] || buttons[buttons.length - 1];
+                  prevButton.focus();
+                  break;
+                case "Home":
+                  e.preventDefault();
+                  buttons[0].focus();
+                  break;
+                case "End":
+                  e.preventDefault();
+                  buttons[buttons.length - 1].focus();
+                  break;
+              }
+            });
+          });
+        });
+      },
+    };
+  }
+</script>
+
+<!-- FAQ Accordion Styles -->
+<style>
+  /* Smooth transitions for accordion panels */
+  [x-show] {
+    transition-property: max-height;
+    transition-duration: 300ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Focus visible improvements */
+  button[aria-controls]:focus-visible {
+    outline: 2px solid #fdea00;
+    outline-offset: 2px;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    [x-show] {
+      transition: none !important;
+    }
+
+    .transform {
+      transition: none !important;
+    }
+  }
+</style>

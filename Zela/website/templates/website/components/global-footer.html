@@ -1,0 +1,367 @@
+{% load static %}
+<!-- Global Footer -->
+<footer class="bg-[#011E41] text-white" id="global-footer">
+  <div class="max-w-6xl mx-auto px-6 py-16 max-w-[1280px] mx-auto">
+    <!-- Main Footer Content -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      <!-- Column 1: Primary Navigation -->
+      <div>
+        <h4
+          class="text-[#FDEA00] font-semibold text-lg mb-6 uppercase tracking-wide"
+        >
+          Navigation
+        </h4>
+        <nav class="space-y-3">
+          <a
+            href="/services"
+            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            hx-get="/services"
+            hx-target="body"
+            hx-swap="outerHTML"
+          >
+            Services
+          </a>
+          <a
+            href="/pricing"
+            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            hx-get="/pricing"
+            hx-target="body"
+            hx-swap="outerHTML"
+          >
+            Pricing
+          </a>
+          <a
+            href="/about"
+            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            hx-get="/about"
+            hx-target="body"
+            hx-swap="outerHTML"
+          >
+            About Us
+          </a>
+          <a
+            href="/careers"
+            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            hx-get="/careers"
+            hx-target="body"
+            hx-swap="outerHTML"
+          >
+            Careers
+          </a>
+          <a
+            href="/blog"
+            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            hx-get="/blog"
+            hx-target="body"
+            hx-swap="outerHTML"
+          >
+            Blog
+          </a>
+        </nav>
+      </div>
+
+      <!-- Column 2: Legal & Preferences -->
+      <div>
+        <h4
+          class="text-[#FDEA00] font-semibold text-lg mb-6 uppercase tracking-wide"
+        >
+          Legal
+        </h4>
+        <nav class="space-y-3">
+          <a
+            href="/privacy"
+            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            hx-get="/privacy"
+            hx-target="body"
+            hx-swap="outerHTML"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="/terms"
+            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            hx-get="/terms"
+            hx-target="body"
+            hx-swap="outerHTML"
+          >
+            Terms of Service
+          </a>
+          <button
+            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00] text-left"
+            onclick="showCookieSettings()"
+          >
+            Cookie Settings
+          </button>
+        </nav>
+      </div>
+
+      <!-- Column 3: Newsletter Sign-up -->
+      <div>
+        <h4
+          class="text-[#FDEA00] font-semibold text-lg mb-6 uppercase tracking-wide"
+        >
+          Stay Updated
+        </h4>
+        <p class="text-gray-300 mb-4 leading-relaxed">
+          Get cleaning tips & offers in your inbox.
+        </p>
+
+        <!-- Newsletter Form -->
+        <div x-data="newsletterSignup()" class="space-y-4">
+          <!-- Success Message -->
+          <div
+            x-show="showSuccess"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform translate-y-2"
+            x-transition:enter-end="opacity-1 transform translate-y-0"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-1 transform translate-y-0"
+            x-transition:leave-end="opacity-0 transform translate-y-2"
+            class="text-green-400 text-sm font-medium"
+          >
+            <span x-text="successMessage"></span>
+          </div>
+
+          <form @submit.prevent="submitNewsletter()" class="space-y-3">
+            <div>
+              <input
+                type="email"
+                x-model="email"
+                placeholder="Email address"
+                required
+                :class="{'border-red-500': hasError, 'border-gray-600': !hasError}"
+                class="w-full px-4 py-2 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent"
+              />
+              <p x-show="hasError" class="text-red-400 text-sm mt-1">
+                Please enter a valid email
+              </p>
+            </div>
+            <button
+              type="submit"
+              :disabled="isSubmitting"
+              class="w-full bg-[#FDEA00] text-[#011E41] font-semibold py-2 px-4 rounded-lg hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span x-show="!isSubmitting">Subscribe</span>
+              <span x-show="isSubmitting">...</span>
+            </button>
+          </form>
+
+          <p class="text-xs text-gray-400">We respect your privacy.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Social Icons & Language Switcher -->
+    <div class="border-t border-gray-700 pt-8 mb-8">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <!-- Social Icons -->
+        <div class="flex items-center gap-4">
+          <span class="text-gray-400 text-sm mr-2">Follow us:</span>
+
+          <!-- Facebook -->
+          <a
+            href="https://facebook.com/zela"
+            target="_blank"
+            rel="noopener"
+            class="text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2 focus:ring-offset-[#011E41] rounded"
+            aria-label="Follow us on Facebook"
+          >
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+              />
+            </svg>
+          </a>
+
+          <!-- Instagram -->
+          <a
+            href="https://instagram.com/zela"
+            target="_blank"
+            rel="noopener"
+            class="text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2 focus:ring-offset-[#011E41] rounded"
+            aria-label="Follow us on Instagram"
+          >
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.621 5.367 11.988 11.988 11.988 6.62 0 11.988-5.367 11.988-11.988C24.005 5.367 18.637.001 12.017.001zM8.449 16.988c-2.243 0-4.062-1.819-4.062-4.062s1.819-4.062 4.062-4.062 4.062 1.819 4.062 4.062-1.819 4.062-4.062 4.062zm7.138 0c-2.243 0-4.062-1.819-4.062-4.062s1.819-4.062 4.062-4.062 4.062 1.819 4.062 4.062-1.819 4.062-4.062 4.062z"
+              />
+            </svg>
+          </a>
+
+          <!-- LinkedIn -->
+          <a
+            href="https://linkedin.com/company/zela"
+            target="_blank"
+            rel="noopener"
+            class="text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2 focus:ring-offset-[#011E41] rounded"
+            aria-label="Follow us on LinkedIn"
+          >
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+              />
+            </svg>
+          </a>
+
+          <!-- WhatsApp -->
+          <a
+            href="https://wa.me/244900000000"
+            target="_blank"
+            rel="noopener"
+            class="text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2 focus:ring-offset-[#011E41] rounded"
+            aria-label="Contact us on WhatsApp"
+          >
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"
+              />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Language Switcher -->
+        <div x-data="languageSwitcher()" class="flex items-center gap-2">
+          <span class="text-gray-400 text-sm mr-2">Language:</span>
+          <button
+            @click="setLanguage('pt')"
+            :class="{'text-[#FDEA00] font-semibold': currentLang === 'pt', 'text-gray-400 hover:text-white': currentLang !== 'pt'}"
+            class="px-2 py-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDEA00]"
+          >
+            PT
+          </button>
+          <span class="text-gray-600">|</span>
+          <button
+            @click="setLanguage('en')"
+            :class="{'text-[#FDEA00] font-semibold': currentLang === 'en', 'text-gray-400 hover:text-white': currentLang !== 'en'}"
+            class="px-2 py-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDEA00]"
+          >
+            EN
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand Tagline & Copyright -->
+    <div class="border-t border-gray-700 pt-6 text-center">
+      <p class="text-gray-400 text-sm">
+        Zela © 2025 · Attention and care for your home.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- Alpine.js Footer Components -->
+<script>
+  function newsletterSignup() {
+    return {
+      email: "",
+      hasError: false,
+      isSubmitting: false,
+      showSuccess: false,
+      successMessage: "Obrigado! / Thank you!",
+
+      validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      },
+
+      async submitNewsletter() {
+        this.hasError = false;
+
+        if (!this.email || !this.validateEmail(this.email)) {
+          this.hasError = true;
+          return;
+        }
+
+        this.isSubmitting = true;
+
+        try {
+          // Simulate API call
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          // Show success message
+          this.showSuccess = true;
+          this.email = "";
+
+          // Hide success message after 5 seconds
+          setTimeout(() => {
+            this.showSuccess = false;
+          }, 5000);
+        } catch (error) {
+          this.hasError = true;
+        } finally {
+          this.isSubmitting = false;
+        }
+      },
+    };
+  }
+
+  function languageSwitcher() {
+    return {
+      currentLang: "en", // Default to English
+
+      setLanguage(lang) {
+        this.currentLang = lang;
+        // Update document lang attribute
+        document.documentElement.lang = lang;
+
+        // Here you would typically:
+        // 1. Store preference in localStorage
+        // 2. Send to backend to update user preference
+        // 3. Reload page with new language
+        localStorage.setItem("preferred-language", lang);
+
+        console.log(`Language switched to: ${lang}`);
+      },
+
+      init() {
+        // Load saved language preference
+        const saved = localStorage.getItem("preferred-language");
+        if (saved) {
+          this.currentLang = saved;
+          document.documentElement.lang = saved;
+        }
+      },
+    };
+  }
+
+  // Cookie Settings Function
+  function showCookieSettings() {
+    // This would typically open a cookie consent modal
+    alert("Cookie settings panel would open here");
+  }
+</script>
+
+<!-- Footer Styles -->
+<style>
+  /* Focus ring offset for dark background */
+  #global-footer a:focus,
+  #global-footer button:focus {
+    outline-offset: 2px;
+  }
+
+  /* Smooth transitions for social icons */
+  #global-footer a[aria-label] {
+    transform-origin: center;
+  }
+
+  /* Newsletter form styling */
+  #global-footer input[type="email"] {
+    background-color: rgb(31, 41, 55);
+  }
+
+  #global-footer input[type="email"]:focus {
+    background-color: rgb(17, 24, 39);
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    #global-footer a[aria-label]:hover {
+      transform: none !important;
+    }
+
+    #global-footer * {
+      transition: none !important;
+    }
+  }
+</style>

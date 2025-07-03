@@ -1,0 +1,192 @@
+{% load static %}
+<!-- How It Works Section -->
+<section
+  class="py-24 bg-white max-w-[1280px] mx-auto relative z-10"
+  id="how-it-works"
+>
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Row 1: Title + Steps 01-02 -->
+    <div class="flex flex-col lg:flex-row gap-8 items-start mb-16">
+      <!-- Title Section -->
+      <div class="w-full lg:w-2/5" data-aos="fade-right">
+        <p
+          class="text-sm font-semibold text-[#FDEA00] uppercase tracking-wider mb-2"
+        >
+          HOW IT WORKS
+        </p>
+        <h2 class="text-5xl font-bold text-[#011E41] mb-6 leading-tight">
+          Get cleaner space in four steps
+        </h2>
+        <p class="text-lg text-[#4A5A70] leading-relaxed">
+          And sometimes, in as little as 24 hours.
+        </p>
+      </div>
+
+      <!-- Steps 01-02 -->
+      <div class="w-full lg:w-3/5 flex flex-col md:flex-row gap-8">
+        <!-- Step 01: Share Details -->
+        <div
+          class="flex-1 flex flex-col"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-4xl font-bold text-[#011E41] opacity-30">01</span>
+            <div>
+              <h3 class="text-xl font-bold text-[#011E41] mb-2">
+                SHARE DETAILS
+              </h3>
+              <p class="text-[#4A5A70] text-sm leading-relaxed">
+                Fill out a quick form with details about your space, schedule,
+                and preferences.
+              </p>
+            </div>
+          </div>
+          <div class="rounded-xl overflow-hidden mt-auto">
+            <img
+              src="{% static 'how-it-works/hiw3.webp' %}"
+              alt="Share details about your cleaning needs"
+              class="object-cover w-full h-56"
+            />
+          </div>
+        </div>
+
+        <!-- Step 02: Get Quote -->
+        <div
+          class="flex-1 flex flex-col"
+          data-aos="fade-up"
+          data-aos-delay="150"
+        >
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-4xl font-bold text-[#011E41] opacity-30">02</span>
+            <div>
+              <h3 class="text-xl font-bold text-[#011E41] mb-2">GET QUOTE</h3>
+              <p class="text-[#4A5A70] text-sm leading-relaxed">
+                We'll send you a personalized estimate, no hidden fees, no
+                upselling.
+              </p>
+            </div>
+          </div>
+          <div class="rounded-xl overflow-hidden mt-auto">
+            <img
+              src="{% static 'how-it-works/hiw4.webp' %}"
+              alt="Get personalized quote"
+              class="object-cover w-full h-56"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Steps 03-04 + CTA -->
+    <div class="flex flex-col lg:flex-row gap-8 items-end">
+      <!-- Steps 03-04 -->
+      <div class="w-full lg:w-3/5 flex flex-col md:flex-row gap-8">
+        <!-- Step 03: We Clean -->
+        <div
+          class="flex-1 flex flex-col"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-4xl font-bold text-[#011E41] opacity-30">03</span>
+            <div>
+              <h3 class="text-xl font-bold text-[#011E41] mb-2">WE CLEAN</h3>
+              <p class="text-[#4A5A70] text-sm leading-relaxed">
+                Our team arrives on time, equipped, and ready to clean
+                thoroughly.
+              </p>
+            </div>
+          </div>
+          <div class="rounded-xl overflow-hidden mt-auto">
+            <img
+              src="{% static 'how-it-works/hiw2.webp' %}"
+              alt="Professional cleaning team at work"
+              class="object-cover w-full h-56"
+            />
+          </div>
+        </div>
+
+        <!-- Step 04: You Relax -->
+        <div
+          class="flex-1 flex flex-col"
+          data-aos="fade-up"
+          data-aos-delay="250"
+        >
+          <div class="flex items-start gap-4 mb-4">
+            <span class="text-4xl font-bold text-[#011E41] opacity-30">04</span>
+            <div>
+              <h3 class="text-xl font-bold text-[#011E41] mb-2">YOU RELAX</h3>
+              <p class="text-[#4A5A70] text-sm leading-relaxed">
+                Enjoy a spotless home or workspace that looks, feels, and smells
+                truly clean.
+              </p>
+            </div>
+          </div>
+          <div class="rounded-xl overflow-hidden mt-auto">
+            <img
+              src="{% static 'how-it-works/hiw1.webp' %}"
+              alt="Relax in your clean space"
+              class="object-cover w-full h-56"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div
+        class="w-full lg:w-2/5 flex items-end justify-end lg:justify-end"
+        data-aos="fade-left"
+        data-aos-delay="300"
+      >
+        <div class="text-center lg:text-right">
+          <h4 class="text-lg font-bold text-[#011E41] mb-2">
+            READY TO GET STARTED?
+          </h4>
+          <p class="text-sm text-[#4A5A70] max-w-[210px] text">
+            Simple pricing, no hidden fees - see
+          </p>
+          <p class="text-sm text-[#4A5A70] max-w-[200px] mb-4">
+            what works for your space.
+          </p>
+          <button
+            class="bg-[#011E41] text-[#FDEA00] font-semibold px-6 py-3 rounded-full text-lg shadow-lg hover:bg-[#022951] transition-colors inline-flex items-center gap-2"
+            hx-get="#"
+            hx-target="#booking-form"
+            hx-swap="outerHTML"
+          >
+            View our pricing
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AOS Animation Initialization -->
+<script>
+  // Initialize AOS if available, fallback gracefully
+  document.addEventListener("DOMContentLoaded", function () {
+    if (typeof AOS !== "undefined") {
+      AOS.init({
+        duration: 800,
+        easing: "ease-in-out",
+        once: true,
+        offset: 100,
+      });
+    }
+  });
+</script>

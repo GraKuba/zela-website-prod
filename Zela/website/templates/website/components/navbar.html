@@ -1,0 +1,25 @@
+<!-- Header with Logo and Navigation -->
+<header class="w-full flex items-center justify-between px-8 py-6 max-w-[1280px] mx-auto">
+  <!-- Logo -->
+  <div class="flex items-center">
+    <img
+      src="{% load static %}{% static 'zela-logo.png' %}"
+      alt="Zela"
+      class="h-12 w-auto"
+    />
+  </div>
+
+  <!-- Navigation -->
+  <div class="flex items-center gap-4 z-20">
+    <button
+      class="border border-teal-600 text-teal-600 px-6 py-2 rounded-full font-medium hover:bg-teal-50 transition-colors"
+    >
+      Log In
+    </button>
+    <button
+      class="bg-[#015f73] text-white px-6 py-2 rounded-full font-medium hover:bg-teal-700 transition-colors"
+    >
+      Sign Up
+    </button>
+  </div>
+</header>

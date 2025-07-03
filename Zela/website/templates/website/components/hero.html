@@ -1,0 +1,240 @@
+{% load static %}
+<!-- ========================  HERO SECTION  ======================== -->
+<!-- Entire hero is one flex container: title/CTA left, auto-scroll grid right -->
+<div
+  class="flex flex-col lg:flex-row h-[calc(100vh-80px)] max-w-[1280px] mx-auto relative z-10"
+>
+  <!-- ───────────────  LEFT: title + CTA  (≈35 %) ─────────────── -->
+  <div
+    class="w-full lg:w-[35%] flex flex-col justify-center px-8 lg:px-16 py-8 lg:py-16 relative z-20"
+  >
+    <h1 class="text-5xl lg:text-7xl font-bold leading-tight text-black mb-6">
+      O seu lar,<br />
+      a nossa<br />
+      prioridade
+    </h1>
+    <p class="text-lg text-gray-600 mb-8 max-w-md">
+      Reserve serviços domésticos de confiança de forma rápida
+    </p>
+    <button
+      class="bg-[#015f73] text-yellow-400 px-8 py-4 rounded-full text-lg font-medium hover:bg-teal-700 transition-colors w-fit"
+    >
+      Agende Agora
+    </button>
+  </div>
+
+  <!-- ───────────────  RIGHT: AUTO-SCROLL PROVIDER GRID  (≈65 %) ─────────────── -->
+  <div class="w-full lg:w-[65%] flex flex-col px-8 lg:pr-16 py-8 relative z-0">
+    <!-- Three equal columns that scroll independently -->
+    <div class="grid grid-cols-3 gap-3 h-full">
+      <!-- ===== COLUMN 1  – scrolls ↑  ===== -->
+      <div
+        class="h-[300vh] overflow-hidden rounded-lg relative -z-10"
+        x-data="scrollColumn('up', 60000)"
+        x-init="start()"
+      >
+        <ul class="space-y-2" x-ref="list">
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'carla.webp' %}"
+              alt="Carla"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'orlando.webp' %}"
+              alt="Orlando"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'juliana2.webp' %}"
+              alt="Juliana"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'isabella.webp' %}"
+              alt="Isabella"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'unknown1.webp' %}"
+              alt="Service Provider"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'beatriz.webp' %}"
+              alt="Beatriz"
+              class="object-cover w-full h-full"
+            />
+          </li>
+        </ul>
+      </div>
+
+      <!-- ===== COLUMN 2  – scrolls ↓  ===== -->
+      <div
+        class="h-[300vh] overflow-hidden rounded-lg relative -z-10 -mt-[200vh]"
+        x-data="scrollColumn('down', 90000)"
+        x-init="start()"
+      >
+        <ul class="space-y-2" x-ref="list">
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'victor.webp' %}"
+              alt="Victor"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'juliana.webp' %}"
+              alt="Juliana"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'pedro.webp' %}"
+              alt="Pedro"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'raul.webp' %}"
+              alt="Raul"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'nadia.webp' %}"
+              alt="Nadia"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'carla.webp' %}"
+              alt="Carla"
+              class="object-cover w-full h-full"
+            />
+          </li>
+        </ul>
+      </div>
+
+      <!-- ===== COLUMN 3  – scrolls ↑  ===== -->
+      <div
+        class="h-[300vh] overflow-hidden rounded-lg relative -z-10"
+        x-data="scrollColumn('up', 120000)"
+        x-init="start()"
+      >
+        <ul class="space-y-2" x-ref="list">
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'raul.webp' %}"
+              alt="Raul"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'nadia.webp' %}"
+              alt="Nadia"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'beatriz.webp' %}"
+              alt="Beatriz"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'orlando.webp' %}"
+              alt="Orlando"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'victor.webp' %}"
+              alt="Victor"
+              class="object-cover w-full h-full"
+            />
+          </li>
+          <li class="w-full h-full rounded-lg overflow-hidden">
+            <img
+              src="{% static 'juliana.webp' %}"
+              alt="Juliana"
+              class="object-cover w-full h-full"
+            />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================  SCRIPTS  ======================== -->
+<!-- Alpine v3 (only once per page, move to base template if needed) -->
+<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+<script>
+  /*
+    scrollColumn(direction, duration)
+      direction: 'up' | 'down'
+      duration : milliseconds for one full loop
+  */
+  const scrollColumn = (direction = "up", duration = 30000) => ({
+    start() {
+      // Create multiple clones for seamless infinite loop
+      const original = this.$refs.list;
+      const container = original.parentElement;
+
+      // Clear any existing clones
+      while (container.children.length > 1) {
+        container.removeChild(container.lastChild);
+      }
+
+      // Add multiple clones to ensure no white space
+      for (let i = 0; i < 4; i++) {
+        const clone = original.cloneNode(true);
+        container.appendChild(clone);
+      }
+
+      const listHeight = original.offsetHeight;
+      const dir = direction === "up" ? -1 : 1;
+      const step = listHeight / (duration / 16.67); // ≈60 fps
+
+      // Start with pictures immediately visible (y = 0)
+      let y = 0;
+
+      const animate = () => {
+        y += dir * step;
+
+        // Reset position for seamless loop
+        if (direction === "up" && y <= -listHeight) {
+          y = 0;
+        } else if (direction === "down" && y >= listHeight) {
+          y = 0;
+        }
+
+        container.style.transform = `translateY(${y}px)`;
+        requestAnimationFrame(animate);
+      };
+
+      requestAnimationFrame(animate);
+    },
+  });
+</script>

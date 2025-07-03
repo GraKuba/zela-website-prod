@@ -1,0 +1,25 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Zela{% endblock %}</title>
+    <script
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+      defer
+    ></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    {% tailwind_css %}
+  </head>
+  <body
+    class="min-h-screen bg-white mx-auto font-sans"
+    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+  >
+    <main>{% block content %}{% endblock %}</main>
+  </body>
+</html>

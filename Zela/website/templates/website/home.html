@@ -1,0 +1,34 @@
+{% extends "website/layouts/base.html" %} {% load static %} {% block content %}
+<div class="min-h-screen bg-white">
+  {% include "website/components/navbar.html" %}
+
+  <!-- Hero Section with Provider Cards -->
+  {% include "website/components/hero.html" %}
+
+  <!-- Social Proof Section -->
+  {% include "website/components/social-proof.html" %}
+
+  <!-- How It Works Section -->
+  {% include "website/components/how-it-works.html" %}
+
+  <!-- Services Carousel Section -->
+  {% include "website/components/services-carousel.html" %}
+
+  <!-- Why Zela Section -->
+  {% include "website/components/why-zela.html" %}
+
+  <!-- Provider Call-Out Section -->
+  {% include "website/components/provider-callout.html" %}
+
+  <!-- FAQ Accordion Section -->
+  {% include "website/components/faq-accordion.html" %}
+
+  <!-- Blog Teaser Section -->
+  {% include "website/components/blog-teaser.html" %}
+
+  <!-- App Coming Soon Banner -->
+  {% include "website/components/app-banner.html" %}
+</div>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %} {% endblock %}
