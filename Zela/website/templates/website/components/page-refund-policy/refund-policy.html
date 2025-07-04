@@ -1,0 +1,272 @@
+{% extends "website/layouts/base.html" %} {% load static %} {% block content %}
+<div class="bg-white min-h-screen">
+  <!-- Navigation -->
+  {% include "website/fragments/navbar.html" %}
+
+  <!-- Header Section -->
+  <section class="py-24 bg-[#F5F5F5]">
+    <div class="max-w-screen-xl mx-auto px-8">
+      <div class="text-center">
+        <h1
+          class="text-4xl lg:text-5xl font-bold text-[#011E41] mb-6"
+          style="line-height: 1.1"
+        >
+          Política de Reembolso e Garantia de Satisfação
+        </h1>
+        <p class="text-xl text-[#4A5A70] max-w-2xl mx-auto">
+          Effective date: [DD Month YYYY]
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="py-24">
+    <div class="max-w-screen-xl mx-auto px-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Section 1: 100% Satisfaction Guarantee -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            1 – 100% Satisfaction Guarantee
+          </h2>
+          <div class="bg-[#FDEA00] rounded-3xl p-8">
+            <p class="text-base text-[#011E41] leading-relaxed font-semibold">
+              We want every booking to leave you delighted. If you are not
+              satisfied, we will arrange a free re-clean / re-service or issue a
+              full or partial refund as described below.
+            </p>
+          </div>
+        </div>
+
+        <!-- Section 2: Eligibility -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            2 – Eligibility
+          </h2>
+          <div class="bg-[#F5F5F5] rounded-3xl p-8">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead>
+                  <tr class="border-b border-[#011E41]/20">
+                    <th class="text-lg font-bold text-[#011E41] pb-4 pr-6">
+                      Scenario
+                    </th>
+                    <th class="text-lg font-bold text-[#011E41] pb-4 pr-6">
+                      Solution
+                    </th>
+                    <th class="text-lg font-bold text-[#011E41] pb-4">
+                      Conditions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="text-base text-[#4A5A70]">
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">Provider no-show</td>
+                    <td class="py-4 pr-6">
+                      Full refund or reschedule at same price
+                    </td>
+                    <td class="py-4">Report within 4 h of scheduled start</td>
+                  </tr>
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">
+                      Service below expectations
+                    </td>
+                    <td class="py-4 pr-6">
+                      Free re-clean / re-service; if still unhappy, full refund
+                    </td>
+                    <td class="py-4">
+                      Report within 24 h of completion with photos or details
+                    </td>
+                  </tr>
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">
+                      Late customer cancellation (inside 12 h)
+                    </td>
+                    <td class="py-4 pr-6">70% refund</td>
+                    <td class="py-4">§5 of Terms</td>
+                  </tr>
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">
+                      Late reschedule (inside 12 h)
+                    </td>
+                    <td class="py-4 pr-6">
+                      100% transfer of payment to new slot + 30% fee
+                    </td>
+                    <td class="py-4">§5 of Terms</td>
+                  </tr>
+                  <tr>
+                    <td class="py-4 pr-6 font-semibold">
+                      Placement finder's-fee disputes
+                    </td>
+                    <td class="py-4 pr-6">
+                      1 free replacement within 60 days or 50% refund
+                    </td>
+                    <td class="py-4">
+                      Worker must resign / be dismissed for cause
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: How to Request -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            3 – How to Request
+          </h2>
+          <div class="bg-[#F5F5F5] rounded-3xl p-8">
+            <ul class="space-y-4 text-base text-[#4A5A70]">
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >E-mail
+                  <a
+                    href="mailto:support@zela.co.ao"
+                    class="text-[#011E41] hover:text-[#FDEA00] font-semibold"
+                    >support@zela.co.ao</a
+                  >
+                  or call
+                  <a
+                    href="tel:+244923000123"
+                    class="text-[#011E41] hover:text-[#FDEA00] font-semibold"
+                    >+244 923 000 123</a
+                  >.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Provide booking ID, date, photos (if applicable) and a short
+                  description.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Support will confirm receipt within 2 hours (service window
+                  08:00-20:00) and propose a re-service or refund within 24
+                  hours.</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Section 4: Refund Method & Timing -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            4 – Refund Method & Timing
+          </h2>
+          <div class="bg-[#F5F5F5] rounded-3xl p-8">
+            <ul class="space-y-4 text-base text-[#4A5A70]">
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Refunds are issued to the original payment method (Paystack
+                  or PayPal).</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Processing time: 3-5 business days after approval; bank
+                  posting time may add 5 more.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Wallet-credit refunds available on request (instant use,
+                  non-expiring).</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Section 5: Partial Refunds -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            5 – Partial Refunds
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            If only part of a multi-task booking is unsatisfactory, we may
+            refund the proportional amount or waive the add-on fee.
+          </p>
+        </div>
+
+        <!-- Section 6: Exceptions -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            6 – Exceptions
+          </h2>
+          <div class="bg-[#F5F5F5] rounded-3xl p-8">
+            <ul class="space-y-4 text-base text-[#4A5A70]">
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >We do not refund for dissatisfaction caused by unsafe
+                  conditions, incomplete instructions, or denied entry.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Damage claims follow the separate Service-Damage Policy
+                  (available on request).</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Promo-code value is not cash-refundable but will be re-issued
+                  for future use.</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Section 7: Updates -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            7 – Updates
+          </h2>
+          <div class="bg-[#011E41] text-white rounded-3xl p-8">
+            <p class="text-lg leading-relaxed">
+              We may revise this policy; changes apply to bookings made after
+              the new date. We will announce material updates via e-mail and
+              banner notice.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %} {% endblock %}

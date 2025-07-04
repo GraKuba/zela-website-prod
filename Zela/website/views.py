@@ -21,3 +21,54 @@ def contact(request):
     return render(request, 'website/components/page-contact/contact.html', {
         'title': 'Contact Zela - Get in Touch',
     })
+
+def pricing(request):
+    return render(request, 'website/components/page-pricing/pricing.html', {
+        'title': 'Zela Pricing - Clear, Up-Front Pricing',
+    })
+
+def services(request):
+    return render(request, 'website/components/page-services/services.html', {
+        'title': 'Zela Services - Choose the Perfect Service',
+    })
+
+
+def handler404(request, exception):
+    """Custom 404 error handler"""
+    return render(request, 'website/components/page-404/404.html', status=404)
+
+
+def handler500(request):
+    """Custom 500 error handler"""
+    return render(request, 'website/components/page-500/500.html', status=500)
+
+
+def privacy_policy(request):
+    return render(request, 'website/components/page-privacy-policy/privacy-policy.html', {
+        'title': 'Privacy Policy - Zela',
+    })
+
+
+def terms_of_service(request):
+    return render(request, 'website/components/page-terms-of-service/terms-of-service.html', {
+        'title': 'Terms of Service - Zela',
+    })
+
+
+def cookie_policy(request):
+    return render(request, 'website/components/page-cookie-policy/cookie-policy.html', {
+        'title': 'Cookie Policy - Zela',
+    })
+
+
+def accessibility_statement(request):
+    return render(request, 'website/components/page-accessibility-statement/accessibility-statement.html', {
+        'title': 'Accessibility Statement - Zela',
+    })
+
+
+def refund_policy(request):
+    return render(request, 'website/components/page-refund-policy/refund-policy.html', {
+        'title': 'Refund & Satisfaction-Guarantee Policy - Zela',
+    })
+

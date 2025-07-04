@@ -1,0 +1,29 @@
+{% extends "website/layouts/base.html" %} {% load static %} {% block title%}Zela Pricing - Clear, Up-Front Pricing{% endblock %} {% block content %}
+<div class="min-h-screen bg-white">
+  <!-- Navigation -->
+  {% include "website/fragments/navbar.html" %}
+
+  <!-- Hero Header -->
+  {% include "website/components/page-pricing/hero-header.html" %}
+
+  <!-- Billing Note -->
+  {% include "website/components/page-pricing/billing-note.html" %}
+
+  <!-- Service Pricing Cards -->
+  {% include "website/components/page-pricing/service-pricing-cards.html" %}
+
+  <!-- What's Included -->
+  {% include "website/components/page-pricing/whats-included.html" %}
+
+  <!-- Discounts & Credits -->
+  {% include "website/components/page-pricing/discounts-credits.html" %}
+
+  <!-- Pricing FAQ Snippet -->
+  {% include "website/components/page-pricing/pricing-faq.html" %}
+
+  <!-- Back-to-Booking Banner -->
+  {% include "website/components/page-pricing/booking-banner.html" %}
+</div>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %} {% endblock %}

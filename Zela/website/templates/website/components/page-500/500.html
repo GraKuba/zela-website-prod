@@ -1,0 +1,115 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>500 - Internal Server Error | Zela</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-white min-h-screen flex items-center justify-center">
+    <div class="max-w-[1200px] mx-auto px-8 py-24 text-center">
+      <!-- Logo -->
+      <div class="mb-16">
+        <img
+          src="{% static 'zela-logo.png' %}"
+          alt="Zela"
+          class="h-16 w-auto mx-auto"
+        />
+      </div>
+
+      <!-- Main Content -->
+      <div class="max-w-2xl mx-auto">
+        <!-- Headline -->
+        <h1 class="text-6xl font-bold text-[#011E41] mb-6 leading-tight">
+          Whoops! We spilled our cleaning bucket.
+        </h1>
+
+        <!-- Sub-line -->
+        <p class="text-xl text-[#4A5A70] mb-8 leading-relaxed">
+          Something went wrong on our side. Our engineers are mopping it up
+          right now.
+        </p>
+
+        <!-- Reassurance -->
+        <div class="bg-[#F5F5F5] rounded-3xl p-8 mb-12">
+          <p class="text-lg text-[#4A5A70] leading-relaxed">
+            Most issues clear within a few minutes. Feel free to refresh, or let
+            us handle the mess.
+          </p>
+        </div>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          <button
+            onclick="window.location.reload()"
+            class="bg-[#011E41] text-[#FDEA00] font-semibold px-8 py-3 rounded-full text-lg shadow-lg hover:bg-[#022951] transition-colors inline-flex items-center justify-center gap-2"
+          >
+            Try Again
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
+            </svg>
+          </button>
+          <a
+            href="/"
+            class="bg-[#FDEA00] text-[#011E41] font-semibold px-8 py-3 rounded-full text-lg hover:bg-[#fff000] transition-colors inline-flex items-center justify-center gap-2"
+          >
+            Go to Home
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Support Prompt -->
+        <div class="bg-[#011E41] text-white rounded-3xl p-8 mb-12">
+          <p class="text-lg leading-relaxed">
+            Need that booking sorted ASAP? Call
+            <a
+              href="tel:+244923000123"
+              class="text-[#FDEA00] hover:underline font-semibold"
+              >+244 923 000 123</a
+            >
+            or email
+            <a
+              href="mailto:support@zela.co.ao"
+              class="text-[#FDEA00] hover:underline font-semibold"
+              >support@zela.co.ao</a
+            >—we'll jump on it.
+          </p>
+        </div>
+
+        <!-- Light-touch Footer -->
+        <p class="text-sm text-[#69768B] italic">
+          Zela · Attention and care—both for your home and our code.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

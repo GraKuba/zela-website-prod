@@ -1,0 +1,368 @@
+{% extends "website/layouts/base.html" %} {% load static %} {% block content %}
+<div class="bg-white min-h-screen">
+  <!-- Navigation -->
+  {% include "website/fragments/navbar.html" %}
+
+  <!-- Header Section -->
+  <section class="py-24 bg-[#F5F5F5]">
+    <div class="max-w-screen-xl mx-auto px-8">
+      <div class="text-center">
+        <h1
+          class="text-4xl lg:text-5xl font-bold text-[#011E41] mb-6"
+          style="line-height: 1.1"
+        >
+          Política de Privacidade
+        </h1>
+        <p class="text-xl text-[#4A5A70] max-w-2xl mx-auto">
+          Effective date: [DD Month YYYY]
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="py-24">
+    <div class="max-w-screen-xl mx-auto px-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Section 1: Who We Are -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            1. Who We Are
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            Zela Serviços Domésticos, Lda. ("Zela," "we," "our," "us") is a
+            private company registered in Angola under Nº [xxxx], head-quartered
+            at Rua Major Kanhangulo 45, 3.º Andar, Luanda.
+          </p>
+        </div>
+
+        <!-- Section 2: Scope -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            2. Scope
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            This Policy explains how we collect, use, disclose, and protect
+            personal information when you visit zela.co.ao, create an account,
+            make a booking, apply as a service provider, or interact with our
+            support team.
+          </p>
+        </div>
+
+        <!-- Section 3: What We Collect -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            3. What We Collect
+          </h2>
+          <div class="bg-[#F5F5F5] rounded-3xl p-8 mb-6">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead>
+                  <tr class="border-b border-[#011E41]/20">
+                    <th class="text-lg font-bold text-[#011E41] pb-4 pr-6">
+                      Category
+                    </th>
+                    <th class="text-lg font-bold text-[#011E41] pb-4 pr-6">
+                      Examples
+                    </th>
+                    <th class="text-lg font-bold text-[#011E41] pb-4">
+                      Legal basis*
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="text-base text-[#4A5A70]">
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">Identification</td>
+                    <td class="py-4 pr-6">
+                      Name, e-mail, phone, photo, BI/ID number (providers)
+                    </td>
+                    <td class="py-4">Contract</td>
+                  </tr>
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">Booking data</td>
+                    <td class="py-4 pr-6">
+                      Service type, address, schedule, notes
+                    </td>
+                    <td class="py-4">Contract</td>
+                  </tr>
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">Payment data</td>
+                    <td class="py-4 pr-6">
+                      Encrypted card token, mobile-money ref., last 4 digits
+                    </td>
+                    <td class="py-4">Legitimate interest</td>
+                  </tr>
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">Ratings & reviews</td>
+                    <td class="py-4 pr-6">Stars, comments</td>
+                    <td class="py-4">Legitimate interest</td>
+                  </tr>
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">Device info</td>
+                    <td class="py-4 pr-6">
+                      IP, browser, OS, language, referrer
+                    </td>
+                    <td class="py-4">Legitimate interest</td>
+                  </tr>
+                  <tr>
+                    <td class="py-4 pr-6 font-semibold">Cookies & analytics</td>
+                    <td class="py-4 pr-6">See Cookie Policy</td>
+                    <td class="py-4">Consent</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p class="text-sm text-[#69768B] italic">
+            * Under Lei n.º 22/11 (Lei de Protecção de Dados Pessoais) and,
+            where applicable, GDPR Art. 6.
+          </p>
+        </div>
+
+        <!-- Section 4: How We Use It -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            4. How We Use It
+          </h2>
+          <div class="bg-[#F5F5F5] rounded-3xl p-8">
+            <ul class="space-y-4 text-base text-[#4A5A70]">
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span>Process bookings and send confirmations.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Match you with vetted providers based on skills, distance,
+                  and rating.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span>Facilitate payments via Paystack or PayPal.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Improve the platform through analytics and A/B testing.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Send service or marketing messages (opt-out anytime).</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Fulfil legal obligations, e.g., invoices and anti-fraud
+                  checks.</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Section 5: Sharing & Disclosure -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            5. Sharing & Disclosure
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed mb-6">
+            We never sell data. We share it only with:
+          </p>
+          <div class="bg-[#F5F5F5] rounded-3xl p-8">
+            <ul class="space-y-4 text-base text-[#4A5A70]">
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Service providers you book, limited to job-relevant
+                  details.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Payment processors (Paystack, PayPal) for secure
+                  transactions.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Cloud & analytics vendors (e.g., Cloudflare, Google
+                  Analytics) under SCCs or APD-approved safeguards.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span>Authorities where required by law or court order.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Section 6: International Transfers -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            6. International Transfers
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            Servers may sit outside Angola (e.g., EU). We use Standard
+            Contractual Clauses and ISO-27001-certified providers to keep your
+            data safe.
+          </p>
+        </div>
+
+        <!-- Section 7: Retention -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            7. Retention
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            Bookings: 6 years (tax law). Payments: 10 years (audits). Marketing
+            consents: until you withdraw. Candidate data: 2 years after last
+            activity.
+          </p>
+        </div>
+
+        <!-- Section 8: Your Rights -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            8. Your Rights
+          </h2>
+          <div class="bg-[#F5F5F5] rounded-3xl p-8 mb-6">
+            <ul class="space-y-4 text-base text-[#4A5A70]">
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span>Access, rectify, erase, or port your data.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span>Restrict or object to processing.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span>Withdraw consent for marketing at any time.</span>
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >File a complaint with the Angolan Data Protection Agency
+                  (APD).</span
+                >
+              </li>
+            </ul>
+          </div>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            Request these via
+            <a
+              href="mailto:dpo@zela.co.ao"
+              class="text-[#011E41] hover:text-[#FDEA00] font-semibold"
+              >DPO Email</a
+            >; we reply within 30 days.
+          </p>
+        </div>
+
+        <!-- Section 9: Security -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            9. Security
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            TLS 1.3 encryption, role-based access, regular penetration tests,
+            and real-time anomaly detection.
+          </p>
+        </div>
+
+        <!-- Section 10: Children -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            10. Children
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            Zela is not intended for users under 16. We delete any such data on
+            discovery.
+          </p>
+        </div>
+
+        <!-- Section 11: Changes -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            11. Changes
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            We may update this Policy; we'll post the new version and, for
+            material changes, e-mail registered users 7 days in advance.
+          </p>
+        </div>
+
+        <!-- Section 12: Contact -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            12. Contact
+          </h2>
+          <div class="bg-[#011E41] text-white rounded-3xl p-8">
+            <p class="text-lg leading-relaxed mb-4">
+              <strong>Data Protection Officer:</strong> [Name]
+            </p>
+            <p class="text-lg leading-relaxed">
+              <strong>Email:</strong>
+              <a
+                href="mailto:dpo@zela.co.ao"
+                class="text-[#FDEA00] hover:underline"
+                >dpo@zela.co.ao</a
+              >
+            </p>
+            <p class="text-lg leading-relaxed">
+              <strong>Tel.:</strong>
+              <a href="tel:+244923000123" class="text-[#FDEA00] hover:underline"
+                >+244 923 000 123</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %} {% endblock %}

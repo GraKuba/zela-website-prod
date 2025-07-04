@@ -1,0 +1,28 @@
+{% extends "website/layouts/base.html" %} {% load static %} {% block title%}Zela
+Services - Choose the Perfect Service{% endblock %} {% block content %}
+<div class="min-h-screen bg-white mb-24">
+  <!-- Navigation -->
+  {% include "website/fragments/navbar.html" %}
+
+  <!-- Hero Header -->
+  {% include "website/components/page-services/hero-header.html" %}
+
+  <!-- Instant-Book Banner -->
+  {% include "website/components/page-services/instant-book-banner.html" %}
+
+  <!-- Service Categories -->
+  {% include "website/components/page-services/service-categories.html" %}
+
+  <!-- Compare-at-a-Glance Table -->
+  {% include "website/components/page-services/compare-table.html" %}
+
+  <!-- FAQ Accordion -->
+  {% include "website/components/faq-accordion.html" %}
+
+  <!-- App Banner -->
+  {% include "website/components/app-banner.html" %}
+
+</div>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %} {% endblock %}

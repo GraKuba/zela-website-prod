@@ -1,0 +1,241 @@
+{% extends "website/layouts/base.html" %} {% load static %} {% block content %}
+<div class="bg-white min-h-screen">
+  <!-- Navigation -->
+  {% include "website/fragments/navbar.html" %}
+
+  <!-- Header Section -->
+  <section class="py-24 bg-[#F5F5F5]">
+    <div class="max-w-screen-xl mx-auto px-8">
+      <div class="text-center">
+        <h1
+          class="text-4xl lg:text-5xl font-bold text-[#011E41] mb-6"
+          style="line-height: 1.1"
+        >
+          Política de Cookies
+        </h1>
+        <p class="text-xl text-[#4A5A70] max-w-2xl mx-auto">
+          Effective date: [DD Month YYYY]
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="py-24">
+    <div class="max-w-screen-xl mx-auto px-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Section 1: What Are Cookies? -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            1. What Are Cookies?
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            Small text files stored on your device to remember preferences or
+            track visits.
+          </p>
+        </div>
+
+        <!-- Section 2: Why We Use Them -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            2. Why We Use Them
+          </h2>
+          <div class="bg-[#F5F5F5] rounded-3xl p-8">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead>
+                  <tr class="border-b border-[#011E41]/20">
+                    <th class="text-lg font-bold text-[#011E41] pb-4 pr-6">
+                      Type
+                    </th>
+                    <th class="text-lg font-bold text-[#011E41] pb-4 pr-6">
+                      Purpose
+                    </th>
+                    <th class="text-lg font-bold text-[#011E41] pb-4">
+                      Example
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="text-base text-[#4A5A70]">
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">Strictly necessary</td>
+                    <td class="py-4 pr-6">
+                      Enable core functions like login and booking cart
+                    </td>
+                    <td class="py-4">sessionid</td>
+                  </tr>
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">Performance</td>
+                    <td class="py-4 pr-6">Measure site traffic and errors</td>
+                    <td class="py-4">ga_*</td>
+                  </tr>
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">Functionality</td>
+                    <td class="py-4 pr-6">Save language or locale</td>
+                    <td class="py-4">zela_lang</td>
+                  </tr>
+                  <tr>
+                    <td class="py-4 pr-6 font-semibold">Marketing</td>
+                    <td class="py-4 pr-6">
+                      Show relevant promos on Facebook/Instagram
+                    </td>
+                    <td class="py-4">_fbp</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Cookie List -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            3. Cookie List
+          </h2>
+          <div class="bg-[#F5F5F5] rounded-3xl p-8">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead>
+                  <tr class="border-b border-[#011E41]/20">
+                    <th class="text-lg font-bold text-[#011E41] pb-4 pr-6">
+                      Name
+                    </th>
+                    <th class="text-lg font-bold text-[#011E41] pb-4 pr-6">
+                      Provider
+                    </th>
+                    <th class="text-lg font-bold text-[#011E41] pb-4 pr-6">
+                      Expiry
+                    </th>
+                    <th class="text-lg font-bold text-[#011E41] pb-4">
+                      Category
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="text-base text-[#4A5A70]">
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">sessionid</td>
+                    <td class="py-4 pr-6">Zela</td>
+                    <td class="py-4 pr-6">2 h</td>
+                    <td class="py-4">Necessary</td>
+                  </tr>
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">csrf_token</td>
+                    <td class="py-4 pr-6">Zela</td>
+                    <td class="py-4 pr-6">2 h</td>
+                    <td class="py-4">Necessary</td>
+                  </tr>
+                  <tr class="border-b border-[#011E41]/10">
+                    <td class="py-4 pr-6 font-semibold">ga, ga_*</td>
+                    <td class="py-4 pr-6">Google Analytics</td>
+                    <td class="py-4 pr-6">13 m</td>
+                    <td class="py-4">Performance</td>
+                  </tr>
+                  <tr>
+                    <td class="py-4 pr-6 font-semibold">_fbp</td>
+                    <td class="py-4 pr-6">Meta</td>
+                    <td class="py-4 pr-6">90 d</td>
+                    <td class="py-4">Marketing</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Managing Cookies -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            4. Managing Cookies
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed mb-6">You can:</p>
+          <div class="bg-[#F5F5F5] rounded-3xl p-8 mb-6">
+            <ul class="space-y-4 text-base text-[#4A5A70]">
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Adjust browser settings to refuse or delete cookies.</span
+                >
+              </li>
+              <li class="flex items-start">
+                <span class="text-[#FDEA00] mr-3 mt-1">•</span>
+                <span
+                  >Use our on-site Cookie Settings panel (bottom-left icon) to
+                  toggle non-essential cookies.</span
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="bg-[#FDEA00] rounded-3xl p-8">
+            <p class="text-base text-[#011E41] leading-relaxed font-semibold">
+              ⚠️ Rejecting cookies may limit certain features (e.g., remembering
+              your language).
+            </p>
+          </div>
+        </div>
+
+        <!-- Section 5: Do Not Track -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            5. Do Not Track
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            Our site currently does not respond to "DNT" signals; please use the
+            Cookie Settings panel.
+          </p>
+        </div>
+
+        <!-- Section 6: Updates -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            6. Updates
+          </h2>
+          <p class="text-base text-[#4A5A70] leading-relaxed">
+            We may revise this list as we add or remove tools; the "Effective
+            date" will change accordingly.
+          </p>
+        </div>
+
+        <!-- Section 7: Contact -->
+        <div class="mb-16">
+          <h2
+            class="text-3xl font-bold text-[#011E41] mb-6"
+            style="line-height: 1.1"
+          >
+            7. Contact
+          </h2>
+          <div class="bg-[#011E41] text-white rounded-3xl p-8">
+            <p class="text-lg leading-relaxed">
+              Questions?
+              <a
+                href="mailto:privacy@zela.co.ao"
+                class="text-[#FDEA00] hover:underline font-semibold"
+                >privacy@zela.co.ao</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %} {% endblock %}

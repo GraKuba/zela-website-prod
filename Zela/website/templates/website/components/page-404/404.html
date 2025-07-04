@@ -1,0 +1,117 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Page Not Found | Zela</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-white min-h-screen flex items-center justify-center">
+    <div class="max-w-[1200px] mx-auto px-8 py-24 text-center">
+      <!-- Logo -->
+      <div class="mb-16">
+        <img
+          src="{% static 'zela-logo.png' %}"
+          alt="Zela"
+          class="h-16 w-auto mx-auto"
+        />
+      </div>
+
+      <!-- Main Content -->
+      <div class="max-w-2xl mx-auto">
+        <!-- Headline -->
+        <h1 class="text-6xl font-bold text-[#011E41] mb-6 leading-tight">
+          Uh-oh, we swept that page away.
+        </h1>
+
+        <!-- Sub-line -->
+        <p class="text-xl text-[#4A5A70] mb-12 leading-relaxed">
+          The address you entered doesn't exist or has just been tidied up.
+        </p>
+
+        <!-- Helpful Text -->
+        <div
+          class="bg-[#F5F5F5] rounded-3xl p-8 mb-12 text-left max-w-lg mx-auto"
+        >
+          <ul class="text-base text-[#4A5A70] space-y-3 leading-relaxed">
+            <li>• Double-check the URL for typos.</li>
+            <li>• Use the search bar above to find a service.</li>
+            <li>• Or start fresh from our homepage.</li>
+          </ul>
+        </div>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+          <a
+            href="/"
+            class="bg-[#011E41] text-[#FDEA00] font-semibold px-8 py-3 rounded-full text-lg shadow-lg hover:bg-[#022951] transition-colors inline-flex items-center justify-center gap-2"
+          >
+            Back to Home
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              />
+            </svg>
+          </a>
+          <a
+            href="/book"
+            class="bg-[#FDEA00] text-[#011E41] font-semibold px-8 py-3 rounded-full text-lg hover:bg-[#fff000] transition-colors inline-flex items-center justify-center gap-2"
+          >
+            Book a Service
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Contact Prompt -->
+        <div class="bg-[#011E41] text-white rounded-3xl p-8 mb-12">
+          <p class="text-lg leading-relaxed">
+            Still lost? Email
+            <a
+              href="mailto:support@zela.co.ao"
+              class="text-[#FDEA00] hover:underline font-semibold"
+              >support@zela.co.ao</a
+            >
+            or call
+            <a
+              href="tel:+244923000123"
+              class="text-[#FDEA00] hover:underline font-semibold"
+              >+244 923 000 123</a
+            >.
+          </p>
+        </div>
+
+        <!-- Light-touch Humour Footer -->
+        <p class="text-sm text-[#69768B] italic">
+          Even spotless homes misplace things—thanks for understanding.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
