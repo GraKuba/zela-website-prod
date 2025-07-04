@@ -32,6 +32,15 @@ def services(request):
         'title': 'Zela Services - Choose the Perfect Service',
     })
 
+def register(request):
+    return render(request, 'website/components/auth-register/register.html', {
+        'title': 'Create Your Free Zela Account - Sign Up',
+    })
+
+def sign_in(request):
+    return render(request, 'website/components/auth-login/sign-in.html', {
+        'title': 'Welcome Back - Sign In to Zela',
+    })
 
 def handler404(request, exception):
     """Custom 404 error handler"""

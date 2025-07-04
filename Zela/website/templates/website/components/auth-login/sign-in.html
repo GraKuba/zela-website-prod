@@ -1,0 +1,374 @@
+{% extends 'website/layouts/base.html' %} {% load static %} {% block title %}{{
+title }}{% endblock %} {% block content %}
+<!-- Include Navbar -->
+{% include 'website/fragments/navbar.html' %}
+
+<div
+  class="min-h-screen flex items-center justify-center px-4 py-12"
+  style="background-color: #f5f5f5"
+  x-data="{
+    formData: {
+      email: '',
+      password: '',
+      rememberMe: false
+    },
+    showPasswordReset: false,
+    resetEmail: '',
+    isLoading: false,
+    error: '',
+    lockoutTime: 0,
+    attempts: 0,
+    maxAttempts: 5
+  }"
+>
+  <div class="w-full max-w-md mx-auto">
+    <!-- Sign In Form -->
+    <div
+      class="bg-white rounded-3xl shadow-lg overflow-hidden"
+      x-show="!showPasswordReset"
+      x-transition
+    >
+      <!-- Header -->
+      <div class="px-8 py-12 text-center">
+        <h1 class="text-4xl font-bold mb-4" style="color: #011e41">
+          Welcome Back
+        </h1>
+        <p class="text-lg mb-8" style="color: #4a5a70">
+          Sign in to manage bookings or apply as a provider.
+        </p>
+      </div>
+
+      <!-- Sign In Form -->
+      <div class="px-8 pb-8">
+        <form @submit.prevent="handleSignIn" class="space-y-6">
+          <!-- Email or Mobile -->
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-semibold mb-2"
+              style="color: #011e41"
+            >
+              Email or Mobile *
+            </label>
+            <input
+              type="text"
+              id="email"
+              x-model="formData.email"
+              placeholder="Enter your email or mobile number"
+              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
+              :class="{ 'border-red-500': error }"
+              required
+            />
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label
+              for="password"
+              class="block text-sm font-semibold mb-2"
+              style="color: #011e41"
+            >
+              Password *
+            </label>
+            <input
+              type="password"
+              id="password"
+              x-model="formData.password"
+              placeholder="Enter your password"
+              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
+              :class="{ 'border-red-500': error }"
+              required
+            />
+
+            <!-- Forgot Password Link -->
+            <div class="text-right mt-2">
+              <button
+                type="button"
+                @click="showPasswordReset = true"
+                class="text-sm font-semibold underline"
+                style="color: #011e41"
+              >
+                Forgot password?
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember Me Checkbox -->
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              x-model="formData.rememberMe"
+              class="mr-3 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            />
+            <label for="rememberMe" class="text-sm" style="color: #4a5a70">
+              Keep me signed in on this device
+            </label>
+          </div>
+
+          <!-- Error Message -->
+          <div
+            x-show="error"
+            class="p-3 rounded-xl bg-red-50 border border-red-200"
+          >
+            <p class="text-sm text-red-600" x-text="error"></p>
+          </div>
+
+          <!-- Lockout Message -->
+          <div
+            x-show="lockoutTime > 0"
+            class="p-3 rounded-xl bg-yellow-50 border border-yellow-200"
+          >
+            <p class="text-sm text-yellow-700">
+              Too many attempts. Please wait
+              <span x-text="lockoutTime"></span> minutes or reset your password.
+            </p>
+          </div>
+
+          <!-- Sign In Button -->
+          <button
+            type="submit"
+            class="w-full py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            style="background-color: #011e41; color: #fdea00"
+            :disabled="isLoading || lockoutTime > 0"
+          >
+            <span x-show="!isLoading">Sign In</span>
+            <span x-show="isLoading">Signing In...</span>
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="relative my-8">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-200"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-4 bg-white" style="color: #69768b"
+              >or continue with</span
+            >
+          </div>
+        </div>
+
+        <!-- Social Sign In Buttons -->
+        <div class="space-y-3">
+          <!-- Google Sign In -->
+          <button
+            type="button"
+            @click="signInWithGoogle"
+            class="w-full flex items-center justify-center px-4 py-3 border-2 border-gray-200 rounded-xl font-semibold transition-all duration-200 hover:border-gray-300 hover:bg-gray-50"
+            style="color: #011e41"
+            aria-label="Sign in with Google"
+          >
+            <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24">
+              <path
+                fill="#4285f4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#34a853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#fbbc05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="#ea4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
+            </svg>
+            Sign in with Google
+          </button>
+
+          <!-- Facebook Sign In (Greyed Out) -->
+          <button
+            type="button"
+            class="w-full flex items-center justify-center px-4 py-3 border-2 border-gray-200 rounded-xl font-semibold transition-all duration-200 opacity-50 cursor-not-allowed"
+            style="color: #69768b"
+            disabled
+            aria-label="Sign in with Facebook - Coming Soon"
+          >
+            <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="#1877f2">
+              <path
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+              />
+            </svg>
+            Facebook
+            <span class="ml-2 text-xs bg-gray-100 px-2 py-1 rounded-full"
+              >Coming Soon</span
+            >
+          </button>
+        </div>
+
+        <!-- Register Link -->
+        <div class="mt-8 text-center">
+          <p class="text-sm" style="color: #69768b">
+            New to Zela?
+            <a
+              href="{% url 'register' %}"
+              class="font-semibold underline"
+              style="color: #011e41"
+            >
+              Create an account
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Password Reset Modal -->
+    <div
+      class="bg-white rounded-3xl shadow-lg overflow-hidden"
+      x-show="showPasswordReset"
+      x-transition
+    >
+      <div class="px-8 py-12 text-center">
+        <h2 class="text-3xl font-bold mb-4" style="color: #011e41">
+          Reset Password
+        </h2>
+        <p class="text-lg mb-8" style="color: #4a5a70">
+          Enter your registered e-mail and we'll send a reset link.
+        </p>
+
+        <!-- Reset Email Form -->
+        <form @submit.prevent="sendPasswordReset" class="space-y-6">
+          <div>
+            <label
+              for="resetEmail"
+              class="block text-sm font-semibold mb-2"
+              style="color: #011e41"
+            >
+              Email Address *
+            </label>
+            <input
+              type="email"
+              id="resetEmail"
+              x-model="resetEmail"
+              placeholder="Enter your registered email"
+              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
+              required
+            />
+          </div>
+
+          <!-- Send Reset Link Button -->
+          <button
+            type="submit"
+            class="w-full py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            style="background-color: #011e41; color: #fdea00"
+            :disabled="isLoading"
+          >
+            <span x-show="!isLoading">Send Reset Link</span>
+            <span x-show="isLoading">Sending...</span>
+          </button>
+
+          <!-- Back to Sign In -->
+          <button
+            type="button"
+            @click="showPasswordReset = false"
+            class="w-full py-4 rounded-full font-semibold text-lg border-2 transition-all duration-200"
+            style="border-color: #011e41; color: #011e41"
+          >
+            Back to Sign In
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("alpine:init", () => {
+    Alpine.data("signInForm", () => ({
+      handleSignIn() {
+        // Reset error state
+        this.error = "";
+        this.isLoading = true;
+
+        // Simulate API call
+        setTimeout(() => {
+          this.isLoading = false;
+
+          // Mock authentication logic
+          if (
+            this.formData.email === "demo@zela.com" &&
+            this.formData.password === "demo123"
+          ) {
+            // Success - redirect to dashboard
+            window.location.href = "/";
+          } else {
+            // Failed attempt
+            this.attempts++;
+
+            if (this.attempts >= this.maxAttempts) {
+              // Lock out user
+              this.lockoutTime = 5;
+              this.error = "";
+              this.startLockoutTimer();
+            } else {
+              this.error =
+                "Incorrect credentials. Please try again or reset your password.";
+            }
+          }
+        }, 1000);
+      },
+
+      startLockoutTimer() {
+        const timer = setInterval(() => {
+          this.lockoutTime--;
+          if (this.lockoutTime === 0) {
+            clearInterval(timer);
+            this.attempts = 0; // Reset attempts after lockout
+          }
+        }, 60000); // Decrease every minute
+      },
+
+      signInWithGoogle() {
+        // Mock Google sign-in
+        alert("Google sign-in integration coming soon!");
+      },
+
+      sendPasswordReset() {
+        if (!this.resetEmail) {
+          alert("Please enter your email address.");
+          return;
+        }
+
+        this.isLoading = true;
+
+        // Mock password reset
+        setTimeout(() => {
+          this.isLoading = false;
+          alert("Check your inbox for reset instructions.");
+          this.showPasswordReset = false;
+          this.resetEmail = "";
+        }, 1000);
+      },
+    }));
+  });
+</script>
+
+<!-- reCAPTCHA Notice -->
+<div class="fixed bottom-4 right-4 max-w-xs">
+  <div class="bg-white rounded-lg shadow-lg p-4 border border-gray-200">
+    <p class="text-xs" style="color: #69768b">
+      This site is protected by reCAPTCHA; Google's
+      <a
+        href="https://policies.google.com/privacy"
+        target="_blank"
+        class="underline"
+        >Privacy Policy</a
+      >
+      &
+      <a
+        href="https://policies.google.com/terms"
+        target="_blank"
+        class="underline"
+        >Terms</a
+      >
+      apply.
+    </p>
+  </div>
+</div>
+
+<!-- Include Footer -->
+{% include 'website/components/global-footer.html' %} {% endblock %}

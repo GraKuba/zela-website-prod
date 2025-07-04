@@ -1,0 +1,636 @@
+{% extends 'website/layouts/base.html' %} {% load static %} {% block title %}{{
+title }}{% endblock %} {% block content %}
+<!-- Include Navbar -->
+{% include 'website/fragments/navbar.html' %}
+
+<div
+  class="min-h-screen flex items-center justify-center px-4 py-12"
+  style="background-color: #f5f5f5"
+  x-data="{
+    currentStep: 1,
+    formData: {
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      phone: '',
+      addressLine1: '',
+      area: '',
+      referralCode: '',
+      marketingOptIn: false,
+      termsConsent: false
+    },
+    passwordStrength: 'weak',
+    passwordChecks: {
+      minLength: false,
+      hasUpper: false,
+      hasLower: false,
+      hasNumber: false,
+      hasSpecial: false
+    },
+    showVerification: false,
+    otpCode: '',
+    resendCountdown: 60,
+    errors: {}
+  }"
+>
+  <div class="w-full max-w-md mx-auto">
+    <!-- Registration Form -->
+    <div
+      class="bg-white rounded-3xl shadow-lg overflow-hidden"
+      x-show="!showVerification"
+      x-transition
+    >
+      <!-- Header -->
+      <div class="px-8 py-12 text-center">
+        <h1 class="text-4xl font-bold mb-4" style="color: #011e41">
+          Create Your Free Zela Account
+        </h1>
+        <p class="text-lg mb-8" style="color: #4a5a70">
+          Book services faster, track your bookings and earn referral credits.
+        </p>
+
+        <!-- Step Badge -->
+        <div
+          class="inline-block px-4 py-2 rounded-full text-sm font-medium mb-8"
+          style="background-color: #fdea00; color: #011e41"
+        >
+          Step <span x-text="currentStep"></span> of 2 –
+          <span
+            x-text="currentStep === 1 ? 'Personal Details' : 'Address Details'"
+          ></span>
+        </div>
+      </div>
+
+      <!-- Step 1: Personal Details -->
+      <div class="px-8 pb-8" x-show="currentStep === 1">
+        <form @submit.prevent="currentStep = 2" class="space-y-6">
+          <!-- Full Name -->
+          <div>
+            <label
+              for="fullName"
+              class="block text-sm font-semibold mb-2"
+              style="color: #011e41"
+            >
+              Full Name *
+            </label>
+            <input
+              type="text"
+              id="fullName"
+              x-model="formData.fullName"
+              placeholder="Enter your full name"
+              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
+              required
+            />
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-semibold mb-2"
+              style="color: #011e41"
+            >
+              Email *
+            </label>
+            <input
+              type="email"
+              id="email"
+              x-model="formData.email"
+              placeholder="Enter your email address"
+              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
+              required
+            />
+          </div>
+
+          <!-- Phone -->
+          <div>
+            <label
+              for="phone"
+              class="block text-sm font-semibold mb-2"
+              style="color: #011e41"
+            >
+              Phone *
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              x-model="formData.phone"
+              placeholder="Enter your phone number"
+              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
+              required
+            />
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label
+              for="password"
+              class="block text-sm font-semibold mb-2"
+              style="color: #011e41"
+            >
+              Password *
+            </label>
+            <input
+              type="password"
+              id="password"
+              x-model="formData.password"
+              placeholder="Create a secure password"
+              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
+              @input="updatePasswordStrength"
+              required
+            />
+
+            <!-- Password Requirements Checklist -->
+            <div class="mt-3 space-y-2">
+              <div class="flex items-center space-x-2">
+                <div
+                  class="w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200"
+                  :class="{
+                    'bg-green-500 text-white': passwordChecks.minLength,
+                    'bg-gray-300 text-gray-600': !passwordChecks.minLength
+                  }"
+                >
+                  <span x-show="passwordChecks.minLength">✓</span>
+                  <span x-show="!passwordChecks.minLength">✗</span>
+                </div>
+                <span
+                  class="text-xs transition-colors duration-200"
+                  :class="{
+                    'text-green-600': passwordChecks.minLength,
+                    'text-gray-500': !passwordChecks.minLength
+                  }"
+                >
+                  At least 8 characters
+                </span>
+              </div>
+
+              <div class="flex items-center space-x-2">
+                <div
+                  class="w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200"
+                  :class="{
+                    'bg-green-500 text-white': passwordChecks.hasUpper,
+                    'bg-gray-300 text-gray-600': !passwordChecks.hasUpper
+                  }"
+                >
+                  <span x-show="passwordChecks.hasUpper">✓</span>
+                  <span x-show="!passwordChecks.hasUpper">✗</span>
+                </div>
+                <span
+                  class="text-xs transition-colors duration-200"
+                  :class="{
+                    'text-green-600': passwordChecks.hasUpper,
+                    'text-gray-500': !passwordChecks.hasUpper
+                  }"
+                >
+                  One uppercase letter (A-Z)
+                </span>
+              </div>
+
+              <div class="flex items-center space-x-2">
+                <div
+                  class="w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200"
+                  :class="{
+                    'bg-green-500 text-white': passwordChecks.hasLower,
+                    'bg-gray-300 text-gray-600': !passwordChecks.hasLower
+                  }"
+                >
+                  <span x-show="passwordChecks.hasLower">✓</span>
+                  <span x-show="!passwordChecks.hasLower">✗</span>
+                </div>
+                <span
+                  class="text-xs transition-colors duration-200"
+                  :class="{
+                    'text-green-600': passwordChecks.hasLower,
+                    'text-gray-500': !passwordChecks.hasLower
+                  }"
+                >
+                  One lowercase letter (a-z)
+                </span>
+              </div>
+
+              <div class="flex items-center space-x-2">
+                <div
+                  class="w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200"
+                  :class="{
+                    'bg-green-500 text-white': passwordChecks.hasNumber,
+                    'bg-gray-300 text-gray-600': !passwordChecks.hasNumber
+                  }"
+                >
+                  <span x-show="passwordChecks.hasNumber">✓</span>
+                  <span x-show="!passwordChecks.hasNumber">✗</span>
+                </div>
+                <span
+                  class="text-xs transition-colors duration-200"
+                  :class="{
+                    'text-green-600': passwordChecks.hasNumber,
+                    'text-gray-500': !passwordChecks.hasNumber
+                  }"
+                >
+                  One number (0-9)
+                </span>
+              </div>
+
+              <div class="flex items-center space-x-2">
+                <div
+                  class="w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200"
+                  :class="{
+                    'bg-green-500 text-white': passwordChecks.hasSpecial,
+                    'bg-gray-300 text-gray-600': !passwordChecks.hasSpecial
+                  }"
+                >
+                  <span x-show="passwordChecks.hasSpecial">✓</span>
+                  <span x-show="!passwordChecks.hasSpecial">✗</span>
+                </div>
+                <span
+                  class="text-xs transition-colors duration-200"
+                  :class="{
+                    'text-green-600': passwordChecks.hasSpecial,
+                    'text-gray-500': !passwordChecks.hasSpecial
+                  }"
+                >
+                  One special character (!@#$%^&*)
+                </span>
+              </div>
+            </div>
+
+            <!-- Password Strength Meter -->
+            <div class="mt-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium" style="color: #011e41"
+                  >Password Strength:</span
+                >
+                <span
+                  class="text-sm font-semibold capitalize"
+                  :class="{
+                    'text-red-600': passwordStrength === 'weak',
+                    'text-yellow-600': passwordStrength === 'fair',
+                    'text-blue-600': passwordStrength === 'strong',
+                    'text-green-600': passwordStrength === 'excellent'
+                  }"
+                  x-text="passwordStrength"
+                ></span>
+              </div>
+              <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div
+                  class="h-full transition-all duration-300"
+                  :class="{
+                    'w-1/4 bg-red-500': passwordStrength === 'weak',
+                    'w-2/4 bg-yellow-500': passwordStrength === 'fair',
+                    'w-3/4 bg-blue-500': passwordStrength === 'strong',
+                    'w-full bg-green-500': passwordStrength === 'excellent'
+                  }"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div>
+            <label
+              for="confirmPassword"
+              class="block text-sm font-semibold mb-2"
+              style="color: #011e41"
+            >
+              Confirm Password *
+            </label>
+            <input
+              type="password"
+              id="confirmPassword"
+              x-model="formData.confirmPassword"
+              placeholder="Confirm your password"
+              class="w-full px-4 py-3 rounded-xl border-2 transition-colors"
+              :class="{
+                'border-green-500': formData.confirmPassword && formData.password === formData.confirmPassword,
+                'border-red-500': formData.confirmPassword && formData.password !== formData.confirmPassword,
+                'border-gray-200 focus:border-blue-500': !formData.confirmPassword
+              }"
+              required
+            />
+            <!-- Password Match Indicator -->
+            <div
+              x-show="formData.confirmPassword"
+              class="mt-2 flex items-center space-x-2"
+            >
+              <div
+                class="w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-200"
+                :class="{
+                  'bg-green-500 text-white': formData.password === formData.confirmPassword,
+                  'bg-red-500 text-white': formData.password !== formData.confirmPassword
+                }"
+              >
+                <span x-show="formData.password === formData.confirmPassword"
+                  >✓</span
+                >
+                <span x-show="formData.password !== formData.confirmPassword"
+                  >✗</span
+                >
+              </div>
+              <span
+                class="text-xs transition-colors duration-200"
+                :class="{
+                  'text-green-600': formData.password === formData.confirmPassword,
+                  'text-red-600': formData.password !== formData.confirmPassword
+                }"
+                x-text="formData.password === formData.confirmPassword ? 'Passwords match' : 'Passwords do not match'"
+              ></span>
+            </div>
+          </div>
+
+          <!-- Marketing Opt-in -->
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              id="marketingOptIn"
+              x-model="formData.marketingOptIn"
+              class="mr-3 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            />
+            <label for="marketingOptIn" class="text-sm" style="color: #4a5a70">
+              Send me tips & promo codes (optional)
+            </label>
+          </div>
+
+          <!-- Continue Button -->
+          <button
+            type="submit"
+            class="w-full py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            style="background-color: #011e41; color: #fdea00"
+          >
+            Continue
+          </button>
+        </form>
+      </div>
+
+      <!-- Step 2: Address Details -->
+      <div class="px-8 pb-8" x-show="currentStep === 2">
+        <form @submit.prevent="submitRegistration" class="space-y-6">
+          <!-- Address Line 1 -->
+          <div>
+            <label
+              for="addressLine1"
+              class="block text-sm font-semibold mb-2"
+              style="color: #011e41"
+            >
+              Address Line 1 *
+            </label>
+            <input
+              type="text"
+              id="addressLine1"
+              x-model="formData.addressLine1"
+              placeholder="Enter your street address"
+              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
+              required
+            />
+          </div>
+
+          <!-- Area / Neighbourhood -->
+          <div>
+            <label
+              for="area"
+              class="block text-sm font-semibold mb-2"
+              style="color: #011e41"
+            >
+              Area / Neighbourhood *
+            </label>
+            <select
+              id="area"
+              x-model="formData.area"
+              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
+              required
+            >
+              <option value="">Select your area</option>
+              <option value="city-centre">City Centre</option>
+              <option value="suburbs">Suburbs</option>
+              <option value="waterfront">Waterfront</option>
+              <option value="northern-suburbs">Northern Suburbs</option>
+              <option value="southern-suburbs">Southern Suburbs</option>
+            </select>
+          </div>
+
+          <!-- Referral Code -->
+          <div>
+            <label
+              for="referralCode"
+              class="block text-sm font-semibold mb-2"
+              style="color: #011e41"
+            >
+              Referral Code (optional)
+            </label>
+            <input
+              type="text"
+              id="referralCode"
+              x-model="formData.referralCode"
+              placeholder="Enter referral code if you have one"
+              class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
+            />
+          </div>
+
+          <!-- Terms Consent -->
+          <div class="flex items-start">
+            <input
+              type="checkbox"
+              id="termsConsent"
+              x-model="formData.termsConsent"
+              class="mr-3 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-1"
+              required
+            />
+            <label for="termsConsent" class="text-sm" style="color: #4a5a70">
+              By creating an account you agree to our
+              <a
+                href="{% url 'terms_of_service' %}"
+                class="underline"
+                style="color: #011e41"
+                >Terms of Service</a
+              >
+              and
+              <a
+                href="{% url 'privacy_policy' %}"
+                class="underline"
+                style="color: #011e41"
+                >Privacy Policy</a
+              >.
+            </label>
+          </div>
+
+          <!-- Back & Continue Buttons -->
+          <div class="flex gap-4">
+            <button
+              type="button"
+              @click="currentStep = 1"
+              class="flex-1 py-4 rounded-full font-semibold text-lg border-2 transition-all duration-200"
+              style="border-color: #011e41; color: #011e41"
+            >
+              Back
+            </button>
+            <button
+              type="submit"
+              class="flex-1 py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              style="background-color: #011e41; color: #fdea00"
+            >
+              Create Account
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Sign In Link -->
+      <div class="px-8 pb-8 text-center">
+        <p class="text-sm" style="color: #69768b">
+          Already have an account?
+          <a
+            href="{% url 'sign_in' %}"
+            class="font-semibold underline"
+            style="color: #011e41"
+          >
+            Sign in
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Verification Modal -->
+    <div
+      class="bg-white rounded-3xl shadow-lg overflow-hidden"
+      x-show="showVerification"
+      x-transition
+    >
+      <div class="px-8 py-12 text-center">
+        <h2 class="text-3xl font-bold mb-4" style="color: #011e41">
+          Verify Your Email
+        </h2>
+        <p class="text-lg mb-8" style="color: #4a5a70">
+          We've sent a 6-digit code to <span x-text="formData.email"></span>.
+          Enter it below to activate your account.
+        </p>
+
+        <!-- OTP Input -->
+        <div class="mb-8">
+          <input
+            type="text"
+            x-model="otpCode"
+            placeholder="— — — — — —"
+            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors text-center text-2xl font-mono tracking-widest"
+            maxlength="6"
+          />
+        </div>
+
+        <!-- Resend Link -->
+        <div class="mb-8">
+          <p class="text-sm" style="color: #69768b">
+            Didn't get the code?
+            <button
+              @click="resendCode"
+              class="font-semibold underline"
+              style="color: #011e41"
+              x-show="resendCountdown === 0"
+            >
+              Resend
+            </button>
+            <span x-show="resendCountdown > 0" style="color: #69768b">
+              Resend in <span x-text="resendCountdown"></span>s
+            </span>
+          </p>
+        </div>
+
+        <!-- Verify Button -->
+        <button
+          @click="verifyCode"
+          class="w-full py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          style="background-color: #011e41; color: #fdea00"
+        >
+          Verify Account
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("alpine:init", () => {
+    Alpine.data("registerForm", () => ({
+      updatePasswordStrength() {
+        const password = this.formData.password;
+
+        // Update individual password checks
+        this.passwordChecks.minLength = password.length >= 8;
+        this.passwordChecks.hasUpper = /[A-Z]/.test(password);
+        this.passwordChecks.hasLower = /[a-z]/.test(password);
+        this.passwordChecks.hasNumber = /[0-9]/.test(password);
+        this.passwordChecks.hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(
+          password
+        );
+
+        // Calculate overall strength based on requirements met
+        const checksCount = Object.values(this.passwordChecks).filter(
+          (check) => check
+        ).length;
+
+        if (password.length === 0) {
+          this.passwordStrength = "weak";
+        } else if (checksCount === 5) {
+          this.passwordStrength = "excellent";
+        } else if (checksCount >= 4) {
+          this.passwordStrength = "strong";
+        } else if (checksCount >= 3) {
+          this.passwordStrength = "fair";
+        } else {
+          this.passwordStrength = "weak";
+        }
+      },
+
+      submitRegistration() {
+        // Check if password meets all requirements
+        const allRequirementsMet = Object.values(this.passwordChecks).every(
+          (check) => check
+        );
+
+        if (!allRequirementsMet) {
+          alert("Please ensure your password meets all requirements");
+          return;
+        }
+
+        if (this.formData.password !== this.formData.confirmPassword) {
+          alert("Passwords do not match");
+          return;
+        }
+
+        if (!this.formData.termsConsent) {
+          alert("Please agree to the Terms of Service and Privacy Policy");
+          return;
+        }
+
+        // Show verification modal
+        this.showVerification = true;
+        this.startResendCountdown();
+      },
+
+      startResendCountdown() {
+        this.resendCountdown = 60;
+        const timer = setInterval(() => {
+          this.resendCountdown--;
+          if (this.resendCountdown === 0) {
+            clearInterval(timer);
+          }
+        }, 1000);
+      },
+
+      resendCode() {
+        // Mock resend functionality
+        this.startResendCountdown();
+      },
+
+      verifyCode() {
+        if (this.otpCode.length === 6) {
+          // Mock verification success
+          alert("🎉 Account created! You're ready to book.");
+          window.location.href = "/";
+        } else {
+          alert("Please enter the complete 6-digit code");
+        }
+      },
+    }));
+  });
+</script>
+
+<!-- Include Footer -->
+{% include 'website/components/global-footer.html' %} {% endblock %}
