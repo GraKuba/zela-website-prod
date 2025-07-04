@@ -72,3 +72,14 @@ def refund_policy(request):
         'title': 'Refund & Satisfaction-Guarantee Policy - Zela',
     })
 
+
+def help_center(request):
+    return render(request, 'website/components/page-help-center/help-center.html', {
+        'title': 'Help Center - Zela Support & Knowledge Base',
+    })
+
+
+def blog_post(request):
+    return render(request, 'website/components/page-blog-post/blog-post.html', {
+        'title': 'Blog Post - Zela Blog',
+    })

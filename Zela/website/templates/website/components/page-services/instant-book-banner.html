@@ -1,34 +1,23 @@
 {% load static %}
 
-<!-- Instant-Book Banner -->
-<section
-  class="bg-[#FDEA00]"
-  style="
-    font-family: Arial, sans-serif;
-    box-shadow: 0px 12px 24px rgba(253, 234, 0, 0.3);
-  "
->
-  <div class="max-w-screen-xl mx-auto px-8 py-8">
-    <div
-      class="flex flex-col lg:flex-row items-center justify-between text-center lg:text-left"
-    >
-      <div class="mb-6 lg:mb-0">
-        <p
-          class="text-[#011E41] text-xl font-semibold"
-          style="line-height: 1.6"
+<!-- Quick-Help Banner -->
+<section class="bg-[#FDEA00] py-6 md:py-8 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center">
+      <p
+        class="text-[#011E41] text-sm md:text-base font-medium leading-relaxed"
+      >
+        Know what you need already? Jump straight to our
+        <a
+          href="/pricing"
+          class="underline font-semibold hover:text-[#022951] transition-colors"
+          hx-get="/pricing/"
+          hx-target="body"
+          hx-swap="outerHTML"
+          >3-step booking wizard</a
         >
-          Know what you need already? Jump straight to our 3-step booking
-          wizard.
-        </p>
-      </div>
-      <div class="flex-shrink-0">
-        <button
-          class="bg-[#011E41] text-[#FDEA00] px-8 py-3 rounded-full font-semibold hover:bg-[#022951] transition-colors"
-          style="box-shadow: 0 8px 20px rgba(1, 30, 65, 0.3)"
-        >
-          Book Now
-        </button>
-      </div>
+        or explore our services below.
+      </p>
     </div>
   </div>
 </section>

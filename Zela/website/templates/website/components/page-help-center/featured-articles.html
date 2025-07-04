@@ -1,0 +1,178 @@
+{% load static %}
+
+<!-- Featured Articles Section -->
+<section class="bg-white py-16 px-4">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-[#011E41] mb-4">Featured Articles</h2>
+      <p class="text-xl text-[#4A5A70]">Most popular help topics this month</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Featured Article 1 -->
+      <article
+        class="bg-[#F5F5F5] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-200"
+      >
+        <div class="relative">
+          <img
+            src="{% static 'beatriz.webp' %}"
+            alt="Customer using Zela app to edit booking"
+            class="w-full h-48 object-cover"
+          />
+          <div class="absolute top-4 left-4">
+            <span
+              class="bg-[#FDEA00] text-[#011E41] px-3 py-1 rounded-full text-sm font-semibold"
+            >
+              Most Popular
+            </span>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[#69768B] text-sm">Bookings</span>
+            <span class="text-[#69768B] text-sm">2 min read</span>
+          </div>
+          <h3 class="text-xl font-bold text-[#011E41] mb-3">
+            Edit or Cancel a Booking
+          </h3>
+          <p class="text-[#4A5A70] mb-4">
+            Need to move a booking? You can reschedule free up to 12 h
+            beforehand…
+          </p>
+          <a
+            href="#"
+            class="inline-flex items-center text-[#011E41] font-semibold hover:text-[#022951] transition-colors duration-200"
+          >
+            Read Article
+            <svg
+              class="w-4 h-4 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Featured Article 2 -->
+      <article
+        class="bg-[#F5F5F5] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-200"
+      >
+        <div class="relative">
+          <img
+            src="{% static 'carla.webp' %}"
+            alt="Customer making a payment on mobile"
+            class="w-full h-48 object-cover"
+          />
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[#69768B] text-sm">Payments</span>
+            <span class="text-[#69768B] text-sm">3 min read</span>
+          </div>
+          <h3 class="text-xl font-bold text-[#011E41] mb-3">
+            How Our Refund Process Works
+          </h3>
+          <p class="text-[#4A5A70] mb-4">
+            Understanding when and how refunds are processed for cancelled
+            services…
+          </p>
+          <a
+            href="#"
+            class="inline-flex items-center text-[#011E41] font-semibold hover:text-[#022951] transition-colors duration-200"
+          >
+            Read Article
+            <svg
+              class="w-4 h-4 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Featured Article 3 -->
+      <article
+        class="bg-[#F5F5F5] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-200"
+      >
+        <div class="relative">
+          <img
+            src="{% static 'isabella.webp' %}"
+            alt="Customer resetting password on phone"
+            class="w-full h-48 object-cover"
+          />
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[#69768B] text-sm">Account</span>
+            <span class="text-[#69768B] text-sm">1 min read</span>
+          </div>
+          <h3 class="text-xl font-bold text-[#011E41] mb-3">
+            Reset Your Password
+          </h3>
+          <p class="text-[#4A5A70] mb-4">
+            Quick steps to regain access to your Zela account when you forget
+            your password…
+          </p>
+          <a
+            href="#"
+            class="inline-flex items-center text-[#011E41] font-semibold hover:text-[#022951] transition-colors duration-200"
+          >
+            Read Article
+            <svg
+              class="w-4 h-4 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <!-- View All Articles Button -->
+    <div class="text-center mt-12">
+      <a
+        href="#"
+        class="inline-flex items-center bg-[#011E41] text-[#FDEA00] px-8 py-3 rounded-full font-semibold hover:bg-[#022951] transition-colors duration-200 shadow-lg"
+      >
+        View All Articles
+        <svg
+          class="w-4 h-4 ml-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          ></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

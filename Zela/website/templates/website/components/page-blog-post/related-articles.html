@@ -1,0 +1,192 @@
+{% load static %}
+
+<!-- Related Articles Section -->
+<section class="bg-white py-16 px-4">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-[#011E41] mb-4">Related Articles</h2>
+      <p class="text-xl text-[#4A5A70]">More tips for your home</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Related Article 1 -->
+      <article
+        class="bg-[#F5F5F5] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-200"
+      >
+        <div class="relative">
+          <img
+            src="{% static 'services/angolan_cleaning_man.webp' %}"
+            alt="Home cleaning schedule tips"
+            class="w-full h-48 object-cover"
+          />
+          <div class="absolute top-4 left-4">
+            <span
+              class="bg-[#FDEA00] text-[#011E41] px-3 py-1 rounded-full text-sm font-semibold"
+            >
+              Tips
+            </span>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[#69768B] text-sm">Home Care</span>
+            <span class="text-[#69768B] text-sm">5 min read</span>
+          </div>
+          <h3 class="text-xl font-bold text-[#011E41] mb-3">
+            Creating the Perfect Cleaning Schedule
+          </h3>
+          <p class="text-[#4A5A70] mb-4">
+            Learn how to organize your home cleaning tasks for maximum
+            efficiency and maintain a spotless space year-round.
+          </p>
+          <a
+            href="#"
+            class="inline-flex items-center text-[#011E41] font-semibold hover:text-[#022951] transition-colors duration-200"
+          >
+            Read Article
+            <svg
+              class="w-4 h-4 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Related Article 2 -->
+      <article
+        class="bg-[#F5F5F5] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-200"
+      >
+        <div class="relative">
+          <img
+            src="{% static 'services/workspace-flower.webp' %}"
+            alt="Eco-friendly cleaning products"
+            class="w-full h-48 object-cover"
+          />
+          <div class="absolute top-4 left-4">
+            <span
+              class="bg-[#FDEA00] text-[#011E41] px-3 py-1 rounded-full text-sm font-semibold"
+            >
+              Green Living
+            </span>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[#69768B] text-sm">Eco-Friendly</span>
+            <span class="text-[#69768B] text-sm">3 min read</span>
+          </div>
+          <h3 class="text-xl font-bold text-[#011E41] mb-3">
+            Best Eco-Friendly Cleaning Products
+          </h3>
+          <p class="text-[#4A5A70] mb-4">
+            Discover safe, natural cleaning solutions that protect your family
+            and the environment while keeping your home pristine.
+          </p>
+          <a
+            href="#"
+            class="inline-flex items-center text-[#011E41] font-semibold hover:text-[#022951] transition-colors duration-200"
+          >
+            Read Article
+            <svg
+              class="w-4 h-4 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <!-- Related Article 3 -->
+      <article
+        class="bg-[#F5F5F5] rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-200"
+      >
+        <div class="relative">
+          <img
+            src="{% static 'faq/south_african_cleaner.webp' %}"
+            alt="Professional cleaning vs DIY"
+            class="w-full h-48 object-cover"
+          />
+          <div class="absolute top-4 left-4">
+            <span
+              class="bg-[#FDEA00] text-[#011E41] px-3 py-1 rounded-full text-sm font-semibold"
+            >
+              Comparison
+            </span>
+          </div>
+        </div>
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[#69768B] text-sm">Services</span>
+            <span class="text-[#69768B] text-sm">4 min read</span>
+          </div>
+          <h3 class="text-xl font-bold text-[#011E41] mb-3">
+            Professional vs DIY Cleaning
+          </h3>
+          <p class="text-[#4A5A70] mb-4">
+            When should you hire a professional cleaner versus doing it
+            yourself? We break down the costs and benefits.
+          </p>
+          <a
+            href="#"
+            class="inline-flex items-center text-[#011E41] font-semibold hover:text-[#022951] transition-colors duration-200"
+          >
+            Read Article
+            <svg
+              class="w-4 h-4 ml-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <!-- View All Blog Posts -->
+    <div class="text-center mt-12">
+      <a
+        href="/blog"
+        class="inline-flex items-center bg-[#011E41] text-[#FDEA00] px-8 py-3 rounded-full font-semibold hover:bg-[#022951] transition-colors duration-200 shadow-lg"
+      >
+        View All Blog Posts
+        <svg
+          class="w-4 h-4 ml-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          ></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

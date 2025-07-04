@@ -1,5 +1,5 @@
 {% extends "website/layouts/base.html" %} {% load static %} {% block title%}Contact Zela - Get in Touch{% endblock %} {% block content %}
-<div class="min-h-screen bg-white">
+<div class="min-h-screen bg-white mb-12 lg:mb-24">
   <!-- Navigation -->
   {% include "website/fragments/navbar.html" %}
 
@@ -14,6 +14,9 @@
 
   <!-- Contact Options Grid -->
   {% include "website/components/page-contact/contact-options-grid.html" %}
+
+  <!-- App Banner -->
+  {% include "website/components/app-banner.html" %}
 </div>
 
 <!-- Global Footer -->

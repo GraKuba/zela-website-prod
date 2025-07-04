@@ -13,4 +13,6 @@ urlpatterns = [
     path('cookie-policy/', views.cookie_policy, name='cookie_policy'),
     path('accessibility-statement/', views.accessibility_statement, name='accessibility_statement'),
     path('refund-policy/', views.refund_policy, name='refund_policy'),
+    path('help-center/', views.help_center, name='help_center'),
+    path('blog-post/', views.blog_post, name='blog_post'),
 ]

@@ -1,0 +1,75 @@
+{% load static %}
+
+<!-- Hero Section -->
+<section class="bg-white py-24 px-4">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Content Column -->
+      <div class="space-y-8">
+        <div class="space-y-4">
+          <h1 class="text-5xl font-bold text-[#011E41] leading-[1.1]">
+            How can we help?
+          </h1>
+          <p class="text-xl text-[#4A5A70] leading-relaxed">
+            Browse step-by-step guides or contact our support team—answers in
+            minutes.
+          </p>
+        </div>
+
+        <!-- Quick Action Button -->
+        <div class="pt-4">
+          <button
+            class="bg-[#011E41] text-[#FDEA00] px-8 py-3 rounded-full font-semibold hover:bg-[#022951] transition-colors duration-200 shadow-lg"
+          >
+            Get Help Now
+          </button>
+        </div>
+      </div>
+
+      <!-- Image Column -->
+      <div class="relative">
+        <div class="relative rounded-2xl overflow-hidden">
+          <img
+            src="{% static 'team/help_center_employee.webp' %}"
+            alt="Friendly customer support representative ready to help"
+            class="w-full h-[500px] object-cover"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-[#011E41]/10 to-transparent"
+          ></div>
+        </div>
+
+        <!-- Floating Stats Card -->
+        <div
+          class="absolute -bottom-6 -left-6 bg-[#F5F5F5] p-6 rounded-2xl shadow-lg"
+        >
+          <div class="flex items-center space-x-4">
+            <div
+              class="bg-[#FDEA00] w-12 h-12 rounded-full flex items-center justify-center"
+            >
+              <svg
+                class="w-6 h-6 text-[#011E41]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-[#011E41]">
+                Avg. Response Time
+              </p>
+              <p class="text-2xl font-bold text-[#011E41]">7 min</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

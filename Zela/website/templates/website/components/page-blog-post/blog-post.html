@@ -1,0 +1,23 @@
+{% extends "website/layouts/base.html" %} {% load static %} {% block title %}How to Choose a Trustworthy Cleaner - Zela Blog{% endblock %} {% block meta_description %}Five practical checks every Angolan household can make before hiring a domestic worker—keep your home safe and spotless.{% endblock %} {% block content %}
+<div class="min-h-screen bg-white">
+  <!-- Navigation -->
+  {% include "website/fragments/navbar.html" %}
+
+  <!-- Hero Section -->
+  {% include "website/components/page-blog-post/hero-section.html" %}
+
+  <!-- Article Content -->
+  {% include "website/components/page-blog-post/article-content.html" %}
+
+  <!-- Author Bio -->
+  {% include "website/components/page-blog-post/author-bio.html" %}
+
+  <!-- Related Articles -->
+  {% include "website/components/page-blog-post/related-articles.html" %}
+
+  <!-- Call to Action -->
+  {% include "website/components/page-blog-post/cta-section.html" %}
+</div>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %} {% endblock %}

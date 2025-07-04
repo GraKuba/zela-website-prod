@@ -1,0 +1,25 @@
+{% extends "website/layouts/base.html" %} {% load static %} {% block title %}Help Center - Zela Support & Knowledge Base{% endblock %} {% block content %}
+<div class="min-h-screen bg-white">
+  <!-- Navigation -->
+  {% include "website/fragments/navbar.html" %}
+
+  <!-- Hero Section -->
+  {% include "website/components/page-help-center/hero-section.html" %}
+
+  <!-- Search Bar - Taken out for the time being: TODO! -->
+
+  <!-- Quick Links -->
+  {% include "website/components/page-help-center/quick-links.html" %}
+
+  <!-- Knowledge Base Categories -->
+  {% include "website/components/page-help-center/knowledge-base.html" %}
+
+  <!-- Featured Articles -->
+  {% include "website/components/page-help-center/featured-articles.html" %}
+
+  <!-- Support Banner -->
+  {% include "website/components/page-help-center/support-banner.html" %}
+</div>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %} {% endblock %}

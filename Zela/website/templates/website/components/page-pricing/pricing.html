@@ -1,4 +1,5 @@
-{% extends "website/layouts/base.html" %} {% load static %} {% block title%}Zela Pricing - Clear, Up-Front Pricing{% endblock %} {% block content %}
+{% extends "website/layouts/base.html" %} {% load static %} {% block title%}Zela
+Pricing - Clear, Up-Front Pricing{% endblock %} {% block content %}
 <div class="min-h-screen bg-white">
   <!-- Navigation -->
   {% include "website/fragments/navbar.html" %}
@@ -18,8 +19,8 @@
   <!-- Discounts & Credits -->
   {% include "website/components/page-pricing/discounts-credits.html" %}
 
-  <!-- Pricing FAQ Snippet -->
-  {% include "website/components/page-pricing/pricing-faq.html" %}
+  <!-- FAQ Accordion -->
+  {% include "website/components/faq-accordion.html" %}
 
   <!-- Back-to-Booking Banner -->
   {% include "website/components/page-pricing/booking-banner.html" %}
