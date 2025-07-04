@@ -33,10 +33,10 @@
        },
        getTabDisplayName() {
          const tabNames = {
-           'overview': 'Overview',
-           'bookings': 'My Bookings',
-           'addresses': 'Addresses',
-           'wallet': 'Wallet & Payments',
+           'overview': 'Home',
+           'bookings': 'Bookings',
+           'addresses': 'Locations',
+           'wallet': 'Payments',
            'notifications': 'Notifications',
            'referrals': 'Referrals & Credits',
            'profile': 'Profile',
@@ -81,8 +81,8 @@
             alt="Zela"
             class="h-8 w-auto"
           />
-          <h1 class="ml-3 text-xl font-bold" style="color: #011e41">
-            Dashboard
+          <h1 class="ml-3 text-xl font-bold" style="color: black">
+            Zela
           </h1>
         </div>
         <!-- Close button for mobile -->
@@ -97,31 +97,13 @@
       </div>
     </div>
 
-    <!-- Welcome Section -->
-    <div class="p-6 border-b border-gray-200 flex-shrink-0">
-      <div class="flex items-center">
-        <img
-          class="h-12 w-12 rounded-full object-cover flex-shrink-0"
-          :src="user.avatar"
-          :alt="user.name"
-        />
-        <div class="ml-4 flex-1 min-w-0">
-          <h2 class="text-lg font-semibold truncate" style="color: #011e41">
-            <span x-show="!isProviderMode">Welcome back,</span>
-            <span x-show="isProviderMode">Provider Dashboard</span>
-          </h2>
-          <p class="text-base font-medium truncate" style="color: #011e41" x-text="user.name"></p>
-          <p class="text-sm text-gray-500 truncate" x-text="user.email"></p>
-        </div>
-      </div>
-    </div>
-
     <!-- Mode Switch (if user is provider) -->
     <div x-show="user.is_provider" class="p-6 border-b border-gray-200 flex-shrink-0">
       <button
         @click="isProviderMode = !isProviderMode"
         class="w-full relative inline-flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer hover:shadow-md transform hover:-translate-y-0.5"
-        :class="isProviderMode ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-gray-100 text-gray-700 border-gray-200'"
+        :class="isProviderMode ? 'text-white border-transparent' : 'bg-gray-100 text-gray-700 border-gray-200'"
+        :style="isProviderMode ? 'background-color: #015e73' : ''"
       >
         <span
           x-text="isProviderMode ? 'Switch to Customer' : 'Switch to Provider'"
@@ -142,11 +124,12 @@
         <button
           @click="currentTab = 'overview'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'overview' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'overview' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'overview' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'overview' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'overview' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -158,17 +141,18 @@
               d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
             />
           </svg>
-          <span class="truncate">Overview</span>
+          <span class="truncate">Home</span>
         </button>
 
         <button
           @click="currentTab = 'bookings'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'bookings' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'bookings' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'bookings' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'bookings' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'bookings' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -180,10 +164,11 @@
               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             />
           </svg>
-          <span class="truncate">My Bookings</span>
+          <span class="truncate">Bookings</span>
           <span
             x-show="dashboardData.upcomingBookings > 0"
-            class="ml-auto bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full flex-shrink-0"
+            class="ml-auto text-xs font-medium px-2 py-1 rounded-full flex-shrink-0"
+            :class="currentTab === 'bookings' ? 'bg-white text-gray-800' : 'bg-blue-100 text-blue-800'"
             x-text="dashboardData.upcomingBookings"
           ></span>
         </button>
@@ -191,11 +176,12 @@
         <button
           @click="currentTab = 'addresses'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'addresses' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'addresses' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'addresses' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'addresses' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'addresses' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -213,17 +199,18 @@
               d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
             />
           </svg>
-          <span class="truncate">Addresses</span>
+          <span class="truncate">Locations</span>
         </button>
 
         <button
           @click="currentTab = 'wallet'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'wallet' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'wallet' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'wallet' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'wallet' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'wallet' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -235,17 +222,18 @@
               d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
             />
           </svg>
-          <span class="truncate">Wallet & Payments</span>
+          <span class="truncate">Payments</span>
         </button>
 
         <button
           @click="currentTab = 'referrals'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'referrals' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'referrals' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'referrals' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'referrals' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'referrals' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -263,11 +251,12 @@
         <button
           @click="currentTab = 'profile'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'profile' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'profile' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'profile' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'profile' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'profile' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -285,11 +274,12 @@
         <button
           @click="currentTab = 'help'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'help' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'help' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'help' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'help' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'help' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -308,7 +298,7 @@
       <!-- Provider Tabs -->
       <div x-show="isProviderMode" class="space-y-1">
         <div class="mb-4">
-          <h3 class="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+          <h3 class="text-xs font-semibold uppercase tracking-wider" style="color: #015e73">
             Provider Dashboard
           </h3>
         </div>
@@ -316,11 +306,12 @@
         <button
           @click="currentTab = 'pro-overview'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'pro-overview' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'pro-overview' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'pro-overview' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'pro-overview' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'pro-overview' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -338,11 +329,12 @@
         <button
           @click="currentTab = 'job-queue'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'job-queue' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'job-queue' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'job-queue' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'job-queue' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'job-queue' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -360,11 +352,12 @@
         <button
           @click="currentTab = 'availability'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'availability' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'availability' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'availability' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'availability' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'availability' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -382,11 +375,12 @@
         <button
           @click="currentTab = 'earnings'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'earnings' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'earnings' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'earnings' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'earnings' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'earnings' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -404,11 +398,12 @@
         <button
           @click="currentTab = 'ratings'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'ratings' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'ratings' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'ratings' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'ratings' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'ratings' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -426,11 +421,12 @@
         <button
           @click="currentTab = 'kyc'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'kyc' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'kyc' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'kyc' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'kyc' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'kyc' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -448,11 +444,12 @@
         <button
           @click="currentTab = 'settings'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'settings' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'settings' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'settings' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'settings' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'settings' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -476,11 +473,12 @@
         <button
           @click="currentTab = 'help'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'help' ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :class="currentTab === 'help' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
+          :style="currentTab === 'help' ? 'background-color: #015e73; border-color: #015e73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'help' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+            :class="currentTab === 'help' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -503,11 +501,12 @@
       <button
         @click="currentTab = 'notifications'; sidebarOpen = false"
         class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group mb-3"
-        :class="currentTab === 'notifications' ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-200 hover:text-gray-900'"
+        :class="currentTab === 'notifications' ? 'text-white' : 'text-gray-700 hover:bg-gray-200 hover:text-gray-900'"
+        :style="currentTab === 'notifications' ? 'background-color: #015e73' : ''"
       >
         <svg
           class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-          :class="currentTab === 'notifications' ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'"
+          :class="currentTab === 'notifications' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -597,9 +596,9 @@
 
   <!-- Main Content Area -->
   <div class="flex-1 flex flex-col min-w-0 h-screen lg:ml-0">
-    <!-- Top Header with Breadcrumbs -->
-    <header class="bg-white shadow-sm border-b border-gray-200 px-4 sm:px-6 lg:px-8 py-4 flex-shrink-0">
-      <div class="flex justify-between items-center">
+    <!-- Top Header with Breadcrumbs - Match sidebar logo height -->
+    <header class="bg-white shadow-sm border-b border-gray-200 px-4 sm:px-6 lg:px-8 flex-shrink-0" style="height: 80px;">
+      <div class="flex justify-between items-center h-full">
         <div class="flex items-center flex-1">
           <!-- Mobile menu button -->
           <button
@@ -642,7 +641,7 @@
         <button
           x-show="!isProviderMode"
           class="px-4 sm:px-6 py-2 rounded-full text-sm font-semibold transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer text-white"
-          style="background-color: #011e41"
+          style="background-color: #015e73"
         >
           <span class="hidden sm:inline">Book Now</span>
           <span class="sm:hidden">Book</span>
