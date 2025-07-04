@@ -1,0 +1,558 @@
+<!-- Customer Bookings Tab -->
+<div
+  x-show="currentTab === 'bookings' && !isProviderMode"
+  x-transition:enter="transition ease-out duration-300"
+  x-transition:enter-start="opacity-0 transform translate-y-4"
+  x-transition:enter-end="opacity-100 transform translate-y-0"
+  x-data="{ bookingSubTab: 'upcoming' }"
+  class="space-y-6"
+>
+  <!-- Header -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-2xl font-bold" style="color: #011e41">My Bookings</h2>
+        <p class="text-gray-600 mt-1">
+          Manage and track all your cleaning services
+        </p>
+      </div>
+      <button
+        class="px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg"
+        style="background-color: #fdea00; color: #011e41"
+      >
+        Book New Service
+      </button>
+    </div>
+  </div>
+
+  <!-- Sub-tabs -->
+  <div
+    class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+  >
+    <div class="flex border-b border-gray-200">
+      <button
+        @click="bookingSubTab = 'upcoming'"
+        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200"
+        :class="bookingSubTab === 'upcoming' ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700'"
+      >
+        Upcoming
+        <span
+          class="ml-2 bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full"
+          x-text="dashboardData.upcomingBookings"
+        ></span>
+      </button>
+      <button
+        @click="bookingSubTab = 'recurring'"
+        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200"
+        :class="bookingSubTab === 'recurring' ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700'"
+      >
+        Recurring
+        <span
+          class="ml-2 bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded-full"
+          >2</span
+        >
+      </button>
+      <button
+        @click="bookingSubTab = 'completed'"
+        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200"
+        :class="bookingSubTab === 'completed' ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700'"
+      >
+        Completed
+        <span
+          class="ml-2 bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full"
+          x-text="dashboardData.completedBookings"
+        ></span>
+      </button>
+      <button
+        @click="bookingSubTab = 'canceled'"
+        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200"
+        :class="bookingSubTab === 'canceled' ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700'"
+      >
+        Canceled
+        <span
+          class="ml-2 bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded-full"
+          >1</span
+        >
+      </button>
+    </div>
+
+    <!-- Upcoming Bookings -->
+    <div x-show="bookingSubTab === 'upcoming'" class="p-6">
+      <div class="space-y-4">
+        <!-- Booking Card 1 -->
+        <div
+          class="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow duration-200"
+        >
+          <div class="flex items-start justify-between">
+            <div class="flex items-start space-x-4">
+              <img
+                src="https://via.placeholder.com/64"
+                alt="Provider"
+                class="w-16 h-16 rounded-full object-cover"
+              />
+              <div class="flex-1">
+                <div class="flex items-center space-x-2">
+                  <h3 class="font-semibold text-gray-900">Deep Clean</h3>
+                  <span
+                    class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full"
+                    >Confirmed</span
+                  >
+                </div>
+                <p class="text-sm text-gray-600 mt-1">Ana Silva • 4.9 ⭐</p>
+                <div class="flex items-center text-sm text-gray-500 mt-2">
+                  <svg
+                    class="mr-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span>Today, 2:00 PM - 4:00 PM</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-500 mt-1">
+                  <svg
+                    class="mr-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  <span>123 Main Street, City Centre</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-lg font-semibold" style="color: #011e41">
+                R$ 180.00
+              </div>
+              <div class="flex space-x-2 mt-3">
+                <button
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                >
+                  Reschedule
+                </button>
+                <button
+                  class="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                >
+                  Contact
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking Card 2 -->
+        <div
+          class="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow duration-200"
+        >
+          <div class="flex items-start justify-between">
+            <div class="flex items-start space-x-4">
+              <img
+                src="https://via.placeholder.com/64"
+                alt="Provider"
+                class="w-16 h-16 rounded-full object-cover"
+              />
+              <div class="flex-1">
+                <div class="flex items-center space-x-2">
+                  <h3 class="font-semibold text-gray-900">Regular Clean</h3>
+                  <span
+                    class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
+                    >Confirmed</span
+                  >
+                </div>
+                <p class="text-sm text-gray-600 mt-1">João Santos • 4.8 ⭐</p>
+                <div class="flex items-center text-sm text-gray-500 mt-2">
+                  <svg
+                    class="mr-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span>Tomorrow, 10:00 AM - 12:00 PM</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-500 mt-1">
+                  <svg
+                    class="mr-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  <span>456 Oak Avenue, Suburbs</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-lg font-semibold" style="color: #011e41">
+                R$ 120.00
+              </div>
+              <div class="flex space-x-2 mt-3">
+                <button
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                >
+                  Reschedule
+                </button>
+                <button
+                  class="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                >
+                  Contact
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recurring Bookings -->
+    <div x-show="bookingSubTab === 'recurring'" class="p-6">
+      <div class="space-y-4">
+        <!-- Recurring Booking Card -->
+        <div
+          class="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow duration-200"
+        >
+          <div class="flex items-start justify-between">
+            <div class="flex items-start space-x-4">
+              <div
+                class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center"
+              >
+                <svg
+                  class="w-8 h-8 text-blue-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center space-x-2">
+                  <h3 class="font-semibold text-gray-900">
+                    Weekly Regular Clean
+                  </h3>
+                  <span
+                    class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
+                    >Active</span
+                  >
+                </div>
+                <p class="text-sm text-gray-600 mt-1">
+                  Every Wednesday • Ana Silva
+                </p>
+                <div class="flex items-center text-sm text-gray-500 mt-2">
+                  <svg
+                    class="mr-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span>Next: Wed, Jan 17 at 10:00 AM</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-500 mt-1">
+                  <svg
+                    class="mr-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  <span>123 Main Street, City Centre</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-lg font-semibold" style="color: #011e41">
+                R$ 120.00
+              </div>
+              <div class="text-sm text-gray-500">per week</div>
+              <div class="flex space-x-2 mt-3">
+                <button
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                >
+                  Modify
+                </button>
+                <button
+                  class="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-sm hover:bg-red-200 transition-colors"
+                >
+                  Pause
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completed Bookings -->
+    <div x-show="bookingSubTab === 'completed'" class="p-6">
+      <div class="space-y-4">
+        <!-- Completed Booking Card -->
+        <div
+          class="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow duration-200"
+        >
+          <div class="flex items-start justify-between">
+            <div class="flex items-start space-x-4">
+              <img
+                src="https://via.placeholder.com/64"
+                alt="Provider"
+                class="w-16 h-16 rounded-full object-cover"
+              />
+              <div class="flex-1">
+                <div class="flex items-center space-x-2">
+                  <h3 class="font-semibold text-gray-900">Deep Clean</h3>
+                  <span
+                    class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
+                    >Completed</span
+                  >
+                </div>
+                <p class="text-sm text-gray-600 mt-1">
+                  Maria Oliveira • 4.9 ⭐
+                </p>
+                <div class="flex items-center text-sm text-gray-500 mt-2">
+                  <svg
+                    class="mr-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span>Jan 10, 2024 • 2:00 PM - 4:00 PM</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-500 mt-1">
+                  <svg
+                    class="mr-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  <span>123 Main Street, City Centre</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-lg font-semibold" style="color: #011e41">
+                R$ 180.00
+              </div>
+              <div class="flex space-x-2 mt-3">
+                <button
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                >
+                  Book Again
+                </button>
+                <button
+                  class="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                >
+                  Rate Service
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canceled Bookings -->
+    <div x-show="bookingSubTab === 'canceled'" class="p-6">
+      <div class="space-y-4">
+        <!-- Canceled Booking Card -->
+        <div
+          class="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow duration-200 opacity-75"
+        >
+          <div class="flex items-start justify-between">
+            <div class="flex items-start space-x-4">
+              <img
+                src="https://via.placeholder.com/64"
+                alt="Provider"
+                class="w-16 h-16 rounded-full object-cover"
+              />
+              <div class="flex-1">
+                <div class="flex items-center space-x-2">
+                  <h3 class="font-semibold text-gray-900">Regular Clean</h3>
+                  <span
+                    class="px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full"
+                    >Canceled</span
+                  >
+                </div>
+                <p class="text-sm text-gray-600 mt-1">Pedro Silva • 4.7 ⭐</p>
+                <div class="flex items-center text-sm text-gray-500 mt-2">
+                  <svg
+                    class="mr-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span>Jan 8, 2024 • 10:00 AM - 12:00 PM</span>
+                </div>
+                <div class="flex items-center text-sm text-gray-500 mt-1">
+                  <svg
+                    class="mr-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  <span>456 Oak Avenue, Suburbs</span>
+                </div>
+                <div class="flex items-center text-sm text-red-600 mt-2">
+                  <svg
+                    class="mr-1 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span>Canceled by customer</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-lg font-semibold text-gray-500 line-through">
+                R$ 120.00
+              </div>
+              <div class="text-sm text-green-600 mt-1">Refunded</div>
+              <div class="flex space-x-2 mt-3">
+                <button
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                >
+                  Book Again
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter & Export Actions -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+          <option>All Categories</option>
+          <option>Deep Clean</option>
+          <option>Regular Clean</option>
+          <option>Move In/Out</option>
+        </select>
+        <input
+          type="date"
+          class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
+        />
+        <button
+          class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+        >
+          Apply Filters
+        </button>
+      </div>
+      <button
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+      >
+        Export to PDF
+      </button>
+    </div>
+  </div>
+</div>

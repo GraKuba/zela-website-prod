@@ -24,7 +24,7 @@ def contact(request):
 
 def pricing(request):
     return render(request, 'website/components/page-pricing/pricing.html', {
-        'title': 'Zela Pricing - Clear, Up-Front Pricing',
+        'title': 'Zela Pricing - Transparent and Fair',
     })
 
 def services(request):
@@ -39,8 +39,39 @@ def register(request):
 
 def sign_in(request):
     return render(request, 'website/components/auth-login/sign-in.html', {
-        'title': 'Welcome Back - Sign In to Zela',
+        'title': 'Sign In to Zela - Welcome Back',
     })
+
+def dashboard(request):
+    # Mock user data - in production this would come from the database
+    context = {
+        'title': 'Dashboard - Zela',
+        'user': {
+            'name': 'Maria Santos',
+            'email': 'maria@example.com',
+            'avatar': 'https://via.placeholder.com/64',
+            'is_provider': False,  # This would be determined by user's role
+            'provider_verified': False,
+        },
+        'dashboard_data': {
+            'next_booking': {
+                'date': '2024-01-15',
+                'time': '10:00',
+                'service': 'Deep Clean',
+                'address': '123 Main Street, City Centre',
+                'provider': 'Ana Silva',
+                'countdown': '2 days, 3 hours'
+            },
+            'wallet_balance': 150.50,
+            'referral_credits': 25.00,
+            'total_bookings': 12,
+            'upcoming_bookings': 3,
+            'completed_bookings': 9,
+            'notifications_count': 5,
+            'unread_messages': 2,
+        }
+    }
+    return render(request, 'website/components/dashboard/dashboard.html', context)
 
 def handler404(request, exception):
     """Custom 404 error handler"""
@@ -78,13 +109,13 @@ def accessibility_statement(request):
 
 def refund_policy(request):
     return render(request, 'website/components/page-refund-policy/refund-policy.html', {
-        'title': 'Refund & Satisfaction-Guarantee Policy - Zela',
+        'title': 'Refund Policy - Zela',
     })
 
 
 def help_center(request):
     return render(request, 'website/components/page-help-center/help-center.html', {
-        'title': 'Help Center - Zela Support & Knowledge Base',
+        'title': 'Help Center - Zela',
     })
 
 

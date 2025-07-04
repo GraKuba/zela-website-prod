@@ -11,6 +11,7 @@ urlpatterns = [
     path('services/', views.services, name='services'),
     path('register/', views.register, name='register'),
     path('sign-in/', views.sign_in, name='sign_in'),
+    path('dashboard/', views.dashboard, name='dashboard'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
     path('cookie-policy/', views.cookie_policy, name='cookie_policy'),
