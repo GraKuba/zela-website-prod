@@ -1,0 +1,478 @@
+{% load static %}
+
+<!-- Choose Worker Screen -->
+<div class="min-h-screen bg-white flex flex-col">
+  <!-- Sticky Header with Progress -->
+  <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
+        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="flex-1 max-w-md mx-auto">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              1
+            </div>
+            <div class="ml-2 text-sm font-medium" style="color: #011e41">
+              Details
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              2
+            </div>
+            <div class="ml-2 text-sm font-medium" style="color: #011e41">
+              Worker
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              3
+            </div>
+            <div class="ml-2 text-sm text-gray-600">Payment</div>
+          </div>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div
+            class="bg-[#015e73] h-2 rounded-full"
+            style="width: 66.66%"
+          ></div>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div
+          @click="window.location.href = '/dashboard/'"
+          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
+        >
+          JG
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content with Sticky Sidebar -->
+  <div class="flex flex-1 max-w-7xl mx-auto w-full">
+    <!-- Sticky Left Column - Booking Details -->
+    <div
+      class="w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto px-6 py-8 space-y-6"
+    >
+      <!-- Booking Details -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+        <h3 class="text-lg font-bold mb-4" style="color: #011e41">
+          Booking Details
+        </h3>
+
+        <!-- Pricing Display -->
+        <div class="bg-gray-900 text-white rounded-2xl p-4">
+          <div class="flex justify-between items-center mb-2">
+            <div class="text-2xl font-bold" x-text="booking.details.duration">
+              6
+            </div>
+            <div
+              class="text-2xl font-bold"
+              x-text="formatCurrency(booking.pricing.bookingCost)"
+            >
+              R340
+            </div>
+          </div>
+          <div class="flex justify-between text-sm text-gray-300">
+            <div>Total. hours</div>
+            <div>Booking Price</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location & Service Details -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+        <!-- Location -->
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">Where:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              45 Lodewyk Rd, Newfields, Cape ...
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Service Type -->
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">What:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              Indoor Cleaning
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- When -->
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">When:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              Mon 7 Jul @ 07:00
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Choose For Me Option -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center">
+        <div
+          class="w-20 h-20 bg-[#015e73]/10 rounded-full mx-auto mb-4 flex items-center justify-center"
+        >
+          <svg
+            class="w-10 h-10 text-[#015e73]"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1L13.5 2.5L16.17 5.17L10.5 10.84L6.62 8.5L2 13.12L3.41 14.53L6.62 11.32L10.5 13.66L17.5 6.66L19.83 8.99L21 9ZM12.5 11C12.5 11 13 11.34 13 12.5V18.5C13 19.66 12.16 20.5 11 20.5H10C8.84 20.5 8 19.66 8 18.5V12.5C8 11.34 8.5 11 8.5 11H12.5Z"
+            />
+          </svg>
+        </div>
+        <div class="text-lg font-bold mb-2" style="color: #011e41">
+          Choose for me
+        </div>
+        <div class="flex items-center justify-center mb-2">
+          <svg
+            class="w-4 h-4 text-[#015e73] mr-1"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+            />
+          </svg>
+          <span class="text-sm font-medium" style="color: #011e41"
+            >97% Recommend</span
+          >
+        </div>
+        <div class="text-sm text-gray-600 mb-4">2+ Years Experience</div>
+        <div class="text-sm text-gray-600 mb-6 leading-relaxed">
+          Our team will find a worker that can help you. Keep an eye on your
+          inbox. We'll send you your match soon.
+        </div>
+        <button
+          @click="chooseForMe()"
+          class="w-full bg-[#015e73] text-white font-bold py-3 px-4 rounded-2xl hover:bg-[#014a5a] transition-colors cursor-pointer"
+        >
+          Let Sweepsouth Choose For Me
+        </button>
+      </div>
+    </div>
+
+    <!-- Scrollable Right Column - Worker Selection -->
+    <div class="flex-1 overflow-y-auto px-6 py-8">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-bold mb-8 text-center" style="color: #011e41">
+          Choose your worker
+        </h2>
+
+        <!-- Worker Cards -->
+        <div class="space-y-6">
+          <!-- Worker 1: Memory Mudede -->
+          <div class="bg-white border border-gray-200 rounded-2xl p-6">
+            <div class="flex items-start space-x-4">
+              <!-- Profile Picture -->
+              <div
+                class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 overflow-hidden"
+              >
+                <img
+                  src="{% static 'beatriz.webp' %}"
+                  alt="Memory Mudede"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <!-- Worker Details -->
+              <div class="flex-1">
+                <h3 class="text-xl font-bold mb-2" style="color: #011e41">
+                  Memory Mudede
+                </h3>
+                <div class="flex items-center mb-2">
+                  <svg
+                    class="w-4 h-4 text-[#015e73] mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+                    />
+                  </svg>
+                  <span class="text-sm font-medium" style="color: #011e41"
+                    >98% Recommend</span
+                  >
+                </div>
+                <div class="text-sm text-gray-600 mb-4">
+                  <span class="font-bold">423</span> Jobs Completed
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex space-x-3">
+                  <button
+                    @click="viewWorkerProfile('memory-mudede')"
+                    class="flex-1 bg-white border border-[#015e73] text-[#015e73] font-medium py-2 px-4 rounded-xl hover:bg-[#015e73]/5 transition-colors cursor-pointer"
+                  >
+                    View profile
+                  </button>
+                  <button
+                    @click="chooseWorker('memory-mudede')"
+                    class="flex-1 bg-[#015e73] text-white font-medium py-2 px-4 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
+                  >
+                    Choose me
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Worker 2: Annah Havo -->
+          <div class="bg-white border border-gray-200 rounded-2xl p-6">
+            <div class="flex items-start space-x-4">
+              <!-- Profile Picture -->
+              <div
+                class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 overflow-hidden"
+              >
+                <img
+                  src="{% static 'carla.webp' %}"
+                  alt="Annah Havo"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <!-- Worker Details -->
+              <div class="flex-1">
+                <h3 class="text-xl font-bold mb-2" style="color: #011e41">
+                  Annah Havo
+                </h3>
+                <div class="flex items-center mb-2">
+                  <svg
+                    class="w-4 h-4 text-[#015e73] mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+                    />
+                  </svg>
+                  <span class="text-sm font-medium" style="color: #011e41"
+                    >99% Recommend</span
+                  >
+                </div>
+                <div class="text-sm text-gray-600 mb-4">
+                  <span class="font-bold">200</span> Jobs Completed
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex space-x-3">
+                  <button
+                    @click="viewWorkerProfile('annah-havo')"
+                    class="flex-1 bg-white border border-[#015e73] text-[#015e73] font-medium py-2 px-4 rounded-xl hover:bg-[#015e73]/5 transition-colors cursor-pointer"
+                  >
+                    View profile
+                  </button>
+                  <button
+                    @click="chooseWorker('annah-havo')"
+                    class="flex-1 bg-[#015e73] text-white font-medium py-2 px-4 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
+                  >
+                    Choose me
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Worker 3: Epiphaniah Matarirano -->
+          <div class="bg-white border border-gray-200 rounded-2xl p-6">
+            <div class="flex items-start space-x-4">
+              <!-- Profile Picture -->
+              <div
+                class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 overflow-hidden"
+              >
+                <img
+                  src="{% static 'isabella.webp' %}"
+                  alt="Epiphaniah Matarirano"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <!-- Worker Details -->
+              <div class="flex-1">
+                <h3 class="text-xl font-bold mb-2" style="color: #011e41">
+                  Epiphaniah Matarirano
+                </h3>
+                <div class="flex items-center mb-2">
+                  <svg
+                    class="w-4 h-4 text-[#015e73] mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+                    />
+                  </svg>
+                  <span class="text-sm font-medium" style="color: #011e41"
+                    >97% Recommend</span
+                  >
+                </div>
+                <div class="text-sm text-gray-600 mb-4">
+                  <span class="font-bold">115</span> Jobs Completed
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex space-x-3">
+                  <button
+                    @click="viewWorkerProfile('epiphaniah-matarirano')"
+                    class="flex-1 bg-white border border-[#015e73] text-[#015e73] font-medium py-2 px-4 rounded-xl hover:bg-[#015e73]/5 transition-colors cursor-pointer"
+                  >
+                    View profile
+                  </button>
+                  <button
+                    @click="chooseWorker('epiphaniah-matarirano')"
+                    class="flex-1 bg-[#015e73] text-white font-medium py-2 px-4 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
+                  >
+                    Choose me
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Worker 4: Margaret Buleya -->
+          <div class="bg-white border border-gray-200 rounded-2xl p-6">
+            <div class="flex items-start space-x-4">
+              <!-- Profile Picture -->
+              <div
+                class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 overflow-hidden"
+              >
+                <img
+                  src="{% static 'juliana.webp' %}"
+                  alt="Margaret Buleya"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <!-- Worker Details -->
+              <div class="flex-1">
+                <h3 class="text-xl font-bold mb-2" style="color: #011e41">
+                  Margaret Buleya
+                </h3>
+                <div class="flex items-center mb-2">
+                  <svg
+                    class="w-4 h-4 text-[#015e73] mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+                    />
+                  </svg>
+                  <span class="text-sm font-medium" style="color: #011e41"
+                    >95% Recommend</span
+                  >
+                </div>
+                <div class="text-sm text-gray-600 mb-4">
+                  <span class="font-bold">66</span> Jobs Completed
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex space-x-3">
+                  <button
+                    @click="viewWorkerProfile('margaret-buleya')"
+                    class="flex-1 bg-white border border-[#015e73] text-[#015e73] font-medium py-2 px-4 rounded-xl hover:bg-[#015e73]/5 transition-colors cursor-pointer"
+                  >
+                    View profile
+                  </button>
+                  <button
+                    @click="chooseWorker('margaret-buleya')"
+                    class="flex-1 bg-[#015e73] text-white font-medium py-2 px-4 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
+                  >
+                    Choose me
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Alpine.js Data -->
+<script>
+  function chooseWorker(workerId) {
+    // Handle worker selection
+    console.log("Selected worker:", workerId);
+    // Navigate to payment screen or next step
+    // This would typically update the booking state and proceed to payment
+  }
+
+  function viewWorkerProfile(workerId) {
+    // Handle viewing worker profile
+    console.log("View profile for:", workerId);
+    // This could open a modal or navigate to profile page
+  }
+
+  function chooseForMe() {
+    // Handle automatic worker selection
+    console.log("User chose automatic matching");
+    // This would proceed with automatic matching flow
+  }
+</script>

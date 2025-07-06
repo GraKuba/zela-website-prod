@@ -1,0 +1,478 @@
+{% load static %}
+<!-- Screen 13: Select Payment Method -->
+<div class="min-h-screen bg-white">
+  <!-- Header with Progress -->
+  <div class="border-b border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center">
+        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
+        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div
+          onclick="window.location.href = '/dashboard/'"
+          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
+        >
+          JG
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="max-w-md mx-auto">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center">
+          <div
+            class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
+          >
+            ✓
+          </div>
+          <div class="ml-2 text-sm font-medium" style="color: #011e41">
+            Details
+          </div>
+        </div>
+        <div class="flex items-center">
+          <div
+            class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
+          >
+            ✓
+          </div>
+          <div class="ml-2 text-sm font-medium" style="color: #011e41">
+            Worker
+          </div>
+        </div>
+        <div class="flex items-center">
+          <div
+            class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
+          >
+            3
+          </div>
+          <div class="ml-2 text-sm font-medium" style="color: #011e41">
+            Payment
+          </div>
+        </div>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-2">
+        <div class="bg-[#015e73] h-2 rounded-full" style="width: 100%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex max-w-7xl mx-auto px-6 py-8">
+    <!-- Left Column - Booking Details -->
+    <div class="w-80 flex-shrink-0 mr-8 space-y-6">
+      <!-- Total -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+        <h3 class="text-lg font-bold mb-4" style="color: #011e41">
+          Payment Summary
+        </h3>
+        <div class="bg-gray-900 text-white rounded-2xl p-4">
+          <div class="flex items-center justify-between">
+            <div class="text-lg font-bold">Total: R770</div>
+            <button class="text-gray-300 hover:text-white cursor-pointer">
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location & Service Details -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+        <!-- Location -->
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">Where:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              1 Osborne Rd, Mowbray, Cape To...
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Service Type -->
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">What:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              Indoor Cleaning
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- When -->
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">When:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              Sun 6 Jul @ 07:00
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Apply Voucher -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+        <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+          Apply a Voucher
+        </h4>
+        <div class="flex space-x-2">
+          <input
+            type="text"
+            id="voucher-input"
+            placeholder="Add voucher code"
+            class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm"
+          />
+          <button
+            onclick="applyVoucher()"
+            class="px-6 py-3 bg-[#015e73] text-white font-semibold rounded-lg hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column - Payment Method Selection -->
+    <div class="flex-1">
+      <div class="max-w-2xl">
+        <h2 class="text-2xl font-bold mb-8" style="color: #011e41">
+          What is your preferred payment method?
+        </h2>
+        <p class="text-gray-600 mb-6">Total to pay: R780.00</p>
+
+        <div class="space-y-4 mb-8">
+          <!-- Credit Card / UCount -->
+          <div
+            id="payment-credit-card"
+            onclick="selectPaymentMethod('credit-card')"
+            class="bg-white border-2 border-gray-200 hover:border-[#015e73] rounded-2xl p-6 cursor-pointer transition-colors duration-200"
+          >
+            <div class="flex items-center">
+              <div
+                id="radio-credit-card"
+                class="w-6 h-6 rounded-full border-2 border-gray-300 mr-4 flex items-center justify-center"
+              >
+                <div
+                  id="radio-dot-credit-card"
+                  class="w-2 h-2 bg-white rounded-full"
+                  style="display: none"
+                ></div>
+              </div>
+              <div class="flex items-center">
+                <svg
+                  class="w-8 h-8 mr-3 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
+                </svg>
+                <span class="font-medium" style="color: #011e41"
+                  >Credit Card / UCount</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- EFT -->
+          <div
+            id="payment-eft"
+            onclick="selectPaymentMethod('eft')"
+            class="bg-white border-2 border-gray-200 hover:border-[#015e73] rounded-2xl p-6 cursor-pointer transition-colors duration-200"
+          >
+            <div class="flex items-center">
+              <div
+                id="radio-eft"
+                class="w-6 h-6 rounded-full border-2 border-gray-300 mr-4 flex items-center justify-center"
+              >
+                <div
+                  id="radio-dot-eft"
+                  class="w-2 h-2 bg-white rounded-full"
+                  style="display: none"
+                ></div>
+              </div>
+              <div class="flex items-center">
+                <svg
+                  class="w-8 h-8 mr-3 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+                <span class="font-medium" style="color: #011e41">EFT</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SnapScan -->
+          <div
+            id="payment-snapscan"
+            onclick="selectPaymentMethod('snapscan')"
+            class="bg-white border-2 border-gray-200 hover:border-[#015e73] rounded-2xl p-6 cursor-pointer transition-colors duration-200"
+          >
+            <div class="flex items-center">
+              <div
+                id="radio-snapscan"
+                class="w-6 h-6 rounded-full border-2 border-gray-300 mr-4 flex items-center justify-center"
+              >
+                <div
+                  id="radio-dot-snapscan"
+                  class="w-2 h-2 bg-white rounded-full"
+                  style="display: none"
+                ></div>
+              </div>
+              <div class="flex items-center">
+                <svg
+                  class="w-8 h-8 mr-3 text-orange-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+                <span class="font-medium" style="color: #011e41">SnapScan</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Selection -->
+        <div class="mb-8">
+          <h3 class="text-xl font-bold mb-4" style="color: #011e41">
+            Choose a card to use for this payment
+          </h3>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Select card
+            </label>
+            <select
+              id="card-select"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm bg-white"
+            >
+              <option value="">Select card</option>
+              <option value="card1">**** **** **** 1234</option>
+              <option value="card2">**** **** **** 5678</option>
+            </select>
+          </div>
+          <button
+            onclick="addNewCard()"
+            class="flex items-center text-green-600 hover:text-green-700 font-medium transition-colors duration-200 cursor-pointer"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Add new card
+          </button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex space-x-4">
+          <button
+            onclick="continueToCard()"
+            class="flex-1 py-3 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
+          >
+            Continue
+          </button>
+          <button
+            onclick="goBackToWorker()"
+            class="flex-1 py-3 px-6 bg-white border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+          >
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let selectedPaymentMethod = null;
+
+  function selectPaymentMethod(method) {
+    // Clear all previous selections
+    ["credit-card", "eft", "snapscan"].forEach((methodId) => {
+      const element = document.getElementById(`payment-${methodId}`);
+      const radio = document.getElementById(`radio-${methodId}`);
+      const dot = document.getElementById(`radio-dot-${methodId}`);
+
+      if (element && radio && dot) {
+        element.className =
+          "bg-white border-2 border-gray-200 hover:border-[#015e73] rounded-2xl p-6 cursor-pointer transition-colors duration-200";
+        radio.className =
+          "w-6 h-6 rounded-full border-2 border-gray-300 mr-4 flex items-center justify-center";
+        dot.style.display = "none";
+      }
+    });
+
+    // Set the selected method
+    selectedPaymentMethod = method;
+    const element = document.getElementById(`payment-${method}`);
+    const radio = document.getElementById(`radio-${method}`);
+    const dot = document.getElementById(`radio-dot-${method}`);
+
+    if (element && radio && dot) {
+      element.className =
+        "bg-white border-2 border-[#015e73] bg-[#015e73]/10 rounded-2xl p-6 cursor-pointer transition-colors duration-200";
+      radio.className =
+        "w-6 h-6 rounded-full border-2 border-[#015e73] bg-[#015e73] mr-4 flex items-center justify-center";
+      dot.style.display = "block";
+    }
+
+    // Update the main booking data if the global component is available
+    if (window.bookingFlowComponent) {
+      window.bookingFlowComponent.booking.payment.method = method;
+    }
+  }
+
+  function applyVoucher() {
+    const input = document.getElementById("voucher-input");
+    const voucher = input.value.trim();
+
+    if (voucher) {
+      // Update the global component if available
+      if (window.bookingFlowComponent) {
+        window.bookingFlowComponent.booking.voucher = voucher;
+      }
+
+      // You could add voucher validation logic here
+      alert(`Voucher "${voucher}" applied successfully!`);
+    } else {
+      alert("Please enter a voucher code");
+    }
+  }
+
+  function addNewCard() {
+    // Navigate to add new card flow or show modal
+    if (window.bookingFlowComponent && window.bookingFlowComponent.goToScreen) {
+      // You could navigate to a new card screen (e.g., screen 15)
+      // window.bookingFlowComponent.goToScreen(15);
+      alert(
+        "Add new card functionality - this would open a form to add a new card"
+      );
+    } else {
+      alert(
+        "Add new card functionality - this would open a form to add a new card"
+      );
+    }
+  }
+
+  // Handle card selection
+  document.addEventListener("DOMContentLoaded", function () {
+    const cardSelect = document.getElementById("card-select");
+    if (cardSelect) {
+      cardSelect.addEventListener("change", function () {
+        const selectedCard = this.value;
+        if (window.bookingFlowComponent) {
+          window.bookingFlowComponent.booking.payment.cardId = selectedCard;
+        }
+      });
+    }
+  });
+
+  function continueToCard() {
+    if (!selectedPaymentMethod) {
+      alert("Please select a payment method first");
+      return;
+    }
+
+    // Use the global component if available
+    if (window.bookingFlowComponent && window.bookingFlowComponent.goToScreen) {
+      window.bookingFlowComponent.goToScreen(15);
+    } else {
+      console.error("Could not find booking flow component");
+    }
+  }
+
+  function goBackToWorker() {
+    // Use the global component if available
+    if (window.bookingFlowComponent && window.bookingFlowComponent.goToScreen) {
+      window.bookingFlowComponent.goToScreen("individual-worker");
+    } else {
+      console.error("Could not find booking flow component");
+    }
+  }
+</script>

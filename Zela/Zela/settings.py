@@ -39,12 +39,31 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tailwind',
     'theme',
+    'django_htmx',
+    'django_browser_reload',
+    'formtools',
+    # Local apps
+    'accounts',
+    'services',
+    'bookings',
+    'payments',
+    'cms',
+    'placements',
+    'notifications',
+    'pricing',
     'website',
     'webapp',
-    'django_browser_reload',
 ]
 
 TAILWIND_APP_NAME = 'theme'
+
+# Custom user model
+AUTH_USER_MODEL = 'accounts.User'
+
+# Authentication URLs
+LOGIN_URL = '/sign-in/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
 ]
 

@@ -1,0 +1,775 @@
+{% load static %}
+<div
+  class="min-h-screen bg-gray-50"
+  x-data="bookingFlow()"
+  x-init="init()"
+  style="font-family: Arial, sans-serif"
+>
+  <!-- Main Content Container -->
+  <div id="booking-screen" class="min-h-screen">
+    <!-- Screen 1: Service Landing / Address Capture -->
+    {% include "website/components/booking-flow/screens/screen-1-address-capture.html" %}
+  </div>
+
+  <!-- Overlay for matchmaking -->
+  <div
+    x-show="showMatchmakingOverlay"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="fixed inset-0 bg-green-600 z-50 flex items-center justify-center"
+    style="display: none"
+  >
+    {% include "website/components/booking-flow/screens/screen-10-matchmaking.html" %}
+  </div>
+
+  <!-- Modal for heads-up -->
+  <div
+    x-show="showHeadsUpModal"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-0"
+    x-transition:leave-end="opacity-100"
+    class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center px-4"
+    style="display: none"
+  >
+    {% include "website/components/booking-flow/screens/screen-11-heads-up-modal.html" %}
+  </div>
+
+  <!-- Worker Profile Modal -->
+  {% include "website/components/booking-flow/screens/modal-worker-profile.html" %}
+
+  <!-- Hidden screen templates -->
+  <div id="choose-worker-screen" style="display: none">
+    {% include "website/components/booking-flow/screens/screen-choose-worker.html" %}
+  </div>
+
+  <div id="individual-worker-screen" style="display: none">
+    {% include "website/components/booking-flow/screens/screen-individual-worker.html" %}
+  </div>
+
+  <div id="confirmation-screen" style="display: none">
+    {% include "website/components/booking-flow/screens/screen-15-booking-confirmation.html" %}
+  </div>
+</div>
+
+<script>
+  function bookingFlow() {
+    return {
+      // Current screen state
+      currentScreen: 1,
+      showServiceModal: true,
+      serviceModalDismissed: false,
+      showMatchmakingOverlay: false,
+      showHeadsUpModal: false,
+      showContinueButton: false,
+      showServiceScope: false,
+
+      // Map state
+      map: null,
+      mapMarker: null,
+      searchResults: [],
+      searchTimeout: null,
+
+      // Booking state
+      booking: {
+        serviceType: "indoorCleaning",
+        location: {
+          unitName: "",
+          streetAddress: "",
+          coordinates: null,
+          fullAddress: "",
+        },
+        frequency: null, // 'one-time' or 'repeat'
+        date: null,
+        timeWindow: "07:00 - 07:30",
+        details: {
+          homeSize: "medium-3-4-bedrooms",
+          extraTasks: [],
+          duration: 5.5,
+          startTime: "07:00",
+          notes: "",
+        },
+        tip: {
+          amount: 0,
+          selectedOption: null,
+        },
+        pricing: {
+          bookingCost: 710,
+          otherCosts: {
+            bookingCover: 21,
+            serviceFee: 39,
+          },
+          total: 770,
+        },
+        payment: {
+          method: null,
+          useSweepCred: false,
+          cardId: null,
+        },
+        voucher: "",
+      },
+
+      // Service data
+      serviceInfo: {
+        indoorCleaning: {
+          name: "Indoor Cleaning",
+          description:
+            "Get 3.5 to 10 hours of top-to-bottom comprehensive cleaning of your home.",
+          icon: "🧹",
+          howItWorks: [
+            "Tell us where you need help.",
+            "Set up your booking requirements.",
+            "Choose your worker.",
+            "Done!",
+          ],
+          included: {
+            "LIVING ROOM": [
+              "Dusting of furniture and surfaces",
+              "Mopping and vacuuming of floors",
+              "Dusting and wiping of skirtings",
+              "Dusting and wiping of electronics, picture frames etc.",
+              "Dusting and wiping of light switches and other fixtures",
+            ],
+            KITCHEN: [
+              "Wiping of surfaces, sinks and appliances",
+              "Washing of dishes",
+              "Wiping outside of cupboards and fridge",
+              "Wiping of walls",
+              "Emptying bins and cleaning bin area",
+              "Mopping floors",
+            ],
+            BEDROOMS: [
+              "Dusting of furniture and surfaces",
+              "Making bed",
+              "Vacuuming and/or mopping floors",
+              "Dusting and wiping of skirtings",
+              "Folding or hanging of clothes in bedroom",
+            ],
+            BATHROOMS: [
+              "Cleaning of shower, bath and sinks",
+              "Toilet clean",
+              "Wiping of counters and taps",
+              "Wiping of walls and mirrors",
+              "Wiping outside of cupboards and cabinets",
+              "Folding or hanging of clean towels",
+              "Emptying bins and cleaning bin area",
+              "Mopping floors",
+            ],
+          },
+        },
+      },
+
+      // Extra tasks options
+      extraTasksOptions: [
+        { id: "inside-fridge", label: "Inside Fridge", icon: "🥶" },
+        { id: "inside-oven", label: "Inside Oven", icon: "🔥" },
+        { id: "inside-cabinets", label: "Inside Cabinets", icon: "🚪" },
+        { id: "interior-windows", label: "Interior Windows", icon: "🪟" },
+        { id: "interior-walls", label: "Interior Walls", icon: "🧱" },
+        { id: "water-plants", label: "Water Plants", icon: "🌱" },
+        { id: "ironing", label: "Ironing", icon: "👔" },
+        { id: "laundry", label: "Laundry", icon: "👕" },
+      ],
+
+      // Home size options
+      homeSizeOptions: [
+        {
+          id: "small-1-2-bedrooms",
+          label: "Small Home: 1-2 Bedrooms",
+          duration: 3.5,
+        },
+        {
+          id: "medium-3-4-bedrooms",
+          label: "Medium Home: 3-4 Bedrooms",
+          duration: 5.5,
+        },
+        {
+          id: "large-5-plus-bedrooms",
+          label: "Large Home: 5+ Bedrooms",
+          duration: 8,
+        },
+      ],
+
+      // Time slots
+      timeSlots: [
+        "07:00 - 07:30",
+        "07:30 - 08:00",
+        "08:00 - 08:30",
+        "08:30 - 09:00",
+        "09:00 - 09:30",
+        "09:30 - 10:00",
+        "10:00 - 10:30",
+        "10:30 - 11:00",
+        "11:00 - 11:30",
+        "11:30 - 12:00",
+        "12:00 - 12:30",
+        "12:30 - 13:00",
+        "13:00 - 13:30",
+        "13:30 - 14:00",
+        "14:00 - 14:30",
+        "14:30 - 15:00",
+      ],
+
+      init() {
+        // Initialize with service type from URL or default
+        this.booking.serviceType =
+          new URLSearchParams(window.location.search).get("service") ||
+          "indoorCleaning";
+
+        // Set default date to tomorrow
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        this.booking.date = tomorrow.toISOString().split("T")[0];
+
+        // Store reference to this component globally for access from dynamically loaded content
+        window.bookingFlowComponent = this;
+      },
+
+      // Navigation methods
+      goToScreen(screenNumber) {
+        this.currentScreen = screenNumber;
+
+        // Handle special screens
+        if (screenNumber === "choose-worker") {
+          // Show choose worker screen
+          document.getElementById("booking-screen").innerHTML =
+            document.getElementById("choose-worker-screen").innerHTML;
+          return;
+        }
+
+        if (screenNumber === "individual-worker") {
+          // Show individual worker screen
+          document.getElementById("booking-screen").innerHTML =
+            document.getElementById("individual-worker-screen").innerHTML;
+          return;
+        }
+
+        if (screenNumber === 15) {
+          // Show confirmation screen
+          document.getElementById("booking-screen").innerHTML =
+            document.getElementById("confirmation-screen").innerHTML;
+          return;
+        }
+
+        // Use HTMX to load the appropriate screen
+        htmx.ajax("GET", `/booking-flow/screen/${screenNumber}/`, {
+          target: "#booking-screen",
+          swap: "innerHTML",
+        });
+      },
+
+      // Action methods
+      dismissServiceModal() {
+        this.showServiceModal = false;
+        this.serviceModalDismissed = true;
+      },
+
+      proceedToAddressConfirmation() {
+        // Only proceed if we have a valid address and coordinates
+        if (
+          this.booking.location.streetAddress &&
+          this.booking.location.coordinates
+        ) {
+          this.goToScreen(2);
+        } else {
+          alert("Please select an address on the map first");
+        }
+      },
+
+      setLocation(address, coordinates) {
+        this.booking.location.fullAddress = address;
+        this.booking.location.coordinates = coordinates;
+        this.goToScreen(3);
+      },
+
+      confirmLocation() {
+        this.goToScreen(4);
+      },
+
+      selectFrequency(frequency) {
+        this.booking.frequency = frequency;
+        setTimeout(() => {
+          this.goToScreen(7);
+        }, 300);
+      },
+
+      selectDateBucket(bucket) {
+        if (bucket === "tomorrow") {
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          this.booking.date = tomorrow.toISOString().split("T")[0];
+          this.goToScreen(8);
+        } else if (bucket === "later") {
+          // Set date to a week from now as default for "later"
+          const laterDate = new Date();
+          laterDate.setDate(laterDate.getDate() + 7);
+          this.booking.date = laterDate.toISOString().split("T")[0];
+          this.goToScreen(8);
+        }
+      },
+
+      toggleExtraTask(taskId) {
+        const index = this.booking.details.extraTasks.indexOf(taskId);
+        if (index > -1) {
+          this.booking.details.extraTasks.splice(index, 1);
+        } else {
+          this.booking.details.extraTasks.push(taskId);
+        }
+        this.calculatePricing();
+      },
+
+      updateDuration(change) {
+        this.booking.details.duration = Math.max(
+          1,
+          this.booking.details.duration + change
+        );
+        this.calculatePricing();
+      },
+
+      // Update duration based on home size selection
+      updateHomeSizeDuration() {
+        const homeSizeOption = this.homeSizeOptions.find(
+          (option) => option.id === this.booking.details.homeSize
+        );
+        if (homeSizeOption) {
+          this.booking.details.duration = homeSizeOption.duration;
+        }
+        this.calculatePricing();
+      },
+
+      calculatePricing() {
+        // Enhanced pricing calculation based on duration, home size, and extra tasks
+        const baseRate = 129; // per hour
+        let baseCost = this.booking.details.duration * baseRate;
+
+        // Adjust for home size
+        const homeSize = this.booking.details.homeSize;
+        let sizeMultiplier = 1;
+        if (homeSize === "small-1-2-bedrooms") {
+          sizeMultiplier = 0.8;
+        } else if (homeSize === "large-5-plus-bedrooms") {
+          sizeMultiplier = 1.2;
+        }
+
+        // Add extra tasks cost
+        const extraTasksCost = this.booking.details.extraTasks.length * 25;
+
+        // Calculate final cost
+        baseCost = baseCost * sizeMultiplier + extraTasksCost;
+
+        this.booking.pricing.bookingCost = Math.round(baseCost);
+        this.booking.pricing.total =
+          this.booking.pricing.bookingCost +
+          this.booking.pricing.otherCosts.bookingCover +
+          this.booking.pricing.otherCosts.serviceFee;
+      },
+
+      findWorker() {
+        this.showMatchmakingOverlay = true;
+
+        // Simulate search delay
+        setTimeout(() => {
+          this.showMatchmakingOverlay = false;
+          this.goToChooseWorker();
+        }, 3000);
+      },
+
+      goToChooseWorker() {
+        // Navigate directly to choose worker screen
+        this.goToScreen("choose-worker");
+      },
+
+      chooseWorker(workerId) {
+        // Store selected worker
+        this.booking.selectedWorker = workerId;
+        // Navigate to individual worker screen
+        this.goToScreen("individual-worker");
+      },
+
+      chooseForMe() {
+        // Handle automatic worker selection
+        // For now, automatically select the first worker
+        this.booking.selectedWorker = "memory-mudede";
+        this.goToScreen("individual-worker");
+      },
+
+      closeHeadsUpModal() {
+        this.showHeadsUpModal = false;
+        this.goToScreen(12);
+      },
+
+      proceedToPayment() {
+        this.goToScreen(13);
+      },
+
+      selectPaymentMethod(method) {
+        this.booking.payment.method = method;
+        if (method === "credit-card") {
+          this.goToScreen(14);
+        }
+      },
+
+      // Map methods
+      initMap() {
+        // Initialize map centered on Cape Town
+        this.map = L.map("booking-map").setView([-33.9249, 18.4241], 12);
+
+        // Add OpenStreetMap tiles
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "© OpenStreetMap contributors",
+        }).addTo(this.map);
+
+        // Add some sample markers for service areas
+        this.addSampleMarkers();
+
+        // Handle map click events
+        this.map.on("click", (e) => {
+          this.placeMarker(e.latlng);
+        });
+      },
+
+      addSampleMarkers() {
+        // Add some sample service area markers
+        const serviceAreas = [
+          { lat: -33.9249, lng: 18.4241, name: "Cape Town CBD" },
+          { lat: -33.9306, lng: 18.4168, name: "Sea Point" },
+          { lat: -33.906, lng: 18.4115, name: "Camps Bay" },
+          { lat: -33.9571, lng: 18.4648, name: "Rondebosch" },
+          { lat: -33.9847, lng: 18.4773, name: "Claremont" },
+        ];
+
+        serviceAreas.forEach((area) => {
+          const marker = L.circleMarker([area.lat, area.lng], {
+            radius: 8,
+            fillColor: "#10b981",
+            color: "#059669",
+            weight: 2,
+            opacity: 0.8,
+            fillOpacity: 0.6,
+          }).addTo(this.map);
+
+          marker.bindPopup(`<b>${area.name}</b><br>Service available`);
+        });
+      },
+
+      searchAddress(query) {
+        if (!query || query.length < 3) {
+          this.searchResults = [];
+          return;
+        }
+
+        // Clear previous timeout
+        if (this.searchTimeout) {
+          clearTimeout(this.searchTimeout);
+        }
+
+        // Debounce search
+        this.searchTimeout = setTimeout(() => {
+          this.performAddressSearch(query);
+        }, 500);
+      },
+
+      async performAddressSearch(query) {
+        try {
+          // Add mock South African addresses for common searches
+          const mockAddresses = [
+            {
+              display_name: "1 Osborne Road, Mowbray, Cape Town, South Africa",
+              lat: "-33.9571",
+              lon: "18.4648",
+              place_id: "mock_1",
+            },
+            {
+              display_name: "98 Main Road, Mowbray, Cape Town, South Africa",
+              lat: "-33.9580",
+              lon: "18.4650",
+              place_id: "mock_2",
+            },
+            {
+              display_name: "15 Oxford Street, Cape Town, South Africa",
+              lat: "-33.9249",
+              lon: "18.4241",
+              place_id: "mock_3",
+            },
+            {
+              display_name: "Long Street, Cape Town, South Africa",
+              lat: "-33.9249",
+              lon: "18.4241",
+              place_id: "mock_4",
+            },
+            {
+              display_name:
+                "Camps Bay Drive, Camps Bay, Cape Town, South Africa",
+              lat: "-33.9060",
+              lon: "18.4115",
+              place_id: "mock_5",
+            },
+          ];
+
+          // Filter mock addresses based on query
+          const filteredMockAddresses = mockAddresses.filter((addr) =>
+            addr.display_name.toLowerCase().includes(query.toLowerCase())
+          );
+
+          // Use Nominatim API for geocoding (free OpenStreetMap service)
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+              query
+            )}&countrycodes=za&limit=3`
+          );
+
+          if (response.ok) {
+            const apiResults = await response.json();
+            // Combine mock results with API results
+            this.searchResults = [
+              ...filteredMockAddresses,
+              ...apiResults,
+            ].slice(0, 5);
+          } else {
+            // If API fails, use mock results only
+            this.searchResults = filteredMockAddresses;
+          }
+        } catch (error) {
+          console.error("Error searching address:", error);
+          // Fallback to mock results
+          const mockAddresses = [
+            {
+              display_name: "1 Osborne Road, Mowbray, Cape Town, South Africa",
+              lat: "-33.9571",
+              lon: "18.4648",
+              place_id: "mock_1",
+            },
+            {
+              display_name: "98 Main Road, Mowbray, Cape Town, South Africa",
+              lat: "-33.9580",
+              lon: "18.4650",
+              place_id: "mock_2",
+            },
+          ];
+          this.searchResults = mockAddresses.filter((addr) =>
+            addr.display_name.toLowerCase().includes(query.toLowerCase())
+          );
+        }
+      },
+
+      selectSearchResult(result) {
+        // Update the booking location
+        this.booking.location.streetAddress = result.display_name;
+        this.booking.location.coordinates = {
+          lat: parseFloat(result.lat),
+          lng: parseFloat(result.lon),
+        };
+
+        // Clear search results
+        this.searchResults = [];
+
+        // Center map on selected location
+        this.map.setView([result.lat, result.lon], 15);
+
+        // Place marker
+        this.placeMarker(L.latLng(result.lat, result.lon));
+
+        // Show continue button instead of auto-navigating
+        this.showContinueButton = true;
+      },
+
+      placeMarker(latlng) {
+        // Remove existing marker
+        if (this.mapMarker) {
+          this.map.removeLayer(this.mapMarker);
+        }
+
+        // Add new marker
+        this.mapMarker = L.marker(latlng, {
+          icon: L.icon({
+            iconUrl:
+              "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+            shadowUrl:
+              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+          }),
+        }).addTo(this.map);
+
+        // Update booking coordinates
+        this.booking.location.coordinates = {
+          lat: latlng.lat,
+          lng: latlng.lng,
+        };
+
+        // Update address field with approximate location
+        this.booking.location.streetAddress = `Selected location: ${latlng.lat.toFixed(
+          4
+        )}, ${latlng.lng.toFixed(4)}`;
+
+        // Show popup
+        this.mapMarker.bindPopup("📍 Selected location").openPopup();
+
+        // Show continue button instead of auto-navigating
+        this.showContinueButton = true;
+      },
+
+      // Helper methods
+      formatCurrency(amount) {
+        return `R${amount}`;
+      },
+
+      getHomeSizeLabel(sizeId) {
+        const option = this.homeSizeOptions.find((opt) => opt.id === sizeId);
+        return option ? option.label : sizeId;
+      },
+
+      getExtraTaskLabel(taskId) {
+        const task = this.extraTasksOptions.find((opt) => opt.id === taskId);
+        return task ? task.label : taskId;
+      },
+
+      // Tip handling methods
+      selectTip(tipOption) {
+        this.booking.tip.selectedOption = tipOption;
+
+        if (tipOption === "custom") {
+          // Keep current custom amount
+          return;
+        }
+
+        // Set predefined tip amounts
+        const tipAmounts = {
+          "no-tip": 0,
+          small: 25,
+          medium: 50,
+          large: 75,
+          generous: 100,
+        };
+
+        this.booking.tip.amount = tipAmounts[tipOption] || 0;
+        this.calculatePricing();
+      },
+
+      updateCustomTip(amount) {
+        this.booking.tip.amount = Math.max(0, parseInt(amount) || 0);
+        this.calculatePricing();
+      },
+    };
+  }
+
+  // Global functions accessible from included screens
+  function chooseWorker(workerId) {
+    const bookingData = Alpine.store("booking");
+    if (bookingData && bookingData.chooseWorker) {
+      bookingData.chooseWorker(workerId);
+    } else {
+      // Fallback: find the Alpine component and call the method
+      const component = Alpine.findClosest(document.body, "[x-data]");
+      if (
+        component &&
+        component._x_dataStack &&
+        component._x_dataStack[0].chooseWorker
+      ) {
+        component._x_dataStack[0].chooseWorker(workerId);
+      }
+    }
+  }
+
+  function chooseForMe() {
+    const component = Alpine.findClosest(document.body, "[x-data]");
+    if (
+      component &&
+      component._x_dataStack &&
+      component._x_dataStack[0].chooseForMe
+    ) {
+      component._x_dataStack[0].chooseForMe();
+    }
+  }
+
+  function viewWorkerProfile(workerId) {
+    window.dispatchEvent(
+      new CustomEvent("open-worker-profile", {
+        detail: { workerId: workerId },
+      })
+    );
+  }
+
+  function proceedToPayment() {
+    // Primary method: use global window reference
+    if (window.bookingFlowComponent && window.bookingFlowComponent.goToScreen) {
+      window.bookingFlowComponent.goToScreen(13);
+      return;
+    }
+
+    // Fallback: try multiple approaches to find the Alpine component
+    let component = document.querySelector("[x-data]");
+
+    // If we have the component, try to access its Alpine data
+    if (component && component._x_dataStack && component._x_dataStack[0]) {
+      component._x_dataStack[0].goToScreen(13);
+    } else {
+      // Second fallback: try to find by class
+      const bookingContainer = document.querySelector(".min-h-screen[x-data]");
+      if (
+        bookingContainer &&
+        bookingContainer._x_dataStack &&
+        bookingContainer._x_dataStack[0]
+      ) {
+        bookingContainer._x_dataStack[0].goToScreen(13);
+      } else {
+        console.error("Could not find Alpine component for proceedToPayment");
+      }
+    }
+  }
+
+  function goBack() {
+    // Primary method: use global window reference
+    if (
+      window.bookingFlowComponent &&
+      window.bookingFlowComponent.goToChooseWorker
+    ) {
+      window.bookingFlowComponent.goToChooseWorker();
+      return;
+    }
+
+    // Fallback: try multiple approaches to find the Alpine component
+    let component = document.querySelector("[x-data]");
+
+    // If we have the component, try to access its Alpine data
+    if (component && component._x_dataStack && component._x_dataStack[0]) {
+      component._x_dataStack[0].goToChooseWorker();
+    } else {
+      // Second fallback: try to find by class
+      const bookingContainer = document.querySelector(".min-h-screen[x-data]");
+      if (
+        bookingContainer &&
+        bookingContainer._x_dataStack &&
+        bookingContainer._x_dataStack[0]
+      ) {
+        bookingContainer._x_dataStack[0].goToChooseWorker();
+      } else {
+        console.error("Could not find Alpine component for goBack");
+      }
+    }
+  }
+
+  // Add event listeners for fallback events
+  window.addEventListener("booking-proceed-to-payment", function () {
+    if (window.bookingFlowComponent && window.bookingFlowComponent.goToScreen) {
+      window.bookingFlowComponent.goToScreen(13);
+    }
+  });
+
+  window.addEventListener("booking-go-back", function () {
+    if (
+      window.bookingFlowComponent &&
+      window.bookingFlowComponent.goToChooseWorker
+    ) {
+      window.bookingFlowComponent.goToChooseWorker();
+    }
+  });
+</script>

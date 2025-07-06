@@ -437,14 +437,14 @@ title }}{% endblock %} {% block content %}
             <label for="termsConsent" class="text-sm" style="color: #4a5a70">
               By creating an account you agree to our
               <a
-                href="{% url 'terms_of_service' %}"
+                href="{% url 'website:terms-of-service' %}"
                 class="underline"
                 style="color: #011e41"
                 >Terms of Service</a
               >
               and
               <a
-                href="{% url 'privacy_policy' %}"
+                href="{% url 'website:privacy-policy' %}"
                 class="underline"
                 style="color: #011e41"
                 >Privacy Policy</a
@@ -478,7 +478,7 @@ title }}{% endblock %} {% block content %}
         <p class="text-sm" style="color: #69768b">
           Already have an account?
           <a
-            href="{% url 'sign_in' %}"
+            href="{% url 'website:sign-in' %}"
             class="font-semibold underline"
             style="color: #011e41"
           >
@@ -632,5 +632,4 @@ title }}{% endblock %} {% block content %}
   });
 </script>
 
-<!-- Include Footer -->
-{% include 'website/components/global-footer.html' %} {% endblock %}
+{% endblock %}

@@ -1,0 +1,710 @@
+{% load static %}
+
+<!-- Screen 8-9: One-time Booking Details -->
+<div class="min-h-screen bg-white flex flex-col">
+  <!-- Sticky Header with Progress -->
+  <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
+        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="flex-1 max-w-md mx-auto">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              1
+            </div>
+            <div class="ml-2 text-sm font-medium" style="color: #011e41">
+              Details
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              2
+            </div>
+            <div class="ml-2 text-sm text-gray-600">Worker</div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              3
+            </div>
+            <div class="ml-2 text-sm text-gray-600">Payment</div>
+          </div>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div
+            class="bg-[#015e73] h-2 rounded-full"
+            style="width: 33.33%"
+          ></div>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div
+          @click="window.location.href = '/dashboard/'"
+          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
+        >
+          JG
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content with Sticky Sidebar -->
+  <div class="flex flex-1 max-w-7xl mx-auto w-full">
+    <!-- Sticky Left Column - Booking Details -->
+    <div
+      class="w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto px-6 py-8 space-y-6"
+    >
+      <!-- Booking Details -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+        <h3 class="text-lg font-bold mb-4" style="color: #011e41">
+          Booking Details
+        </h3>
+
+        <!-- Pricing Display -->
+        <div class="bg-gray-900 text-white rounded-2xl p-4">
+          <div class="flex justify-between items-center mb-2">
+            <div
+              class="text-2xl font-bold"
+              x-text="booking.details.duration"
+            ></div>
+            <div
+              class="text-2xl font-bold"
+              x-text="formatCurrency(booking.pricing.bookingCost)"
+            ></div>
+          </div>
+          <div class="flex justify-between text-sm text-gray-300">
+            <div>Est. hours</div>
+            <div>Est. Price</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location & Service Details -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+        <!-- Location -->
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">Where:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              1 Osborne Rd, Mowbray, Cape To...
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Service Type -->
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">What:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              Indoor Cleaning
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Savings Info -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center">
+        <div
+          class="w-20 h-20 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full mx-auto mb-3 flex items-center justify-center"
+        >
+          <div class="text-2xl">🐷</div>
+        </div>
+        <div class="text-sm font-bold mb-2" style="color: #011e41">
+          Book more, save more!
+        </div>
+        <div class="text-xs text-gray-600 space-y-1">
+          <div>1 - 2 days: No service fee</div>
+          <div>3 - 4 days: Up to 15% off</div>
+          <div>5+ days: Up to 28% off</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scrollable Right Column - Booking Form -->
+    <div class="flex-1 overflow-y-auto px-6 py-8">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-bold mb-2" style="color: #011e41">
+          One Time Booking
+        </h2>
+        <p class="text-gray-600 mb-8">
+          Get once-off help. Try a new worker. Cancel any time
+        </p>
+
+        <!-- Date/Time Banner -->
+        <div
+          class="bg-[#015e73]/10 border border-[#015e73]/20 rounded-2xl p-4 mb-8"
+        >
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-[#015e73] rounded-full flex items-center justify-center mr-3"
+            >
+              <svg
+                class="w-4 h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="font-bold" style="color: #011e41">Tomorrow</div>
+              <div class="text-sm text-gray-600">
+                <span
+                  class="bg-[#FDEA00] text-gray-900 px-2 py-1 rounded text-xs font-bold mr-2"
+                  >Premium</span
+                >
+                6 Jul 2025 | 07:00 - 07:30
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Fields -->
+        <div class="space-y-6">
+          <!-- Home Size -->
+          <div>
+            <h3 class="text-lg font-bold mb-4" style="color: #011e41">
+              Add details about your booking
+            </h3>
+            <label
+              class="block text-sm font-medium mb-2"
+              style="color: #4a5a70"
+            >
+              How big is your home?
+            </label>
+            <select
+              x-model="booking.details.homeSize"
+              @change="updateHomeSizeDuration()"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer"
+            >
+              <option value="small-1-2-bedrooms">
+                Small Home: 1-2 Bedrooms
+              </option>
+              <option value="medium-3-4-bedrooms" selected>
+                Medium Home: 3-4 Bedrooms
+              </option>
+              <option value="large-5-plus-bedrooms">
+                Large Home: 5+ Bedrooms
+              </option>
+            </select>
+          </div>
+
+          <!-- Extra Tasks -->
+          <div>
+            <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+              Extra Tasks
+            </h4>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div
+                @click="toggleExtraTask('inside-fridge')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('inside-fridge') }"
+              >
+                <!-- Selected Checkmark -->
+                <div
+                  x-show="booking.details.extraTasks.includes('inside-fridge')"
+                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
+                >
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <svg
+                  class="w-8 h-8 mx-auto mb-2"
+                  :class="booking.details.extraTasks.includes('inside-fridge') ? 'text-[#015e73]' : 'text-gray-600'"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 9h.01M15 9h.01"
+                  />
+                </svg>
+                <div
+                  class="text-xs font-medium"
+                  :class="booking.details.extraTasks.includes('inside-fridge') ? 'text-[#015e73]' : 'text-gray-700'"
+                >
+                  Inside Fridge
+                </div>
+              </div>
+
+              <div
+                @click="toggleExtraTask('inside-oven')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('inside-oven') }"
+              >
+                <!-- Selected Checkmark -->
+                <div
+                  x-show="booking.details.extraTasks.includes('inside-oven')"
+                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
+                >
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <svg
+                  class="w-8 h-8 mx-auto mb-2"
+                  :class="booking.details.extraTasks.includes('inside-oven') ? 'text-[#015e73]' : 'text-gray-600'"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16l3-1m-3 1l-3-1"
+                  />
+                </svg>
+                <div
+                  class="text-xs font-medium"
+                  :class="booking.details.extraTasks.includes('inside-oven') ? 'text-[#015e73]' : 'text-gray-700'"
+                >
+                  Inside Oven
+                </div>
+              </div>
+
+              <div
+                @click="toggleExtraTask('inside-cabinets')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('inside-cabinets') }"
+              >
+                <!-- Selected Checkmark -->
+                <div
+                  x-show="booking.details.extraTasks.includes('inside-cabinets')"
+                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
+                >
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <svg
+                  class="w-8 h-8 mx-auto mb-2"
+                  :class="booking.details.extraTasks.includes('inside-cabinets') ? 'text-[#015e73]' : 'text-gray-600'"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  />
+                </svg>
+                <div
+                  class="text-xs font-medium"
+                  :class="booking.details.extraTasks.includes('inside-cabinets') ? 'text-[#015e73]' : 'text-gray-700'"
+                >
+                  Inside Cabinets
+                </div>
+              </div>
+
+              <div
+                @click="toggleExtraTask('interior-windows')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('interior-windows') }"
+              >
+                <!-- Selected Checkmark -->
+                <div
+                  x-show="booking.details.extraTasks.includes('interior-windows')"
+                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
+                >
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <svg
+                  class="w-8 h-8 mx-auto mb-2"
+                  :class="booking.details.extraTasks.includes('interior-windows') ? 'text-[#015e73]' : 'text-gray-600'"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"
+                  />
+                </svg>
+                <div
+                  class="text-xs font-medium"
+                  :class="booking.details.extraTasks.includes('interior-windows') ? 'text-[#015e73]' : 'text-gray-700'"
+                >
+                  Interior Windows
+                </div>
+              </div>
+
+              <div
+                @click="toggleExtraTask('interior-walls')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('interior-walls') }"
+              >
+                <!-- Selected Checkmark -->
+                <div
+                  x-show="booking.details.extraTasks.includes('interior-walls')"
+                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
+                >
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <svg
+                  class="w-8 h-8 mx-auto mb-2"
+                  :class="booking.details.extraTasks.includes('interior-walls') ? 'text-[#015e73]' : 'text-gray-600'"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+                <div
+                  class="text-xs font-medium"
+                  :class="booking.details.extraTasks.includes('interior-walls') ? 'text-[#015e73]' : 'text-gray-700'"
+                >
+                  Interior Walls
+                </div>
+              </div>
+
+              <div
+                @click="toggleExtraTask('water-plants')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('water-plants') }"
+              >
+                <!-- Selected Checkmark -->
+                <div
+                  x-show="booking.details.extraTasks.includes('water-plants')"
+                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
+                >
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <svg
+                  class="w-8 h-8 mx-auto mb-2"
+                  :class="booking.details.extraTasks.includes('water-plants') ? 'text-[#015e73]' : 'text-gray-600'"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 3V1m0 18v2m8-10v2m0-6V3m0 18v-2"
+                  />
+                </svg>
+                <div
+                  class="text-xs font-medium"
+                  :class="booking.details.extraTasks.includes('water-plants') ? 'text-[#015e73]' : 'text-gray-700'"
+                >
+                  Water Plants
+                </div>
+              </div>
+
+              <div
+                @click="toggleExtraTask('ironing')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('ironing') }"
+              >
+                <!-- Selected Checkmark -->
+                <div
+                  x-show="booking.details.extraTasks.includes('ironing')"
+                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
+                >
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <svg
+                  class="w-8 h-8 mx-auto mb-2"
+                  :class="booking.details.extraTasks.includes('ironing') ? 'text-[#015e73]' : 'text-gray-600'"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <div
+                  class="text-xs font-medium"
+                  :class="booking.details.extraTasks.includes('ironing') ? 'text-[#015e73]' : 'text-gray-700'"
+                >
+                  Ironing
+                </div>
+              </div>
+
+              <div
+                @click="toggleExtraTask('laundry')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('laundry') }"
+              >
+                <!-- Selected Checkmark -->
+                <div
+                  x-show="booking.details.extraTasks.includes('laundry')"
+                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
+                >
+                  <svg
+                    class="w-3 h-3 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+                <svg
+                  class="w-8 h-8 mx-auto mb-2"
+                  :class="booking.details.extraTasks.includes('laundry') ? 'text-[#015e73]' : 'text-gray-600'"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+                <div
+                  class="text-xs font-medium"
+                  :class="booking.details.extraTasks.includes('laundry') ? 'text-[#015e73]' : 'text-gray-700'"
+                >
+                  Laundry
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Duration -->
+          <div>
+            <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+              Booking Duration
+            </h4>
+            <div class="flex items-center space-x-4">
+              <button
+                @click="updateDuration(-0.5)"
+                class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20 12H4"
+                  />
+                </svg>
+              </button>
+              <div
+                class="text-2xl font-bold min-w-[60px] text-center"
+                x-text="booking.details.duration"
+              ></div>
+              <button
+                @click="updateDuration(0.5)"
+                class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v12m6-6H6"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Start Time -->
+          <div>
+            <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+              Select start time:
+            </h4>
+            <select
+              x-model="booking.details.startTime"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer"
+            >
+              <template x-for="time in timeSlots" :key="time">
+                <option :value="time" x-text="time"></option>
+              </template>
+            </select>
+          </div>
+
+          <!-- Special Instructions -->
+          <div>
+            <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+              Add specific instructions
+            </h4>
+            <textarea
+              x-model="booking.details.notes"
+              placeholder="Add your notes here"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent h-24 resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex space-x-4 pt-6">
+            <button
+              @click="findWorker()"
+              class="flex-1 py-3 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
+            >
+              Find a Worker
+            </button>
+            <button
+              @click="goToScreen(7)"
+              class="flex-1 py-3 px-6 bg-white border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+            >
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

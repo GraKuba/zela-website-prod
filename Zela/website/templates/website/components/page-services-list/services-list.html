@@ -1,0 +1,770 @@
+{% load static %}
+
+<!-- Services List Page -->
+<section class="py-24 bg-[#F5F5F5] mx-auto z-10 relative" id="services-list">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Services Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+      <!-- Service Card 1: On-Demand Home Cleaning -->
+      <div
+        class="relative rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer"
+        style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05)"
+      >
+        <div class="relative h-80">
+          <!-- Background Image -->
+          <img
+            src="{% static 'services/cleaning-woman.webp' %}"
+            alt="On-demand home cleaning service"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <!-- Overlay -->
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-gray-900/60 to-gray-700/40"
+          ></div>
+
+          <!-- Content -->
+          <div
+            class="relative z-10 p-8 h-full flex flex-col justify-between text-white"
+          >
+            <div>
+              <p class="text-lg font-medium mb-4 leading-relaxed">
+                Sparkling clean home<br />
+                without lifting a finger.
+              </p>
+            </div>
+
+            <div class="flex items-end justify-between">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L9 5.414V17a1 1 0 102 0V5.414l5.293 5.293a1 1 0 001.414-1.414l-7-7z"
+                  />
+                </svg>
+                <span class="text-sm font-semibold uppercase tracking-wide"
+                  >home cleaning</span
+                >
+              </div>
+
+              <button
+                class="w-12 h-12 bg-[#FDEA00] text-[#011E41] rounded-full flex items-center justify-center hover:bg-[#fff000] transition-colors group-hover:scale-110 transform duration-300"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Card 2: Specialty Cleaning -->
+      <div
+        class="relative rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer"
+        style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05)"
+      >
+        <div class="relative h-80">
+          <!-- Background Image -->
+          <img
+            src="{% static 'services/cleaning-stove.webp' %}"
+            alt="Specialty cleaning service"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <!-- Overlay -->
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-gray-900/60 to-gray-700/40"
+          ></div>
+
+          <!-- Content -->
+          <div
+            class="relative z-10 p-8 h-full flex flex-col justify-between text-white"
+          >
+            <div>
+              <p class="text-lg font-medium mb-4 leading-relaxed">
+                Deep cleaning extras<br />
+                for the finishing touches.
+              </p>
+            </div>
+
+            <div class="flex items-end justify-between">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-sm font-semibold uppercase tracking-wide"
+                  >specialty cleaning</span
+                >
+              </div>
+
+              <button
+                class="w-12 h-12 bg-[#FDEA00] text-[#011E41] rounded-full flex items-center justify-center hover:bg-[#fff000] transition-colors group-hover:scale-110 transform duration-300"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Card 3: Outdoor & Garden Care -->
+      <div
+        class="relative rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer"
+        style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05)"
+      >
+        <div class="relative h-80">
+          <!-- Background Image -->
+          <img
+            src="{% static 'how-it-works/hiw3.webp' %}"
+            alt="Outdoor and garden care service"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <!-- Overlay -->
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-gray-900/60 to-gray-700/40"
+          ></div>
+
+          <!-- Content -->
+          <div
+            class="relative z-10 p-8 h-full flex flex-col justify-between text-white"
+          >
+            <div>
+              <p class="text-lg font-medium mb-4 leading-relaxed">
+                Beautiful outdoor spaces<br />
+                made effortless.
+              </p>
+            </div>
+
+            <div class="flex items-end justify-between">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                  />
+                </svg>
+                <span class="text-sm font-semibold uppercase tracking-wide"
+                  >outdoor & garden care</span
+                >
+              </div>
+
+              <button
+                class="w-12 h-12 bg-[#FDEA00] text-[#011E41] rounded-full flex items-center justify-center hover:bg-[#fff000] transition-colors group-hover:scale-110 transform duration-300"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Card 4: Connect Trades & Repairs -->
+      <div
+        class="relative rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer"
+        style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05)"
+      >
+        <div class="relative h-80">
+          <!-- Background Image -->
+          <img
+            src="{% static 'team/young_angolan_businessman.webp' %}"
+            alt="Trades and repairs service"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <!-- Overlay -->
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-gray-900/60 to-gray-700/40"
+          ></div>
+
+          <!-- Content -->
+          <div
+            class="relative z-10 p-8 h-full flex flex-col justify-between text-white"
+          >
+            <div>
+              <p class="text-lg font-medium mb-4 leading-relaxed">
+                Quick fixes and repairs<br />
+                from trusted tradespeople.
+              </p>
+            </div>
+
+            <div class="flex items-end justify-between">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"
+                  />
+                </svg>
+                <span class="text-sm font-semibold uppercase tracking-wide"
+                  >trades & repairs</span
+                >
+              </div>
+
+              <button
+                class="w-12 h-12 bg-[#FDEA00] text-[#011E41] rounded-full flex items-center justify-center hover:bg-[#fff000] transition-colors group-hover:scale-110 transform duration-300"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Card 5: Full-Time Placements -->
+      <div
+        class="relative rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer"
+        style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05)"
+      >
+        <div class="relative h-80">
+          <!-- Background Image -->
+          <img
+            src="{% static 'team/help_center_employee.webp' %}"
+            alt="Full-time placement service"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <!-- Overlay -->
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-gray-900/60 to-gray-700/40"
+          ></div>
+
+          <!-- Content -->
+          <div
+            class="relative z-10 p-8 h-full flex flex-col justify-between text-white"
+          >
+            <div>
+              <p class="text-lg font-medium mb-4 leading-relaxed">
+                Long-term household help<br />
+                with full-time support.
+              </p>
+            </div>
+
+            <div class="flex items-end justify-between">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+                  />
+                </svg>
+                <span class="text-sm font-semibold uppercase tracking-wide"
+                  >full-time placements</span
+                >
+              </div>
+
+              <button
+                class="w-12 h-12 bg-[#FDEA00] text-[#011E41] rounded-full flex items-center justify-center hover:bg-[#fff000] transition-colors group-hover:scale-110 transform duration-300"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Card 6: Add-On Tasks -->
+      <div
+        class="relative rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer"
+        style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05)"
+      >
+        <div class="relative h-80">
+          <!-- Background Image -->
+          <img
+            src="{% static 'cta/cleaning_supplies.webp' %}"
+            alt="Add-on tasks service"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <!-- Overlay -->
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-gray-900/60 to-gray-700/40"
+          ></div>
+
+          <!-- Content -->
+          <div
+            class="relative z-10 p-8 h-full flex flex-col justify-between text-white"
+          >
+            <div>
+              <p class="text-lg font-medium mb-4 leading-relaxed">
+                Extra tasks to complete<br />
+                your perfect clean.
+              </p>
+            </div>
+
+            <div class="flex items-end justify-between">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z"
+                  />
+                </svg>
+                <span class="text-sm font-semibold uppercase tracking-wide"
+                  >add-on tasks</span
+                >
+              </div>
+
+              <button
+                class="w-12 h-12 bg-[#FDEA00] text-[#011E41] rounded-full flex items-center justify-center hover:bg-[#fff000] transition-colors group-hover:scale-110 transform duration-300"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Card 7: Optional Services -->
+      <div
+        class="relative rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group cursor-pointer md:col-span-2"
+        style="box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05)"
+      >
+        <div class="relative h-80">
+          <!-- Background Image -->
+          <img
+            src="{% static 'services/workspace-flower.webp' %}"
+            alt="Optional services"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <!-- Overlay -->
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-gray-900/60 to-gray-700/40"
+          ></div>
+
+          <!-- Content -->
+          <div
+            class="relative z-10 p-8 h-full flex flex-col justify-between text-white"
+          >
+            <div>
+              <p class="text-lg font-medium mb-4 leading-relaxed">
+                Premium services<br />
+                in select areas.
+              </p>
+            </div>
+
+            <div class="flex items-end justify-between">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                <span class="text-sm font-semibold uppercase tracking-wide"
+                  >optional services</span
+                >
+              </div>
+
+              <button
+                class="w-12 h-12 bg-[#FDEA00] text-[#011E41] rounded-full flex items-center justify-center hover:bg-[#fff000] transition-colors group-hover:scale-110 transform duration-300"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comprehensive Service Details Table -->
+    <div class="mb-24">
+      <div class="text-center mb-12">
+        <h2
+          class="text-4xl lg:text-5xl font-bold text-[#011E41] mb-6"
+          style="line-height: 1.1"
+        >
+          Complete Service Details
+        </h2>
+        <p
+          class="text-xl text-[#4A5A70] max-w-3xl mx-auto"
+          style="line-height: 1.6"
+        >
+          Everything you need to know about our services, tasks, and pricing.
+        </p>
+      </div>
+
+      <div
+        class="bg-white rounded-3xl overflow-hidden"
+        style="box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1)"
+      >
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-[#015e73] text-white">
+              <tr>
+                <th class="px-6 py-6 text-left font-bold text-lg">Service</th>
+                <th class="px-6 py-6 text-left font-bold text-lg">
+                  Typical Tasks
+                </th>
+                <th class="px-6 py-6 text-center font-bold text-lg">Pricing</th>
+                <th class="px-6 py-6 text-center font-bold text-lg">
+                  Booking Pattern
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- On-Demand Home Cleaning -->
+              <tr class="border-b border-[#F5F5F5]">
+                <td class="px-6 py-6">
+                  <div class="font-bold text-[#011E41] text-lg">
+                    On-Demand Home Cleaning
+                  </div>
+                  <div class="text-sm text-[#4A5A70]" style="line-height: 1.6">
+                    Comprehensive home cleaning service
+                  </div>
+                </td>
+                <td class="px-6 py-6">
+                  <ul class="text-sm text-[#4A5A70] space-y-1">
+                    <li>• Sweeping & mopping floors</li>
+                    <li>• Dusting & wiping surfaces</li>
+                    <li>• Kitchen tidy-up, dishes</li>
+                    <li>• Bathroom sanitation</li>
+                    <li>• Laundry washing & ironing</li>
+                  </ul>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span class="font-bold text-[#011E41] text-lg">
+                    From 4,900 AOA/h
+                  </span>
+                  <div class="text-sm text-[#4A5A70]">Minimum 2 hours</div>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span
+                    class="bg-[#FDEA00] text-[#011E41] px-4 py-2 rounded-full text-sm font-bold"
+                  >
+                    Hourly
+                  </span>
+                  <div class="text-sm text-[#4A5A70] mt-2">
+                    One-off or weekly/fortnightly recurring
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Specialty Cleaning -->
+              <tr class="border-b border-[#F5F5F5]">
+                <td class="px-6 py-6">
+                  <div class="font-bold text-[#011E41] text-lg">
+                    Specialty Cleaning
+                  </div>
+                  <div class="text-sm text-[#4A5A70]" style="line-height: 1.6">
+                    Deep cleaning add-on services
+                  </div>
+                </td>
+                <td class="px-6 py-6">
+                  <ul class="text-sm text-[#4A5A70] space-y-1">
+                    <li>• Inside-oven deep-clean</li>
+                    <li>• Fridge & cabinet clean-out</li>
+                    <li>• Window wash (interior)</li>
+                    <li>• Carpet spot-treatment</li>
+                    <li>• Post-renovation dust & debris removal</li>
+                    <li>• Garage / storage declutter</li>
+                  </ul>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span class="font-bold text-[#011E41] text-lg">
+                    3,000 AOA
+                  </span>
+                  <div class="text-sm text-[#4A5A70]">per add-on</div>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span
+                    class="bg-[#F5F5F5] text-[#011E41] px-4 py-2 rounded-full text-sm font-bold border-2 border-[#011E41]"
+                  >
+                    Add-on
+                  </span>
+                  <div class="text-sm text-[#4A5A70] mt-2">
+                    Booked as extras to any visit
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Outdoor & Garden Care -->
+              <tr class="border-b border-[#F5F5F5]">
+                <td class="px-6 py-6">
+                  <div class="font-bold text-[#011E41] text-lg">
+                    Outdoor & Garden Care
+                  </div>
+                  <div class="text-sm text-[#4A5A70]" style="line-height: 1.6">
+                    Exterior and garden maintenance
+                  </div>
+                </td>
+                <td class="px-6 py-6">
+                  <ul class="text-sm text-[#4A5A70] space-y-1">
+                    <li>• Patio / braai-area pressure wash</li>
+                    <li>• Lawn mowing & edging</li>
+                    <li>• Hedge shaping & bush trimming</li>
+                    <li>• Pool skimming & chemical check</li>
+                    <li>• Leaf blowing & outdoor tidy</li>
+                  </ul>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span class="font-bold text-[#011E41] text-lg">
+                    From 9,000 AOA
+                  </span>
+                  <div class="text-sm text-[#4A5A70]">
+                    Instant on-site quote
+                  </div>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span
+                    class="bg-[#F5F5F5] text-[#011E41] px-4 py-2 rounded-full text-sm font-bold border-2 border-[#011E41]"
+                  >
+                    Seasonal
+                  </span>
+                  <div class="text-sm text-[#4A5A70] mt-2">
+                    Seasonal or ad-hoc
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Connect Trades & Repairs -->
+              <tr class="border-b border-[#F5F5F5]">
+                <td class="px-6 py-6">
+                  <div class="font-bold text-[#011E41] text-lg">
+                    Connect Trades & Repairs
+                  </div>
+                  <div class="text-sm text-[#4A5A70]" style="line-height: 1.6">
+                    Professional repair services
+                  </div>
+                </td>
+                <td class="px-6 py-6">
+                  <ul class="text-sm text-[#4A5A70] space-y-1">
+                    <li>
+                      • Handyman fixes (hanging shelves, furniture assembly)
+                    </li>
+                    <li>• Plumbing (leaky tap, clogged drain)</li>
+                    <li>• Electrical (light-fixture install, socket repair)</li>
+                    <li>• Small moves & lifting help</li>
+                  </ul>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span class="font-bold text-[#011E41] text-lg">
+                    Custom Quote
+                  </span>
+                  <div class="text-sm text-[#4A5A70]">Call-out fee waived</div>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span
+                    class="bg-[#F5F5F5] text-[#011E41] px-4 py-2 rounded-full text-sm font-bold border-2 border-[#011E41]"
+                  >
+                    Per Job
+                  </span>
+                  <div class="text-sm text-[#4A5A70] mt-2">
+                    30-day workmanship guarantee
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Full-Time Placements -->
+              <tr class="border-b border-[#F5F5F5]">
+                <td class="px-6 py-6">
+                  <div class="font-bold text-[#011E41] text-lg">
+                    Full-Time Placements
+                  </div>
+                  <div class="text-sm text-[#4A5A70]" style="line-height: 1.6">
+                    Long-term household assistance
+                  </div>
+                </td>
+                <td class="px-6 py-6">
+                  <ul class="text-sm text-[#4A5A70] space-y-1">
+                    <li>• Live-in or live-out domestic worker</li>
+                    <li>• Nanny / childcare aide</li>
+                    <li>• Elder-care companion</li>
+                  </ul>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span class="font-bold text-[#011E41] text-lg">
+                    65,000-85,000 AOA
+                  </span>
+                  <div class="text-sm text-[#4A5A70]">finder's fee</div>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span
+                    class="bg-[#F5F5F5] text-[#011E41] px-4 py-2 rounded-full text-sm font-bold border-2 border-[#011E41]"
+                  >
+                    One-off
+                  </span>
+                  <div class="text-sm text-[#4A5A70] mt-2">
+                    Includes screening & 60-day replacement
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Add-On Tasks -->
+              <tr class="border-b border-[#F5F5F5]">
+                <td class="px-6 py-6">
+                  <div class="font-bold text-[#011E41] text-lg">
+                    Add-On Tasks
+                  </div>
+                  <div class="text-sm text-[#4A5A70]" style="line-height: 1.6">
+                    Bookable with any clean
+                  </div>
+                </td>
+                <td class="px-6 py-6">
+                  <ul class="text-sm text-[#4A5A70] space-y-1">
+                    <li>• Bed-linen change</li>
+                    <li>• Interior cabinet wipe</li>
+                    <li>• Ironing bundle (10 items)</li>
+                    <li>• Fridge defrost</li>
+                  </ul>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span class="font-bold text-[#011E41] text-lg">
+                    3,000 AOA
+                  </span>
+                  <div class="text-sm text-[#4A5A70]">each task</div>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span
+                    class="bg-[#FDEA00] text-[#011E41] px-4 py-2 rounded-full text-sm font-bold"
+                  >
+                    Individual
+                  </span>
+                  <div class="text-sm text-[#4A5A70] mt-2">
+                    Added individually during booking
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Optional Services -->
+              <tr>
+                <td class="px-6 py-6">
+                  <div class="font-bold text-[#011E41] text-lg">
+                    Optional Services
+                  </div>
+                  <div class="text-sm text-[#4A5A70]" style="line-height: 1.6">
+                    Pilot regions only
+                  </div>
+                </td>
+                <td class="px-6 py-6">
+                  <ul class="text-sm text-[#4A5A70] space-y-1">
+                    <li>• Car-interior cleaning</li>
+                    <li>• Carpet shampoo</li>
+                    <li>• Upholstery steam-clean</li>
+                  </ul>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span class="font-bold text-[#011E41] text-lg">
+                    Custom Quote
+                  </span>
+                  <div class="text-sm text-[#4A5A70]">Quoted on request</div>
+                </td>
+                <td class="px-6 py-6 text-center">
+                  <span
+                    class="bg-[#F5F5F5] text-[#011E41] px-4 py-2 rounded-full text-sm font-bold border-2 border-[#011E41]"
+                  >
+                    Limited
+                  </span>
+                  <div class="text-sm text-[#4A5A70] mt-2">
+                    Limited zones only
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom CTA Section -->
+    <div class="text-center">
+      <div
+        class="bg-white rounded-3xl p-8 shadow-lg"
+        style="box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1)"
+      >
+        <h3 class="text-2xl font-bold text-[#011E41] mb-4">
+          Ready to book your service?
+        </h3>
+        <p class="text-[#4A5A70] mb-6">
+          Get started with our 3-step booking wizard and have your space cleaned
+          by verified professionals.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            class="bg-[#011E41] text-[#FDEA00] px-8 py-3 rounded-full font-semibold hover:bg-[#022951] transition-colors"
+            style="box-shadow: 0 8px 20px rgba(1, 30, 65, 0.3)"
+          >
+            Book Now
+          </button>
+          <button
+            class="bg-[#FDEA00] text-[#011E41] px-8 py-3 rounded-full font-semibold hover:bg-[#fff000] transition-colors"
+            style="box-shadow: 0 8px 20px rgba(253, 234, 0, 0.3)"
+          >
+            Get Quote
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

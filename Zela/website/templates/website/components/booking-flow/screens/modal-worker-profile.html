@@ -1,0 +1,264 @@
+{% load static %}
+
+<!-- Worker Profile Modal -->
+<div
+  x-data="{ 
+    isOpen: false, 
+    selectedWorker: null,
+    workers: {
+      'memory-mudede': {
+        name: 'Memory Mudede',
+        image: 'beatriz.webp',
+        recommend: 98,
+        jobsCompleted: 423,
+        experience: ['Hospitality'],
+        availability: ['mon', 'tue', 'wed', 'thu', 'sat'],
+        about: 'I live in Landsdowne, and grew up in Mutare, Zimbabwe. I have been doing domestic work for 3 years. My previous employers have described me as loyal, honest and hardworking. In my spare time, I enjoy watching TV and going to church. Apart from English, I also speak Xhosa and Zulu.'
+      },
+      'annah-havo': {
+        name: 'Annah Havo',
+        image: 'carla.webp',
+        recommend: 99,
+        jobsCompleted: 200,
+        experience: ['Hospitality', 'Childcare'],
+        availability: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
+        about: 'I am a dedicated cleaner from Khayelitsha with 2 years of experience. I take pride in my work and always ensure every corner is spotless. I speak English, Xhosa, and Zulu. In my free time, I enjoy reading and spending time with my family.'
+      },
+      'epiphaniah-matarirano': {
+        name: 'Epiphaniah Matarirano',
+        image: 'isabella.webp',
+        recommend: 97,
+        jobsCompleted: 115,
+        experience: ['Hospitality'],
+        availability: ['tue', 'wed', 'thu', 'fri', 'sat'],
+        about: 'I am from Harare, Zimbabwe and have been working as a domestic helper for 1.5 years. I am known for my attention to detail and reliability. I speak English and Shona. I enjoy cooking traditional dishes and listening to music in my spare time.'
+      },
+      'margaret-buleya': {
+        name: 'Margaret Buleya',
+        image: 'juliana.webp',
+        recommend: 95,
+        jobsCompleted: 66,
+        experience: ['Hospitality'],
+        availability: ['mon', 'wed', 'fri', 'sat', 'sun'],
+        about: 'I am a hardworking cleaner from Mitchells Plain with 1 year of experience. I am passionate about creating clean and comfortable spaces for families. I speak English and Afrikaans. I love gardening and spending time outdoors when I am not working.'
+      }
+    }
+  }"
+  @open-worker-profile.window="isOpen = true; selectedWorker = $event.detail.workerId"
+  @close-worker-profile.window="isOpen = false"
+>
+  <!-- Modal Overlay -->
+  <div
+    x-show="isOpen"
+    x-transition:enter="transition-opacity ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition-opacity ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="fixed inset-0 bg-black bg-opacity-50 z-50"
+    @click="isOpen = false"
+  ></div>
+
+  <!-- Modal Content -->
+  <div
+    x-show="isOpen"
+    x-transition:enter="transform transition ease-out duration-300"
+    x-transition:enter-start="translate-x-full"
+    x-transition:enter-end="translate-x-0"
+    x-transition:leave="transform transition ease-in duration-200"
+    x-transition:leave-start="translate-x-0"
+    x-transition:leave-end="translate-x-full"
+    class="fixed top-0 right-0 w-[30%] h-full bg-white z-50 overflow-y-auto"
+    @click.stop
+  >
+    <!-- Header -->
+    <div
+      class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between"
+    >
+      <h2 class="text-2xl font-bold" style="color: #011e41">
+        SweepStar Profile
+      </h2>
+      <button
+        @click="isOpen = false"
+        class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="px-6 py-8 max-w-2xl mx-auto">
+      <template x-if="selectedWorker && workers[selectedWorker]">
+        <div>
+          <!-- Profile Picture and Name -->
+          <div class="text-center mb-8">
+            <div
+              class="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-4 overflow-hidden"
+            >
+              <img
+                :src="'/static/' + workers[selectedWorker].image"
+                :alt="workers[selectedWorker].name"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <h3
+              class="text-3xl font-bold"
+              style="color: #011e41"
+              x-text="workers[selectedWorker].name"
+            ></h3>
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="grid grid-cols-2 gap-6 mb-8">
+            <!-- Recommend -->
+            <div class="text-center">
+              <div class="text-lg font-bold mb-2" style="color: #011e41">
+                Recommend
+              </div>
+              <div class="flex items-center justify-center">
+                <svg
+                  class="w-6 h-6 text-[#015e73] mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M14,9H19.5L13.5,3.5L12,2L10.5,3.5L4.5,9H10V16H14V9M12,18A1,1 0 0,1 11,19A1,1 0 0,1 10,18A1,1 0 0,1 11,17A1,1 0 0,1 12,18Z"
+                  />
+                </svg>
+                <span class="text-2xl font-bold" style="color: #011e41">
+                  <span x-text="workers[selectedWorker].recommend"></span>%
+                </span>
+              </div>
+            </div>
+
+            <!-- Jobs Completed -->
+            <div class="text-center">
+              <div class="text-lg font-bold mb-2" style="color: #011e41">
+                Jobs Completed
+              </div>
+              <div
+                class="text-2xl font-bold"
+                style="color: #011e41"
+                x-text="workers[selectedWorker].jobsCompleted"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Experience -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4" style="color: #011e41">
+              Experience
+            </h4>
+            <div class="space-y-2">
+              <template
+                x-for="exp in workers[selectedWorker].experience"
+                :key="exp"
+              >
+                <div class="flex items-center">
+                  <svg
+                    class="w-5 h-5 text-green-500 mr-3"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"
+                    />
+                  </svg>
+                  <span
+                    class="text-lg"
+                    style="color: #011e41"
+                    x-text="exp"
+                  ></span>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Availability -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4" style="color: #011e41">
+              Availability
+            </h4>
+            <div class="flex justify-center space-x-4">
+              <template
+                x-for="(day, index) in ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']"
+                :key="day"
+              >
+                <div class="text-center">
+                  <div
+                    class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg mb-2"
+                    :class="workers[selectedWorker].availability.includes(day) ? 'bg-gray-900' : 'bg-gray-300'"
+                  >
+                    <span x-text="day.charAt(0).toUpperCase()"></span>
+                  </div>
+                  <div class="text-sm" style="color: #011e41">
+                    <span
+                      x-text="day.charAt(0).toUpperCase() + day.slice(1)"
+                    ></span>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- About Me -->
+          <div class="mb-8">
+            <h4 class="text-xl font-bold mb-4" style="color: #011e41">
+              About Me
+            </h4>
+            <p
+              class="text-gray-600 leading-relaxed"
+              x-text="workers[selectedWorker].about"
+            ></p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex space-x-4">
+            <button
+              @click="$dispatch('choose-worker', { workerId: selectedWorker }); isOpen = false"
+              class="flex-1 bg-[#015e73] text-white font-bold py-4 px-6 rounded-2xl hover:bg-[#014a5a] transition-colors"
+            >
+              Choose me
+            </button>
+            <button
+              @click="isOpen = false"
+              class="flex-1 bg-white border-2 border-gray-300 text-gray-700 font-bold py-4 px-6 rounded-2xl hover:bg-gray-50 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+</div>
+
+<!-- Script to trigger modal -->
+<script>
+  // Function to open worker profile modal
+  function viewWorkerProfile(workerId) {
+    window.dispatchEvent(
+      new CustomEvent("open-worker-profile", {
+        detail: { workerId: workerId },
+      })
+    );
+  }
+
+  // Function to choose worker from modal
+  document.addEventListener("choose-worker", function (e) {
+    chooseWorker(e.detail.workerId);
+  });
+</script>

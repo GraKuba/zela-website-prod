@@ -1,0 +1,38 @@
+{% extends "website/layouts/base.html" %} {% load static %} {% block title %}Zela Services - Complete Service Catalogue{% endblock %} {% block content %}
+<div class="min-h-screen bg-white mb-24">
+  <!-- Navigation -->
+  {% include "website/fragments/navbar.html" %}
+
+  <!-- Hero Header -->
+  <section
+    class="relative bg-[#015e73] text-white"
+    style="font-family: Arial, sans-serif"
+  >
+    <div class="max-w-screen-xl mx-auto px-8 py-24">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1
+          class="text-5xl lg:text-6xl font-bold mb-6"
+          style="line-height: 1.1; color: #ffffff"
+        >
+          Complete Service Catalogue
+        </h1>
+        <p
+          class="text-xl lg:text-2xl mb-8 max-w-2xl mx-auto"
+          style="line-height: 1.6; color: #ffffff; opacity: 0.9"
+        >
+          From on-demand cleaning to full-time household help—discover all the
+          ways Zela can support your lifestyle.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services List Component -->
+  {% include "website/components/page-services-list/services-list.html" %}
+
+  <!-- FAQ Accordion -->
+  {% include "website/components/faq-accordion.html" %}
+</div>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %} {% endblock %}

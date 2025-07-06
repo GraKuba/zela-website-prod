@@ -1,0 +1,352 @@
+{% load static %}
+<!-- Screen 7: Choose Date Bucket -->
+<div class="min-h-screen bg-white flex flex-col">
+  <!-- Sticky Header with Progress -->
+  <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
+        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="flex-1 max-w-md mx-auto">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              1
+            </div>
+            <div class="ml-2 text-sm font-medium" style="color: #011e41">
+              Details
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              2
+            </div>
+            <div class="ml-2 text-sm text-gray-600">Worker</div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              3
+            </div>
+            <div class="ml-2 text-sm text-gray-600">Payment</div>
+          </div>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div
+            class="bg-[#015e73] h-2 rounded-full"
+            style="width: 33.33%"
+          ></div>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div
+          @click="window.location.href = '/dashboard/'"
+          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
+        >
+          JG
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content with Sticky Sidebar -->
+  <div class="flex flex-1 max-w-7xl mx-auto w-full">
+    <!-- Sticky Left Column - Booking Details -->
+    <div
+      class="w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto px-6 py-8 space-y-6"
+    >
+      <!-- Booking Summary -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+        <h3 class="text-lg font-bold mb-4" style="color: #011e41">
+          Booking Details
+        </h3>
+        <!-- Pricing Display -->
+        <div class="bg-gray-900 text-white rounded-2xl p-4">
+          <div class="flex justify-between items-center mb-2">
+            <div
+              class="text-2xl font-bold"
+              x-text="booking.details.duration"
+            ></div>
+            <div
+              class="text-2xl font-bold"
+              x-text="formatCurrency(booking.pricing.bookingCost)"
+            ></div>
+          </div>
+          <div class="flex justify-between text-sm text-gray-300">
+            <div>Est. hours</div>
+            <div>Est. Price</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location & Service Details -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+        <!-- Location -->
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">Where:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              1 Osborne Rd, Mowbray, Cape To...
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Service Type -->
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">What:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              Indoor Cleaning
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Service Info -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center">
+        <div
+          class="w-20 h-20 bg-[#015e73] rounded-full mx-auto mb-4 flex items-center justify-center"
+        >
+          <svg
+            class="w-10 h-10 text-white"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19.36 2.72L20.78 4.14L15.06 9.85C16.13 11.39 16.28 13.24 15.38 14.44L9.06 8.12C10.26 7.22 12.11 7.37 13.65 8.44L19.36 2.72M5.93 17.57C3.92 15.56 2.69 13.16 2.35 10.92L7.23 8.83L14.67 16.27L12.58 21.15C10.34 20.81 7.94 19.58 5.93 17.57Z"
+            />
+          </svg>
+        </div>
+        <div class="text-lg font-bold mb-2" style="color: #011e41">
+          Top-to-bottom clean
+        </div>
+        <div class="text-sm text-gray-600 mb-4 leading-relaxed">
+          Indoor Cleaning includes a clean of all common areas in your home,
+          including your bedrooms, bathrooms, living room(s) and kitchen.
+        </div>
+        <button
+          @click="showServiceScope = true"
+          class="text-[#015e73] font-medium text-sm hover:text-[#014a5a] cursor-pointer"
+        >
+          Tell Me More
+        </button>
+      </div>
+    </div>
+
+    <!-- Scrollable Right Column - Date Selection -->
+    <div class="flex-1 overflow-y-auto px-6 py-8">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-bold mb-2" style="color: #011e41">
+          How often do you need help?
+        </h2>
+        <p class="text-gray-600 mb-8">How often do you need the service?</p>
+
+        <!-- Frequency Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <!-- One Time (Default/Unselected) -->
+          <div
+            @click="selectFrequency('one-time')"
+            class="bg-white border-2 border-gray-200 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-colors duration-200"
+            :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.frequency === 'one-time' }"
+          >
+            <div class="flex items-center mb-4">
+              <div
+                class="w-8 h-8 rounded-full flex items-center justify-center mr-3"
+                :class="booking.frequency === 'one-time' ? 'bg-[#015e73]' : 'bg-gray-200'"
+              >
+                <svg
+                  x-show="booking.frequency === 'one-time'"
+                  class="w-4 h-4 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-lg font-bold" style="color: #011e41">One Time</h3>
+            </div>
+            <p class="text-gray-600">
+              For once-off services that will not repeat.
+            </p>
+          </div>
+
+          <!-- Repeat -->
+          <div
+            @click="selectFrequency('repeat')"
+            class="bg-white border-2 border-gray-200 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-colors duration-200 relative"
+            :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.frequency === 'repeat' }"
+          >
+            <div
+              class="absolute -top-2 -right-2 bg-[#FDEA00] text-gray-900 text-xs font-bold px-3 py-1 rounded-full"
+            >
+              Best Value
+            </div>
+            <div class="flex items-center mb-4">
+              <div
+                class="w-8 h-8 rounded-full flex items-center justify-center mr-3"
+                :class="booking.frequency === 'repeat' ? 'bg-[#015e73]' : 'bg-gray-200'"
+              >
+                <svg
+                  x-show="booking.frequency === 'repeat'"
+                  class="w-4 h-4 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+                <svg
+                  x-show="booking.frequency !== 'repeat'"
+                  class="w-4 h-4 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+              </div>
+              <h3 class="text-lg font-bold" style="color: #011e41">Repeat</h3>
+            </div>
+            <p class="text-gray-600">
+              For repeat services every few days / weeks.
+            </p>
+          </div>
+        </div>
+
+        <!-- Date Selection -->
+        <div x-show="booking.frequency">
+          <h3 class="text-2xl font-bold mb-4" style="color: #011e41">
+            When do you need help?
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <!-- Tomorrow -->
+            <div
+              @click="selectDateBucket('tomorrow')"
+              class="bg-white border-2 border-gray-200 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-colors duration-200 relative"
+              :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.dateBucket === 'tomorrow' }"
+            >
+              <!-- Premium Badge -->
+              <div
+                class="absolute -top-2 -right-2 bg-[#FDEA00] text-gray-900 text-xs font-bold px-3 py-1 rounded-full"
+              >
+                Premium
+              </div>
+
+              <div class="text-center">
+                <div class="text-lg font-bold mb-2" style="color: #011e41">
+                  Tomorrow
+                </div>
+                <div class="text-sm text-gray-600">Get help tomorrow</div>
+              </div>
+            </div>
+
+            <!-- Later -->
+            <div
+              @click="selectDateBucket('later')"
+              class="bg-white border-2 border-gray-200 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-colors duration-200"
+              :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.dateBucket === 'later' }"
+            >
+              <div class="text-center">
+                <div class="text-lg font-bold mb-2" style="color: #011e41">
+                  Later
+                </div>
+                <div class="text-sm text-gray-600">Get help later</div>
+              </div>
+            </div>
+
+            <!-- Today (Disabled) -->
+            <div
+              class="bg-gray-100 border-2 border-gray-200 rounded-2xl p-6 cursor-not-allowed opacity-50"
+            >
+              <div class="text-center">
+                <div class="text-lg font-bold mb-2 text-gray-500">Today</div>
+                <div class="text-sm text-gray-500">Fully Booked</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Continue Button (shows after selections) -->
+          <div x-show="booking.frequency && booking.dateBucket">
+            <button
+              @click="goToScreen(8)"
+              class="w-full py-4 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 shadow-lg cursor-pointer"
+            >
+              Continue to Booking Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service Scope Modal (slides in from right) -->
+  <div
+    x-show="showServiceScope"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="transform translate-x-full"
+    x-transition:enter-end="transform translate-x-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="transform translate-x-0"
+    x-transition:leave-end="transform translate-x-full"
+    class="fixed top-0 right-0 w-96 h-full bg-white shadow-xl z-50 border-l border-gray-200"
+  >
+    {% include
+    'website/components/booking-flow/screens/modal-service-scope.html' %}
+  </div>
+</div>

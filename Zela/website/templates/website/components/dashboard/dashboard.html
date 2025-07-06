@@ -2,17 +2,18 @@
 <div
   class="min-h-screen flex"
   style="background-color: #f5f5f5"
+  x-cloak
   x-data="{
        currentTab: 'overview',
-       isProviderMode: {{ user.is_provider|yesno:'true,false' }},
+       isProviderMode: {{ is_provider|yesno:'true,false' }},
        sidebarOpen: false,
        userDropdownOpen: false,
        user: {
-         name: 'Maria Santos',
-         email: 'maria@example.com',
+         name: '{{ user.get_full_name|default:user.username }}',
+         email: '{{ user.email }}',
          avatar: '{% static "juliana.webp" %}',
-         is_provider: {{ user.is_provider|yesno:'true,false' }},
-         provider_verified: {{ user.provider_verified|yesno:'true,false' }}
+         is_provider: {{ is_provider|yesno:'true,false' }},
+         provider_verified: false
        },
        dashboardData: {
          nextBooking: {

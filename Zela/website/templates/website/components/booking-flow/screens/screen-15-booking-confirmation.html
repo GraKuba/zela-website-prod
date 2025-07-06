@@ -1,0 +1,128 @@
+{% load static %}
+<!-- Screen 15: Booking Confirmation -->
+<div class="min-h-screen bg-white flex items-center justify-center">
+  <div class="max-w-md w-full mx-auto px-6 py-8 text-center">
+    <!-- Success Icon -->
+    <div class="mb-8">
+      <div
+        class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
+      >
+        <svg
+          class="w-10 h-10 text-green-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 13l4 4L19 7"
+          />
+        </svg>
+      </div>
+
+
+
+    <!-- Congratulations Message -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold mb-4" style="color: #011e41">
+        Congratulations! 🎉
+      </h1>
+      <p class="text-lg text-gray-600 mb-2">Your booking has been confirmed</p>
+      <p class="text-sm text-gray-500">
+        You will receive a confirmation email shortly with all the details.
+      </p>
+    </div>
+
+    <!-- Booking Details Summary -->
+    <div class="bg-gray-50 rounded-2xl p-6 mb-8 text-left">
+      <h3 class="text-lg font-bold mb-4" style="color: #011e41">
+        Booking Summary
+      </h3>
+
+      <div class="space-y-3">
+        <div class="flex justify-between">
+          <span class="text-gray-600">Service:</span>
+          <span class="font-medium" style="color: #011e41"
+            >Indoor Cleaning</span
+          >
+        </div>
+
+        <div class="flex justify-between">
+          <span class="text-gray-600">Date & Time:</span>
+          <span class="font-medium" style="color: #011e41"
+            >Sun 6 Jul @ 07:00</span
+          >
+        </div>
+
+        <div class="flex justify-between">
+          <span class="text-gray-600">Location:</span>
+          <span class="font-medium" style="color: #011e41"
+            >1 Osborne Rd, Mowbray...</span
+          >
+        </div>
+
+        <div class="flex justify-between">
+          <span class="text-gray-600">Duration:</span>
+          <span class="font-medium" style="color: #011e41">5.5 hours</span>
+        </div>
+
+        <div class="border-t pt-3">
+          <div class="flex justify-between">
+            <span class="text-gray-600 font-medium">Total Paid:</span>
+            <span class="font-bold text-lg" style="color: #011e41"
+              >R770.00</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Next Steps -->
+    <div class="bg-blue-50 rounded-2xl p-6 mb-8">
+      <h4 class="text-lg font-bold mb-3" style="color: #011e41">
+        What's Next?
+      </h4>
+      <div class="space-y-2 text-sm text-gray-700">
+        <div class="flex items-start">
+          <span class="text-blue-600 mr-2">📧</span>
+          <span>Check your email for booking confirmation</span>
+        </div>
+        <div class="flex items-start">
+          <span class="text-blue-600 mr-2">📱</span>
+          <span>Track your booking in the dashboard</span>
+        </div>
+        <div class="flex items-start">
+          <span class="text-blue-600 mr-2">🏠</span>
+          <span>Prepare your space for the cleaning service</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Button -->
+    <button
+      onclick="goToDashboard()"
+      class="w-full py-4 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer text-lg"
+    >
+      OK
+    </button>
+
+    <!-- Additional Help -->
+    <div class="mt-6">
+      <p class="text-sm text-gray-500">
+        Need help?
+        <a href="/help-center/" class="text-[#015e73] hover:underline"
+          >Visit our Help Center</a
+        >
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function goToDashboard() {
+    // Navigate to dashboard
+    window.location.href = "/dashboard/";
+  }
+</script>

@@ -1,0 +1,260 @@
+<!-- Screen 5-6: Service Scope Slide-in Panel -->
+<div class="h-full flex flex-col">
+  <!-- Header -->
+  <div class="flex items-center justify-between p-6 border-b border-gray-200">
+    <h3 class="text-xl font-bold" style="color: #011e41">
+      What's included in your clean?
+    </h3>
+    <button
+      @click="showServiceScope = false"
+      class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200"
+    >
+      <svg
+        class="w-4 h-4 text-gray-600"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="flex-1 overflow-y-auto">
+    <div class="p-6">
+      <!-- Living Room -->
+      <div class="mb-8">
+        <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+          LIVING ROOM
+        </h4>
+        <div class="text-sm text-gray-600 mb-3">
+          General clean of living room and other living areas includes:
+        </div>
+        <div class="space-y-2">
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Dusting of furniture and surfaces
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Mopping and vacuuming of floors
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Dusting and wiping of skirtings
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Dusting and wiping of electronics, picture frames etc.
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Dusting and wiping of light switches and other fixtures
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kitchen -->
+      <div class="mb-8">
+        <h4 class="text-lg font-bold mb-4" style="color: #011e41">KITCHEN</h4>
+        <div class="text-sm text-gray-600 mb-3">
+          General clean of kitchen includes:
+        </div>
+        <div class="space-y-2">
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Wiping of surfaces, sinks and appliances
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">Washing of dishes</div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Wiping outside of cupboards and fridge
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">Wiping of walls</div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Emptying bins and cleaning bin area
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">Mopping floors</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bedrooms -->
+      <div class="mb-8">
+        <h4 class="text-lg font-bold mb-4" style="color: #011e41">BEDROOMS</h4>
+        <div class="text-sm text-gray-600 mb-3">
+          General clean of bedrooms includes:
+        </div>
+        <div class="space-y-2">
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Dusting of furniture and surfaces
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">Making bed</div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Vacuuming and/or mopping floors
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Dusting and wiping of skirtings
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Folding or hanging of clothes in bedroom
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bathrooms -->
+      <div class="mb-8">
+        <h4 class="text-lg font-bold mb-4" style="color: #011e41">BATHROOMS</h4>
+        <div class="text-sm text-gray-600 mb-3">
+          General clean of bathrooms includes:
+        </div>
+        <div class="space-y-2">
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Cleaning of shower, bath and sinks
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">Toilet clean</div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">Wiping of counters and taps</div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">Wiping of walls and mirrors</div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Wiping outside of cupboards and cabinets
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Folding or hanging of clean towels
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">
+              Emptying bins and cleaning bin area
+            </div>
+          </div>
+          <div class="flex items-start">
+            <div
+              class="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"
+            ></div>
+            <div class="text-sm text-gray-700">Mopping floors</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Button -->
+  <div class="border-t border-gray-200 p-6">
+    <button
+      @click="showServiceScope = false"
+      class="w-full py-3 px-6 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 transition-colors duration-200"
+    >
+      Ok, Got It
+    </button>
+  </div>
+</div>

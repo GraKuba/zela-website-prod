@@ -1,125 +1,135 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+# Import all views from the views package
+from .views.public import HomeView, ContactFormView, handler404, handler500
+from .views.services import ServiceCatalogueView, ServiceDetailPartial, ServiceTaskDetailPartial, ServiceListView
+from .views.blog import BlogIndexView, BlogPostView
+from .views.help_center import HelpCenterView, HelpCenterSearch, HelpArticleView
+from .views.auth import RegisterWizardView, SignInView, SignOutView
+from .views.dashboard import (
+    DashboardShellView, BookingListPartial, BookingUpdatePartial,
+    ProfileUpdateView, RatingCreatePartial
+)
+from .views.providers import ProviderLandingView, ProviderApplicationWizard
 
-# Create your views here.
+# Keep the existing simple views for backwards compatibility
+from django.shortcuts import render
+from django.views.generic import TemplateView
+from pricing.models import PricingConfig
+from cms.models import Page
+
+
+class AboutView(TemplateView):
+    """About page view."""
+    template_name = 'website/components/page-about/about.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'About Zela - Attention and care for your home',
+            'meta_description': 'Learn about Zela\'s mission to provide reliable home services in Angola.',
+        })
+        return context
+
+
+class PricingView(TemplateView):
+    """Pricing page view."""
+    template_name = 'website/components/page-pricing/pricing.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pricing = PricingConfig.get_instance()
+        context.update({
+            'title': 'Zela Pricing - Transparent and Fair',
+            'meta_description': 'View our transparent pricing for home services in Angola.',
+            'pricing': pricing,
+        })
+        return context
+
+
+class FlatPageView(TemplateView):
+    """Generic view for CMS pages."""
+    
+    def get_object(self):
+        """Get the page by slug."""
+        from django.shortcuts import get_object_or_404
+        return get_object_or_404(Page, slug=self.kwargs['slug'], is_visible=True)
+    
+    def get_template_names(self):
+        """Return template based on page slug."""
+        page = self.get_object()
+        
+        # Map specific slugs to templates
+        template_map = {
+            'privacy-policy': 'website/components/page-privacy-policy/privacy-policy.html',
+            'terms-of-service': 'website/components/page-terms-of-service/terms-of-service.html',
+            'cookie-policy': 'website/components/page-cookie-policy/cookie-policy.html',
+            'accessibility-statement': 'website/components/page-accessibility-statement/accessibility-statement.html',
+            'refund-policy': 'website/components/page-refund-policy/refund-policy.html',
+        }
+        
+        return [template_map.get(page.slug, 'website/components/page-generic.html')]
+    
+    def get_context_data(self, **kwargs):
+        """Add page context."""
+        context = super().get_context_data(**kwargs)
+        page = self.get_object()
+        
+        context.update({
+            'page': page,
+            'title': f'{page.title} - Zela',
+            'meta_description': page.meta_description or page.title,
+        })
+        
+        return context
+
+
+# Legacy function-based views for backwards compatibility
 def home(request):
-    return render(request, 'website/home.html', {
-        'title': 'Zela - Home',
-    })
+    return HomeView.as_view()(request)
 
 def about(request):
-    return render(request, 'website/components/page-about/about.html', {
-        'title': 'About Zela - Attention and care for your home',
-    })
+    return AboutView.as_view()(request)
 
 def blog(request):
-    return render(request, 'website/components/page-blog/blog.html', {
-        'title': 'Zela Blog - Tips, news and household inspiration',
-    })
+    return BlogIndexView.as_view()(request)
 
 def contact(request):
-    return render(request, 'website/components/page-contact/contact.html', {
-        'title': 'Contact Zela - Get in Touch',
-    })
+    return ContactFormView.as_view()(request)
 
 def pricing(request):
-    return render(request, 'website/components/page-pricing/pricing.html', {
-        'title': 'Zela Pricing - Transparent and Fair',
-    })
+    return PricingView.as_view()(request)
 
 def services(request):
-    return render(request, 'website/components/page-services/services.html', {
-        'title': 'Zela Services - Choose the Perfect Service',
-    })
+    return ServiceCatalogueView.as_view()(request)
 
 def register(request):
-    return render(request, 'website/components/auth-register/register.html', {
-        'title': 'Create Your Free Zela Account - Sign Up',
-    })
+    return RegisterWizardView.as_view()(request)
 
 def sign_in(request):
-    return render(request, 'website/components/auth-login/sign-in.html', {
-        'title': 'Sign In to Zela - Welcome Back',
-    })
+    return SignInView.as_view()(request)
 
 def dashboard(request):
-    # Mock user data - in production this would come from the database
-    context = {
-        'title': 'Dashboard - Zela',
-        'user': {
-            'name': 'Maria Santos',
-            'email': 'maria@example.com',
-            'avatar': 'https://via.placeholder.com/64',
-            'is_provider': False,  # This would be determined by user's role
-            'provider_verified': False,
-        },
-        'dashboard_data': {
-            'next_booking': {
-                'date': '2024-01-15',
-                'time': '10:00',
-                'service': 'Deep Clean',
-                'address': '123 Main Street, City Centre',
-                'provider': 'Ana Silva',
-                'countdown': '2 days, 3 hours'
-            },
-            'wallet_balance': 150.50,
-            'referral_credits': 25.00,
-            'total_bookings': 12,
-            'upcoming_bookings': 3,
-            'completed_bookings': 9,
-            'notifications_count': 5,
-            'unread_messages': 2,
-        }
-    }
-    return render(request, 'website/components/dashboard/dashboard.html', context)
-
-def handler404(request, exception):
-    """Custom 404 error handler"""
-    return render(request, 'website/components/page-404/404.html', status=404)
-
-
-def handler500(request):
-    """Custom 500 error handler"""
-    return render(request, 'website/components/page-500/500.html', status=500)
-
+    return DashboardShellView.as_view()(request)
 
 def privacy_policy(request):
-    return render(request, 'website/components/page-privacy-policy/privacy-policy.html', {
-        'title': 'Privacy Policy - Zela',
-    })
-
+    return FlatPageView.as_view()(request, slug='privacy-policy')
 
 def terms_of_service(request):
-    return render(request, 'website/components/page-terms-of-service/terms-of-service.html', {
-        'title': 'Terms of Service - Zela',
-    })
-
+    return FlatPageView.as_view()(request, slug='terms-of-service')
 
 def cookie_policy(request):
-    return render(request, 'website/components/page-cookie-policy/cookie-policy.html', {
-        'title': 'Cookie Policy - Zela',
-    })
-
+    return FlatPageView.as_view()(request, slug='cookie-policy')
 
 def accessibility_statement(request):
-    return render(request, 'website/components/page-accessibility-statement/accessibility-statement.html', {
-        'title': 'Accessibility Statement - Zela',
-    })
-
+    return FlatPageView.as_view()(request, slug='accessibility-statement')
 
 def refund_policy(request):
-    return render(request, 'website/components/page-refund-policy/refund-policy.html', {
-        'title': 'Refund Policy - Zela',
-    })
-
+    return FlatPageView.as_view()(request, slug='refund-policy')
 
 def help_center(request):
-    return render(request, 'website/components/page-help-center/help-center.html', {
-        'title': 'Help Center - Zela',
-    })
-
+    return HelpCenterView.as_view()(request)
 
 def blog_post(request):
+    # This would need a slug parameter
     return render(request, 'website/components/page-blog-post/blog-post.html', {
         'title': 'Blog Post - Zela Blog',
     })

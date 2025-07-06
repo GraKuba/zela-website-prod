@@ -1,0 +1,57 @@
+<!-- Screen 11: Heads-up Modal -->
+<div
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+>
+  <div
+    class="w-full max-w-md mx-auto bg-white rounded-3xl p-8 text-center shadow-2xl relative"
+  >
+    <!-- Close Button -->
+    <button
+      @click="closeHeadsUpModal()"
+      class="absolute top-4 right-4 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200"
+    >
+      <svg
+        class="w-4 h-4 text-gray-600"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+
+    <!-- Icon -->
+    <div class="mb-6">
+      <div
+        class="w-16 h-16 mx-auto bg-cyan-100 rounded-full flex items-center justify-center"
+      >
+        <div class="flex items-center">
+          <div class="text-2xl">🧽</div>
+          <div class="text-2xl ml-1">🧴</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <h3 class="text-2xl font-bold mb-4" style="color: #011e41">Heads up!</h3>
+
+    <!-- Content -->
+    <p class="text-gray-600 leading-relaxed mb-8">
+      SweepStars don't bring their own cleaning supplies and cleaning equipment,
+      <strong>so please have yours ready.</strong>
+    </p>
+
+    <!-- Action Button -->
+    <button
+      @click="closeHeadsUpModal()"
+      class="w-full py-3 px-6 bg-gray-900 text-white font-semibold rounded-full hover:bg-gray-800 transition-colors duration-200"
+    >
+      Ok, Got It!
+    </button>
+  </div>
+</div>
