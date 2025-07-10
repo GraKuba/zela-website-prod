@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'notifications',
     'pricing',
     'website',
-    'webapp',
 ]
 
 TAILWIND_APP_NAME = 'theme'
@@ -104,7 +103,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "website" / "static"]
+STATICFILES_DIRS = [
+    BASE_DIR / "website" / "static",
+    BASE_DIR / "theme" / "static",
+]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # WhiteNoise configuration

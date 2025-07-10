@@ -177,11 +177,11 @@ class RegisterWizardView(SessionWizardView):
         if self.request.htmx:
             return JsonResponse({
                 'ok': 1,
-                'redirect': reverse_lazy('dashboard')
+                'redirect': reverse_lazy('website:dashboard')
             })
         
         messages.success(self.request, 'Welcome to Zela! Your account has been created.')
-        return redirect('dashboard')
+        return redirect('website:dashboard')
 
 
 class SignInForm(forms.Form):
@@ -212,7 +212,7 @@ class SignInView(FormView):
     
     template_name = 'website/components/auth-login/sign-in.html'
     form_class = SignInForm
-    success_url = reverse_lazy('dashboard')
+    success_url = reverse_lazy('website:dashboard')
     
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         """Add context data for sign in page."""

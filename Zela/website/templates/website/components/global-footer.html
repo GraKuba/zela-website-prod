@@ -49,9 +49,9 @@
             Careers
           </a>
           <a
-            href="/blog"
+            href="{% url 'website:blog' %}"
             class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
-            hx-get="/blog"
+            hx-get="{% url 'website:blog' %}"
             hx-target="body"
             hx-swap="outerHTML"
           >

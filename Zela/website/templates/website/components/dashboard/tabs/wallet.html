@@ -6,112 +6,6 @@
   x-transition:enter-end="opacity-100 transform translate-y-0"
   class="space-y-6"
 >
-  <!-- Header -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <div class="flex items-center justify-between">
-      <div>
-        <h2 class="text-2xl font-bold" style="color: #011e41">
-          Wallet & Payments
-        </h2>
-        <p class="text-gray-600 mt-1">
-          Manage your balance, cards, and transactions
-        </p>
-      </div>
-      <button
-        class="px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg"
-        style="background-color: #fdea00; color: #011e41"
-      >
-        Top Up Wallet
-      </button>
-    </div>
-  </div>
-
-  <!-- Balance Cards -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <!-- Wallet Balance -->
-    <div
-      class="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-6 text-white"
-    >
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-semibold">Wallet Balance</h3>
-        <svg
-          class="h-8 w-8 text-blue-200"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-          />
-        </svg>
-      </div>
-      <div class="text-3xl font-bold mb-2">
-        R$ <span x-text="dashboardData.walletBalance.toFixed(2)"></span>
-      </div>
-      <p class="text-blue-200 text-sm">Available to spend</p>
-      <div class="mt-4 flex space-x-3">
-        <button
-          class="px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm rounded-lg text-sm font-medium hover:bg-opacity-30 transition-all duration-200"
-        >
-          Add Money
-        </button>
-        <button
-          class="px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm rounded-lg text-sm font-medium hover:bg-opacity-30 transition-all duration-200"
-        >
-          Transfer
-        </button>
-      </div>
-    </div>
-
-    <!-- Referral Credits -->
-    <div
-      class="bg-gradient-to-br rounded-xl p-6 text-white"
-      style="background: linear-gradient(135deg, #fdea00 0%, #fff000 100%)"
-    >
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-semibold" style="color: #011e41">
-          Referral Credits
-        </h3>
-        <svg
-          class="h-8 w-8"
-          style="color: #011e41"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
-          />
-        </svg>
-      </div>
-      <div class="text-3xl font-bold mb-2" style="color: #011e41">
-        R$ <span x-text="dashboardData.referralCredits.toFixed(2)"></span>
-      </div>
-      <p class="text-sm" style="color: #011e41">Earned from referrals</p>
-      <div class="mt-4 flex space-x-3">
-        <button
-          @click="currentTab = 'referrals'"
-          class="px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm rounded-lg text-sm font-medium hover:bg-opacity-30 transition-all duration-200"
-          style="color: #011e41"
-        >
-          View Details
-        </button>
-        <button
-          class="px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm rounded-lg text-sm font-medium hover:bg-opacity-30 transition-all duration-200"
-          style="color: #011e41"
-        >
-          Invite Friends
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- Payment Methods -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
@@ -119,7 +13,8 @@
         Payment Methods
       </h3>
       <button
-        class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+        class="px-4 py-2 text-white rounded-lg text-sm font-medium hover:opacity-90 transition-colors cursor-pointer"
+        style="background-color: #035d73"
       >
         Add New Card
       </button>
@@ -152,10 +47,13 @@
           </div>
           <div class="flex items-center space-x-2">
             <span
-              class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
+              class="px-2 py-1 text-xs font-medium rounded-full"
+              style="background-color: #fdea00; color: #035d73"
               >Primary</span
             >
-            <button class="p-2 hover:bg-gray-700 rounded-lg transition-colors">
+            <button
+              class="p-2 hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
+            >
               <svg
                 class="h-4 w-4"
                 fill="none"
@@ -200,11 +98,13 @@
           </div>
           <div class="flex items-center space-x-2">
             <button
-              class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+              class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors cursor-pointer"
             >
               Set Primary
             </button>
-            <button class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <button
+              class="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+            >
               <svg
                 class="h-4 w-4 text-gray-400"
                 fill="none"
@@ -232,7 +132,9 @@
         Recent Transactions
       </h3>
       <div class="flex items-center space-x-3">
-        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+        <select
+          class="border border-gray-300 rounded-lg px-3 py-2 text-sm cursor-pointer"
+        >
           <option>All Types</option>
           <option>Payments</option>
           <option>Refunds</option>
@@ -240,7 +142,7 @@
           <option>Top-ups</option>
         </select>
         <button
-          class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+          class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors cursor-pointer"
         >
           Export
         </button>
@@ -250,7 +152,7 @@
     <div class="space-y-4">
       <!-- Transaction 1 -->
       <div
-        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
       >
         <div class="flex items-center space-x-4">
           <div
@@ -283,14 +185,15 @@
 
       <!-- Transaction 2 -->
       <div
-        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
       >
         <div class="flex items-center space-x-4">
           <div
-            class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center"
+            class="w-10 h-10 rounded-full flex items-center justify-center"
+            style="background-color: #fdea00; color: #035d73"
           >
             <svg
-              class="h-5 w-5 text-green-600"
+              class="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -311,21 +214,22 @@
           </div>
         </div>
         <div class="text-right">
-          <div class="font-semibold text-green-600">+R$ 25.00</div>
+          <div class="font-semibold" style="color: #035d73">+R$ 25.00</div>
           <div class="text-sm text-gray-500">Completed</div>
         </div>
       </div>
 
       <!-- Transaction 3 -->
       <div
-        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
       >
         <div class="flex items-center space-x-4">
           <div
-            class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"
+            class="w-10 h-10 rounded-full flex items-center justify-center"
+            style="background-color: #035d73"
           >
             <svg
-              class="h-5 w-5 text-blue-600"
+              class="h-5 w-5 text-white"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -344,21 +248,22 @@
           </div>
         </div>
         <div class="text-right">
-          <div class="font-semibold text-blue-600">+R$ 100.00</div>
+          <div class="font-semibold" style="color: #035d73">+R$ 100.00</div>
           <div class="text-sm text-gray-500">Completed</div>
         </div>
       </div>
 
       <!-- Transaction 4 -->
       <div
-        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
       >
         <div class="flex items-center space-x-4">
           <div
-            class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center"
+            class="w-10 h-10 rounded-full flex items-center justify-center"
+            style="background-color: #fdea00; color: #035d73"
           >
             <svg
-              class="h-5 w-5 text-green-600"
+              class="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -379,7 +284,7 @@
           </div>
         </div>
         <div class="text-right">
-          <div class="font-semibold text-green-600">+R$ 120.00</div>
+          <div class="font-semibold" style="color: #035d73">+R$ 120.00</div>
           <div class="text-sm text-gray-500">Completed</div>
         </div>
       </div>
@@ -388,7 +293,7 @@
     <!-- Load More -->
     <div class="mt-6 text-center">
       <button
-        class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors"
+        class="px-6 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors cursor-pointer"
       >
         Load More Transactions
       </button>

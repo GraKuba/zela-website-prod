@@ -249,27 +249,26 @@
         READY TO MAKE CLEANING THE EASIEST<br />PART OF YOUR WEEK?
       </h3>
       <a
-        href="#contact"
-        class="inline-flex items-center bg-[#F6D55C] text-[#0A1628] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#F6D55C]/90 transition-all duration-300 hover:scale-105 shadow-lg"
+        href="{% url 'website:contact' %}"
+        class="inline-flex items-center bg-[#F6D55C] text-[#0A1628] px-6 py-2 rounded-full font-semibold hover:bg-[#F6D55C]/90 transition-colors shadow-lg gap-2"
+        hx-get="{% url 'website:contact' %}"
+        hx-target="body"
+        hx-swap="outerHTML"
       >
         Connect with us
-        <div
-          class="ml-4 w-10 h-10 bg-[#0A1628] rounded-full flex items-center justify-center"
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
-          <svg
-            class="w-5 h-5 text-[#F6D55C]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M17 8l4 4m0 0l-4 4m4-4H3"
-            />
-          </svg>
-        </div>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 8l4 4m0 0l-4 4m4-4H3"
+          />
+        </svg>
       </a>
     </div>
   </div>

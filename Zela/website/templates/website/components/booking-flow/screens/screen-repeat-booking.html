@@ -1,0 +1,472 @@
+{% load static %}
+
+<!-- Screen: Repeat Booking Details -->
+<div class="min-h-screen bg-white flex flex-col">
+  <!-- Sticky Header with Progress -->
+  <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
+        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="flex-1 max-w-md mx-auto">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              1
+            </div>
+            <div class="ml-2 text-sm font-medium" style="color: #011e41">
+              Details
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              2
+            </div>
+            <div class="ml-2 text-sm text-gray-600">Worker</div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              3
+            </div>
+            <div class="ml-2 text-sm text-gray-600">Payment</div>
+          </div>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div
+            class="bg-[#015e73] h-2 rounded-full"
+            style="width: 33.33%"
+          ></div>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div
+          @click="window.location.href = '/dashboard/'"
+          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
+        >
+          JG
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content with Sticky Sidebar -->
+  <div class="flex flex-1 max-w-7xl mx-auto w-full">
+    <!-- Sticky Left Column - Booking Details -->
+    <div
+      class="w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto px-6 py-8 space-y-6"
+    >
+      <!-- Booking Details -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+        <h3 class="text-lg font-bold mb-4" style="color: #011e41">
+          Booking Details
+        </h3>
+
+        <!-- Pricing Display -->
+        <div class="bg-gray-900 text-white rounded-2xl p-4">
+          <div class="flex justify-between items-center mb-2">
+            <div class="flex flex-col">
+              <div
+                class="text-2xl font-bold"
+                x-text="booking.repeat.numberOfSessions"
+              ></div>
+              <div class="text-sm text-gray-300">sessions</div>
+            </div>
+            <div class="flex flex-col text-right">
+              <div
+                class="text-2xl font-bold"
+                x-text="formatCurrency(booking.pricing.bookingCost)"
+              ></div>
+              <div class="text-sm text-gray-300">total</div>
+            </div>
+          </div>
+          <div class="flex justify-between text-sm text-gray-300">
+            <div
+              x-text="booking.details.duration + ' hrs each'"
+            ></div>
+            <div>Best Value</div>
+          </div>
+        </div>
+
+        <!-- Savings Badge -->
+        <div class="mt-4 bg-[#FDEA00] text-gray-900 rounded-lg p-3 text-center">
+          <div class="font-bold text-sm">
+            <span x-show="booking.repeat.numberOfSessions >= 8">Save 25%</span>
+            <span x-show="booking.repeat.numberOfSessions >= 4 && booking.repeat.numberOfSessions < 8">Save 15%</span>
+            <span x-show="booking.repeat.numberOfSessions < 4">Book more to save!</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Location & Service Details -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+        <!-- Location -->
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">Where:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              1 Osborne Rd, Mowbray, Cape To...
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Service Type -->
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-sm text-gray-600 mb-1">What:</div>
+            <div class="text-sm font-medium" style="color: #011e41">
+              Indoor Cleaning
+            </div>
+          </div>
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Repeat Benefits -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center">
+        <div
+          class="w-20 h-20 bg-gradient-to-br from-green-100 to-blue-100 rounded-full mx-auto mb-3 flex items-center justify-center"
+        >
+          <div class="text-2xl">🔄</div>
+        </div>
+        <div class="text-sm font-bold mb-2" style="color: #011e41">
+          Repeat Booking Benefits
+        </div>
+        <div class="text-xs text-gray-600 space-y-1">
+          <div>• Consistent service quality</div>
+          <div>• Volume discounts</div>
+          <div>• Priority booking</div>
+          <div>• Same trusted worker</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scrollable Right Column - Repeat Booking Form -->
+    <div class="flex-1 overflow-y-auto px-6 py-8">
+      <div class="max-w-2xl">
+        <h2 class="text-3xl font-bold mb-2" style="color: #011e41">
+          Repeat Booking
+        </h2>
+        <p class="text-gray-600 mb-8">
+          Save money with regular service. Set your schedule and enjoy consistency.
+        </p>
+
+        <!-- Form Fields -->
+        <div class="space-y-6">
+          <!-- Repeat Frequency -->
+          <div>
+            <h3 class="text-lg font-bold mb-4" style="color: #011e41">
+              How often do you need service?
+            </h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div
+                @click="setRepeatFrequency('weekly')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.frequency === 'weekly' }"
+              >
+                <div class="text-lg font-bold mb-2" style="color: #011e41">Weekly</div>
+                <div class="text-sm text-gray-600">Every week</div>
+              </div>
+              <div
+                @click="setRepeatFrequency('bi-weekly')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.frequency === 'bi-weekly' }"
+              >
+                <div class="text-lg font-bold mb-2" style="color: #011e41">Bi-weekly</div>
+                <div class="text-sm text-gray-600">Every 2 weeks</div>
+              </div>
+              <div
+                @click="setRepeatFrequency('monthly')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.frequency === 'monthly' }"
+              >
+                <div class="text-lg font-bold mb-2" style="color: #011e41">Monthly</div>
+                <div class="text-sm text-gray-600">Every month</div>
+              </div>
+              <div
+                @click="setRepeatFrequency('custom')"
+                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.frequency === 'custom' }"
+              >
+                <div class="text-lg font-bold mb-2" style="color: #011e41">Custom</div>
+                <div class="text-sm text-gray-600">Set your own</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Days of Week (for weekly/bi-weekly) -->
+          <div x-show="booking.repeat.frequency === 'weekly' || booking.repeat.frequency === 'bi-weekly'">
+            <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+              Which days?
+            </h4>
+            <div class="grid grid-cols-7 gap-2">
+              <div
+                @click="toggleDayOfWeek('monday')"
+                class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('monday') }"
+              >
+                <div class="text-sm font-medium">Mon</div>
+              </div>
+              <div
+                @click="toggleDayOfWeek('tuesday')"
+                class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('tuesday') }"
+              >
+                <div class="text-sm font-medium">Tue</div>
+              </div>
+              <div
+                @click="toggleDayOfWeek('wednesday')"
+                class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('wednesday') }"
+              >
+                <div class="text-sm font-medium">Wed</div>
+              </div>
+              <div
+                @click="toggleDayOfWeek('thursday')"
+                class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('thursday') }"
+              >
+                <div class="text-sm font-medium">Thu</div>
+              </div>
+              <div
+                @click="toggleDayOfWeek('friday')"
+                class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('friday') }"
+              >
+                <div class="text-sm font-medium">Fri</div>
+              </div>
+              <div
+                @click="toggleDayOfWeek('saturday')"
+                class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('saturday') }"
+              >
+                <div class="text-sm font-medium">Sat</div>
+              </div>
+              <div
+                @click="toggleDayOfWeek('sunday')"
+                class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
+                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('sunday') }"
+              >
+                <div class="text-sm font-medium">Sun</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Number of Sessions -->
+          <div>
+            <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+              How many sessions?
+            </h4>
+            <div class="flex items-center space-x-4">
+              <button
+                @click="updateNumberOfSessions(booking.repeat.numberOfSessions - 1)"
+                class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20 12H4"
+                  />
+                </svg>
+              </button>
+              <div
+                class="text-2xl font-bold min-w-[60px] text-center"
+                x-text="booking.repeat.numberOfSessions"
+              ></div>
+              <button
+                @click="updateNumberOfSessions(booking.repeat.numberOfSessions + 1)"
+                class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v12m6-6H6"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Start Date -->
+          <div>
+            <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+              When do you want to start?
+            </h4>
+            <input
+              type="date"
+              x-model="booking.repeat.startDate"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent"
+              :min="new Date().toISOString().split('T')[0]"
+            />
+          </div>
+
+          <!-- Home Size -->
+          <div>
+            <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+              How big is your home?
+            </h4>
+            <select
+              x-model="booking.details.homeSize"
+              @change="updateHomeSizeDuration(); calculateRepeatPricing()"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer"
+            >
+              <option value="small-1-2-bedrooms">
+                Small Home: 1-2 Bedrooms
+              </option>
+              <option value="medium-3-4-bedrooms" selected>
+                Medium Home: 3-4 Bedrooms
+              </option>
+              <option value="large-5-plus-bedrooms">
+                Large Home: 5+ Bedrooms
+              </option>
+            </select>
+          </div>
+
+          <!-- Duration -->
+          <div>
+            <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+              Session Duration
+            </h4>
+            <div class="flex items-center space-x-4">
+              <button
+                @click="updateDuration(-0.5); calculateRepeatPricing()"
+                class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20 12H4"
+                  />
+                </svg>
+              </button>
+              <div
+                class="text-2xl font-bold min-w-[80px] text-center"
+                x-text="booking.details.duration + ' hrs'"
+              ></div>
+              <button
+                @click="updateDuration(0.5); calculateRepeatPricing()"
+                class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v12m6-6H6"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Start Time -->
+          <div>
+            <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+              Preferred start time:
+            </h4>
+            <select
+              x-model="booking.details.startTime"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer"
+            >
+              <template x-for="time in timeSlots" :key="time">
+                <option :value="time" x-text="time"></option>
+              </template>
+            </select>
+          </div>
+
+          <!-- Special Instructions -->
+          <div>
+            <h4 class="text-lg font-bold mb-4" style="color: #011e41">
+              Special instructions for your worker
+            </h4>
+            <textarea
+              x-model="booking.details.notes"
+              placeholder="Add any special instructions or preferences for your repeat service..."
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent h-24 resize-none"
+            ></textarea>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex space-x-4 pt-6">
+            <button
+              @click="findWorker()"
+              class="flex-1 py-3 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
+            >
+              Find a Worker
+            </button>
+            <button
+              @click="goToScreen(7)"
+              class="flex-1 py-3 px-6 bg-white border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+            >
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

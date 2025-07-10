@@ -37,7 +37,7 @@ urlpatterns = [
     path('help-center/article/<slug:slug>/', HelpArticleView.as_view(), name='help-article'),
     
     # Authentication
-    path('register/', RegisterWizardView.as_view(), name='register'),
+    path('register/', lambda request: __import__('django.shortcuts').shortcuts.redirect('accounts:register'), name='register'),
     path('sign-in/', SignInView.as_view(), name='sign-in'),
     path('sign-out/', SignOutView.as_view(), name='sign-out'),
     

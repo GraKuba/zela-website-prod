@@ -6,44 +6,14 @@ title }}{% endblock %} {% block content %}
 <div
   class="min-h-screen flex items-center justify-center px-4 py-12"
   style="background-color: #f5f5f5"
-  x-data="{
-    currentStep: 1,
-    formData: {
-      fullName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      phone: '',
-      addressLine1: '',
-      area: '',
-      referralCode: '',
-      marketingOptIn: false,
-      termsConsent: false
-    },
-    passwordStrength: 'weak',
-    passwordChecks: {
-      minLength: false,
-      hasUpper: false,
-      hasLower: false,
-      hasNumber: false,
-      hasSpecial: false
-    },
-    showVerification: false,
-    otpCode: '',
-    resendCountdown: 60,
-    errors: {}
-  }"
+  x-data="registerForm()"
 >
   <div class="w-full max-w-md mx-auto">
     <!-- Registration Form -->
-    <div
-      class="bg-white rounded-3xl shadow-lg overflow-hidden"
-      x-show="!showVerification"
-      x-transition
-    >
+    <div class="bg-white rounded-3xl shadow-lg overflow-hidden">
       <!-- Header -->
       <div class="px-8 py-12 text-center">
-        <h1 class="text-4xl font-bold mb-4" style="color: #011e41">
+        <h1 class="text-4xl font-bold mb-4" style="color: #035d73">
           Create Your Free Zela Account
         </h1>
         <p class="text-lg mb-8" style="color: #4a5a70">
@@ -53,7 +23,7 @@ title }}{% endblock %} {% block content %}
         <!-- Step Badge -->
         <div
           class="inline-block px-4 py-2 rounded-full text-sm font-medium mb-8"
-          style="background-color: #fdea00; color: #011e41"
+          style="background-color: #fdea00; color: #035d73"
         >
           Step <span x-text="currentStep"></span> of 2 –
           <span
@@ -62,26 +32,35 @@ title }}{% endblock %} {% block content %}
         </div>
       </div>
 
-      <!-- Step 1: Personal Details -->
-      <div class="px-8 pb-8" x-show="currentStep === 1">
-        <form @submit.prevent="currentStep = 2" class="space-y-6">
+      <!-- Registration Form -->
+      <form @submit.prevent="submitRegistration" class="px-8 pb-8">
+        {% csrf_token %}
+
+        <!-- Step 1: Personal Details -->
+        <div x-show="currentStep === 1" class="space-y-6">
           <!-- Full Name -->
           <div>
             <label
               for="fullName"
               class="block text-sm font-semibold mb-2"
-              style="color: #011e41"
+              style="color: #035d73"
             >
               Full Name *
             </label>
             <input
               type="text"
               id="fullName"
+              name="full_name"
               x-model="formData.fullName"
               placeholder="Enter your full name"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
               required
             />
+            <div
+              x-show="errors.full_name"
+              class="text-red-600 text-sm mt-1"
+              x-text="errors.full_name"
+            ></div>
           </div>
 
           <!-- Email -->
@@ -89,18 +68,24 @@ title }}{% endblock %} {% block content %}
             <label
               for="email"
               class="block text-sm font-semibold mb-2"
-              style="color: #011e41"
+              style="color: #035d73"
             >
               Email *
             </label>
             <input
               type="email"
               id="email"
+              name="email"
               x-model="formData.email"
               placeholder="Enter your email address"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
               required
             />
+            <div
+              x-show="errors.email"
+              class="text-red-600 text-sm mt-1"
+              x-text="errors.email"
+            ></div>
           </div>
 
           <!-- Phone -->
@@ -108,18 +93,24 @@ title }}{% endblock %} {% block content %}
             <label
               for="phone"
               class="block text-sm font-semibold mb-2"
-              style="color: #011e41"
+              style="color: #035d73"
             >
               Phone *
             </label>
             <input
               type="tel"
               id="phone"
+              name="phone"
               x-model="formData.phone"
               placeholder="Enter your phone number"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
               required
             />
+            <div
+              x-show="errors.phone"
+              class="text-red-600 text-sm mt-1"
+              x-text="errors.phone"
+            ></div>
           </div>
 
           <!-- Password -->
@@ -127,19 +118,25 @@ title }}{% endblock %} {% block content %}
             <label
               for="password"
               class="block text-sm font-semibold mb-2"
-              style="color: #011e41"
+              style="color: #035d73"
             >
               Password *
             </label>
             <input
               type="password"
               id="password"
+              name="password"
               x-model="formData.password"
               placeholder="Create a secure password"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
-              @input="updatePasswordStrength"
+              @input="updatePasswordStrength()"
               required
             />
+            <div
+              x-show="errors.password"
+              class="text-red-600 text-sm mt-1"
+              x-text="errors.password"
+            ></div>
 
             <!-- Password Requirements Checklist -->
             <div class="mt-3 space-y-2">
@@ -257,7 +254,7 @@ title }}{% endblock %} {% block content %}
             <!-- Password Strength Meter -->
             <div class="mt-4">
               <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-medium" style="color: #011e41"
+                <span class="text-sm font-medium" style="color: #035d73"
                   >Password Strength:</span
                 >
                 <span
@@ -290,13 +287,14 @@ title }}{% endblock %} {% block content %}
             <label
               for="confirmPassword"
               class="block text-sm font-semibold mb-2"
-              style="color: #011e41"
+              style="color: #035d73"
             >
               Confirm Password *
             </label>
             <input
               type="password"
               id="confirmPassword"
+              name="confirm_password"
               x-model="formData.confirmPassword"
               placeholder="Confirm your password"
               class="w-full px-4 py-3 rounded-xl border-2 transition-colors"
@@ -307,6 +305,11 @@ title }}{% endblock %} {% block content %}
               }"
               required
             />
+            <div
+              x-show="errors.confirm_password"
+              class="text-red-600 text-sm mt-1"
+              x-text="errors.confirm_password"
+            ></div>
             <!-- Password Match Indicator -->
             <div
               x-show="formData.confirmPassword"
@@ -342,6 +345,7 @@ title }}{% endblock %} {% block content %}
             <input
               type="checkbox"
               id="marketingOptIn"
+              name="marketing_opt_in"
               x-model="formData.marketingOptIn"
               class="mr-3 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
             />
@@ -352,35 +356,40 @@ title }}{% endblock %} {% block content %}
 
           <!-- Continue Button -->
           <button
-            type="submit"
-            class="w-full py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-            style="background-color: #011e41; color: #fdea00"
+            type="button"
+            @click="currentStep = 2"
+            class="w-full py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
+            style="background-color: #035d73; color: #fdea00"
           >
             Continue
           </button>
-        </form>
-      </div>
+        </div>
 
-      <!-- Step 2: Address Details -->
-      <div class="px-8 pb-8" x-show="currentStep === 2">
-        <form @submit.prevent="submitRegistration" class="space-y-6">
+        <!-- Step 2: Address Details -->
+        <div x-show="currentStep === 2" class="space-y-6">
           <!-- Address Line 1 -->
           <div>
             <label
               for="addressLine1"
               class="block text-sm font-semibold mb-2"
-              style="color: #011e41"
+              style="color: #035d73"
             >
               Address Line 1 *
             </label>
             <input
               type="text"
               id="addressLine1"
+              name="address_line1"
               x-model="formData.addressLine1"
               placeholder="Enter your street address"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
               required
             />
+            <div
+              x-show="errors.address_line1"
+              class="text-red-600 text-sm mt-1"
+              x-text="errors.address_line1"
+            ></div>
           </div>
 
           <!-- Area / Neighbourhood -->
@@ -388,12 +397,13 @@ title }}{% endblock %} {% block content %}
             <label
               for="area"
               class="block text-sm font-semibold mb-2"
-              style="color: #011e41"
+              style="color: #035d73"
             >
               Area / Neighbourhood *
             </label>
             <select
               id="area"
+              name="area"
               x-model="formData.area"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
               required
@@ -405,6 +415,11 @@ title }}{% endblock %} {% block content %}
               <option value="northern-suburbs">Northern Suburbs</option>
               <option value="southern-suburbs">Southern Suburbs</option>
             </select>
+            <div
+              x-show="errors.area"
+              class="text-red-600 text-sm mt-1"
+              x-text="errors.area"
+            ></div>
           </div>
 
           <!-- Referral Code -->
@@ -412,17 +427,23 @@ title }}{% endblock %} {% block content %}
             <label
               for="referralCode"
               class="block text-sm font-semibold mb-2"
-              style="color: #011e41"
+              style="color: #035d73"
             >
               Referral Code (optional)
             </label>
             <input
               type="text"
               id="referralCode"
+              name="referral_code"
               x-model="formData.referralCode"
               placeholder="Enter referral code if you have one"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
             />
+            <div
+              x-show="errors.referral_code"
+              class="text-red-600 text-sm mt-1"
+              x-text="errors.referral_code"
+            ></div>
           </div>
 
           <!-- Terms Consent -->
@@ -430,6 +451,7 @@ title }}{% endblock %} {% block content %}
             <input
               type="checkbox"
               id="termsConsent"
+              name="terms_consent"
               x-model="formData.termsConsent"
               class="mr-3 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-1"
               required
@@ -438,40 +460,47 @@ title }}{% endblock %} {% block content %}
               By creating an account you agree to our
               <a
                 href="{% url 'website:terms-of-service' %}"
-                class="underline"
-                style="color: #011e41"
+                class="underline cursor-pointer"
+                style="color: #035d73"
                 >Terms of Service</a
               >
               and
               <a
                 href="{% url 'website:privacy-policy' %}"
-                class="underline"
-                style="color: #011e41"
+                class="underline cursor-pointer"
+                style="color: #035d73"
                 >Privacy Policy</a
               >.
             </label>
           </div>
+          <div
+            x-show="errors.terms_consent"
+            class="text-red-600 text-sm mt-1"
+            x-text="errors.terms_consent"
+          ></div>
 
-          <!-- Back & Continue Buttons -->
+          <!-- Back & Submit Buttons -->
           <div class="flex gap-4">
             <button
               type="button"
               @click="currentStep = 1"
-              class="flex-1 py-4 rounded-full font-semibold text-lg border-2 transition-all duration-200"
-              style="border-color: #011e41; color: #011e41"
+              class="flex-1 py-4 rounded-full font-semibold text-lg border-2 transition-all duration-200 cursor-pointer"
+              style="border-color: #035d73; color: #035d73"
             >
               Back
             </button>
             <button
               type="submit"
-              class="flex-1 py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              style="background-color: #011e41; color: #fdea00"
+              :disabled="isSubmitting"
+              class="flex-1 py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 cursor-pointer"
+              style="background-color: #035d73; color: #fdea00"
             >
-              Create Account
+              <span x-show="!isSubmitting">Create Account</span>
+              <span x-show="isSubmitting">Creating...</span>
             </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
 
       <!-- Sign In Link -->
       <div class="px-8 pb-8 text-center">
@@ -479,67 +508,12 @@ title }}{% endblock %} {% block content %}
           Already have an account?
           <a
             href="{% url 'website:sign-in' %}"
-            class="font-semibold underline"
-            style="color: #011e41"
+            class="font-semibold underline cursor-pointer"
+            style="color: #035d73"
           >
             Sign in
           </a>
         </p>
-      </div>
-    </div>
-
-    <!-- Verification Modal -->
-    <div
-      class="bg-white rounded-3xl shadow-lg overflow-hidden"
-      x-show="showVerification"
-      x-transition
-    >
-      <div class="px-8 py-12 text-center">
-        <h2 class="text-3xl font-bold mb-4" style="color: #011e41">
-          Verify Your Email
-        </h2>
-        <p class="text-lg mb-8" style="color: #4a5a70">
-          We've sent a 6-digit code to <span x-text="formData.email"></span>.
-          Enter it below to activate your account.
-        </p>
-
-        <!-- OTP Input -->
-        <div class="mb-8">
-          <input
-            type="text"
-            x-model="otpCode"
-            placeholder="— — — — — —"
-            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors text-center text-2xl font-mono tracking-widest"
-            maxlength="6"
-          />
-        </div>
-
-        <!-- Resend Link -->
-        <div class="mb-8">
-          <p class="text-sm" style="color: #69768b">
-            Didn't get the code?
-            <button
-              @click="resendCode"
-              class="font-semibold underline"
-              style="color: #011e41"
-              x-show="resendCountdown === 0"
-            >
-              Resend
-            </button>
-            <span x-show="resendCountdown > 0" style="color: #69768b">
-              Resend in <span x-text="resendCountdown"></span>s
-            </span>
-          </p>
-        </div>
-
-        <!-- Verify Button -->
-        <button
-          @click="verifyCode"
-          class="w-full py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-          style="background-color: #011e41; color: #fdea00"
-        >
-          Verify Account
-        </button>
       </div>
     </div>
   </div>
@@ -548,6 +522,30 @@ title }}{% endblock %} {% block content %}
 <script>
   document.addEventListener("alpine:init", () => {
     Alpine.data("registerForm", () => ({
+      currentStep: 1,
+      formData: {
+        fullName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        phone: "",
+        addressLine1: "",
+        area: "",
+        referralCode: "",
+        marketingOptIn: false,
+        termsConsent: false,
+      },
+      passwordStrength: "weak",
+      passwordChecks: {
+        minLength: false,
+        hasUpper: false,
+        hasLower: false,
+        hasNumber: false,
+        hasSpecial: false,
+      },
+      errors: {},
+      isSubmitting: false,
+
       updatePasswordStrength() {
         const password = this.formData.password;
 
@@ -578,54 +576,120 @@ title }}{% endblock %} {% block content %}
         }
       },
 
-      submitRegistration() {
-        // Check if password meets all requirements
+      async submitRegistration() {
+        // Clear previous errors
+        this.errors = {};
+
+        // Client-side validation
+        if (!this.formData.fullName) {
+          this.errors.full_name = "Full name is required";
+        }
+
+        if (!this.formData.email) {
+          this.errors.email = "Email is required";
+        }
+
+        if (!this.formData.phone) {
+          this.errors.phone = "Phone number is required";
+        }
+
+        if (!this.formData.password) {
+          this.errors.password = "Password is required";
+        }
+
+        if (!this.formData.confirmPassword) {
+          this.errors.confirm_password = "Please confirm your password";
+        }
+
+        if (!this.formData.addressLine1) {
+          this.errors.address_line1 = "Address is required";
+        }
+
+        if (!this.formData.area) {
+          this.errors.area = "Area is required";
+        }
+
+        if (!this.formData.termsConsent) {
+          this.errors.terms_consent = "You must agree to the terms";
+        }
+
+        // Check password requirements
         const allRequirementsMet = Object.values(this.passwordChecks).every(
           (check) => check
         );
 
         if (!allRequirementsMet) {
-          alert("Please ensure your password meets all requirements");
-          return;
+          this.errors.password = "Password does not meet all requirements";
         }
 
         if (this.formData.password !== this.formData.confirmPassword) {
-          alert("Passwords do not match");
+          this.errors.confirm_password = "Passwords do not match";
+        }
+
+        // If there are client-side errors, don't submit
+        if (Object.keys(this.errors).length > 0) {
           return;
         }
 
-        if (!this.formData.termsConsent) {
-          alert("Please agree to the Terms of Service and Privacy Policy");
-          return;
-        }
+        // Submit to backend
+        this.isSubmitting = true;
+        try {
+          const formData = new FormData();
+          formData.append("full_name", this.formData.fullName);
+          formData.append("email", this.formData.email);
+          formData.append("phone", this.formData.phone);
+          formData.append("password", this.formData.password);
+          formData.append("confirm_password", this.formData.confirmPassword);
+          formData.append("address_line1", this.formData.addressLine1);
+          formData.append("area", this.formData.area);
+          formData.append("referral_code", this.formData.referralCode);
+          formData.append("marketing_opt_in", this.formData.marketingOptIn);
+          formData.append("terms_consent", this.formData.termsConsent);
+          formData.append(
+            "csrfmiddlewaretoken",
+            document.querySelector("[name=csrfmiddlewaretoken]").value
+          );
 
-        // Show verification modal
-        this.showVerification = true;
-        this.startResendCountdown();
-      },
+          const response = await fetch("/accounts/register/", {
+            method: "POST",
+            body: formData,
+            headers: {
+              "X-Requested-With": "XMLHttpRequest",
+              "HX-Request": "true",
+            },
+          });
 
-      startResendCountdown() {
-        this.resendCountdown = 60;
-        const timer = setInterval(() => {
-          this.resendCountdown--;
-          if (this.resendCountdown === 0) {
-            clearInterval(timer);
+          const data = await response.json();
+
+          if (data.success) {
+            // Show success message and redirect
+            alert("🎉 Account created successfully! Welcome to Zela.");
+            window.location.href = data.redirect;
+          } else {
+            // Show validation errors
+            if (data.errors) {
+              this.errors = data.errors;
+
+              // If there are errors in step 1, go back to step 1
+              const step1Fields = [
+                "full_name",
+                "email",
+                "phone",
+                "password",
+                "confirm_password",
+              ];
+              if (step1Fields.some((field) => data.errors[field])) {
+                this.currentStep = 1;
+              }
+            } else {
+              alert("Registration failed. Please try again.");
+            }
           }
-        }, 1000);
-      },
-
-      resendCode() {
-        // Mock resend functionality
-        this.startResendCountdown();
-      },
-
-      verifyCode() {
-        if (this.otpCode.length === 6) {
-          // Mock verification success
-          alert("🎉 Account created! You're ready to book.");
-          window.location.href = "/";
-        } else {
-          alert("Please enter the complete 6-digit code");
+        } catch (error) {
+          console.error("Registration error:", error);
+          alert("Registration failed. Please try again.");
+        } finally {
+          this.isSubmitting = false;
         }
       },
     }));

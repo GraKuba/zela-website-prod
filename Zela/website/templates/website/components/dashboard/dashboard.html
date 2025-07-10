@@ -39,7 +39,6 @@
            'addresses': 'Locations',
            'wallet': 'Payments',
            'notifications': 'Notifications',
-           'referrals': 'Referrals & Credits',
            'profile': 'Profile',
            'help': 'Help Center',
            'pro-overview': 'Pro Overview',
@@ -89,7 +88,7 @@
         <!-- Close button for mobile -->
         <button
           @click="sidebarOpen = false"
-          class="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+          class="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 cursor-pointer"
         >
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -104,7 +103,7 @@
         @click="isProviderMode = !isProviderMode"
         class="w-full relative inline-flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer hover:shadow-md transform hover:-translate-y-0.5"
         :class="isProviderMode ? 'text-white border-transparent' : 'bg-gray-100 text-gray-700 border-gray-200'"
-        :style="isProviderMode ? 'background-color: #015e73' : ''"
+        :style="isProviderMode ? 'background-color: #035d73' : ''"
       >
         <span
           x-text="isProviderMode ? 'Switch to Customer' : 'Switch to Provider'"
@@ -126,7 +125,7 @@
           @click="currentTab = 'overview'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'overview' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'overview' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'overview' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -149,7 +148,7 @@
           @click="currentTab = 'bookings'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'bookings' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'bookings' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'bookings' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -169,7 +168,8 @@
           <span
             x-show="dashboardData.upcomingBookings > 0"
             class="ml-auto text-xs font-medium px-2 py-1 rounded-full flex-shrink-0"
-            :class="currentTab === 'bookings' ? 'bg-white text-gray-800' : 'bg-blue-100 text-blue-800'"
+            :class="currentTab === 'bookings' ? 'bg-white text-gray-800' : 'text-white'"
+          :style="currentTab === 'bookings' ? '' : 'background-color: #035d73'"
             x-text="dashboardData.upcomingBookings"
           ></span>
         </button>
@@ -178,7 +178,7 @@
           @click="currentTab = 'addresses'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'addresses' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'addresses' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'addresses' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -207,7 +207,7 @@
           @click="currentTab = 'wallet'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'wallet' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'wallet' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'wallet' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -227,33 +227,10 @@
         </button>
 
         <button
-          @click="currentTab = 'referrals'; sidebarOpen = false"
-          class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
-          :class="currentTab === 'referrals' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'referrals' ? 'background-color: #015e73; border-color: #015e73' : ''"
-        >
-          <svg
-            class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
-            :class="currentTab === 'referrals' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
-            />
-          </svg>
-          <span class="truncate">Referrals & Credits</span>
-        </button>
-
-        <button
           @click="currentTab = 'profile'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'profile' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'profile' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'profile' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -276,7 +253,7 @@
           @click="currentTab = 'help'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'help' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'help' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'help' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -299,7 +276,7 @@
       <!-- Provider Tabs -->
       <div x-show="isProviderMode" class="space-y-1">
         <div class="mb-4">
-          <h3 class="text-xs font-semibold uppercase tracking-wider" style="color: #015e73">
+          <h3 class="text-xs font-semibold uppercase tracking-wider" style="color: #035d73">
             Provider Dashboard
           </h3>
         </div>
@@ -308,7 +285,7 @@
           @click="currentTab = 'pro-overview'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'pro-overview' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'pro-overview' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'pro-overview' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -331,7 +308,7 @@
           @click="currentTab = 'job-queue'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'job-queue' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'job-queue' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'job-queue' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -354,7 +331,7 @@
           @click="currentTab = 'availability'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'availability' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'availability' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'availability' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -377,7 +354,7 @@
           @click="currentTab = 'earnings'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'earnings' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'earnings' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'earnings' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -400,7 +377,7 @@
           @click="currentTab = 'ratings'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'ratings' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'ratings' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'ratings' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -423,7 +400,7 @@
           @click="currentTab = 'kyc'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'kyc' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'kyc' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'kyc' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -446,7 +423,7 @@
           @click="currentTab = 'settings'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'settings' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'settings' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'settings' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -475,7 +452,7 @@
           @click="currentTab = 'help'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'help' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
-          :style="currentTab === 'help' ? 'background-color: #015e73; border-color: #015e73' : ''"
+          :style="currentTab === 'help' ? 'background-color: #035d73; border-color: #035d73' : ''"
         >
           <svg
             class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -503,7 +480,7 @@
         @click="currentTab = 'notifications'; sidebarOpen = false"
         class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group mb-3"
         :class="currentTab === 'notifications' ? 'text-white' : 'text-gray-700 hover:bg-gray-200 hover:text-gray-900'"
-        :style="currentTab === 'notifications' ? 'background-color: #015e73' : ''"
+        :style="currentTab === 'notifications' ? 'background-color: #035d73' : ''"
       >
         <svg
           class="mr-3 h-5 w-5 transition-colors duration-200 flex-shrink-0"
@@ -604,7 +581,7 @@
           <!-- Mobile menu button -->
           <button
             @click="sidebarOpen = true"
-            class="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 mr-3"
+            class="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 mr-3 cursor-pointer"
           >
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -638,15 +615,6 @@
           </nav>
         </div>
         
-        <!-- Book Now Button (customer mode) -->
-        <button
-          x-show="!isProviderMode"
-          class="px-4 sm:px-6 py-2 rounded-full text-sm font-semibold transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer text-white"
-          style="background-color: #015e73"
-        >
-          <span class="hidden sm:inline">Book Now</span>
-          <span class="sm:hidden">Book</span>
-        </button>
       </div>
     </header>
 
@@ -658,7 +626,6 @@
       {% include 'website/components/dashboard/tabs/addresses.html' %}
       {% include 'website/components/dashboard/tabs/wallet.html' %}
       {% include 'website/components/dashboard/tabs/notifications.html' %}
-      {% include 'website/components/dashboard/tabs/referrals.html' %}
       {% include 'website/components/dashboard/tabs/profile.html' %}
       {% include 'website/components/dashboard/tabs/help.html' %}
 

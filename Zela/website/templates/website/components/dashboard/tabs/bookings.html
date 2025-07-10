@@ -17,7 +17,7 @@
         </p>
       </div>
       <button
-        class="px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg"
+        class="px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
         style="background-color: #fdea00; color: #011e41"
       >
         Book New Service
@@ -32,19 +32,23 @@
     <div class="flex border-b border-gray-200">
       <button
         @click="bookingSubTab = 'upcoming'"
-        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200"
-        :class="bookingSubTab === 'upcoming' ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700'"
+        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200 cursor-pointer"
+        :class="bookingSubTab === 'upcoming' ? 'text-white border-b-2' : 'text-gray-500 hover:text-gray-700'"
+        :style="bookingSubTab === 'upcoming' ? 'background-color: #035d73; border-color: #035d73' : ''"
       >
         Upcoming
         <span
-          class="ml-2 bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded-full"
+          class="ml-2 text-xs font-medium px-2 py-1 rounded-full"
+          :class="bookingSubTab === 'upcoming' ? 'bg-white' : 'bg-gray-100'"
+          :style="bookingSubTab === 'upcoming' ? 'color: #035d73' : 'color: #666'"
           x-text="dashboardData.upcomingBookings"
         ></span>
       </button>
       <button
         @click="bookingSubTab = 'recurring'"
-        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200"
-        :class="bookingSubTab === 'recurring' ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700'"
+        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200 cursor-pointer"
+        :class="bookingSubTab === 'recurring' ? 'text-white border-b-2' : 'text-gray-500 hover:text-gray-700'"
+        :style="bookingSubTab === 'recurring' ? 'background-color: #035d73; border-color: #035d73' : ''"
       >
         Recurring
         <span
@@ -54,19 +58,22 @@
       </button>
       <button
         @click="bookingSubTab = 'completed'"
-        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200"
-        :class="bookingSubTab === 'completed' ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700'"
+        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200 cursor-pointer"
+        :class="bookingSubTab === 'completed' ? 'text-white border-b-2' : 'text-gray-500 hover:text-gray-700'"
+        :style="bookingSubTab === 'completed' ? 'background-color: #035d73; border-color: #035d73' : ''"
       >
         Completed
         <span
-          class="ml-2 bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full"
+          class="ml-2 text-xs font-medium px-2 py-1 rounded-full"
+          style="background-color: #fdea00; color: #035d73"
           x-text="dashboardData.completedBookings"
         ></span>
       </button>
       <button
         @click="bookingSubTab = 'canceled'"
-        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200"
-        :class="bookingSubTab === 'canceled' ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-700' : 'text-gray-500 hover:text-gray-700'"
+        class="flex-1 py-4 px-6 text-sm font-medium text-center transition-colors duration-200 cursor-pointer"
+        :class="bookingSubTab === 'canceled' ? 'text-white border-b-2' : 'text-gray-500 hover:text-gray-700'"
+        :style="bookingSubTab === 'canceled' ? 'background-color: #035d73; border-color: #035d73' : ''"
       >
         Canceled
         <span
@@ -94,7 +101,8 @@
                 <div class="flex items-center space-x-2">
                   <h3 class="font-semibold text-gray-900">Deep Clean</h3>
                   <span
-                    class="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full"
+                    class="px-2 py-1 text-xs font-medium rounded-full"
+                    style="background-color: #035d73; color: white"
                     >Confirmed</span
                   >
                 </div>
@@ -145,12 +153,13 @@
               </div>
               <div class="flex space-x-2 mt-3">
                 <button
-                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors cursor-pointer"
                 >
                   Reschedule
                 </button>
                 <button
-                  class="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                  class="px-3 py-1 text-white rounded-lg text-sm hover:opacity-90 transition-colors cursor-pointer"
+                  style="background-color: #035d73"
                 >
                   Contact
                 </button>
@@ -174,7 +183,8 @@
                 <div class="flex items-center space-x-2">
                   <h3 class="font-semibold text-gray-900">Regular Clean</h3>
                   <span
-                    class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
+                    class="px-2 py-1 text-xs font-medium rounded-full"
+                    style="background-color: #fdea00; color: #035d73"
                     >Confirmed</span
                   >
                 </div>
@@ -225,12 +235,13 @@
               </div>
               <div class="flex space-x-2 mt-3">
                 <button
-                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors cursor-pointer"
                 >
                   Reschedule
                 </button>
                 <button
-                  class="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                  class="px-3 py-1 text-white rounded-lg text-sm hover:opacity-90 transition-colors cursor-pointer"
+                  style="background-color: #035d73"
                 >
                   Contact
                 </button>
@@ -251,10 +262,11 @@
           <div class="flex items-start justify-between">
             <div class="flex items-start space-x-4">
               <div
-                class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center"
+                class="w-16 h-16 rounded-full flex items-center justify-center"
+                style="background-color: #035d73"
               >
                 <svg
-                  class="w-8 h-8 text-blue-600"
+                  class="w-8 h-8 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -273,7 +285,8 @@
                     Weekly Regular Clean
                   </h3>
                   <span
-                    class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
+                    class="px-2 py-1 text-xs font-medium rounded-full"
+                    style="background-color: #fdea00; color: #035d73"
                     >Active</span
                   >
                 </div>
@@ -327,12 +340,12 @@
               <div class="text-sm text-gray-500">per week</div>
               <div class="flex space-x-2 mt-3">
                 <button
-                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors cursor-pointer"
                 >
                   Modify
                 </button>
                 <button
-                  class="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-sm hover:bg-red-200 transition-colors"
+                  class="px-3 py-1 bg-red-100 text-red-700 rounded-lg text-sm hover:bg-red-200 transition-colors cursor-pointer"
                 >
                   Pause
                 </button>
@@ -361,7 +374,8 @@
                 <div class="flex items-center space-x-2">
                   <h3 class="font-semibold text-gray-900">Deep Clean</h3>
                   <span
-                    class="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full"
+                    class="px-2 py-1 text-xs font-medium rounded-full"
+                    style="background-color: #fdea00; color: #035d73"
                     >Completed</span
                   >
                 </div>
@@ -414,12 +428,13 @@
               </div>
               <div class="flex space-x-2 mt-3">
                 <button
-                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors cursor-pointer"
                 >
                   Book Again
                 </button>
                 <button
-                  class="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                  class="px-3 py-1 text-white rounded-lg text-sm hover:opacity-90 transition-colors cursor-pointer"
+                  style="background-color: #035d73"
                 >
                   Rate Service
                 </button>
@@ -513,10 +528,10 @@
               <div class="text-lg font-semibold text-gray-500 line-through">
                 R$ 120.00
               </div>
-              <div class="text-sm text-green-600 mt-1">Refunded</div>
+              <div class="text-sm mt-1" style="color: #035d73">Refunded</div>
               <div class="flex space-x-2 mt-3">
                 <button
-                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors cursor-pointer"
                 >
                   Book Again
                 </button>
@@ -525,34 +540,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- Filter & Export Actions -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center space-x-4">
-        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
-          <option>All Categories</option>
-          <option>Deep Clean</option>
-          <option>Regular Clean</option>
-          <option>Move In/Out</option>
-        </select>
-        <input
-          type="date"
-          class="border border-gray-300 rounded-lg px-3 py-2 text-sm"
-        />
-        <button
-          class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
-        >
-          Apply Filters
-        </button>
-      </div>
-      <button
-        class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
-      >
-        Export to PDF
-      </button>
     </div>
   </div>
 </div>

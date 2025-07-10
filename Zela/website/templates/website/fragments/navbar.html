@@ -2,7 +2,7 @@
 
 <!-- Header with Logo and Navigation -->
 <header
-  class="w-full flex items-center justify-between px-8 py-6 mx-auto max-w-[1280px] z-20 relative"
+  class="w-full flex items-center justify-between px-8 py-4 mx-auto max-w-[1280px] z-20 relative"
 >
   <!-- Logo -->
   <div class="flex items-center">
@@ -45,8 +45,88 @@
     </a>
   </nav>
 
-  <!-- CTA Buttons -->
+  <!-- User Authentication Section -->
   <div class="flex items-center gap-4">
+    {% if user.is_authenticated %}
+    <!-- User Profile Dropdown -->
+    <div class="relative" x-data="{ open: false }">
+      <button
+        @click="open = !open"
+        @click.away="open = false"
+        class="flex items-center gap-3 p-2 rounded-full hover:bg-gray-100 transition-colors"
+      >
+        <!-- Avatar -->
+        <div
+          class="w-10 h-10 rounded-full bg-[#015F73] flex items-center justify-center"
+        >
+          <span class="text-white font-semibold text-sm">
+            {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+          </span>
+        </div>
+        <!-- User Name -->
+        <span class="text-[#4A5A70] font-medium hidden sm:block">
+          {{ user.first_name }} {{ user.last_name }}
+        </span>
+        <!-- Dropdown Arrow -->
+        <svg
+          class="w-4 h-4 text-[#4A5A70] transition-transform"
+          :class="{ 'rotate-180': open }"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+      </button>
+
+      <!-- Dropdown Menu -->
+      <div
+        x-show="open"
+        x-transition:enter="transition ease-out duration-100"
+        x-transition:enter-start="transform opacity-0 scale-95"
+        x-transition:enter-end="transform opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-75"
+        x-transition:leave-start="transform opacity-100 scale-100"
+        x-transition:leave-end="transform opacity-0 scale-95"
+        class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200"
+      >
+        <a
+          href="{% url 'website:dashboard' %}"
+          class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
+        >
+          Dashboard
+        </a>
+        <a
+          href="{% url 'website:dashboard' %}?tab=profile"
+          class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
+        >
+          Profile
+        </a>
+        <a
+          href="{% url 'website:dashboard' %}?tab=settings"
+          class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
+        >
+          Settings
+        </a>
+        <hr class="my-1 border-gray-200" />
+        <form method="post" action="{% url 'accounts:logout' %}" class="block">
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="w-full text-left px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
+          >
+            Log Out
+          </button>
+        </form>
+      </div>
+    </div>
+    {% else %}
+    <!-- Login/Signup Buttons -->
     <a
       href="{% url 'website:sign-in' %}"
       class="border border-[#015F73] text-[#015F73] px-6 py-2 rounded-full font-semibold hover:bg-[#015F73] hover:text-white transition-colors"
@@ -59,5 +139,6 @@
     >
       Sign Up
     </a>
+    {% endif %}
   </div>
 </header>

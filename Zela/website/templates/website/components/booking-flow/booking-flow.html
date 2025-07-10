@@ -53,6 +53,10 @@
     {% include "website/components/booking-flow/screens/screen-individual-worker.html" %}
   </div>
 
+  <div id="repeat-booking-screen" style="display: none">
+    {% include "website/components/booking-flow/screens/screen-repeat-booking.html" %}
+  </div>
+
   <div id="confirmation-screen" style="display: none">
     {% include "website/components/booking-flow/screens/screen-15-booking-confirmation.html" %}
   </div>
@@ -86,8 +90,17 @@
           fullAddress: "",
         },
         frequency: null, // 'one-time' or 'repeat'
+        dateBucket: null, // 'tomorrow' or 'later'
         date: null,
         timeWindow: "07:00 - 07:30",
+        // Repeat booking specific fields
+        repeat: {
+          frequency: 'weekly', // 'daily', 'weekly', 'bi-weekly', 'monthly'
+          startDate: null,
+          endDate: null,
+          daysOfWeek: [], // For weekly/bi-weekly: ['monday', 'wednesday', 'friday']
+          numberOfSessions: 4, // Default number of sessions
+        },
         details: {
           homeSize: "medium-3-4-bedrooms",
           extraTasks: [],
@@ -227,6 +240,9 @@
         tomorrow.setDate(tomorrow.getDate() + 1);
         this.booking.date = tomorrow.toISOString().split("T")[0];
 
+        // Set default repeat booking start date
+        this.booking.repeat.startDate = tomorrow.toISOString().split("T")[0];
+
         // Store reference to this component globally for access from dynamically loaded content
         window.bookingFlowComponent = this;
       },
@@ -250,6 +266,13 @@
           return;
         }
 
+        if (screenNumber === "repeat-booking") {
+          // Show repeat booking screen
+          document.getElementById("booking-screen").innerHTML =
+            document.getElementById("repeat-booking-screen").innerHTML;
+          return;
+        }
+
         if (screenNumber === 15) {
           // Show confirmation screen
           document.getElementById("booking-screen").innerHTML =
@@ -268,6 +291,13 @@
       dismissServiceModal() {
         this.showServiceModal = false;
         this.serviceModalDismissed = true;
+        
+        // Fix map rendering issue by resizing the map after modal dismiss
+        setTimeout(() => {
+          if (this.map) {
+            this.map.invalidateSize();
+          }
+        }, 350); // Wait for transition to complete
       },
 
       proceedToAddressConfirmation() {
@@ -294,23 +324,28 @@
 
       selectFrequency(frequency) {
         this.booking.frequency = frequency;
-        setTimeout(() => {
-          this.goToScreen(7);
-        }, 300);
+        // Don't navigate immediately - wait for date bucket selection
       },
 
       selectDateBucket(bucket) {
+        this.booking.dateBucket = bucket;
+        
         if (bucket === "tomorrow") {
           const tomorrow = new Date();
           tomorrow.setDate(tomorrow.getDate() + 1);
           this.booking.date = tomorrow.toISOString().split("T")[0];
-          this.goToScreen(8);
         } else if (bucket === "later") {
           // Set date to a week from now as default for "later"
           const laterDate = new Date();
           laterDate.setDate(laterDate.getDate() + 7);
           this.booking.date = laterDate.toISOString().split("T")[0];
-          this.goToScreen(8);
+        }
+        
+        // Navigate based on frequency
+        if (this.booking.frequency === 'one-time') {
+          this.goToScreen(8); // Go to one-time booking details
+        } else if (this.booking.frequency === 'repeat') {
+          this.goToScreen('repeat-booking'); // Go to repeat booking details
         }
       },
 
@@ -657,6 +692,67 @@
       updateCustomTip(amount) {
         this.booking.tip.amount = Math.max(0, parseInt(amount) || 0);
         this.calculatePricing();
+      },
+
+      // Repeat booking methods
+      setRepeatFrequency(frequency) {
+        this.booking.repeat.frequency = frequency;
+        // Reset days of week when changing frequency
+        this.booking.repeat.daysOfWeek = [];
+        this.calculateRepeatPricing();
+      },
+
+      toggleDayOfWeek(day) {
+        const index = this.booking.repeat.daysOfWeek.indexOf(day);
+        if (index > -1) {
+          this.booking.repeat.daysOfWeek.splice(index, 1);
+        } else {
+          this.booking.repeat.daysOfWeek.push(day);
+        }
+        this.calculateRepeatPricing();
+      },
+
+      updateNumberOfSessions(sessions) {
+        this.booking.repeat.numberOfSessions = Math.max(1, sessions);
+        this.calculateRepeatPricing();
+      },
+
+      calculateRepeatPricing() {
+        // Calculate base cost for one session
+        const baseRate = 129; // per hour
+        let baseCost = this.booking.details.duration * baseRate;
+        
+        // Adjust for home size
+        const homeSize = this.booking.details.homeSize;
+        let sizeMultiplier = 1;
+        if (homeSize === "small-1-2-bedrooms") {
+          sizeMultiplier = 0.8;
+        } else if (homeSize === "large-5-plus-bedrooms") {
+          sizeMultiplier = 1.2;
+        }
+        
+        // Add extra tasks cost
+        const extraTasksCost = this.booking.details.extraTasks.length * 25;
+        
+        // Calculate cost per session
+        const costPerSession = baseCost * sizeMultiplier + extraTasksCost;
+        
+        // Apply repeat booking discount
+        let discountMultiplier = 1;
+        if (this.booking.repeat.numberOfSessions >= 4) {
+          discountMultiplier = 0.85; // 15% discount for 4+ sessions
+        }
+        if (this.booking.repeat.numberOfSessions >= 8) {
+          discountMultiplier = 0.75; // 25% discount for 8+ sessions
+        }
+        
+        const discountedCostPerSession = costPerSession * discountMultiplier;
+        const totalCost = discountedCostPerSession * this.booking.repeat.numberOfSessions;
+        
+        this.booking.pricing.bookingCost = Math.round(totalCost);
+        this.booking.pricing.total = this.booking.pricing.bookingCost + 
+          this.booking.pricing.otherCosts.bookingCover + 
+          this.booking.pricing.otherCosts.serviceFee;
       },
     };
   }

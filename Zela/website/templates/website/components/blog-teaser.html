@@ -20,14 +20,15 @@
       </div>
 
       <!-- See All Blogs Button -->
-      <button
-        class="border cursor-pointer border-[#011E41] text-[#011E41] px-6 py-2 rounded-full font-medium hover:bg-[#011E41] hover:text-[#FDEA00] transition-all duration-300"
-        hx-get="/blog/"
+      <a
+        href="{% url 'website:blog' %}"
+        class="border cursor-pointer border-[#011E41] text-[#011E41] px-6 py-2 rounded-full font-medium hover:bg-[#011E41] hover:text-[#FDEA00] transition-all duration-300 inline-block"
+        hx-get="{% url 'website:blog' %}"
         hx-target="body"
         hx-swap="outerHTML"
       >
         SEE ALL BLOGS
-      </button>
+      </a>
     </div>
 
     <!-- Article Cards Grid -->

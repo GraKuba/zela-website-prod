@@ -91,7 +91,8 @@
 
           <!-- CTA button -->
           <div class="flex-shrink-0">
-            <button
+            <a
+              href="{% url 'website:register' %}"
               class="px-6 py-3 font-semibold text-sm transition-all duration-200 flex items-center gap-2 cursor-pointer"
               style="
                 background-color: #011e41;
@@ -102,8 +103,11 @@
               "
               onmouseover="this.style.backgroundColor='#022951'"
               onmouseout="this.style.backgroundColor='#011E41'"
+              hx-get="{% url 'website:register' %}"
+              hx-target="body"
+              hx-swap="outerHTML"
             >
-              Schedule a call
+              Get Started
               <svg
                 class="w-4 h-4"
                 fill="none"
@@ -117,7 +121,7 @@
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 ></path>
               </svg>
-            </button>
+            </a>
           </div>
         </div>
       </div>

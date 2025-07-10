@@ -147,10 +147,11 @@
             Simple pricing, no hidden fees - see<br />
             what works for your space.
           </p>
-          <button
-            class="bg-[#011E41] cursor-pointer text-[#FDEA00] font-semibold px-6 py-3 rounded-full text-lg shadow-lg hover:bg-[#022951] transition-colors inline-flex items-center gap-2"
-            hx-get="#"
-            hx-target="#booking-form"
+          <a
+            href="{% url 'website:pricing' %}"
+            class="bg-[#015f73] cursor-pointer text-[#FDEA00] font-semibold px-6 py-2 rounded-full hover:bg-[#014a5a] transition-colors shadow-lg inline-flex items-center gap-2"
+            hx-get="{% url 'website:pricing' %}"
+            hx-target="body"
             hx-swap="outerHTML"
           >
             View our pricing
@@ -167,7 +168,7 @@
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
               />
             </svg>
-          </button>
+          </a>
         </div>
       </div>
     </div>

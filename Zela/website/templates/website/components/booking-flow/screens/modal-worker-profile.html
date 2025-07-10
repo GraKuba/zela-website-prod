@@ -47,7 +47,7 @@
   @open-worker-profile.window="isOpen = true; selectedWorker = $event.detail.workerId"
   @close-worker-profile.window="isOpen = false"
 >
-  <!-- Modal Overlay -->
+  <!-- Subtle overlay to tint the background content -->
   <div
     x-show="isOpen"
     x-transition:enter="transition-opacity ease-out duration-300"
@@ -56,7 +56,7 @@
     x-transition:leave="transition-opacity ease-in duration-200"
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
-    class="fixed inset-0 bg-black bg-opacity-50 z-50"
+    class="fixed inset-0 bg-gray-500 bg-opacity-10 z-40"
     @click="isOpen = false"
   ></div>
 
@@ -69,7 +69,7 @@
     x-transition:leave="transform transition ease-in duration-200"
     x-transition:leave-start="translate-x-0"
     x-transition:leave-end="translate-x-full"
-    class="fixed top-0 right-0 w-[30%] h-full bg-white z-50 overflow-y-auto"
+    class="fixed top-0 right-0 w-[30%] h-full bg-white z-50 overflow-y-auto shadow-2xl border-l border-gray-200"
     @click.stop
   >
     <!-- Header -->

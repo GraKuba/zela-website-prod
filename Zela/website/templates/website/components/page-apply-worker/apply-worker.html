@@ -1,0 +1,861 @@
+{% load static %}
+
+<!-- Apply as Worker Page -->
+<div class="min-h-screen bg-white">
+  {% include "website/fragments/navbar.html" %}
+
+  <!-- Hero Section -->
+  <section class="py-24 bg-gradient-to-br from-[#035d73] to-[#011E41]">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Content -->
+        <div class="text-white">
+          <h1
+            class="text-5xl font-bold mb-6 leading-tight"
+            style="color: #ffffff; font-weight: 700; line-height: 1.1"
+          >
+            Join the Zela<br />
+            <span style="color: #fdea00">Community</span>
+          </h1>
+          <p
+            class="text-xl mb-8 leading-relaxed"
+            style="color: #ffffff; opacity: 0.9"
+          >
+            Transform your skills into steady income. Set your own schedule,
+            choose your service area, and get paid weekly.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <div class="flex items-center gap-2">
+              <svg
+                class="w-5 h-5 text-[#FDEA00]"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span>Weekly Payouts</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg
+                class="w-5 h-5 text-[#FDEA00]"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span>Flexible Schedule</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg
+                class="w-5 h-5 text-[#FDEA00]"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span>Full Support</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image -->
+        <div class="order-first lg:order-last">
+          <img
+            src="{% static 'juliana.webp' %}"
+            alt="Zela service provider"
+            class="w-full h-auto object-cover rounded-2xl shadow-2xl"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="py-24 bg-[#F5F5F5]">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2
+          class="text-4xl font-bold mb-6"
+          style="color: #011e41; font-weight: 700"
+        >
+          Why Choose Zela?
+        </h2>
+        <p class="text-xl text-[#4A5A70] max-w-2xl mx-auto">
+          We provide everything you need to succeed as a service professional
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Benefit 1 -->
+        <div
+          class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-[#FDEA00] rounded-full flex items-center justify-center mb-6"
+          >
+            <svg
+              class="w-8 h-8 text-[#011E41]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4" style="color: #011e41">
+            Weekly Payouts
+          </h3>
+          <p class="text-[#4A5A70]">
+            Get paid every week directly to your mobile money or bank account.
+            No waiting, no delays.
+          </p>
+        </div>
+
+        <!-- Benefit 2 -->
+        <div
+          class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-[#FDEA00] rounded-full flex items-center justify-center mb-6"
+          >
+            <svg
+              class="w-8 h-8 text-[#011E41]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4" style="color: #011e41">
+            Flexible Schedule
+          </h3>
+          <p class="text-[#4A5A70]">
+            Work when you want, where you want. Set your own hours and choose
+            your service area.
+          </p>
+        </div>
+
+        <!-- Benefit 3 -->
+        <div
+          class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-[#FDEA00] rounded-full flex items-center justify-center mb-6"
+          >
+            <svg
+              class="w-8 h-8 text-[#011E41]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4" style="color: #011e41">
+            Safety & Security
+          </h3>
+          <p class="text-[#4A5A70]">
+            All jobs are GPS-logged and insured. We provide safety equipment and
+            emergency support.
+          </p>
+        </div>
+
+        <!-- Benefit 4 -->
+        <div
+          class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-[#FDEA00] rounded-full flex items-center justify-center mb-6"
+          >
+            <svg
+              class="w-8 h-8 text-[#011E41]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4" style="color: #011e41">
+            Free Training
+          </h3>
+          <p class="text-[#4A5A70]">
+            Access professional training courses and skill development programs
+            at no cost.
+          </p>
+        </div>
+
+        <!-- Benefit 5 -->
+        <div
+          class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-[#FDEA00] rounded-full flex items-center justify-center mb-6"
+          >
+            <svg
+              class="w-8 h-8 text-[#011E41]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4" style="color: #011e41">
+            Growing Community
+          </h3>
+          <p class="text-[#4A5A70]">
+            Join 500+ active professionals and grow your network within the Zela
+            community.
+          </p>
+        </div>
+
+        <!-- Benefit 6 -->
+        <div
+          class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+        >
+          <div
+            class="w-16 h-16 bg-[#FDEA00] rounded-full flex items-center justify-center mb-6"
+          >
+            <svg
+              class="w-8 h-8 text-[#011E41]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold mb-4" style="color: #011e41">
+            Instant Bookings
+          </h3>
+          <p class="text-[#4A5A70]">
+            Get job notifications instantly and accept bookings that fit your
+            schedule.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Requirements Section -->
+  <section class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2
+          class="text-4xl font-bold mb-6"
+          style="color: #011e41; font-weight: 700"
+        >
+          Requirements to Join
+        </h2>
+        <p class="text-xl text-[#4A5A70] max-w-2xl mx-auto">
+          We maintain high standards to ensure quality service for our clients
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <div class="flex items-start gap-4">
+            <div
+              class="w-8 h-8 bg-[#FDEA00] rounded-full flex items-center justify-center flex-shrink-0"
+            >
+              <svg
+                class="w-4 h-4 text-[#011E41]"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-[#011E41] mb-2">
+                Valid Identification
+              </h3>
+              <p class="text-[#4A5A70]">
+                Angolan ID (BI) or valid passport required for verification
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div
+              class="w-8 h-8 bg-[#FDEA00] rounded-full flex items-center justify-center flex-shrink-0"
+            >
+              <svg
+                class="w-4 h-4 text-[#011E41]"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-[#011E41] mb-2">
+                18+ Years Old
+              </h3>
+              <p class="text-[#4A5A70]">
+                Must be at least 18 years old to apply
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div
+              class="w-8 h-8 bg-[#FDEA00] rounded-full flex items-center justify-center flex-shrink-0"
+            >
+              <svg
+                class="w-4 h-4 text-[#011E41]"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-[#011E41] mb-2">
+                Background Check
+              </h3>
+              <p class="text-[#4A5A70]">
+                Clean criminal record and reference verification
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div
+              class="w-8 h-8 bg-[#FDEA00] rounded-full flex items-center justify-center flex-shrink-0"
+            >
+              <svg
+                class="w-4 h-4 text-[#011E41]"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-[#011E41] mb-2">Experience</h3>
+              <p class="text-[#4A5A70]">
+                Previous cleaning or household service experience preferred
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <div
+              class="w-8 h-8 bg-[#FDEA00] rounded-full flex items-center justify-center flex-shrink-0"
+            >
+              <svg
+                class="w-4 h-4 text-[#011E41]"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-[#011E41] mb-2">
+                Reliable Transport
+              </h3>
+              <p class="text-[#4A5A70]">
+                Access to reliable transportation to reach job locations
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-[#F5F5F5] rounded-2xl p-8">
+          <h3 class="text-2xl font-bold text-[#011E41] mb-6">Quick Stats</h3>
+          <div class="space-y-4">
+            <div class="flex justify-between items-center">
+              <span class="text-[#4A5A70]">Average Weekly Income</span>
+              <span class="text-xl font-bold text-[#011E41]">AOA 45,000+</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-[#4A5A70]">Active Professionals</span>
+              <span class="text-xl font-bold text-[#011E41]">500+</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-[#4A5A70]">Customer Satisfaction</span>
+              <span class="text-xl font-bold text-[#011E41]">4.8/5</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-[#4A5A70]">Jobs Completed</span>
+              <span class="text-xl font-bold text-[#011E41]">15,000+</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Application Form Section -->
+  <section class="py-24 bg-[#F5F5F5]">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2
+          class="text-4xl font-bold mb-6"
+          style="color: #011e41; font-weight: 700"
+        >
+          Start Your Application
+        </h2>
+        <p class="text-xl text-[#4A5A70] max-w-2xl mx-auto">
+          Fill out the form below and we'll get back to you within 24 hours
+        </p>
+      </div>
+
+      <div
+        class="bg-white rounded-2xl p-8 shadow-lg"
+        x-data="applicationForm()"
+      >
+        <form @submit.prevent="submitApplication()" class="space-y-6">
+          <!-- Personal Information -->
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-bold text-[#011E41] mb-2"
+                >Full Name *</label
+              >
+              <input
+                type="text"
+                x-model="form.fullName"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-[#011E41] mb-2"
+                >Phone Number *</label
+              >
+              <input
+                type="tel"
+                x-model="form.phone"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-bold text-[#011E41] mb-2"
+                >Email Address *</label
+              >
+              <input
+                type="email"
+                x-model="form.email"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-[#011E41] mb-2"
+                >Date of Birth *</label
+              >
+              <input
+                type="date"
+                x-model="form.dateOfBirth"
+                required
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-[#011E41] mb-2"
+              >Address *</label
+            >
+            <textarea
+              x-model="form.address"
+              required
+              rows="3"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+            ></textarea>
+          </div>
+
+          <!-- Services -->
+          <div>
+            <label class="block text-sm font-bold text-[#011E41] mb-4"
+              >Services You'd Like to Provide *</label
+            >
+            <div class="grid md:grid-cols-3 gap-4">
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  x-model="form.services"
+                  value="house-cleaning"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                />
+                <span class="text-[#4A5A70]">House Cleaning</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  x-model="form.services"
+                  value="office-cleaning"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                />
+                <span class="text-[#4A5A70]">Office Cleaning</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  x-model="form.services"
+                  value="deep-cleaning"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                />
+                <span class="text-[#4A5A70]">Deep Cleaning</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  x-model="form.services"
+                  value="move-in-out"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                />
+                <span class="text-[#4A5A70]">Move-in/out</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  x-model="form.services"
+                  value="laundry"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                />
+                <span class="text-[#4A5A70]">Laundry</span>
+              </label>
+              <label class="flex items-center">
+                <input
+                  type="checkbox"
+                  x-model="form.services"
+                  value="gardening"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                />
+                <span class="text-[#4A5A70]">Gardening</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Experience -->
+          <div>
+            <label class="block text-sm font-bold text-[#011E41] mb-2"
+              >Years of Experience *</label
+            >
+            <select
+              x-model="form.experience"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+            >
+              <option value="">Select experience level</option>
+              <option value="0-1">0-1 years</option>
+              <option value="1-3">1-3 years</option>
+              <option value="3-5">3-5 years</option>
+              <option value="5+">5+ years</option>
+            </select>
+          </div>
+
+          <!-- Availability -->
+          <div>
+            <label class="block text-sm font-bold text-[#011E41] mb-4"
+              >Availability *</label
+            >
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm text-[#4A5A70] mb-2"
+                  >Preferred Days</label
+                >
+                <div class="space-y-2">
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      x-model="form.availability.days"
+                      value="monday"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                    />
+                    <span class="text-[#4A5A70]">Monday</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      x-model="form.availability.days"
+                      value="tuesday"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                    />
+                    <span class="text-[#4A5A70]">Tuesday</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      x-model="form.availability.days"
+                      value="wednesday"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                    />
+                    <span class="text-[#4A5A70]">Wednesday</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      x-model="form.availability.days"
+                      value="thursday"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                    />
+                    <span class="text-[#4A5A70]">Thursday</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      x-model="form.availability.days"
+                      value="friday"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                    />
+                    <span class="text-[#4A5A70]">Friday</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      x-model="form.availability.days"
+                      value="saturday"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                    />
+                    <span class="text-[#4A5A70]">Saturday</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      x-model="form.availability.days"
+                      value="sunday"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                    />
+                    <span class="text-[#4A5A70]">Sunday</span>
+                  </label>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm text-[#4A5A70] mb-2"
+                  >Preferred Times</label
+                >
+                <div class="space-y-2">
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      x-model="form.availability.times"
+                      value="morning"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                    />
+                    <span class="text-[#4A5A70]">Morning (6AM-12PM)</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      x-model="form.availability.times"
+                      value="afternoon"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                    />
+                    <span class="text-[#4A5A70]">Afternoon (12PM-6PM)</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      x-model="form.availability.times"
+                      value="evening"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                    />
+                    <span class="text-[#4A5A70]">Evening (6PM-10PM)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Additional Info -->
+          <div>
+            <label class="block text-sm font-bold text-[#011E41] mb-2"
+              >Tell Us About Yourself</label
+            >
+            <textarea
+              x-model="form.additionalInfo"
+              rows="4"
+              placeholder="Tell us about your experience, why you want to join Zela, and any additional skills you have..."
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+            ></textarea>
+          </div>
+
+          <!-- Agreement -->
+          <div>
+            <label class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                x-model="form.agreement"
+                required
+                class="mt-1 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+              />
+              <span class="text-sm text-[#4A5A70]"
+                >I agree to the background check process and understand that all
+                information provided will be verified. I also agree to Zela's
+                terms of service and privacy policy.</span
+              >
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center pt-6">
+            <button
+              type="submit"
+              :disabled="isSubmitting"
+              class="bg-[#011E41] text-[#FDEA00] px-12 py-4 rounded-full font-semibold text-lg hover:bg-[#022951] transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              :class="{'opacity-50 cursor-not-allowed': isSubmitting}"
+            >
+              <span x-show="!isSubmitting">Submit Application</span>
+              <span x-show="isSubmitting">Submitting...</span>
+            </button>
+          </div>
+
+          <!-- Success Message -->
+          <div
+            x-show="showSuccess"
+            x-transition
+            class="text-center p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg"
+          >
+            <p class="font-semibold">Application submitted successfully!</p>
+            <p class="text-sm">
+              We'll review your application and get back to you within 24 hours.
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Alpine.js Application Form Component -->
+<script>
+  function applicationForm() {
+    return {
+      isSubmitting: false,
+      showSuccess: false,
+      form: {
+        fullName: "",
+        phone: "",
+        email: "",
+        dateOfBirth: "",
+        address: "",
+        services: [],
+        experience: "",
+        availability: {
+          days: [],
+          times: [],
+        },
+        additionalInfo: "",
+        agreement: false,
+      },
+
+      async submitApplication() {
+        this.isSubmitting = true;
+
+        try {
+          // Simulate API call
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
+          // Show success message
+          this.showSuccess = true;
+          this.resetForm();
+
+          // Hide success message after 5 seconds
+          setTimeout(() => {
+            this.showSuccess = false;
+          }, 5000);
+        } catch (error) {
+          console.error("Error submitting application:", error);
+          alert(
+            "There was an error submitting your application. Please try again."
+          );
+        } finally {
+          this.isSubmitting = false;
+        }
+      },
+
+      resetForm() {
+        this.form = {
+          fullName: "",
+          phone: "",
+          email: "",
+          dateOfBirth: "",
+          address: "",
+          services: [],
+          experience: "",
+          availability: {
+            days: [],
+            times: [],
+          },
+          additionalInfo: "",
+          agreement: false,
+        };
+      },
+    };
+  }
+</script>
+
+<!-- Global Footer -->
+{% include "website/components/global-footer.html" %}

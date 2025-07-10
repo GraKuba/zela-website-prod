@@ -83,11 +83,27 @@
         <span class="text-gray-700 text-base">Garantia "Lar Impecável"</span>
       </div>
     </div>
-    <button
-      class="bg-[#015f73] text-yellow-400 px-8 py-4 rounded-full text-lg font-medium hover:bg-teal-700 transition-colors w-fit my-8 cursor-pointer"
+    {% if user.is_authenticated %}
+    <a
+      href="{% url 'website:dashboard' %}"
+      class="bg-[#015f73] text-[#FDEA00] px-6 py-2 rounded-full font-semibold hover:bg-[#014a5a] transition-colors shadow-lg w-fit my-8 cursor-pointer inline-block"
+      hx-get="{% url 'website:dashboard' %}"
+      hx-target="body"
+      hx-swap="outerHTML"
+    >
+      Go to Dashboard
+    </a>
+    {% else %}
+    <a
+      href="{% url 'website:register' %}"
+      class="bg-[#015f73] text-[#FDEA00] px-6 py-2 rounded-full font-semibold hover:bg-[#014a5a] transition-colors shadow-lg w-fit my-8 cursor-pointer inline-block"
+      hx-get="{% url 'website:register' %}"
+      hx-target="body"
+      hx-swap="outerHTML"
     >
       Agende Agora
-    </button>
+    </a>
+    {% endif %}
   </div>
 
   <!-- ───────────────  RIGHT: AUTO-SCROLL PROVIDER GRID  (≈65 %) ─────────────── -->

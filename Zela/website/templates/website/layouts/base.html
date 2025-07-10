@@ -33,5 +33,15 @@
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
   >
     <main>{% block content %}{% endblock %}</main>
+    
+    <!-- HTMX scroll to top on page navigation -->
+    <script>
+      document.addEventListener('htmx:afterSwap', function(e) {
+        // Scroll to top when HTMX swaps the entire body
+        if (e.target === document.body) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    </script>
   </body>
 </html>
