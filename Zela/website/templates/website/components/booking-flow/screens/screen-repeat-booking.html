@@ -77,22 +77,22 @@
             <div class="flex flex-col">
               <div
                 class="text-2xl font-bold"
-                x-text="booking.repeat.numberOfSessions"
-              ></div>
+                data-sessions
+              >4</div>
               <div class="text-sm text-gray-300">sessions</div>
             </div>
             <div class="flex flex-col text-right">
               <div
                 class="text-2xl font-bold"
-                x-text="formatCurrency(booking.pricing.bookingCost)"
-              ></div>
+                data-total-cost
+              >R2840</div>
               <div class="text-sm text-gray-300">total</div>
             </div>
           </div>
           <div class="flex justify-between text-sm text-gray-300">
             <div
-              x-text="booking.details.duration + ' hrs each'"
-            ></div>
+              data-duration
+            >5.5 hrs each</div>
             <div>Best Value</div>
           </div>
         </div>
@@ -198,95 +198,112 @@
             </h3>
             <div class="grid grid-cols-2 gap-4">
               <div
-                @click="setRepeatFrequency('weekly')"
+                onclick="setRepeatFrequency('weekly')"
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.frequency === 'weekly' }"
+                id="frequency-weekly"
               >
                 <div class="text-lg font-bold mb-2" style="color: #011e41">Weekly</div>
                 <div class="text-sm text-gray-600">Every week</div>
+                <div class="mt-2 hidden" id="frequency-weekly-indicator">
+                  <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
+                </div>
               </div>
               <div
-                @click="setRepeatFrequency('bi-weekly')"
+                onclick="setRepeatFrequency('bi-weekly')"
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.frequency === 'bi-weekly' }"
+                id="frequency-bi-weekly"
               >
                 <div class="text-lg font-bold mb-2" style="color: #011e41">Bi-weekly</div>
                 <div class="text-sm text-gray-600">Every 2 weeks</div>
+                <div class="mt-2 hidden" id="frequency-bi-weekly-indicator">
+                  <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
+                </div>
               </div>
               <div
-                @click="setRepeatFrequency('monthly')"
+                onclick="setRepeatFrequency('monthly')"
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.frequency === 'monthly' }"
+                id="frequency-monthly"
               >
                 <div class="text-lg font-bold mb-2" style="color: #011e41">Monthly</div>
                 <div class="text-sm text-gray-600">Every month</div>
+                <div class="mt-2 hidden" id="frequency-monthly-indicator">
+                  <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
+                </div>
               </div>
               <div
-                @click="setRepeatFrequency('custom')"
+                onclick="setRepeatFrequency('custom')"
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.frequency === 'custom' }"
+                id="frequency-custom"
               >
                 <div class="text-lg font-bold mb-2" style="color: #011e41">Custom</div>
                 <div class="text-sm text-gray-600">Set your own</div>
+                <div class="mt-2 hidden" id="frequency-custom-indicator">
+                  <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Days of Week (for weekly/bi-weekly) -->
-          <div x-show="booking.repeat.frequency === 'weekly' || booking.repeat.frequency === 'bi-weekly'">
+          <div data-days-section style="display: none;">
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
               Which days?
             </h4>
             <div class="grid grid-cols-7 gap-2">
               <div
-                @click="toggleDayOfWeek('monday')"
+                onclick="toggleDayOfWeek('monday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('monday') }"
+                id="day-monday"
               >
                 <div class="text-sm font-medium">Mon</div>
               </div>
               <div
-                @click="toggleDayOfWeek('tuesday')"
+                onclick="toggleDayOfWeek('tuesday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('tuesday') }"
+                id="day-tuesday"
               >
                 <div class="text-sm font-medium">Tue</div>
               </div>
               <div
-                @click="toggleDayOfWeek('wednesday')"
+                onclick="toggleDayOfWeek('wednesday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('wednesday') }"
+                id="day-wednesday"
               >
                 <div class="text-sm font-medium">Wed</div>
               </div>
               <div
-                @click="toggleDayOfWeek('thursday')"
+                onclick="toggleDayOfWeek('thursday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('thursday') }"
+                id="day-thursday"
               >
                 <div class="text-sm font-medium">Thu</div>
               </div>
               <div
-                @click="toggleDayOfWeek('friday')"
+                onclick="toggleDayOfWeek('friday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('friday') }"
+                id="day-friday"
               >
                 <div class="text-sm font-medium">Fri</div>
               </div>
               <div
-                @click="toggleDayOfWeek('saturday')"
+                onclick="toggleDayOfWeek('saturday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('saturday') }"
+                id="day-saturday"
               >
                 <div class="text-sm font-medium">Sat</div>
               </div>
               <div
-                @click="toggleDayOfWeek('sunday')"
+                onclick="toggleDayOfWeek('sunday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.repeat.daysOfWeek.includes('sunday') }"
+                id="day-sunday"
               >
                 <div class="text-sm font-medium">Sun</div>
               </div>
+            </div>
+            <div class="mt-2 text-sm text-gray-600 text-center" id="days-counter">
+              <span class="text-gray-500">
+                Select the days you want service
+              </span>
             </div>
           </div>
 
@@ -297,8 +314,9 @@
             </h4>
             <div class="flex items-center space-x-4">
               <button
-                @click="updateNumberOfSessions(booking.repeat.numberOfSessions - 1)"
+                onclick="decreaseNumberOfSessions()"
                 class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
+                id="sessions-decrease-btn"
               >
                 <svg
                   class="w-5 h-5"
@@ -314,13 +332,19 @@
                   />
                 </svg>
               </button>
-              <div
-                class="text-2xl font-bold min-w-[60px] text-center"
-                x-text="booking.repeat.numberOfSessions"
-              ></div>
+              <input
+                type="number"
+                id="sessions-input"
+                onchange="handleSessionsInputChange(this.value)"
+                class="text-2xl font-bold min-w-[80px] text-center bg-white border border-gray-300 rounded-lg px-2 py-1 focus:ring-2 focus:ring-[#015e73] focus:border-transparent"
+                min="1"
+                max="52"
+                value="4"
+              />
               <button
-                @click="updateNumberOfSessions(booking.repeat.numberOfSessions + 1)"
+                onclick="increaseNumberOfSessions()"
                 class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
+                id="sessions-increase-btn"
               >
                 <svg
                   class="w-5 h-5"
@@ -336,6 +360,11 @@
                   />
                 </svg>
               </button>
+            </div>
+            <div class="mt-2 text-sm text-gray-600 text-center" id="sessions-savings">
+              <span class="text-green-600 font-medium">
+                💰 Save 15% on 4+ sessions!
+              </span>
             </div>
           </div>
 
@@ -358,8 +387,8 @@
               How big is your home?
             </h4>
             <select
-              x-model="booking.details.homeSize"
-              @change="updateHomeSizeDuration(); calculateRepeatPricing()"
+              id="home-size-select"
+              onchange="updateHomeSizeDuration()"
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer"
             >
               <option value="small-1-2-bedrooms">
@@ -381,7 +410,7 @@
             </h4>
             <div class="flex items-center space-x-4">
               <button
-                @click="updateDuration(-0.5); calculateRepeatPricing()"
+                onclick="updateDuration(-0.5)"
                 class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
               >
                 <svg
@@ -400,10 +429,12 @@
               </button>
               <div
                 class="text-2xl font-bold min-w-[80px] text-center"
-                x-text="booking.details.duration + ' hrs'"
-              ></div>
+                id="duration-display"
+              >
+                5.5 hrs
+              </div>
               <button
-                @click="updateDuration(0.5); calculateRepeatPricing()"
+                onclick="updateDuration(0.5)"
                 class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
               >
                 <svg
@@ -429,12 +460,25 @@
               Preferred start time:
             </h4>
             <select
-              x-model="booking.details.startTime"
+              id="start-time-select"
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer"
             >
-              <template x-for="time in timeSlots" :key="time">
-                <option :value="time" x-text="time"></option>
-              </template>
+              <option value="07:00 - 07:30">07:00 - 07:30</option>
+              <option value="07:30 - 08:00">07:30 - 08:00</option>
+              <option value="08:00 - 08:30">08:00 - 08:30</option>
+              <option value="08:30 - 09:00">08:30 - 09:00</option>
+              <option value="09:00 - 09:30">09:00 - 09:30</option>
+              <option value="09:30 - 10:00">09:30 - 10:00</option>
+              <option value="10:00 - 10:30">10:00 - 10:30</option>
+              <option value="10:30 - 11:00">10:30 - 11:00</option>
+              <option value="11:00 - 11:30">11:00 - 11:30</option>
+              <option value="11:30 - 12:00">11:30 - 12:00</option>
+              <option value="12:00 - 12:30">12:00 - 12:30</option>
+              <option value="12:30 - 13:00">12:30 - 13:00</option>
+              <option value="13:00 - 13:30">13:00 - 13:30</option>
+              <option value="13:30 - 14:00">13:30 - 14:00</option>
+              <option value="14:00 - 14:30">14:00 - 14:30</option>
+              <option value="14:30 - 15:00">14:30 - 15:00</option>
             </select>
           </div>
 
@@ -444,7 +488,7 @@
               Special instructions for your worker
             </h4>
             <textarea
-              x-model="booking.details.notes"
+              id="special-instructions"
               placeholder="Add any special instructions or preferences for your repeat service..."
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent h-24 resize-none"
             ></textarea>
@@ -453,13 +497,13 @@
           <!-- Action Buttons -->
           <div class="flex space-x-4 pt-6">
             <button
-              @click="findWorker()"
+              onclick="findWorker()"
               class="flex-1 py-3 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
             >
               Find a Worker
             </button>
             <button
-              @click="goToScreen(7)"
+              onclick="goToScreen(7)"
               class="flex-1 py-3 px-6 bg-white border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
             >
               Back

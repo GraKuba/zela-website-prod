@@ -5,34 +5,573 @@
   x-transition:enter-start="opacity-0 transform translate-y-4"
   x-transition:enter-end="opacity-100 transform translate-y-0"
   class="space-y-6"
+  x-data="{
+    notificationSettings: {
+      jobAlerts: true,
+      emailNotifications: true,
+      smsNotifications: false,
+      pushNotifications: true,
+      marketingEmails: false,
+      weeklyReports: true,
+      paymentAlerts: true,
+      systemUpdates: true
+    },
+    privacySettings: {
+      profileVisibility: 'public',
+      shareLocation: true,
+      shareStatistics: false,
+      allowReviews: true,
+      dataCollection: true
+    },
+    preferences: {
+      language: 'pt',
+      timezone: 'Africa/Luanda',
+      currency: 'AOA',
+      theme: 'light',
+      mapView: 'satellite'
+    },
+    workSettings: {
+      autoAcceptJobs: false,
+      maxJobsPerDay: 5,
+      preferredJobTypes: ['cleaning', 'deep_cleaning'],
+      minimumJobValue: 100,
+      travelRadius: 15
+    }
+  }"
 >
-  <div
-    class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center"
-  >
-    <svg
-      class="mx-auto h-16 w-16 text-gray-400 mb-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-      />
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-      />
-    </svg>
-    <h3 class="text-lg font-semibold text-gray-900 mb-2">
-      Settings & Notifications
-    </h3>
-    <p class="text-gray-600">
-      Configure alerts, language, and notification preferences.
-    </p>
+  <!-- Settings Overview -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">Account Settings</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="text-center p-4 rounded-lg" style="background-color: #e6f7ff; border: 1px solid #035d73">
+        <svg class="w-8 h-8 mx-auto mb-2" style="color: #035d73" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 17h5l-5 5v-5zM9 6l2 2 4-4"/>
+        </svg>
+        <div class="font-medium text-gray-900">Notifications</div>
+        <div class="text-sm" style="color: #024954">8 Active</div>
+      </div>
+      
+      <div class="text-center p-4 rounded-lg" style="background-color: #fff7e6; border: 1px solid #fdea00">
+        <svg class="w-8 h-8 mx-auto mb-2" style="color: #f59e0b" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+        <div class="font-medium text-gray-900">Privacy</div>
+        <div class="text-sm" style="color: #92400e">Secure</div>
+      </div>
+      
+      <div class="text-center p-4 rounded-lg" style="background-color: #e6f7ff; border: 1px solid #035d73">
+        <svg class="w-8 h-8 mx-auto mb-2" style="color: #035d73" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"/>
+        </svg>
+        <div class="font-medium text-gray-900">Language</div>
+        <div class="text-sm" style="color: #024954">Portuguese</div>
+      </div>
+      
+      <div class="text-center p-4 rounded-lg" style="background-color: #fff7e6; border: 1px solid #fdea00">
+        <svg class="w-8 h-8 mx-auto mb-2" style="color: #f59e0b" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+        </svg>
+        <div class="font-medium text-gray-900">Preferences</div>
+        <div class="text-sm" style="color: #92400e">Customized</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Settings -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-lg font-semibold" style="color: #011e41">Notification Settings</h3>
+      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+        Save Changes
+      </button>
+    </div>
+
+    <div class="space-y-6">
+      <div>
+        <h4 class="font-medium text-gray-900 mb-4">Job & Work Notifications</h4>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div>
+              <div class="font-medium text-gray-900">New Job Alerts</div>
+              <div class="text-sm text-gray-500">Get notified when new jobs match your preferences</div>
+            </div>
+            <button
+              @click="notificationSettings.jobAlerts = !notificationSettings.jobAlerts"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+              :class="notificationSettings.jobAlerts ? 'bg-gray-300' : 'bg-gray-300'"
+              :style="notificationSettings.jobAlerts ? 'background-color: #035d73' : ''"
+            >
+              <span
+                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                :class="notificationSettings.jobAlerts ? 'translate-x-6' : 'translate-x-1'"
+              ></span>
+            </button>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div>
+              <div class="font-medium text-gray-900">Payment Alerts</div>
+              <div class="text-sm text-gray-500">Notifications about payments and payouts</div>
+            </div>
+            <button
+              @click="notificationSettings.paymentAlerts = !notificationSettings.paymentAlerts"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+              :class="notificationSettings.paymentAlerts ? 'bg-gray-300' : 'bg-gray-300'"
+              :style="notificationSettings.paymentAlerts ? 'background-color: #035d73' : ''"
+            >
+              <span
+                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                :class="notificationSettings.paymentAlerts ? 'translate-x-6' : 'translate-x-1'"
+              ></span>
+            </button>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div>
+              <div class="font-medium text-gray-900">Weekly Reports</div>
+              <div class="text-sm text-gray-500">Summary of your weekly performance</div>
+            </div>
+            <button
+              @click="notificationSettings.weeklyReports = !notificationSettings.weeklyReports"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+              :class="notificationSettings.weeklyReports ? 'bg-gray-300' : 'bg-gray-300'"
+              :style="notificationSettings.weeklyReports ? 'background-color: #035d73' : ''"
+            >
+              <span
+                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                :class="notificationSettings.weeklyReports ? 'translate-x-6' : 'translate-x-1'"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="font-medium text-gray-900 mb-4">Communication Channels</h4>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div>
+              <div class="font-medium text-gray-900">Email Notifications</div>
+              <div class="text-sm text-gray-500">Receive notifications via email</div>
+            </div>
+            <button
+              @click="notificationSettings.emailNotifications = !notificationSettings.emailNotifications"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+              :class="notificationSettings.emailNotifications ? 'bg-gray-300' : 'bg-gray-300'"
+              :style="notificationSettings.emailNotifications ? 'background-color: #035d73' : ''"
+            >
+              <span
+                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                :class="notificationSettings.emailNotifications ? 'translate-x-6' : 'translate-x-1'"
+              ></span>
+            </button>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div>
+              <div class="font-medium text-gray-900">SMS Notifications</div>
+              <div class="text-sm text-gray-500">Receive urgent notifications via SMS</div>
+            </div>
+            <button
+              @click="notificationSettings.smsNotifications = !notificationSettings.smsNotifications"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+              :class="notificationSettings.smsNotifications ? 'bg-gray-300' : 'bg-gray-300'"
+              :style="notificationSettings.smsNotifications ? 'background-color: #035d73' : ''"
+            >
+              <span
+                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                :class="notificationSettings.smsNotifications ? 'translate-x-6' : 'translate-x-1'"
+              ></span>
+            </button>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div>
+              <div class="font-medium text-gray-900">Push Notifications</div>
+              <div class="text-sm text-gray-500">App notifications on your mobile device</div>
+            </div>
+            <button
+              @click="notificationSettings.pushNotifications = !notificationSettings.pushNotifications"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+              :class="notificationSettings.pushNotifications ? 'bg-gray-300' : 'bg-gray-300'"
+              :style="notificationSettings.pushNotifications ? 'background-color: #035d73' : ''"
+            >
+              <span
+                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                :class="notificationSettings.pushNotifications ? 'translate-x-6' : 'translate-x-1'"
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Settings -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-6" style="color: #011e41">Privacy & Data Settings</h3>
+    
+    <div class="space-y-4">
+      <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+        <div>
+          <div class="font-medium text-gray-900">Profile Visibility</div>
+          <div class="text-sm text-gray-500">Control who can see your profile information</div>
+        </div>
+        <select 
+          x-model="privacySettings.profileVisibility"
+          class="text-sm border border-gray-300 rounded px-3 py-2"
+        >
+          <option value="public">Public</option>
+          <option value="customers">Customers Only</option>
+          <option value="private">Private</option>
+        </select>
+      </div>
+      
+      <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+        <div>
+          <div class="font-medium text-gray-900">Share Location</div>
+          <div class="text-sm text-gray-500">Allow customers to see your approximate location</div>
+        </div>
+        <button
+          @click="privacySettings.shareLocation = !privacySettings.shareLocation"
+          class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+          :class="privacySettings.shareLocation ? 'bg-gray-300' : 'bg-gray-300'"
+          :style="privacySettings.shareLocation ? 'background-color: #035d73' : ''"
+        >
+          <span
+            class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+            :class="privacySettings.shareLocation ? 'translate-x-6' : 'translate-x-1'"
+          ></span>
+        </button>
+      </div>
+      
+      <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+        <div>
+          <div class="font-medium text-gray-900">Allow Customer Reviews</div>
+          <div class="text-sm text-gray-500">Let customers leave reviews on your profile</div>
+        </div>
+        <button
+          @click="privacySettings.allowReviews = !privacySettings.allowReviews"
+          class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+          :class="privacySettings.allowReviews ? 'bg-gray-300' : 'bg-gray-300'"
+          :style="privacySettings.allowReviews ? 'background-color: #035d73' : ''"
+        >
+          <span
+            class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+            :class="privacySettings.allowReviews ? 'translate-x-6' : 'translate-x-1'"
+          ></span>
+        </button>
+      </div>
+      
+      <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+        <div>
+          <div class="font-medium text-gray-900">Data Collection</div>
+          <div class="text-sm text-gray-500">Allow Zela to collect usage data for improvements</div>
+        </div>
+        <button
+          @click="privacySettings.dataCollection = !privacySettings.dataCollection"
+          class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+          :class="privacySettings.dataCollection ? 'bg-gray-300' : 'bg-gray-300'"
+          :style="privacySettings.dataCollection ? 'background-color: #035d73' : ''"
+        >
+          <span
+            class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+            :class="privacySettings.dataCollection ? 'translate-x-6' : 'translate-x-1'"
+          ></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Work Preferences (Provider Only) -->
+  <div x-show="isProviderMode" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-6" style="color: #011e41">Work Preferences</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Maximum Jobs Per Day</label>
+          <select 
+            x-model="workSettings.maxJobsPerDay"
+            class="w-full text-sm border border-gray-300 rounded px-3 py-2"
+          >
+            <option value="1">1 Job</option>
+            <option value="2">2 Jobs</option>
+            <option value="3">3 Jobs</option>
+            <option value="4">4 Jobs</option>
+            <option value="5">5 Jobs</option>
+            <option value="6">6 Jobs</option>
+            <option value="unlimited">Unlimited</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Minimum Job Value (AOA)</label>
+          <input 
+            type="number" 
+            x-model="workSettings.minimumJobValue"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            min="50"
+            step="25"
+          >
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Travel Radius (km)</label>
+          <input 
+            type="range" 
+            x-model="workSettings.travelRadius"
+            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            min="5"
+            max="50"
+            step="5"
+          >
+          <div class="flex justify-between text-xs text-gray-500 mt-1">
+            <span>5km</span>
+            <span x-text="workSettings.travelRadius + 'km'"></span>
+            <span>50km</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Job Types</label>
+          <div class="space-y-2">
+            <label class="flex items-center">
+              <input 
+                type="checkbox" 
+                value="cleaning"
+                class="rounded border-gray-300 focus:ring-2 mr-2"
+                style="color: #035d73"
+                onchange="this.style.accentColor='#035d73'"
+              >
+              <span class="text-sm text-gray-700">Standard Cleaning</span>
+            </label>
+            <label class="flex items-center">
+              <input 
+                type="checkbox" 
+                value="deep_cleaning"
+                class="rounded border-gray-300 focus:ring-2 mr-2"
+                style="color: #035d73"
+                onchange="this.style.accentColor='#035d73'"
+              >
+              <span class="text-sm text-gray-700">Deep Cleaning</span>
+            </label>
+            <label class="flex items-center">
+              <input 
+                type="checkbox" 
+                value="maintenance"
+                class="rounded border-gray-300 focus:ring-2 mr-2"
+                style="color: #035d73"
+                onchange="this.style.accentColor='#035d73'"
+              >
+              <span class="text-sm text-gray-700">Home Maintenance</span>
+            </label>
+            <label class="flex items-center">
+              <input 
+                type="checkbox" 
+                value="laundry"
+                class="rounded border-gray-300 focus:ring-2 mr-2"
+                style="color: #035d73"
+                onchange="this.style.accentColor='#035d73'"
+              >
+              <span class="text-sm text-gray-700">Laundry Services</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+          <div>
+            <div class="font-medium text-gray-900">Auto-Accept Jobs</div>
+            <div class="text-sm text-gray-500">Automatically accept jobs that match your criteria</div>
+          </div>
+          <button
+            @click="workSettings.autoAcceptJobs = !workSettings.autoAcceptJobs"
+            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+            :class="workSettings.autoAcceptJobs ? 'bg-gray-300' : 'bg-gray-300'"
+            :style="workSettings.autoAcceptJobs ? 'background-color: #035d73' : ''"
+          >
+            <span
+              class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+              :class="workSettings.autoAcceptJobs ? 'translate-x-6' : 'translate-x-1'"
+            ></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Preferences -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-6" style="color: #011e41">App Preferences</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+          <select 
+            x-model="preferences.language"
+            class="w-full text-sm border border-gray-300 rounded px-3 py-2"
+          >
+            <option value="pt">Português</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Timezone</label>
+          <select 
+            x-model="preferences.timezone"
+            class="w-full text-sm border border-gray-300 rounded px-3 py-2"
+          >
+            <option value="Africa/Luanda">Africa/Luanda (WAT)</option>
+            <option value="UTC">UTC</option>
+            <option value="Europe/London">Europe/London (GMT)</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Currency</label>
+          <select 
+            x-model="preferences.currency"
+            class="w-full text-sm border border-gray-300 rounded px-3 py-2"
+          >
+            <option value="AOA">Kwanza (AOA)</option>
+            <option value="USD">US Dollar (USD)</option>
+            <option value="EUR">Euro (EUR)</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Map View</label>
+          <select 
+            x-model="preferences.mapView"
+            class="w-full text-sm border border-gray-300 rounded px-3 py-2"
+          >
+            <option value="standard">Standard</option>
+            <option value="satellite">Satellite</option>
+            <option value="hybrid">Hybrid</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Management -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-6" style="color: #011e41">Account Management</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="space-y-4">
+        <h4 class="font-medium text-gray-900">Data & Security</h4>
+        
+        <div class="space-y-3">
+          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="text-left">
+              <div class="font-medium text-gray-900">Export My Data</div>
+              <div class="text-sm text-gray-500">Download all your account data</div>
+            </div>
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-4-4m4 4l4-4m-6 4V3a1 1 0 011-1h4a1 1 0 011 1v16a1 1 0 01-1 1H7a1 1 0 01-1-1z"/>
+            </svg>
+          </button>
+          
+          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="text-left">
+              <div class="font-medium text-gray-900">Change Password</div>
+              <div class="text-sm text-gray-500">Update your account password</div>
+            </div>
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+          
+          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="text-left">
+              <div class="font-medium text-gray-900">Two-Factor Authentication</div>
+              <div class="text-sm text-gray-500">Enable 2FA for extra security</div>
+            </div>
+            <span class="text-sm text-white px-3 py-1 rounded transition-colors" style="background-color: #035d73">
+              Enable
+            </span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="space-y-4">
+        <h4 class="font-medium text-gray-900">Support & Feedback</h4>
+        
+        <div class="space-y-3">
+          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="text-left">
+              <div class="font-medium text-gray-900">Contact Support</div>
+              <div class="text-sm text-gray-500">Get help with your account</div>
+            </div>
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+          </button>
+          
+          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <div class="text-left">
+              <div class="font-medium text-gray-900">Send Feedback</div>
+              <div class="text-sm text-gray-500">Help us improve Zela</div>
+            </div>
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+            </svg>
+          </button>
+          
+          <button class="w-full flex items-center justify-between p-3 border border-red-200 rounded-lg hover:bg-red-50 transition-colors">
+            <div class="text-left">
+              <div class="font-medium text-red-900">Deactivate Account</div>
+              <div class="text-sm text-red-600">Temporarily disable your account</div>
+            </div>
+            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 15.5c-.77.833.192 2.5 1.732 2.5z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Information -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-6" style="color: #011e41">App Information</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="text-center p-4 border border-gray-200 rounded-lg">
+        <div class="font-medium text-gray-900 mb-1">Version</div>
+        <div class="text-2xl font-bold mb-2" style="color: #035d73">2.4.1</div>
+        <div class="text-sm text-gray-500">Latest version</div>
+      </div>
+      
+      <div class="text-center p-4 border border-gray-200 rounded-lg">
+        <div class="font-medium text-gray-900 mb-1">Last Updated</div>
+        <div class="text-2xl font-bold mb-2" style="color: #035d73">Jul 10</div>
+        <div class="text-sm text-gray-500">2024</div>
+      </div>
+      
+      <div class="text-center p-4 border border-gray-200 rounded-lg">
+        <div class="font-medium text-gray-900 mb-1">Storage Used</div>
+        <div class="text-2xl font-bold mb-2" style="color: #035d73">24MB</div>
+        <div class="text-sm text-gray-500">of 100MB</div>
+      </div>
+    </div>
+    
+    <div class="mt-6 flex justify-center space-x-4">
+      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+        Check for Updates
+      </button>
+      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #fdea00; color: #000" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
+        Rate Our App
+      </button>
+    </div>
   </div>
 </div>

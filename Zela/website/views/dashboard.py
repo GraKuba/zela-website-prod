@@ -24,6 +24,9 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         
+        # Initialize next_booking as None for both user types
+        next_booking = None
+        
         # Get basic user stats
         if user.role == 'customer':
             total_bookings = user.bookings.count()
@@ -52,6 +55,12 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
                 start_at__gt=timezone.now()
             ).count()
             
+            # Get next job for provider (equivalent to next_booking for customer)
+            next_booking = user.jobs.filter(
+                status__in=['accepted', 'in_progress'],
+                start_at__gt=timezone.now()
+            ).order_by('start_at').first()
+            
             # Get provider profile
             provider_profile = getattr(user, 'provider', None)
             
@@ -59,6 +68,7 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
                 'total_jobs': total_jobs,
                 'upcoming_jobs': upcoming_jobs,
                 'completed_jobs': user.jobs.filter(status='completed').count(),
+                'next_job': next_booking,  # Added next_job for providers
                 'is_approved': provider_profile.is_approved if provider_profile else False,
                 'rating_average': provider_profile.rating_average if provider_profile else 0,
                 'rating_count': provider_profile.rating_count if provider_profile else 0,
@@ -72,9 +82,10 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
             'next_booking': {
                 'date': next_booking.start_at.strftime('%B %d, %Y') if next_booking else '',
                 'time': next_booking.start_at.strftime('%I:%M %p') if next_booking else '',
-                'service': next_booking.service_task.name if next_booking else '',
-                'address': next_booking.address if next_booking else '',
-                'provider': next_booking.provider.get_full_name() if next_booking and next_booking.provider else '',
+                'service': getattr(next_booking.service_task, 'name', '') if next_booking and hasattr(next_booking, 'service_task') else '',
+                'address': getattr(next_booking, 'address', '') if next_booking else '',
+                'provider': next_booking.provider.get_full_name() if next_booking and hasattr(next_booking, 'provider') and next_booking.provider else '',
+                'customer': next_booking.customer.get_full_name() if next_booking and hasattr(next_booking, 'customer') and next_booking.customer else '',
                 'countdown': ''  # You could implement countdown logic here
             },
             'wallet_balance': 0,  # Implement wallet balance logic

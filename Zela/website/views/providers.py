@@ -298,4 +298,21 @@ class ProviderApplicationWizard(SessionWizardView):
     def get_form_kwargs(self, step):
         """Add additional kwargs to forms if needed."""
         kwargs = super().get_form_kwargs(step)
-        return kwargs 
+        return kwargs
+
+
+class ApplyWorkerView(TemplateView):
+    """Apply as a worker page with application form."""
+    
+    template_name = 'website/components/page-apply-worker/apply-worker.html'
+    
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
+        """Add context data for apply worker page."""
+        context = super().get_context_data(**kwargs)
+        
+        context.update({
+            'title': 'Apply as a Service Pro - Join Zela',
+            'meta_description': 'Apply to join Zela as a service professional and start earning money with your skills.',
+        })
+        
+        return context 

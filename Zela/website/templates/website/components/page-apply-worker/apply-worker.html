@@ -1,5 +1,9 @@
+{% extends "website/layouts/base.html" %}
 {% load static %}
 
+{% block title %}Apply as a Service Pro - Join Zela{% endblock %}
+
+{% block content %}
 <!-- Apply as Worker Page -->
 <div class="min-h-screen bg-white">
   {% include "website/fragments/navbar.html" %}
@@ -468,130 +472,130 @@
       </div>
 
       <div
-        class="bg-white rounded-2xl p-8 shadow-lg"
+        class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300"
         x-data="applicationForm()"
       >
         <form @submit.prevent="submitApplication()" class="space-y-6">
           <!-- Personal Information -->
           <div class="grid md:grid-cols-2 gap-6">
             <div>
-              <label class="block text-sm font-bold text-[#011E41] mb-2"
+              <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
                 >Full Name *</label
               >
               <input
                 type="text"
                 x-model="form.fullName"
                 required
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent hover:border-[#035d73] hover:shadow-md transition-all duration-200"
               />
             </div>
             <div>
-              <label class="block text-sm font-bold text-[#011E41] mb-2"
+              <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
                 >Phone Number *</label
               >
               <input
                 type="tel"
                 x-model="form.phone"
                 required
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent hover:border-[#035d73] hover:shadow-md transition-all duration-200"
               />
             </div>
           </div>
 
           <div class="grid md:grid-cols-2 gap-6">
             <div>
-              <label class="block text-sm font-bold text-[#011E41] mb-2"
+              <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
                 >Email Address *</label
               >
               <input
                 type="email"
                 x-model="form.email"
                 required
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent hover:border-[#035d73] hover:shadow-md transition-all duration-200"
               />
             </div>
             <div>
-              <label class="block text-sm font-bold text-[#011E41] mb-2"
+              <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
                 >Date of Birth *</label
               >
               <input
                 type="date"
                 x-model="form.dateOfBirth"
                 required
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent hover:border-[#035d73] hover:shadow-md transition-all duration-200 cursor-pointer"
               />
             </div>
           </div>
 
           <div>
-            <label class="block text-sm font-bold text-[#011E41] mb-2"
+            <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
               >Address *</label
             >
             <textarea
               x-model="form.address"
               required
               rows="3"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent hover:border-[#035d73] hover:shadow-md transition-all duration-200 resize-none"
             ></textarea>
           </div>
 
           <!-- Services -->
           <div>
-            <label class="block text-sm font-bold text-[#011E41] mb-4"
+            <label class="block text-sm font-bold text-[#011E41] mb-4 cursor-pointer"
               >Services You'd Like to Provide *</label
             >
             <div class="grid md:grid-cols-3 gap-4">
-              <label class="flex items-center">
+              <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                 <input
                   type="checkbox"
                   x-model="form.services"
                   value="house-cleaning"
-                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
                 <span class="text-[#4A5A70]">House Cleaning</span>
               </label>
-              <label class="flex items-center">
+              <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                 <input
                   type="checkbox"
                   x-model="form.services"
                   value="office-cleaning"
-                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
                 <span class="text-[#4A5A70]">Office Cleaning</span>
               </label>
-              <label class="flex items-center">
+              <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                 <input
                   type="checkbox"
                   x-model="form.services"
                   value="deep-cleaning"
-                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
                 <span class="text-[#4A5A70]">Deep Cleaning</span>
               </label>
-              <label class="flex items-center">
+              <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                 <input
                   type="checkbox"
                   x-model="form.services"
                   value="move-in-out"
-                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
                 <span class="text-[#4A5A70]">Move-in/out</span>
               </label>
-              <label class="flex items-center">
+              <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                 <input
                   type="checkbox"
                   x-model="form.services"
                   value="laundry"
-                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
                 <span class="text-[#4A5A70]">Laundry</span>
               </label>
-              <label class="flex items-center">
+              <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                 <input
                   type="checkbox"
                   x-model="form.services"
                   value="gardening"
-                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                  class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
                 <span class="text-[#4A5A70]">Gardening</span>
               </label>
@@ -600,13 +604,13 @@
 
           <!-- Experience -->
           <div>
-            <label class="block text-sm font-bold text-[#011E41] mb-2"
+            <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
               >Years of Experience *</label
             >
             <select
               x-model="form.experience"
               required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent hover:border-[#035d73] hover:shadow-md transition-all duration-200 cursor-pointer"
             >
               <option value="">Select experience level</option>
               <option value="0-1">0-1 years</option>
@@ -618,75 +622,75 @@
 
           <!-- Availability -->
           <div>
-            <label class="block text-sm font-bold text-[#011E41] mb-4"
+            <label class="block text-sm font-bold text-[#011E41] mb-4 cursor-pointer"
               >Availability *</label
             >
             <div class="grid md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm text-[#4A5A70] mb-2"
+                <label class="block text-sm text-[#4A5A70] mb-2 cursor-pointer"
                   >Preferred Days</label
                 >
                 <div class="space-y-2">
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
                       type="checkbox"
                       x-model="form.availability.days"
                       value="monday"
-                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
                     <span class="text-[#4A5A70]">Monday</span>
                   </label>
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
                       type="checkbox"
                       x-model="form.availability.days"
                       value="tuesday"
-                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
                     <span class="text-[#4A5A70]">Tuesday</span>
                   </label>
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
                       type="checkbox"
                       x-model="form.availability.days"
                       value="wednesday"
-                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
                     <span class="text-[#4A5A70]">Wednesday</span>
                   </label>
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
                       type="checkbox"
                       x-model="form.availability.days"
                       value="thursday"
-                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
                     <span class="text-[#4A5A70]">Thursday</span>
                   </label>
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
                       type="checkbox"
                       x-model="form.availability.days"
                       value="friday"
-                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
                     <span class="text-[#4A5A70]">Friday</span>
                   </label>
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
                       type="checkbox"
                       x-model="form.availability.days"
                       value="saturday"
-                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
                     <span class="text-[#4A5A70]">Saturday</span>
                   </label>
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
                       type="checkbox"
                       x-model="form.availability.days"
                       value="sunday"
-                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
                     <span class="text-[#4A5A70]">Sunday</span>
                   </label>
@@ -697,30 +701,30 @@
                   >Preferred Times</label
                 >
                 <div class="space-y-2">
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
                       type="checkbox"
                       x-model="form.availability.times"
                       value="morning"
-                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
                     <span class="text-[#4A5A70]">Morning (6AM-12PM)</span>
                   </label>
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
                       type="checkbox"
                       x-model="form.availability.times"
                       value="afternoon"
-                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
                     <span class="text-[#4A5A70]">Afternoon (12PM-6PM)</span>
                   </label>
-                  <label class="flex items-center">
+                  <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
                       type="checkbox"
                       x-model="form.availability.times"
                       value="evening"
-                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                      class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
                     <span class="text-[#4A5A70]">Evening (6PM-10PM)</span>
                   </label>
@@ -731,25 +735,25 @@
 
           <!-- Additional Info -->
           <div>
-            <label class="block text-sm font-bold text-[#011E41] mb-2"
+            <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
               >Tell Us About Yourself</label
             >
             <textarea
               x-model="form.additionalInfo"
               rows="4"
               placeholder="Tell us about your experience, why you want to join Zela, and any additional skills you have..."
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent hover:border-[#035d73] hover:shadow-md transition-all duration-200 resize-none"
             ></textarea>
           </div>
 
           <!-- Agreement -->
           <div>
-            <label class="flex items-start gap-3">
+            <label class="flex items-start gap-3 cursor-pointer hover:bg-gray-50 p-3 rounded-lg transition-colors duration-200">
               <input
                 type="checkbox"
                 x-model="form.agreement"
                 required
-                class="mt-1 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73]"
+                class="mt-1 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
               />
               <span class="text-sm text-[#4A5A70]"
                 >I agree to the background check process and understand that all
@@ -764,7 +768,7 @@
             <button
               type="submit"
               :disabled="isSubmitting"
-              class="bg-[#011E41] text-[#FDEA00] px-12 py-4 rounded-full font-semibold text-lg hover:bg-[#022951] transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              class="bg-[#035d73] text-white px-12 py-4 rounded-full font-semibold text-lg hover:bg-[#024a5a] hover:shadow-xl transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               :class="{'opacity-50 cursor-not-allowed': isSubmitting}"
             >
               <span x-show="!isSubmitting">Submit Application</span>
@@ -859,3 +863,5 @@
 
 <!-- Global Footer -->
 {% include "website/components/global-footer.html" %}
+</div>
+{% endblock %}

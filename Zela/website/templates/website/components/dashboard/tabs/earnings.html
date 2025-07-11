@@ -5,26 +5,222 @@
   x-transition:enter-start="opacity-0 transform translate-y-4"
   x-transition:enter-end="opacity-100 transform translate-y-0"
   class="space-y-6"
+  x-data="{
+    currentBalance: 1247.50,
+    pendingPayouts: 280.00,
+    weeklyEarnings: [
+      { week: 'Jul 1-7', amount: 1240.00, jobs: 8 },
+      { week: 'Jun 24-30', amount: 980.50, jobs: 6 },
+      { week: 'Jun 17-23', amount: 1150.00, jobs: 7 },
+      { week: 'Jun 10-16', amount: 890.00, jobs: 5 }
+    ],
+    recentTransactions: [
+      { id: 'tx-001', type: 'earning', description: 'Deep Clean - Maria Silva', amount: 280.00, date: '2024-07-10', status: 'completed' },
+      { id: 'tx-002', type: 'payout', description: 'Weekly Payout', amount: -750.00, date: '2024-07-08', status: 'processed' },
+      { id: 'tx-003', type: 'earning', description: 'Office Clean - TechCorp', amount: 450.00, date: '2024-07-07', status: 'completed' },
+      { id: 'tx-004', type: 'tip', description: 'Tip from Ana Rodrigues', amount: 30.00, date: '2024-07-09', status: 'received' }
+    ],
+    earningsChart: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      data: [180, 220, 280, 150, 320, 420, 380]
+    }
+  }"
 >
-  <div
-    class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center"
-  >
-    <svg
-      class="mx-auto h-16 w-16 text-gray-400 mb-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-      />
-    </svg>
-    <h3 class="text-lg font-semibold text-gray-900 mb-2">Earnings & Payouts</h3>
-    <p class="text-gray-600">
-      Track earnings, request payouts, and view statements.
-    </p>
+  <!-- Real-time Earnings Overview -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Current Balance -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-medium text-gray-900">Available Balance</h3>
+          <p class="text-3xl font-bold mt-2" style="color: #035d73" x-text="'R$ ' + currentBalance.toFixed(2)"></p>
+          <div class="flex items-center mt-2">
+            <svg class="h-4 w-4 text-green-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/>
+            </svg>
+            <span class="text-sm text-green-600">+18% this week</span>
+          </div>
+        </div>
+        <div class="p-3 rounded-full" style="background-color: #e6f7ff">
+          <svg class="h-8 w-8" style="color: #035d73" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Payouts -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-medium text-gray-900">Pending Payouts</h3>
+          <p class="text-3xl font-bold mt-2" style="color: #f59e0b" x-text="'R$ ' + pendingPayouts.toFixed(2)"></p>
+          <div class="text-sm text-gray-500 mt-2">Processing in 2-3 days</div>
+        </div>
+        <div class="p-3 rounded-full" style="background-color: #fff7e6">
+          <svg class="h-8 w-8" style="color: #f59e0b" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- This Week's Jobs -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-medium text-gray-900">This Week's Jobs</h3>
+          <p class="text-3xl font-bold mt-2" style="color: #8b5cf6">8</p>
+          <div class="text-sm text-gray-500 mt-2">Avg. R$ 155.00 per job</div>
+        </div>
+        <div class="p-3 rounded-full" style="background-color: #fff7e6">
+          <svg class="h-8 w-8" style="color: #fdea00" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v6a2 2 0 01-2 2H9V5z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payout Actions -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold" style="color: #011e41">Payout Options</h3>
+      <span class="text-sm text-gray-500">Minimum payout: R$ 50.00</span>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Instant Payout -->
+      <div class="border border-gray-200 rounded-lg p-4">
+        <div class="flex items-center justify-between mb-3">
+          <h4 class="font-medium text-gray-900">Instant Payout</h4>
+          <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Available now</span>
+        </div>
+        <p class="text-sm text-gray-600 mb-4">Get your money in minutes. 1.5% fee applies.</p>
+        <button 
+          class="w-full px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors"
+          style="background-color: #035d73"
+          :disabled="currentBalance < 50"
+          :class="currentBalance < 50 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-opacity-90'"
+        >
+          Request Instant Payout
+        </button>
+      </div>
+
+      <!-- Standard Payout -->
+      <div class="border border-gray-200 rounded-lg p-4">
+        <div class="flex items-center justify-between mb-3">
+          <h4 class="font-medium text-gray-900">Standard Payout</h4>
+          <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">2-3 business days</span>
+        </div>
+        <p class="text-sm text-gray-600 mb-4">Free transfer to your bank account. No fees.</p>
+        <button 
+          class="w-full px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors"
+          style="background-color: #fdea00; color: #000"
+          :disabled="currentBalance < 50"
+          :class="currentBalance < 50 ? 'opacity-50 cursor-not-allowed' : ''"
+          onmouseover="this.style.backgroundColor='#fcd34d'"
+          onmouseout="this.style.backgroundColor='#fdea00'"
+        >
+          Request Standard Payout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weekly Earnings Chart -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">This Week's Earnings</h3>
+    
+    <div class="grid grid-cols-7 gap-2 mb-6">
+      <template x-for="(day, index) in earningsChart.labels" :key="index">
+        <div class="text-center">
+          <div class="text-xs text-gray-500 mb-2" x-text="day"></div>
+          <div 
+            class="rounded-lg mx-auto transition-all hover:opacity-80"
+            style="background-color: #035d73"
+            :style="'height: ' + (earningsChart.data[index] / 5) + 'px; width: 100%; max-height: 80px;'"
+          ></div>
+          <div class="text-xs text-gray-700 mt-1" x-text="'R$ ' + earningsChart.data[index]"></div>
+        </div>
+      </template>
+    </div>
+    
+    <div class="text-center">
+      <div class="text-2xl font-bold" style="color: #011e41">R$ 1,950.00</div>
+      <div class="text-sm text-gray-500">Total this week</div>
+    </div>
+  </div>
+
+  <!-- Weekly Performance -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">Weekly Performance</h3>
+    
+    <div class="space-y-4">
+      <template x-for="week in weeklyEarnings" :key="week.week">
+        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+          <div>
+            <div class="font-medium text-gray-900" x-text="week.week"></div>
+            <div class="text-sm text-gray-500"><span x-text="week.jobs"></span> jobs completed</div>
+          </div>
+          <div class="text-right">
+            <div class="font-bold text-gray-900" x-text="'R$ ' + week.amount.toFixed(2)"></div>
+            <div class="text-sm text-gray-500" x-text="'R$ ' + (week.amount / week.jobs).toFixed(2) + ' avg per job'"></div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- Transaction History -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold" style="color: #011e41">Recent Transactions</h3>
+      <button class="text-sm hover:underline" style="color: #035d73">View All</button>
+    </div>
+    
+    <div class="space-y-3">
+      <template x-for="transaction in recentTransactions" :key="transaction.id">
+        <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
+          <div class="flex items-center">
+            <div 
+              class="w-10 h-10 rounded-full flex items-center justify-center mr-3"
+              :class="{
+                'bg-green-100': transaction.type === 'earning',
+                'bg-blue-100': transaction.type === 'payout',
+                'bg-yellow-100': transaction.type === 'tip'
+              }"
+            >
+              <svg class="w-5 h-5" :class="{
+                'text-green-600': transaction.type === 'earning',
+                'text-blue-600': transaction.type === 'payout',
+                'text-yellow-600': transaction.type === 'tip'
+              }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+              </svg>
+            </div>
+            <div>
+              <div class="font-medium text-gray-900" x-text="transaction.description"></div>
+              <div class="text-sm text-gray-500" x-text="transaction.date"></div>
+            </div>
+          </div>
+          <div class="text-right">
+            <div 
+              class="font-medium"
+              :class="transaction.amount > 0 ? 'text-green-600' : 'text-red-600'"
+              x-text="(transaction.amount > 0 ? '+' : '') + 'R$ ' + Math.abs(transaction.amount).toFixed(2)"
+            ></div>
+            <div 
+              class="text-xs px-2 py-1 rounded-full"
+              :class="{
+                'bg-green-100 text-green-800': transaction.status === 'completed' || transaction.status === 'received',
+                'bg-blue-100 text-blue-800': transaction.status === 'processed'
+              }"
+              x-text="transaction.status"
+            ></div>
+          </div>
+        </div>
+      </template>
+    </div>
   </div>
 </div>

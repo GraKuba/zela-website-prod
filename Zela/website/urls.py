@@ -9,7 +9,7 @@ from .views.dashboard import (
     DashboardShellView, BookingListPartial, BookingUpdatePartial,
     ProfileUpdateView, RatingCreatePartial
 )
-from .views.providers import ProviderLandingView, ProviderApplicationWizard
+from .views.providers import ProviderLandingView, ProviderApplicationWizard, ApplyWorkerView
 from .views.booking import booking_flow, booking_screen, save_booking_data, process_payment
 
 app_name = 'website'
@@ -51,6 +51,7 @@ urlpatterns = [
     # Provider onboarding
     path('providers/', ProviderLandingView.as_view(), name='providers'),
     path('providers/apply/', ProviderApplicationWizard.as_view(), name='provider-apply'),
+    path('apply-worker/', ApplyWorkerView.as_view(), name='apply-worker'),
     
     # Booking Flow
     path('book/', booking_flow, name='booking-flow'),

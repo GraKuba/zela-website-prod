@@ -1,30 +1,486 @@
-<!-- Account / KYC Docs Tab -->
+<!-- Profile & KYC Documents Tab -->
 <div
   x-show="currentTab === 'kyc' && isProviderMode"
   x-transition:enter="transition ease-out duration-300"
   x-transition:enter-start="opacity-0 transform translate-y-4"
   x-transition:enter-end="opacity-100 transform translate-y-0"
   class="space-y-6"
+  x-data="{
+    verificationStatus: 'pending',
+    profileData: {
+      firstName: 'João',
+      lastName: 'Silva',
+      email: 'joao.silva@example.com',
+      phone: '+244 123 456 789',
+      address: '123 Rua Principal, Luanda',
+      dateOfBirth: '1990-05-15',
+      nationalId: '1234567890123'
+    },
+    documents: [
+      {
+        id: 'national-id',
+        type: 'National ID',
+        status: 'verified',
+        uploadDate: '2024-06-15',
+        expiryDate: '2029-05-15',
+        fileName: 'national_id_front.pdf',
+        required: true
+      },
+      {
+        id: 'proof-address',
+        type: 'Proof of Address',
+        status: 'verified',
+        uploadDate: '2024-06-15',
+        expiryDate: null,
+        fileName: 'utility_bill.pdf',
+        required: true
+      },
+      {
+        id: 'bank-statement',
+        type: 'Bank Statement',
+        status: 'pending',
+        uploadDate: '2024-07-01',
+        expiryDate: null,
+        fileName: 'bank_statement.pdf',
+        required: true
+      },
+      {
+        id: 'criminal-record',
+        type: 'Criminal Record Check',
+        status: 'expired',
+        uploadDate: '2023-06-15',
+        expiryDate: '2024-06-15',
+        fileName: 'criminal_record.pdf',
+        required: true
+      },
+      {
+        id: 'insurance',
+        type: 'Insurance Certificate',
+        status: 'missing',
+        uploadDate: null,
+        expiryDate: null,
+        fileName: null,
+        required: false
+      }
+    ],
+    contracts: [
+      {
+        id: 'service-agreement',
+        title: 'Service Provider Agreement',
+        type: 'contract',
+        status: 'signed',
+        signedDate: '2024-06-15',
+        version: '2.1'
+      },
+      {
+        id: 'privacy-policy',
+        title: 'Privacy Policy',
+        type: 'policy',
+        status: 'acknowledged',
+        signedDate: '2024-06-15',
+        version: '1.3'
+      },
+      {
+        id: 'terms-service',
+        title: 'Terms of Service',
+        type: 'terms',
+        status: 'signed',
+        signedDate: '2024-06-15',
+        version: '1.8'
+      }
+    ]
+  }"
 >
-  <div
-    class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center"
-  >
-    <svg
-      class="mx-auto h-16 w-16 text-gray-400 mb-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-      />
-    </svg>
-    <h3 class="text-lg font-semibold text-gray-900 mb-2">Account / KYC Docs</h3>
-    <p class="text-gray-600">
-      Upload documents, manage verification, and download contracts.
-    </p>
+  <!-- Verification Status Overview -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-lg font-semibold" style="color: #011e41">Account Verification Status</h3>
+      <div class="flex items-center space-x-2">
+        <div 
+          class="px-3 py-1 rounded-full text-sm font-medium"
+          :class="{
+            'bg-green-100 text-green-800': verificationStatus === 'verified',
+            'bg-yellow-100 text-yellow-800': verificationStatus === 'pending',
+            'bg-red-100 text-red-800': verificationStatus === 'rejected'
+          }"
+        >
+          <span x-text="verificationStatus === 'verified' ? 'Verified' : verificationStatus === 'pending' ? 'Pending Review' : 'Needs Attention'"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Profile Completion -->
+      <div class="text-center p-4 rounded-lg" style="background-color: #e6f7ff; border: 1px solid #035d73">
+        <div class="text-3xl font-bold mb-2" style="color: #035d73">85%</div>
+        <div class="text-sm" style="color: #024954">Profile Complete</div>
+      </div>
+      
+      <!-- Documents Status -->
+      <div class="text-center p-4 rounded-lg" style="background-color: #fff7e6; border: 1px solid #fdea00">
+        <div class="text-3xl font-bold mb-2" style="color: #f59e0b">3/5</div>
+        <div class="text-sm" style="color: #92400e">Documents Verified</div>
+      </div>
+      
+      <!-- Account Status -->
+      <div class="text-center p-4 rounded-lg" style="background-color: #e6f7ff; border: 1px solid #035d73">
+        <div class="text-3xl font-bold mb-2" style="color: #035d73">Active</div>
+        <div class="text-sm" style="color: #024954">Account Status</div>
+      </div>
+    </div>
+    
+    <div class="mt-6 p-4 rounded-lg" style="background-color: #fff7e6; border: 1px solid #fdea00">
+      <div class="flex items-start">
+        <svg class="w-5 h-5 mr-2 mt-0.5" style="color: #f59e0b" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 15.5c-.77.833.192 2.5 1.732 2.5z"/>
+        </svg>
+        <div class="text-sm">
+          <div class="font-medium" style="color: #f59e0b">Action Required</div>
+          <div class="mt-1" style="color: #92400e">
+            Please update your expired Criminal Record Check to maintain full verification status.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal Information -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-lg font-semibold" style="color: #011e41">Personal Information</h3>
+      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+        Edit Profile
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+          <input 
+            type="text" 
+            x-model="profileData.firstName"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled
+          >
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+          <input 
+            type="text" 
+            x-model="profileData.lastName"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled
+          >
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+          <input 
+            type="email" 
+            x-model="profileData.email"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled
+          >
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+          <input 
+            type="tel" 
+            x-model="profileData.phone"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled
+          >
+        </div>
+      </div>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+          <textarea 
+            x-model="profileData.address"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            rows="3"
+            disabled
+          ></textarea>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+          <input 
+            type="date" 
+            x-model="profileData.dateOfBirth"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled
+          >
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">National ID Number</label>
+          <input 
+            type="text" 
+            x-model="profileData.nationalId"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Document Management -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-lg font-semibold" style="color: #011e41">Identity Documents</h3>
+      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #fdea00; color: #000" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
+        Upload New Document
+      </button>
+    </div>
+
+    <div class="space-y-4">
+      <template x-for="document in documents" :key="document.id">
+        <div class="border border-gray-200 rounded-lg p-4">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center">
+              <div 
+                class="w-10 h-10 rounded-full flex items-center justify-center mr-3"
+                :class="{
+                  'bg-green-100': document.status === 'verified',
+                  'bg-yellow-100': document.status === 'pending',
+                  'bg-red-100': document.status === 'expired',
+                  'bg-gray-100': document.status === 'missing'
+                }"
+              >
+                <svg 
+                  class="w-5 h-5"
+                  :class="{
+                    'text-green-600': document.status === 'verified',
+                    'text-yellow-600': document.status === 'pending',
+                    'text-red-600': document.status === 'expired',
+                    'text-gray-600': document.status === 'missing'
+                  }"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                >
+                  <path 
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    :d="document.status === 'verified' ? 'M9 12l2 2 4-4' : document.status === 'pending' ? 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' : document.status === 'expired' ? 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 15.5c-.77.833.192 2.5 1.732 2.5z' : 'M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z'"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-medium text-gray-900" x-text="document.type"></h4>
+                <div class="flex items-center space-x-2 text-sm text-gray-500">
+                  <span x-show="document.required" class="text-red-600">Required</span>
+                  <span x-show="!document.required" class="text-gray-500">Optional</span>
+                  <span x-show="document.fileName">•</span>
+                  <span x-show="document.fileName" x-text="document.fileName"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+              <span 
+                class="px-2 py-1 rounded-full text-xs font-medium"
+                :class="{
+                  'bg-green-100 text-green-800': document.status === 'verified',
+                  'bg-yellow-100 text-yellow-800': document.status === 'pending',
+                  'bg-red-100 text-red-800': document.status === 'expired',
+                  'bg-gray-100 text-gray-600': document.status === 'missing'
+                }"
+                x-text="document.status.charAt(0).toUpperCase() + document.status.slice(1)"
+              ></span>
+              
+              <button 
+                x-show="document.status !== 'missing'"
+                class="text-sm hover:underline"
+                style="color: #035d73"
+              >
+                View
+              </button>
+              
+              <button 
+                x-show="document.status === 'expired' || document.status === 'missing'"
+                class="text-sm text-white px-3 py-1 rounded transition-colors"
+                style="background-color: #035d73"
+                onmouseover="this.style.backgroundColor='#024954'"
+                onmouseout="this.style.backgroundColor='#035d73'"
+              >
+                <span x-text="document.status === 'missing' ? 'Upload' : 'Renew'"></span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+            <div x-show="document.uploadDate">
+              <strong>Uploaded:</strong> <span x-text="document.uploadDate"></span>
+            </div>
+            <div x-show="document.expiryDate">
+              <strong>Expires:</strong> <span x-text="document.expiryDate"></span>
+            </div>
+            <div x-show="document.status === 'expired'" class="text-red-600">
+              <strong>Status:</strong> Document has expired
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- Legal Documents & Contracts -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-lg font-semibold" style="color: #011e41">Legal Documents & Contracts</h3>
+      <button class="text-sm hover:underline" style="color: #035d73">
+        Download All Documents
+      </button>
+    </div>
+
+    <div class="space-y-4">
+      <template x-for="contract in contracts" :key="contract.id">
+        <div class="border border-gray-200 rounded-lg p-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-medium text-gray-900" x-text="contract.title"></h4>
+                <div class="text-sm text-gray-500">
+                  Version <span x-text="contract.version"></span> • Signed on <span x-text="contract.signedDate"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+              <span 
+                class="px-2 py-1 rounded-full text-xs font-medium"
+                :class="{
+                  'bg-green-100 text-green-800': contract.status === 'signed',
+                  'bg-blue-100 text-blue-800': contract.status === 'acknowledged'
+                }"
+                x-text="contract.status.charAt(0).toUpperCase() + contract.status.slice(1)"
+              ></span>
+              
+              <button class="text-sm hover:underline" style="color: #035d73">
+                Download PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- Account Settings -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-6" style="color: #011e41">Account Settings</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="space-y-4">
+        <h4 class="font-medium text-gray-900">Security Settings</h4>
+        
+        <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div>
+              <div class="font-medium text-gray-900">Two-Factor Authentication</div>
+              <div class="text-sm text-gray-500">Add an extra layer of security</div>
+            </div>
+            <button class="text-sm text-white px-3 py-1 rounded transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+              Enable
+            </button>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div>
+              <div class="font-medium text-gray-900">Change Password</div>
+              <div class="text-sm text-gray-500">Update your account password</div>
+            </div>
+            <button class="text-sm hover:underline" style="color: #035d73">
+              Change
+            </button>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div>
+              <div class="font-medium text-gray-900">Login Activity</div>
+              <div class="text-sm text-gray-500">View recent login attempts</div>
+            </div>
+            <button class="text-sm hover:underline" style="color: #035d73">
+              View
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="space-y-4">
+        <h4 class="font-medium text-gray-900">Privacy Settings</h4>
+        
+        <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div>
+              <div class="font-medium text-gray-900">Data Export</div>
+              <div class="text-sm text-gray-500">Download your account data</div>
+            </div>
+            <button class="text-sm hover:underline" style="color: #035d73">
+              Export
+            </button>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+            <div>
+              <div class="font-medium text-gray-900">Account Deletion</div>
+              <div class="text-sm text-gray-500">Permanently delete your account</div>
+            </div>
+            <button class="text-sm text-red-600 hover:text-red-800">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Support & Help -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">Need Help?</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="text-center p-4 border border-gray-200 rounded-lg">
+        <svg class="w-8 h-8 mx-auto mb-2" style="color: #035d73" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </svg>
+        <div class="font-medium text-gray-900 mb-1">Live Chat</div>
+        <div class="text-sm text-gray-500 mb-3">Get instant help from our support team</div>
+        <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+          Start Chat
+        </button>
+      </div>
+      
+      <div class="text-center p-4 border border-gray-200 rounded-lg">
+        <svg class="w-8 h-8 mx-auto mb-2" style="color: #035d73" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        <div class="font-medium text-gray-900 mb-1">Email Support</div>
+        <div class="text-sm text-gray-500 mb-3">Send us a detailed message</div>
+        <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #fdea00; color: #000" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
+          Send Email
+        </button>
+      </div>
+      
+      <div class="text-center p-4 border border-gray-200 rounded-lg">
+        <svg class="w-8 h-8 mx-auto mb-2" style="color: #035d73" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+        </svg>
+        <div class="font-medium text-gray-900 mb-1">Help Center</div>
+        <div class="text-sm text-gray-500 mb-3">Browse our FAQ and guides</div>
+        <button class="text-sm hover:underline" style="color: #035d73">
+          Visit Help Center
+        </button>
+      </div>
+    </div>
   </div>
 </div>

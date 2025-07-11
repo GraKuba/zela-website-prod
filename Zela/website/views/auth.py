@@ -251,8 +251,8 @@ class SignInView(FormView):
                         'redirect': self.get_success_url()
                     })
                 
-                messages.success(self.request, f'Welcome back, {user.get_full_name() or user.username}!')
-                return redirect(self.get_success_url())
+                messages.success(self.request, f'Successfully logged in! Welcome back, {user.get_full_name() or user.username}.')
+                return redirect(f"{self.get_success_url()}?login=success")
             else:
                 form.add_error(None, 'Your account is inactive. Please contact support.')
         else:

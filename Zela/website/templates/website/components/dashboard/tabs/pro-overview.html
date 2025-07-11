@@ -138,12 +138,18 @@
       </div>
       <div class="flex flex-col gap-2">
         <button
-          class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+          class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors"
+          style="background-color: #035d73"
+          onmouseover="this.style.backgroundColor='#024954'"
+          onmouseout="this.style.backgroundColor='#035d73'"
         >
           Start Job
         </button>
         <button
-          class="px-4 py-2 bg-white text-blue-700 border border-blue-300 rounded-lg text-sm font-medium hover:bg-blue-50 transition-colors"
+          class="px-4 py-2 bg-white border rounded-lg text-sm font-medium transition-colors"
+          style="color: #035d73; border-color: #035d73"
+          onmouseover="this.style.backgroundColor='#f0fdfa'"
+          onmouseout="this.style.backgroundColor='white'"
         >
           Get Directions
         </button>
@@ -311,7 +317,10 @@
         </div>
       </div>
       <button
-        class="px-4 py-2 bg-yellow-600 text-white rounded-lg text-sm font-medium hover:bg-yellow-700 transition-colors"
+        class="px-4 py-2 text-black rounded-lg text-sm font-medium transition-colors"
+        style="background-color: #fdea00"
+        onmouseover="this.style.backgroundColor='#fcd34d'"
+        onmouseout="this.style.backgroundColor='#fdea00'"
       >
         Renew Now
       </button>
@@ -328,9 +337,10 @@
         @click="currentTab = 'job-queue'"
         class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
       >
-        <div class="p-2 bg-blue-100 rounded-lg mr-3">
+        <div class="p-2 rounded-lg mr-3" style="background-color: #e6f7ff">
           <svg
-            class="h-5 w-5 text-blue-600"
+            class="h-5 w-5"
+            style="color: #035d73"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -353,9 +363,10 @@
         @click="currentTab = 'availability'"
         class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
       >
-        <div class="p-2 bg-green-100 rounded-lg mr-3">
+        <div class="p-2 rounded-lg mr-3" style="background-color: #e6f7ff">
           <svg
-            class="h-5 w-5 text-green-600"
+            class="h-5 w-5"
+            style="color: #035d73"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -378,9 +389,10 @@
         @click="currentTab = 'earnings'"
         class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
       >
-        <div class="p-2 bg-purple-100 rounded-lg mr-3">
+        <div class="p-2 rounded-lg mr-3" style="background-color: #e6f7ff">
           <svg
-            class="h-5 w-5 text-purple-600"
+            class="h-5 w-5"
+            style="color: #035d73"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -403,9 +415,10 @@
         @click="currentTab = 'ratings'"
         class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
       >
-        <div class="p-2 bg-yellow-100 rounded-lg mr-3">
+        <div class="p-2 rounded-lg mr-3" style="background-color: #fff7e6">
           <svg
-            class="h-5 w-5 text-yellow-600"
+            class="h-5 w-5"
+            style="color: #fdea00"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -428,9 +441,10 @@
         @click="currentTab = 'kyc'"
         class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
       >
-        <div class="p-2 bg-indigo-100 rounded-lg mr-3">
+        <div class="p-2 rounded-lg mr-3" style="background-color: #e6f7ff">
           <svg
-            class="h-5 w-5 text-indigo-600"
+            class="h-5 w-5"
+            style="color: #035d73"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -450,12 +464,13 @@
       </button>
 
       <button
-        @click="currentTab = 'help'"
+        @click="currentTab = 'settings'"
         class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
       >
-        <div class="p-2 bg-red-100 rounded-lg mr-3">
+        <div class="p-2 rounded-lg mr-3" style="background-color: #e6f7ff">
           <svg
-            class="h-5 w-5 text-red-600"
+            class="h-5 w-5"
+            style="color: #035d73"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -464,13 +479,19 @@
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
             />
           </svg>
         </div>
         <div class="text-left">
-          <div class="font-medium text-gray-900">Get Support</div>
-          <div class="text-sm text-gray-500">Contact our team</div>
+          <div class="font-medium text-gray-900">Settings</div>
+          <div class="text-sm text-gray-500">Manage preferences</div>
         </div>
       </button>
     </div>

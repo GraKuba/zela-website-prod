@@ -267,9 +267,33 @@
         }
 
         if (screenNumber === "repeat-booking") {
+          // Store the current context
+          const currentContext = this;
+          
           // Show repeat booking screen
-          document.getElementById("booking-screen").innerHTML =
-            document.getElementById("repeat-booking-screen").innerHTML;
+          const bookingScreen = document.getElementById("booking-screen");
+          const repeatBookingContent = document.getElementById("repeat-booking-screen").innerHTML;
+          
+          // Replace content
+          bookingScreen.innerHTML = repeatBookingContent;
+          
+          // Initialize repeat booking pricing
+          this.calculateRepeatPricing();
+          
+          // Re-bind Alpine.js data to the new content by adding x-data attribute
+          bookingScreen.setAttribute('x-data', 'bookingFlow()');
+          
+          // Re-initialize Alpine.js for the new content
+          setTimeout(() => {
+            // Make sure the global component reference is available
+            window.bookingFlowComponent = currentContext;
+            
+            // Initialize repeat booking displays
+            initializeRepeatBookingDisplays();
+            
+            Alpine.initTree(bookingScreen);
+          }, 50);
+          
           return;
         }
 
@@ -713,7 +737,7 @@
       },
 
       updateNumberOfSessions(sessions) {
-        this.booking.repeat.numberOfSessions = Math.max(1, sessions);
+        this.booking.repeat.numberOfSessions = Math.max(1, Math.min(52, sessions));
         this.calculateRepeatPricing();
       },
 
@@ -849,6 +873,268 @@
         bookingContainer._x_dataStack[0].goToChooseWorker();
       } else {
         console.error("Could not find Alpine component for goBack");
+      }
+    }
+  }
+
+  // Global functions for repeat booking functionality
+  function setRepeatFrequency(frequency) {
+    if (window.bookingFlowComponent && window.bookingFlowComponent.setRepeatFrequency) {
+      window.bookingFlowComponent.setRepeatFrequency(frequency);
+      
+      // Update visual indicators
+      const frequencies = ['weekly', 'bi-weekly', 'monthly', 'custom'];
+      frequencies.forEach(freq => {
+        const element = document.getElementById(`frequency-${freq}`);
+        const indicator = document.getElementById(`frequency-${freq}-indicator`);
+        if (element && indicator) {
+          if (freq === frequency) {
+            element.classList.add('border-[#015e73]', 'bg-[#015e73]/10', 'shadow-lg');
+            element.classList.remove('border-gray-200');
+            indicator.classList.remove('hidden');
+          } else {
+            element.classList.remove('border-[#015e73]', 'bg-[#015e73]/10', 'shadow-lg');
+            element.classList.add('border-gray-200');
+            indicator.classList.add('hidden');
+          }
+        }
+      });
+      
+      // Show/hide days selection
+      const daysSection = document.querySelector('[data-days-section]');
+      if (daysSection) {
+        if (frequency === 'weekly' || frequency === 'bi-weekly') {
+          daysSection.style.display = 'block';
+        } else {
+          daysSection.style.display = 'none';
+        }
+      }
+    }
+  }
+
+  function toggleDayOfWeek(day) {
+    if (window.bookingFlowComponent && window.bookingFlowComponent.toggleDayOfWeek) {
+      window.bookingFlowComponent.toggleDayOfWeek(day);
+      
+      // Update visual indicator
+      const element = document.getElementById(`day-${day}`);
+      const text = element.querySelector('.text-sm');
+      if (element && text) {
+        const isSelected = window.bookingFlowComponent.booking.repeat.daysOfWeek.includes(day);
+        if (isSelected) {
+          element.classList.add('border-[#015e73]', 'bg-[#015e73]/10', 'shadow-lg');
+          element.classList.remove('border-gray-200');
+          text.classList.add('text-[#015e73]', 'font-bold');
+        } else {
+          element.classList.remove('border-[#015e73]', 'bg-[#015e73]/10', 'shadow-lg');
+          element.classList.add('border-gray-200');
+          text.classList.remove('text-[#015e73]', 'font-bold');
+        }
+      }
+      
+      // Update days counter
+      updateDaysCounter();
+    }
+  }
+
+  function updateDaysCounter() {
+    const counterElement = document.getElementById('days-counter');
+    if (counterElement && window.bookingFlowComponent) {
+      const selectedDays = window.bookingFlowComponent.booking.repeat.daysOfWeek.length;
+      if (selectedDays === 0) {
+        counterElement.innerHTML = '<span class="text-gray-500">Select the days you want service</span>';
+      } else {
+        const dayText = selectedDays === 1 ? 'day' : 'days';
+        counterElement.innerHTML = `<span class="text-[#015e73] font-medium">${selectedDays} ${dayText} selected</span>`;
+      }
+    }
+  }
+
+  function updateNumberOfSessions(sessions) {
+    if (window.bookingFlowComponent && window.bookingFlowComponent.updateNumberOfSessions) {
+      window.bookingFlowComponent.updateNumberOfSessions(sessions);
+      updateSessionsDisplay();
+    }
+  }
+
+  function decreaseNumberOfSessions() {
+    if (window.bookingFlowComponent) {
+      const current = window.bookingFlowComponent.booking.repeat.numberOfSessions;
+      updateNumberOfSessions(current - 1);
+    }
+  }
+
+  function increaseNumberOfSessions() {
+    if (window.bookingFlowComponent) {
+      const current = window.bookingFlowComponent.booking.repeat.numberOfSessions;
+      updateNumberOfSessions(current + 1);
+    }
+  }
+
+  function handleSessionsInputChange(value) {
+    const sessions = parseInt(value) || 1;
+    updateNumberOfSessions(sessions);
+  }
+
+  function updateSessionsDisplay() {
+    if (window.bookingFlowComponent) {
+      const sessions = window.bookingFlowComponent.booking.repeat.numberOfSessions;
+      
+      // Update input value
+      const input = document.getElementById('sessions-input');
+      if (input) {
+        input.value = sessions;
+      }
+      
+      // Update button states
+      const decreaseBtn = document.getElementById('sessions-decrease-btn');
+      const increaseBtn = document.getElementById('sessions-increase-btn');
+      
+      if (decreaseBtn) {
+        if (sessions <= 1) {
+          decreaseBtn.classList.add('opacity-50', 'cursor-not-allowed');
+          decreaseBtn.disabled = true;
+        } else {
+          decreaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          decreaseBtn.disabled = false;
+        }
+      }
+      
+      if (increaseBtn) {
+        if (sessions >= 52) {
+          increaseBtn.classList.add('opacity-50', 'cursor-not-allowed');
+          increaseBtn.disabled = true;
+        } else {
+          increaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          increaseBtn.disabled = false;
+        }
+      }
+      
+      // Update savings message
+      const savingsElement = document.getElementById('sessions-savings');
+      if (savingsElement) {
+        if (sessions >= 8) {
+          savingsElement.innerHTML = '<span class="text-green-600 font-medium">💰 Save 25% on 8+ sessions!</span>';
+        } else if (sessions >= 4) {
+          savingsElement.innerHTML = '<span class="text-green-600 font-medium">💰 Save 15% on 4+ sessions!</span>';
+        } else {
+          savingsElement.innerHTML = '<span class="text-gray-500">Book 4+ sessions to save money</span>';
+        }
+      }
+      
+      // Update pricing displays
+      updatePricingDisplays();
+    }
+  }
+
+  function updateDuration(change) {
+    if (window.bookingFlowComponent && window.bookingFlowComponent.updateDuration) {
+      window.bookingFlowComponent.updateDuration(change);
+      window.bookingFlowComponent.calculateRepeatPricing();
+      
+      // Update duration display
+      const durationDisplay = document.getElementById('duration-display');
+      if (durationDisplay) {
+        durationDisplay.textContent = window.bookingFlowComponent.booking.details.duration + ' hrs';
+      }
+      
+      updatePricingDisplays();
+    }
+  }
+
+  function updateHomeSizeDuration() {
+    if (window.bookingFlowComponent && window.bookingFlowComponent.updateHomeSizeDuration) {
+      const select = document.getElementById('home-size-select');
+      if (select) {
+        window.bookingFlowComponent.booking.details.homeSize = select.value;
+      }
+      
+      window.bookingFlowComponent.updateHomeSizeDuration();
+      window.bookingFlowComponent.calculateRepeatPricing();
+      
+      // Update duration display
+      const durationDisplay = document.getElementById('duration-display');
+      if (durationDisplay) {
+        durationDisplay.textContent = window.bookingFlowComponent.booking.details.duration + ' hrs';
+      }
+      
+      updatePricingDisplays();
+    }
+  }
+
+  function updatePricingDisplays() {
+    if (window.bookingFlowComponent) {
+      // Update sessions display in sidebar
+      const sessionsElement = document.querySelector('[data-sessions]');
+      if (sessionsElement) {
+        sessionsElement.textContent = window.bookingFlowComponent.booking.repeat.numberOfSessions;
+      }
+      
+      // Update total cost in sidebar
+      const totalCostElement = document.querySelector('[data-total-cost]');
+      if (totalCostElement) {
+        totalCostElement.textContent = window.bookingFlowComponent.formatCurrency(window.bookingFlowComponent.booking.pricing.bookingCost);
+      }
+      
+      // Update duration display in sidebar
+      const durationElement = document.querySelector('[data-duration]');
+      if (durationElement) {
+        durationElement.textContent = window.bookingFlowComponent.booking.details.duration + ' hrs each';
+      }
+    }
+  }
+
+  function calculateRepeatPricing() {
+    if (window.bookingFlowComponent && window.bookingFlowComponent.calculateRepeatPricing) {
+      window.bookingFlowComponent.calculateRepeatPricing();
+    }
+  }
+
+  function findWorker() {
+    if (window.bookingFlowComponent && window.bookingFlowComponent.findWorker) {
+      window.bookingFlowComponent.findWorker();
+    }
+  }
+
+  function goToScreen(screenNumber) {
+    if (window.bookingFlowComponent && window.bookingFlowComponent.goToScreen) {
+      window.bookingFlowComponent.goToScreen(screenNumber);
+    }
+  }
+
+  function initializeRepeatBookingDisplays() {
+    if (window.bookingFlowComponent) {
+      // Set default frequency selection visual
+      setRepeatFrequency(window.bookingFlowComponent.booking.repeat.frequency);
+      
+      // Update sessions display
+      updateSessionsDisplay();
+      
+      // Update duration display
+      const durationDisplay = document.getElementById('duration-display');
+      if (durationDisplay) {
+        durationDisplay.textContent = window.bookingFlowComponent.booking.details.duration + ' hrs';
+      }
+      
+      // Update pricing displays
+      updatePricingDisplays();
+      
+      // Set home size selection
+      const homeSizeSelect = document.getElementById('home-size-select');
+      if (homeSizeSelect) {
+        homeSizeSelect.value = window.bookingFlowComponent.booking.details.homeSize;
+      }
+      
+      // Set start time selection
+      const startTimeSelect = document.getElementById('start-time-select');
+      if (startTimeSelect) {
+        startTimeSelect.value = window.bookingFlowComponent.booking.details.startTime || '07:00 - 07:30';
+      }
+      
+      // Set special instructions
+      const specialInstructions = document.getElementById('special-instructions');
+      if (specialInstructions) {
+        specialInstructions.value = window.bookingFlowComponent.booking.details.notes || '';
       }
     }
   }

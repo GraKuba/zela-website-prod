@@ -1,0 +1,468 @@
+<!-- Resources & Training Tab -->
+<div
+  x-show="currentTab === 'resources' && isProviderMode"
+  x-transition:enter="transition ease-out duration-300"
+  x-transition:enter-start="opacity-0 transform translate-y-4"
+  x-transition:enter-end="opacity-100 transform translate-y-0"
+  class="space-y-6"
+  x-data="{
+    activeSection: 'videos',
+    trainingProgress: {
+      videosWatched: 12,
+      totalVideos: 18,
+      certificationsEarned: 3,
+      totalCertifications: 5
+    },
+    trainingVideos: [
+      {
+        id: 'basic-cleaning',
+        title: 'Basic Cleaning Techniques',
+        duration: '8:32',
+        category: 'fundamentals',
+        completed: true,
+        description: 'Learn essential cleaning methods for all surfaces'
+      },
+      {
+        id: 'deep-clean-bathroom',
+        title: 'Deep Cleaning Bathrooms',
+        duration: '12:45',
+        category: 'specialized',
+        completed: true,
+        description: 'Advanced bathroom cleaning and sanitization'
+      },
+      {
+        id: 'kitchen-safety',
+        title: 'Kitchen Cleaning & Food Safety',
+        duration: '15:20',
+        category: 'safety',
+        completed: false,
+        description: 'Safe cleaning practices around food areas'
+      },
+      {
+        id: 'time-management',
+        title: 'Efficient Time Management',
+        duration: '6:15',
+        category: 'productivity',
+        completed: false,
+        description: 'Optimize your cleaning workflow'
+      }
+    ],
+    checklists: [
+      {
+        id: 'standard-clean',
+        title: 'Standard Home Clean',
+        tasks: [
+          'Vacuum all carpeted areas',
+          'Mop hard floors',
+          'Dust all surfaces',
+          'Clean bathrooms (toilet, sink, shower)',
+          'Make beds and tidy bedrooms',
+          'Clean kitchen surfaces and appliances',
+          'Empty trash bins',
+          'Quick vacuum of furniture'
+        ],
+        estimatedTime: '2-3 hours'
+      },
+      {
+        id: 'deep-clean',
+        title: 'Deep Clean Checklist',
+        tasks: [
+          'All standard clean tasks',
+          'Clean inside appliances (oven, microwave, fridge)',
+          'Scrub bathroom tiles and grout',
+          'Dust ceiling fans and light fixtures',
+          'Clean baseboards and window sills',
+          'Organize closets and drawers',
+          'Wash windows (interior)',
+          'Deep vacuum furniture cushions'
+        ],
+        estimatedTime: '4-6 hours'
+      }
+    ],
+    safetyGuidelines: [
+      {
+        category: 'Chemical Safety',
+        guidelines: [
+          'Always read product labels before use',
+          'Never mix different cleaning chemicals',
+          'Use gloves when handling chemicals',
+          'Ensure proper ventilation',
+          'Store chemicals away from children and pets'
+        ]
+      },
+      {
+        category: 'Personal Safety',
+        guidelines: [
+          'Wear non-slip shoes',
+          'Use proper lifting techniques',
+          'Take breaks to avoid fatigue',
+          'Report any injuries immediately',
+          'Keep emergency contacts handy'
+        ]
+      },
+      {
+        category: 'Client Property',
+        guidelines: [
+          'Handle fragile items with extra care',
+          'Report any damage immediately',
+          'Use furniture protectors when moving items',
+          'Ask before using client's equipment',
+          'Respect client privacy and belongings'
+        ]
+      }
+    ]
+  }"
+>
+  <!-- Training Progress Overview -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-6" style="color: #011e41">Training Progress</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Video Training Progress -->
+      <div class="rounded-lg p-4" style="background-color: #e6f7ff; border: 1px solid #035d73">
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="font-medium" style="color: #035d73">Video Training</h4>
+          <span class="text-sm" style="color: #024954" x-text="trainingProgress.videosWatched + '/' + trainingProgress.totalVideos"></span>
+        </div>
+        <div class="w-full rounded-full h-3 mb-2" style="background-color: #b8eaff">
+          <div 
+            class="h-3 rounded-full transition-all duration-300"
+            style="background-color: #035d73"
+            :style="'width: ' + (trainingProgress.videosWatched / trainingProgress.totalVideos * 100) + '%'"
+          ></div>
+        </div>
+        <div class="text-sm" style="color: #024954" x-text="Math.round(trainingProgress.videosWatched / trainingProgress.totalVideos * 100) + '% complete'"></div>
+      </div>
+      
+      <!-- Certification Progress -->
+      <div class="rounded-lg p-4" style="background-color: #fff7e6; border: 1px solid #fdea00">
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="font-medium" style="color: #f59e0b">Certifications</h4>
+          <span class="text-sm" style="color: #92400e" x-text="trainingProgress.certificationsEarned + '/' + trainingProgress.totalCertifications"></span>
+        </div>
+        <div class="w-full rounded-full h-3 mb-2" style="background-color: #fef3c7">
+          <div 
+            class="h-3 rounded-full transition-all duration-300"
+            style="background-color: #fdea00"
+            :style="'width: ' + (trainingProgress.certificationsEarned / trainingProgress.totalCertifications * 100) + '%'"
+          ></div>
+        </div>
+        <div class="text-sm" style="color: #92400e" x-text="Math.round(trainingProgress.certificationsEarned / trainingProgress.totalCertifications * 100) + '% complete'"></div>
+      </div>
+    </div>
+    
+    <div class="mt-6 p-4 rounded-lg" style="background-color: #fff7e6; border: 1px solid #fdea00">
+      <div class="flex items-start">
+        <svg class="w-5 h-5 mr-2 mt-0.5" style="color: #f59e0b" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 15.5c-.77.833.192 2.5 1.732 2.5z"/>
+        </svg>
+        <div class="text-sm">
+          <div class="font-medium" style="color: #f59e0b">Complete Your Training for Bonus!</div>
+          <div class="mt-1" style="color: #92400e">
+            Finish all training videos by month-end to earn a R$ 100 completion bonus
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Navigation -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex space-x-1 bg-gray-100 p-1 rounded-lg mb-6">
+      <button
+        @click="activeSection = 'videos'"
+        class="flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors"
+        :class="activeSection === 'videos' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+        :style="activeSection === 'videos' ? 'color: #035d73' : ''"
+      >
+        Training Videos
+      </button>
+      <button
+        @click="activeSection = 'checklists'"
+        class="flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors"
+        :class="activeSection === 'checklists' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+        :style="activeSection === 'checklists' ? 'color: #035d73' : ''"
+      >
+        Cleaning Checklists
+      </button>
+      <button
+        @click="activeSection = 'safety'"
+        class="flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors"
+        :class="activeSection === 'safety' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+        :style="activeSection === 'safety' ? 'color: #035d73' : ''"
+      >
+        Safety Guidelines
+      </button>
+      <button
+        @click="activeSection = 'best-practices'"
+        class="flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors"
+        :class="activeSection === 'best-practices' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+        :style="activeSection === 'best-practices' ? 'color: #035d73' : ''"
+      >
+        Best Practices
+      </button>
+    </div>
+
+    <!-- Training Videos Section -->
+    <div x-show="activeSection === 'videos'" class="space-y-4">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="font-medium text-gray-900">Training Video Library</h4>
+        <button class="text-sm hover:underline" style="color: #035d73">Download for Offline</button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <template x-for="video in trainingVideos" :key="video.id">
+          <div 
+            class="border rounded-lg p-4"
+            :class="video.completed ? 'border-green-200 bg-green-50' : 'border-gray-200'"
+          >
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex-1">
+                <h5 class="font-medium text-gray-900 mb-1" x-text="video.title"></h5>
+                <p class="text-sm text-gray-600 mb-2" x-text="video.description"></p>
+                <div class="flex items-center space-x-2 text-sm text-gray-500">
+                  <span x-text="video.duration"></span>
+                  <span>•</span>
+                  <span class="capitalize" x-text="video.category"></span>
+                </div>
+              </div>
+              
+              <div class="ml-4">
+                <svg 
+                  x-show="video.completed"
+                  class="w-6 h-6 text-green-600" 
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+                </svg>
+                <svg 
+                  x-show="!video.completed"
+                  class="w-6 h-6 text-gray-400" 
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h12"/>
+                </svg>
+              </div>
+            </div>
+            
+            <button 
+              class="w-full py-2 px-4 rounded-lg text-sm font-medium transition-colors text-white"
+              :style="video.completed ? 'background-color: #fdea00; color: #000' : 'background-color: #035d73'"
+              :onmouseover="video.completed ? 'this.style.backgroundColor=\"#fcd34d\"' : 'this.style.backgroundColor=\"#024954\"'"
+              :onmouseout="video.completed ? 'this.style.backgroundColor=\"#fdea00\"' : 'this.style.backgroundColor=\"#035d73\"'"
+            >
+              <span x-text="video.completed ? 'Watch Again' : 'Start Watching'"></span>
+            </button>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Cleaning Checklists Section -->
+    <div x-show="activeSection === 'checklists'" class="space-y-4">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="font-medium text-gray-900">Cleaning Checklists</h4>
+        <button class="text-sm hover:underline" style="color: #035d73">Print All Checklists</button>
+      </div>
+      
+      <template x-for="checklist in checklists" :key="checklist.id">
+        <div class="border border-gray-200 rounded-lg p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h5 class="text-lg font-medium text-gray-900" x-text="checklist.title"></h5>
+              <p class="text-sm text-gray-600">Estimated time: <span x-text="checklist.estimatedTime"></span></p>
+            </div>
+            <button class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+              Download PDF
+            </button>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <template x-for="(task, index) in checklist.tasks" :key="index">
+              <label class="flex items-center py-2">
+                <input type="checkbox" class="rounded border-gray-300 focus:ring-2 mr-3" style="color: #035d73" onchange="this.style.accentColor='#035d73'">
+                <span class="text-sm text-gray-700" x-text="task"></span>
+              </label>
+            </template>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <!-- Safety Guidelines Section -->
+    <div x-show="activeSection === 'safety'" class="space-y-4">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="font-medium text-gray-900">Safety Guidelines</h4>
+        <button class="text-sm hover:underline" style="color: #035d73">Emergency Contacts</button>
+      </div>
+      
+      <template x-for="section in safetyGuidelines" :key="section.category">
+        <div class="border border-gray-200 rounded-lg p-6">
+          <h5 class="text-lg font-medium text-gray-900 mb-4" x-text="section.category"></h5>
+          
+          <ul class="space-y-2">
+            <template x-for="(guideline, index) in section.guidelines" :key="index">
+              <li class="flex items-start">
+                <svg class="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+                </svg>
+                <span class="text-sm text-gray-700" x-text="guideline"></span>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </template>
+      
+      <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-red-600 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 15.5c-.77.833.192 2.5 1.732 2.5z"/>
+          </svg>
+          <div class="text-sm">
+            <div class="font-medium text-red-900">Emergency Protocol</div>
+            <div class="text-red-700 mt-1">
+              In case of injury or emergency, contact emergency services (911) first, then notify Zela support immediately at +244 XXX XXX XXX
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Best Practices Section -->
+    <div x-show="activeSection === 'best-practices'" class="space-y-6">
+      <h4 class="font-medium text-gray-900">Professional Best Practices</h4>
+      
+      <!-- Customer Service -->
+      <div class="border border-gray-200 rounded-lg p-6">
+        <h5 class="text-lg font-medium text-gray-900 mb-4">Customer Service Excellence</h5>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h6 class="font-medium text-gray-900 mb-2">Communication</h6>
+            <ul class="space-y-1 text-sm text-gray-700">
+              <li>• Arrive on time or notify of delays</li>
+              <li>• Introduce yourself professionally</li>
+              <li>• Ask about specific preferences</li>
+              <li>• Provide updates during service</li>
+              <li>• Confirm completion before leaving</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h6 class="font-medium text-gray-900 mb-2">Professionalism</h6>
+            <ul class="space-y-1 text-sm text-gray-700">
+              <li>• Wear clean, professional attire</li>
+              <li>• Respect client's property and privacy</li>
+              <li>• Use protective shoe covers</li>
+              <li>• Keep personal items organized</li>
+              <li>• Leave no trace of your visit</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Quality Standards -->
+      <div class="border border-gray-200 rounded-lg p-6">
+        <h5 class="text-lg font-medium text-gray-900 mb-4">Quality Standards</h5>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="rounded-lg p-4" style="background-color: #e6f7ff; border: 1px solid #035d73">
+            <h6 class="font-medium mb-2" style="color: #035d73">Before You Start</h6>
+            <ul class="space-y-1 text-sm" style="color: #024954">
+              <li>• Walk through with client</li>
+              <li>• Note special requests</li>
+              <li>• Identify fragile items</li>
+              <li>• Set realistic expectations</li>
+            </ul>
+          </div>
+          
+          <div class="rounded-lg p-4" style="background-color: #fff7e6; border: 1px solid #fdea00">
+            <h6 class="font-medium mb-2" style="color: #f59e0b">During Service</h6>
+            <ul class="space-y-1 text-sm" style="color: #92400e">
+              <li>• Work systematically room by room</li>
+              <li>• Use appropriate products</li>
+              <li>• Pay attention to details</li>
+              <li>• Handle belongings carefully</li>
+            </ul>
+          </div>
+          
+          <div class="rounded-lg p-4" style="background-color: #e6f7ff; border: 1px solid #035d73">
+            <h6 class="font-medium mb-2" style="color: #035d73">Final Walkthrough</h6>
+            <ul class="space-y-1 text-sm" style="color: #024954">
+              <li>• Review completed work</li>
+              <li>• Ask for feedback</li>
+              <li>• Address any concerns</li>
+              <li>• Schedule next visit if needed</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Time Management Tips -->
+      <div class="border border-gray-200 rounded-lg p-6">
+        <h5 class="text-lg font-medium text-gray-900 mb-4">Time Management Tips</h5>
+        
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h6 class="font-medium text-gray-900 mb-2">Efficiency Tips</h6>
+              <ul class="space-y-1 text-sm text-gray-700">
+                <li>• Gather all supplies before starting</li>
+                <li>• Work top to bottom, left to right</li>
+                <li>• Clean as you go to avoid backtracking</li>
+                <li>• Use multi-purpose products when possible</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h6 class="font-medium text-gray-900 mb-2">Time Savers</h6>
+              <ul class="space-y-1 text-sm text-gray-700">
+                <li>• Let cleaning products dwell while working elsewhere</li>
+                <li>• Use microfiber cloths for faster cleaning</li>
+                <li>• Pre-sort supplies by room</li>
+                <li>• Focus on high-impact visible areas first</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Download Resources -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">Download Resources</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <button class="flex items-center justify-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+        <svg class="w-6 h-6 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-4-4m4 4l4-4m-6 4V3a1 1 0 011-1h4a1 1 0 011 1v16a1 1 0 01-1 1H7a1 1 0 01-1-1z"/>
+        </svg>
+        <div class="text-left">
+          <div class="font-medium text-gray-900">Complete Guide PDF</div>
+          <div class="text-sm text-gray-500">All training materials</div>
+        </div>
+      </button>
+      
+      <button class="flex items-center justify-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+        <svg class="w-6 h-6 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <div class="text-left">
+          <div class="font-medium text-gray-900">Quick Reference Cards</div>
+          <div class="text-sm text-gray-500">Printable checklists</div>
+        </div>
+      </button>
+      
+      <button class="flex items-center justify-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+        <svg class="w-6 h-6 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        <div class="text-left">
+          <div class="font-medium text-gray-900">Video Downloads</div>
+          <div class="text-sm text-gray-500">Offline training videos</div>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
