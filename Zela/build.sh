@@ -20,4 +20,7 @@ python manage.py tailwind build
 python manage.py collectstatic --noinput
 
 # Run database migrations
-python manage.py migrate 
+python manage.py migrate
+
+# Create superuser for deployment
+python manage.py create_superuser 
