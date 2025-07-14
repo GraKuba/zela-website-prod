@@ -148,7 +148,7 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-semibold" style="color: #011e41">Personal Information</h3>
-      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
         Edit Profile
       </button>
     </div>
@@ -234,7 +234,7 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-semibold" style="color: #011e41">Identity Documents</h3>
-      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #fdea00; color: #000" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
+      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #fdea00; color: #000; cursor: pointer" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
         Upload New Document
       </button>
     </div>
@@ -295,7 +295,7 @@
               <button 
                 x-show="document.status !== 'missing'"
                 class="text-sm hover:underline"
-                style="color: #035d73"
+                style="color: #035d73; cursor: pointer"
               >
                 View
               </button>
@@ -303,7 +303,7 @@
               <button 
                 x-show="document.status === 'expired' || document.status === 'missing'"
                 class="text-sm text-white px-3 py-1 rounded transition-colors"
-                style="background-color: #035d73"
+                style="background-color: #035d73; cursor: pointer"
                 onmouseover="this.style.backgroundColor='#024954'"
                 onmouseout="this.style.backgroundColor='#035d73'"
               >
@@ -332,7 +332,7 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-semibold" style="color: #011e41">Legal Documents & Contracts</h3>
-      <button class="text-sm hover:underline" style="color: #035d73">
+      <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
         Download All Documents
       </button>
     </div>
@@ -365,7 +365,7 @@
                 x-text="contract.status.charAt(0).toUpperCase() + contract.status.slice(1)"
               ></span>
               
-              <button class="text-sm hover:underline" style="color: #035d73">
+              <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
                 Download PDF
               </button>
             </div>
@@ -389,7 +389,7 @@
               <div class="font-medium text-gray-900">Two-Factor Authentication</div>
               <div class="text-sm text-gray-500">Add an extra layer of security</div>
             </div>
-            <button class="text-sm text-white px-3 py-1 rounded transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+            <button class="text-sm text-white px-3 py-1 rounded transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
               Enable
             </button>
           </div>
@@ -399,7 +399,7 @@
               <div class="font-medium text-gray-900">Change Password</div>
               <div class="text-sm text-gray-500">Update your account password</div>
             </div>
-            <button class="text-sm hover:underline" style="color: #035d73">
+            <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
               Change
             </button>
           </div>
@@ -409,7 +409,7 @@
               <div class="font-medium text-gray-900">Login Activity</div>
               <div class="text-sm text-gray-500">View recent login attempts</div>
             </div>
-            <button class="text-sm hover:underline" style="color: #035d73">
+            <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
               View
             </button>
           </div>
@@ -425,7 +425,7 @@
               <div class="font-medium text-gray-900">Data Export</div>
               <div class="text-sm text-gray-500">Download your account data</div>
             </div>
-            <button class="text-sm hover:underline" style="color: #035d73">
+            <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
               Export
             </button>
           </div>
@@ -435,7 +435,7 @@
               <div class="font-medium text-gray-900">Account Deletion</div>
               <div class="text-sm text-gray-500">Permanently delete your account</div>
             </div>
-            <button class="text-sm text-red-600 hover:text-red-800">
+            <button class="text-sm text-red-600 hover:text-red-800" style="cursor: pointer">
               Delete
             </button>
           </div>
@@ -455,7 +455,7 @@
         </svg>
         <div class="font-medium text-gray-900 mb-1">Live Chat</div>
         <div class="text-sm text-gray-500 mb-3">Get instant help from our support team</div>
-        <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+        <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
           Start Chat
         </button>
       </div>
@@ -466,7 +466,7 @@
         </svg>
         <div class="font-medium text-gray-900 mb-1">Email Support</div>
         <div class="text-sm text-gray-500 mb-3">Send us a detailed message</div>
-        <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #fdea00; color: #000" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
+        <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #fdea00; color: #000; cursor: pointer" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
           Send Email
         </button>
       </div>
@@ -477,7 +477,7 @@
         </svg>
         <div class="font-medium text-gray-900 mb-1">Help Center</div>
         <div class="text-sm text-gray-500 mb-3">Browse our FAQ and guides</div>
-        <button class="text-sm hover:underline" style="color: #035d73">
+        <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
           Visit Help Center
         </button>
       </div>

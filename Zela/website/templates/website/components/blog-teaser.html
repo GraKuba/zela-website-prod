@@ -3,32 +3,31 @@
 <section class="py-16 bg-white max-w-[1280px] mx-auto px-6" id="blog-teaser">
   <div class="max-w-6xl mx-auto">
     <!-- Header Section -->
-    <div class="flex justify-between items-center mb-12">
-      <!-- Empty left space for layout balance -->
-      <div class="w-32"></div>
-
+    <div class="mb-12">
       <!-- Center Content -->
-      <div class="text-center">
+      <div class="text-center mb-6">
         <p
           class="text-sm font-semibold text-[#4A5A70] uppercase tracking-wide mb-4"
         >
           SOMETHING TO READ
         </p>
-        <h2 class="text-5xl font-bold text-[#011E41] leading-tight">
+        <h2 class="text-3xl md:text-5xl font-bold text-[#011E41] leading-tight">
           Latest Blog & Insights
         </h2>
       </div>
 
       <!-- See All Blogs Button -->
-      <a
-        href="{% url 'website:blog' %}"
-        class="border cursor-pointer border-[#011E41] text-[#011E41] px-6 py-2 rounded-full font-medium hover:bg-[#011E41] hover:text-[#FDEA00] transition-all duration-300 inline-block"
-        hx-get="{% url 'website:blog' %}"
-        hx-target="body"
-        hx-swap="outerHTML"
-      >
-        SEE ALL BLOGS
-      </a>
+      <div class="flex justify-center md:justify-end">
+        <a
+          href="{% url 'website:blog' %}"
+          class="border cursor-pointer border-[#011E41] text-[#011E41] px-6 py-2 rounded-full font-medium hover:bg-[#015e73] hover:text-white transition-all duration-300 inline-block"
+          hx-get="{% url 'website:blog' %}"
+          hx-target="body"
+          hx-swap="outerHTML"
+        >
+          SEE ALL BLOGS
+        </a>
+      </div>
     </div>
 
     <!-- Article Cards Grid -->

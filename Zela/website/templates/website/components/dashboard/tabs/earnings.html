@@ -102,6 +102,7 @@
           style="background-color: #035d73"
           :disabled="currentBalance < 50"
           :class="currentBalance < 50 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-opacity-90'"
+          :style="currentBalance >= 50 ? 'cursor: pointer' : ''"
         >
           Request Instant Payout
         </button>
@@ -119,6 +120,7 @@
           style="background-color: #fdea00; color: #000"
           :disabled="currentBalance < 50"
           :class="currentBalance < 50 ? 'opacity-50 cursor-not-allowed' : ''"
+          :style="currentBalance >= 50 ? 'cursor: pointer' : ''"
           onmouseover="this.style.backgroundColor='#fcd34d'"
           onmouseout="this.style.backgroundColor='#fdea00'"
         >
@@ -138,7 +140,7 @@
           <div class="text-xs text-gray-500 mb-2" x-text="day"></div>
           <div 
             class="rounded-lg mx-auto transition-all hover:opacity-80"
-            style="background-color: #035d73"
+            style="background-color: #035d73; cursor: pointer"
             :style="'height: ' + (earningsChart.data[index] / 5) + 'px; width: 100%; max-height: 80px;'"
           ></div>
           <div class="text-xs text-gray-700 mt-1" x-text="'R$ ' + earningsChart.data[index]"></div>
@@ -176,7 +178,7 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-lg font-semibold" style="color: #011e41">Recent Transactions</h3>
-      <button class="text-sm hover:underline" style="color: #035d73">View All</button>
+      <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">View All</button>
     </div>
     
     <div class="space-y-3">

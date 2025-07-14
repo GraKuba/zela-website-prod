@@ -82,7 +82,7 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-semibold" style="color: #011e41">Notification Settings</h3>
-      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
         Save Changes
       </button>
     </div>
@@ -100,7 +100,7 @@
               @click="notificationSettings.jobAlerts = !notificationSettings.jobAlerts"
               class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
               :class="notificationSettings.jobAlerts ? 'bg-gray-300' : 'bg-gray-300'"
-              :style="notificationSettings.jobAlerts ? 'background-color: #035d73' : ''"
+              :style="notificationSettings.jobAlerts ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
             >
               <span
                 class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
@@ -118,7 +118,7 @@
               @click="notificationSettings.paymentAlerts = !notificationSettings.paymentAlerts"
               class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
               :class="notificationSettings.paymentAlerts ? 'bg-gray-300' : 'bg-gray-300'"
-              :style="notificationSettings.paymentAlerts ? 'background-color: #035d73' : ''"
+              :style="notificationSettings.paymentAlerts ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
             >
               <span
                 class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
@@ -136,7 +136,7 @@
               @click="notificationSettings.weeklyReports = !notificationSettings.weeklyReports"
               class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
               :class="notificationSettings.weeklyReports ? 'bg-gray-300' : 'bg-gray-300'"
-              :style="notificationSettings.weeklyReports ? 'background-color: #035d73' : ''"
+              :style="notificationSettings.weeklyReports ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
             >
               <span
                 class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
@@ -159,7 +159,7 @@
               @click="notificationSettings.emailNotifications = !notificationSettings.emailNotifications"
               class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
               :class="notificationSettings.emailNotifications ? 'bg-gray-300' : 'bg-gray-300'"
-              :style="notificationSettings.emailNotifications ? 'background-color: #035d73' : ''"
+              :style="notificationSettings.emailNotifications ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
             >
               <span
                 class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
@@ -177,7 +177,7 @@
               @click="notificationSettings.smsNotifications = !notificationSettings.smsNotifications"
               class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
               :class="notificationSettings.smsNotifications ? 'bg-gray-300' : 'bg-gray-300'"
-              :style="notificationSettings.smsNotifications ? 'background-color: #035d73' : ''"
+              :style="notificationSettings.smsNotifications ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
             >
               <span
                 class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
@@ -195,7 +195,7 @@
               @click="notificationSettings.pushNotifications = !notificationSettings.pushNotifications"
               class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
               :class="notificationSettings.pushNotifications ? 'bg-gray-300' : 'bg-gray-300'"
-              :style="notificationSettings.pushNotifications ? 'background-color: #035d73' : ''"
+              :style="notificationSettings.pushNotifications ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
             >
               <span
                 class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
@@ -221,6 +221,7 @@
         <select 
           x-model="privacySettings.profileVisibility"
           class="text-sm border border-gray-300 rounded px-3 py-2"
+          style="cursor: pointer"
         >
           <option value="public">Public</option>
           <option value="customers">Customers Only</option>
@@ -237,7 +238,7 @@
           @click="privacySettings.shareLocation = !privacySettings.shareLocation"
           class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
           :class="privacySettings.shareLocation ? 'bg-gray-300' : 'bg-gray-300'"
-          :style="privacySettings.shareLocation ? 'background-color: #035d73' : ''"
+          :style="privacySettings.shareLocation ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
         >
           <span
             class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
@@ -255,7 +256,7 @@
           @click="privacySettings.allowReviews = !privacySettings.allowReviews"
           class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
           :class="privacySettings.allowReviews ? 'bg-gray-300' : 'bg-gray-300'"
-          :style="privacySettings.allowReviews ? 'background-color: #035d73' : ''"
+          :style="privacySettings.allowReviews ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
         >
           <span
             class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
@@ -273,7 +274,7 @@
           @click="privacySettings.dataCollection = !privacySettings.dataCollection"
           class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
           :class="privacySettings.dataCollection ? 'bg-gray-300' : 'bg-gray-300'"
-          :style="privacySettings.dataCollection ? 'background-color: #035d73' : ''"
+          :style="privacySettings.dataCollection ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
         >
           <span
             class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
@@ -295,6 +296,7 @@
           <select 
             x-model="workSettings.maxJobsPerDay"
             class="w-full text-sm border border-gray-300 rounded px-3 py-2"
+            style="cursor: pointer"
           >
             <option value="1">1 Job</option>
             <option value="2">2 Jobs</option>
@@ -314,6 +316,7 @@
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             min="50"
             step="25"
+            style="cursor: pointer"
           >
         </div>
         
@@ -326,6 +329,7 @@
             min="5"
             max="50"
             step="5"
+            style="cursor: pointer"
           >
           <div class="flex justify-between text-xs text-gray-500 mt-1">
             <span>5km</span>
@@ -344,7 +348,7 @@
                 type="checkbox" 
                 value="cleaning"
                 class="rounded border-gray-300 focus:ring-2 mr-2"
-                style="color: #035d73"
+                style="color: #035d73; cursor: pointer"
                 onchange="this.style.accentColor='#035d73'"
               >
               <span class="text-sm text-gray-700">Standard Cleaning</span>
@@ -354,7 +358,7 @@
                 type="checkbox" 
                 value="deep_cleaning"
                 class="rounded border-gray-300 focus:ring-2 mr-2"
-                style="color: #035d73"
+                style="color: #035d73; cursor: pointer"
                 onchange="this.style.accentColor='#035d73'"
               >
               <span class="text-sm text-gray-700">Deep Cleaning</span>
@@ -364,7 +368,7 @@
                 type="checkbox" 
                 value="maintenance"
                 class="rounded border-gray-300 focus:ring-2 mr-2"
-                style="color: #035d73"
+                style="color: #035d73; cursor: pointer"
                 onchange="this.style.accentColor='#035d73'"
               >
               <span class="text-sm text-gray-700">Home Maintenance</span>
@@ -374,7 +378,7 @@
                 type="checkbox" 
                 value="laundry"
                 class="rounded border-gray-300 focus:ring-2 mr-2"
-                style="color: #035d73"
+                style="color: #035d73; cursor: pointer"
                 onchange="this.style.accentColor='#035d73'"
               >
               <span class="text-sm text-gray-700">Laundry Services</span>
@@ -391,7 +395,7 @@
             @click="workSettings.autoAcceptJobs = !workSettings.autoAcceptJobs"
             class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
             :class="workSettings.autoAcceptJobs ? 'bg-gray-300' : 'bg-gray-300'"
-            :style="workSettings.autoAcceptJobs ? 'background-color: #035d73' : ''"
+            :style="workSettings.autoAcceptJobs ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
           >
             <span
               class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
@@ -414,6 +418,7 @@
           <select 
             x-model="preferences.language"
             class="w-full text-sm border border-gray-300 rounded px-3 py-2"
+            style="cursor: pointer"
           >
             <option value="pt">Português</option>
             <option value="en">English</option>
@@ -426,6 +431,7 @@
           <select 
             x-model="preferences.timezone"
             class="w-full text-sm border border-gray-300 rounded px-3 py-2"
+            style="cursor: pointer"
           >
             <option value="Africa/Luanda">Africa/Luanda (WAT)</option>
             <option value="UTC">UTC</option>
@@ -440,6 +446,7 @@
           <select 
             x-model="preferences.currency"
             class="w-full text-sm border border-gray-300 rounded px-3 py-2"
+            style="cursor: pointer"
           >
             <option value="AOA">Kwanza (AOA)</option>
             <option value="USD">US Dollar (USD)</option>
@@ -452,6 +459,7 @@
           <select 
             x-model="preferences.mapView"
             class="w-full text-sm border border-gray-300 rounded px-3 py-2"
+            style="cursor: pointer"
           >
             <option value="standard">Standard</option>
             <option value="satellite">Satellite</option>
@@ -471,7 +479,7 @@
         <h4 class="font-medium text-gray-900">Data & Security</h4>
         
         <div class="space-y-3">
-          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors" style="cursor: pointer">
             <div class="text-left">
               <div class="font-medium text-gray-900">Export My Data</div>
               <div class="text-sm text-gray-500">Download all your account data</div>
@@ -481,7 +489,7 @@
             </svg>
           </button>
           
-          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors" style="cursor: pointer">
             <div class="text-left">
               <div class="font-medium text-gray-900">Change Password</div>
               <div class="text-sm text-gray-500">Update your account password</div>
@@ -491,12 +499,12 @@
             </svg>
           </button>
           
-          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors" style="cursor: pointer">
             <div class="text-left">
               <div class="font-medium text-gray-900">Two-Factor Authentication</div>
               <div class="text-sm text-gray-500">Enable 2FA for extra security</div>
             </div>
-            <span class="text-sm text-white px-3 py-1 rounded transition-colors" style="background-color: #035d73">
+            <span class="text-sm text-white px-3 py-1 rounded transition-colors" style="background-color: #035d73; cursor: pointer">
               Enable
             </span>
           </button>
@@ -507,7 +515,7 @@
         <h4 class="font-medium text-gray-900">Support & Feedback</h4>
         
         <div class="space-y-3">
-          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors" style="cursor: pointer">
             <div class="text-left">
               <div class="font-medium text-gray-900">Contact Support</div>
               <div class="text-sm text-gray-500">Get help with your account</div>
@@ -517,7 +525,7 @@
             </svg>
           </button>
           
-          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+          <button class="w-full flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors" style="cursor: pointer">
             <div class="text-left">
               <div class="font-medium text-gray-900">Send Feedback</div>
               <div class="text-sm text-gray-500">Help us improve Zela</div>
@@ -527,7 +535,7 @@
             </svg>
           </button>
           
-          <button class="w-full flex items-center justify-between p-3 border border-red-200 rounded-lg hover:bg-red-50 transition-colors">
+          <button class="w-full flex items-center justify-between p-3 border border-red-200 rounded-lg hover:bg-red-50 transition-colors" style="cursor: pointer">
             <div class="text-left">
               <div class="font-medium text-red-900">Deactivate Account</div>
               <div class="text-sm text-red-600">Temporarily disable your account</div>
@@ -566,10 +574,10 @@
     </div>
     
     <div class="mt-6 flex justify-center space-x-4">
-      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
         Check for Updates
       </button>
-      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #fdea00; color: #000" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
+      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #fdea00; color: #000; cursor: pointer" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
         Rate Our App
       </button>
     </div>
