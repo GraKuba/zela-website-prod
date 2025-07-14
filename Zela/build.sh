@@ -23,4 +23,4 @@ python manage.py collectstatic --noinput
 python manage.py migrate
 
 # Create superuser for deployment
-python manage.py create_superuser 
+python manage.py create_default_users 
