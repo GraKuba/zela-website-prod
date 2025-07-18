@@ -668,6 +668,7 @@
             </h4>
             <select
               x-model="booking.details.startTime"
+              @change="window.bookingFlowComponent.saveBookingData()"
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer"
             >
               <template x-for="time in timeSlots" :key="time">
@@ -683,6 +684,7 @@
             </h4>
             <textarea
               x-model="booking.details.notes"
+              @input="window.bookingFlowComponent.saveBookingData()"
               placeholder="Add your notes here"
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent h-24 resize-none"
             ></textarea>

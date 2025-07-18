@@ -460,8 +460,9 @@
     }
 
     // Use the global component if available
-    if (window.bookingFlowComponent && window.bookingFlowComponent.goToScreen) {
-      window.bookingFlowComponent.goToScreen(15);
+    if (window.bookingFlowComponent) {
+      // For now, directly complete the booking since we're mocking payment
+      window.bookingFlowComponent.completeBooking();
     } else {
       console.error("Could not find booking flow component");
     }

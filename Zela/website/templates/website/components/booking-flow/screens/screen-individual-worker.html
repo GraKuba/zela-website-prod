@@ -463,14 +463,25 @@
 <script>
   // Tip selection functionality
   function selectTip(amount) {
-    // Update the main booking data
-    const component = Alpine.findClosest(document.body, "[x-data]");
-    if (
-      component &&
-      component._x_dataStack &&
-      component._x_dataStack[0].booking
-    ) {
-      component._x_dataStack[0].booking.tip.amount = amount;
+    // Update the main booking data using global component
+    if (window.bookingFlowComponent) {
+      window.bookingFlowComponent.booking.tip.amount = amount;
+      
+      // Determine tip option based on amount
+      let tipOption = 'custom';
+      if (amount === 0) tipOption = 'no-tip';
+      else if (amount === 25) tipOption = 'small';
+      else if (amount === 50) tipOption = 'medium';
+      else if (amount === 75) tipOption = 'large';
+      else if (amount === 100) tipOption = 'generous';
+      
+      window.bookingFlowComponent.booking.tip.selectedOption = tipOption;
+      
+      // Save the tip data
+      window.bookingFlowComponent.saveBookingData();
+      
+      // Update pricing
+      updatePriceDisplay();
     }
 
     // Update UI to show selected tip
@@ -479,15 +490,24 @@
         "px-6 py-3 rounded-full border-2 font-medium transition-colors border-gray-300 text-gray-700 hover:border-gray-400";
     });
 
-    document.getElementById(`tip-${amount}`).className =
-      "px-6 py-3 rounded-full border-2 font-medium transition-colors border-[#015e73] bg-[#015e73]/10 text-[#015e73]";
+    if (document.getElementById(`tip-${amount}`)) {
+      document.getElementById(`tip-${amount}`).className =
+        "px-6 py-3 rounded-full border-2 font-medium transition-colors border-[#015e73] bg-[#015e73]/10 text-[#015e73]";
+    }
   }
 
   function showCustomTip() {
     // Handle custom tip input
     const customAmount = prompt("Enter custom tip amount (R):");
     if (customAmount && !isNaN(customAmount)) {
-      selectTip(parseInt(customAmount));
+      const amount = parseInt(customAmount);
+      selectTip(amount);
+      
+      // Also highlight the custom button
+      const customBtn = document.querySelector('button[onclick="showCustomTip()"]');
+      if (customBtn) {
+        customBtn.className = "px-6 py-3 rounded-full border-2 border-[#015e73] bg-[#015e73]/10 text-[#015e73] font-medium transition-colors";
+      }
     }
   }
 
@@ -538,4 +558,28 @@
       label.textContent = "No";
     }
   }
+  
+  function updatePriceDisplay() {
+    // Update the total price display including tip
+    if (window.bookingFlowComponent) {
+      const booking = window.bookingFlowComponent.booking;
+      const total = booking.pricing.total + booking.tip.amount;
+      
+      // Update booking total display
+      const totalElements = document.querySelectorAll('[style*="color: #011e41"]');
+      totalElements.forEach(el => {
+        if (el.textContent.includes('R') && el.textContent.match(/R\d+/)) {
+          if (el.previousElementSibling && el.previousElementSibling.textContent.includes('Booking Total')) {
+            el.textContent = `R${total}`;
+          }
+        }
+      });
+    }
+  }
+  
+  // Initialize tip selection on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    // Select default tip (R0)
+    selectTip(0);
+  });
 </script>

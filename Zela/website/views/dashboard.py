@@ -97,12 +97,52 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
             'unread_messages': 0,  # Implement unread messages logic
         }
         
+        # Fetch bookings for the bookings tab
+        if user.role == 'customer':
+            # Get bookings categorized by status
+            all_bookings = user.bookings.select_related('provider', 'service_task').order_by('-start_at')
+            
+            upcoming_bookings_list = all_bookings.filter(
+                status__in=['pending', 'accepted', 'in_progress'],
+                start_at__gt=timezone.now()
+            )
+            
+            # Recurring bookings would need a separate model or field to track
+            # For now, we'll leave it empty
+            recurring_bookings_list = []
+            
+            completed_bookings_list = all_bookings.filter(status='completed')
+            
+            cancelled_bookings_list = all_bookings.filter(status='cancelled')
+            
+        else:  # provider
+            all_bookings = user.jobs.select_related('customer', 'service_task').order_by('-start_at')
+            
+            upcoming_bookings_list = all_bookings.filter(
+                status__in=['accepted', 'in_progress'],
+                start_at__gt=timezone.now()
+            )
+            
+            recurring_bookings_list = []
+            
+            completed_bookings_list = all_bookings.filter(status='completed')
+            
+            cancelled_bookings_list = all_bookings.filter(status='cancelled')
+        
         context.update({
             'title': 'Dashboard - Zela',
             'dashboard_stats': dashboard_stats,
             'dashboard_data': dashboard_data,  # Added for template compatibility
             'unread_notifications': unread_notifications,
             'is_provider': user.role == 'provider',
+            'upcoming_bookings_list': upcoming_bookings_list,
+            'recurring_bookings_list': recurring_bookings_list,
+            'completed_bookings_list': completed_bookings_list,
+            'cancelled_bookings_list': cancelled_bookings_list,
+            'upcoming_bookings_count': upcoming_bookings_list.count(),
+            'recurring_bookings_count': len(recurring_bookings_list),
+            'completed_bookings_count': completed_bookings_list.count(),
+            'cancelled_bookings_count': cancelled_bookings_list.count(),
         })
         
         return context

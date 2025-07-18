@@ -10,7 +10,7 @@ from .views.dashboard import (
     ProfileUpdateView, RatingCreatePartial
 )
 from .views.providers import ProviderLandingView, ProviderApplicationWizard, ApplyWorkerView
-from .views.booking import booking_flow, booking_screen, save_booking_data, process_payment
+from .views.booking import booking_flow, booking_screen, save_booking_data, get_booking_data, process_payment, get_available_workers
 
 app_name = 'website'
 
@@ -56,7 +56,9 @@ urlpatterns = [
     # Booking Flow
     path('book/', booking_flow, name='booking-flow'),
     path('booking-flow/screen/<int:screen_number>/', booking_screen, name='booking-screen'),
-    path('booking-flow/save/', save_booking_data, name='save-booking-data'),
+    path('booking-flow/save-data/', save_booking_data, name='save-booking-data'),
+    path('booking-flow/get-data/', get_booking_data, name='get-booking-data'),
+    path('booking-flow/workers/', get_available_workers, name='get-available-workers'),
     path('booking-flow/payment/', process_payment, name='process-payment'),
     
     # Legal / Static pages (using CMS)

@@ -279,7 +279,7 @@ class SignOutView(View):
         """Handle sign out."""
         logout(request)
         messages.success(request, 'You have been signed out successfully.')
-        return redirect('home')
+        return redirect('website:home')
     
     def post(self, request):
         """Handle HTMX sign out."""
@@ -288,7 +288,7 @@ class SignOutView(View):
         if request.htmx:
             return JsonResponse({
                 'ok': 1,
-                'redirect': reverse_lazy('home')
+                'redirect': reverse_lazy('website:home')
             })
         
-        return redirect('home') 
+        return redirect('website:home') 

@@ -42,6 +42,16 @@
            this.isProviderMode = true;
            this.currentTab = 'pro-overview';
          }
+         
+         // Check for booking success message
+         if (sessionStorage.getItem('bookingSuccess') === 'true') {
+           sessionStorage.removeItem('bookingSuccess');
+           setTimeout(() => {
+             if (window.toastComponent && window.toastComponent.addToast) {
+               window.toastComponent.addToast('🎉 Congratulations! Your booking has been successfully created.', 'success');
+             }
+           }, 500);
+         }
        },
        getTabDisplayName() {
          const tabNames = {
@@ -610,6 +620,7 @@
             </button>
             <div class="border-t border-gray-200"></div>
             <button
+              onclick="window.location.href='{% url 'website:sign-out' %}'"
               class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
             >
               Sign Out

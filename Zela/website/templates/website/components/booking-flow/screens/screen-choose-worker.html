@@ -212,7 +212,7 @@
           @click="chooseForMe()"
           class="w-full bg-[#015e73] text-white font-bold py-3 px-4 rounded-2xl hover:bg-[#014a5a] transition-colors cursor-pointer"
         >
-          Let Sweepsouth Choose For Me
+          Let Zela Choose For Me
         </button>
       </div>
     </div>
@@ -457,22 +457,154 @@
 
 <!-- Alpine.js Data -->
 <script>
+  // Store workers data globally for access
+  let availableWorkers = [];
+  
+  // Load workers when page loads
+  async function loadWorkers() {
+    try {
+      const response = await fetch('/booking-flow/workers/');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.status === 'success') {
+          availableWorkers = data.workers;
+          displayWorkers();
+        }
+      }
+    } catch (error) {
+      console.error('Error loading workers:', error);
+      // Use default workers if loading fails
+      displayDefaultWorkers();
+    }
+  }
+  
+  function displayWorkers() {
+    const container = document.querySelector('.space-y-6');
+    if (!container || !availableWorkers.length) return;
+    
+    // Clear existing content
+    container.innerHTML = '';
+    
+    // Create worker cards
+    availableWorkers.forEach(worker => {
+      const workerCard = createWorkerCard(worker);
+      container.appendChild(workerCard);
+    });
+  }
+  
+  function createWorkerCard(worker) {
+    const div = document.createElement('div');
+    div.className = 'bg-white border border-gray-200 rounded-2xl p-6';
+    div.innerHTML = `
+      <div class="flex items-start space-x-4">
+        <!-- Profile Picture -->
+        <div class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 overflow-hidden">
+          <img
+            src="${worker.avatar || '{% static "generic-avatar.png" %}'}"
+            alt="${worker.name}"
+            class="w-full h-full object-cover"
+            onerror="this.src='{% static "generic-avatar.png" %}'"
+          />
+        </div>
+
+        <!-- Worker Details -->
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2" style="color: #011e41">
+            ${worker.name}
+          </h3>
+          <div class="flex items-center mb-2">
+            <svg
+              class="w-4 h-4 text-[#015e73] mr-2"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
+              />
+            </svg>
+            <span class="text-sm font-medium" style="color: #011e41">
+              ${worker.recommend_rate}% Recommend
+            </span>
+          </div>
+          <div class="text-sm text-gray-600 mb-4">
+            <span class="font-bold">${worker.jobs_completed}</span> Jobs Completed
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex space-x-3">
+            <button
+              onclick="viewWorkerProfile(${worker.id})"
+              class="flex-1 bg-white border border-[#015e73] text-[#015e73] font-medium py-2 px-4 rounded-xl hover:bg-[#015e73]/5 transition-colors cursor-pointer"
+            >
+              View profile
+            </button>
+            <button
+              onclick="chooseWorker(${worker.id})"
+              class="flex-1 bg-[#015e73] text-white font-medium py-2 px-4 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
+            >
+              Choose me
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    return div;
+  }
+  
+  function displayDefaultWorkers() {
+    // Keep the existing static workers as fallback
+    console.log('Using default workers');
+  }
+
   function chooseWorker(workerId) {
     // Handle worker selection
     console.log("Selected worker:", workerId);
-    // Navigate to payment screen or next step
-    // This would typically update the booking state and proceed to payment
+    
+    // Find worker details
+    const worker = availableWorkers.find(w => w.id === workerId);
+    
+    // Update booking data if global component available
+    if (window.bookingFlowComponent) {
+      window.bookingFlowComponent.booking.provider = {
+        id: workerId,
+        name: worker ? worker.name : 'Selected Worker'
+      };
+      window.bookingFlowComponent.saveBookingData();
+      
+      // Navigate to payment screen
+      window.bookingFlowComponent.goToScreen(13);
+    }
   }
 
   function viewWorkerProfile(workerId) {
     // Handle viewing worker profile
     console.log("View profile for:", workerId);
-    // This could open a modal or navigate to profile page
+    
+    // Find worker details
+    const worker = availableWorkers.find(w => w.id === workerId);
+    
+    if (worker && window.bookingFlowComponent) {
+      window.bookingFlowComponent.selectedWorker = worker;
+      window.bookingFlowComponent.showWorkerProfile = true;
+    }
   }
 
   function chooseForMe() {
     // Handle automatic worker selection
     console.log("User chose automatic matching");
-    // This would proceed with automatic matching flow
+    
+    if (window.bookingFlowComponent) {
+      window.bookingFlowComponent.booking.provider = {
+        id: 'auto',
+        name: 'Zela will choose'
+      };
+      window.bookingFlowComponent.saveBookingData();
+      
+      // Navigate to payment screen
+      window.bookingFlowComponent.goToScreen(13);
+    }
   }
+  
+  // Load workers when DOM is ready
+  document.addEventListener('DOMContentLoaded', loadWorkers);
 </script>

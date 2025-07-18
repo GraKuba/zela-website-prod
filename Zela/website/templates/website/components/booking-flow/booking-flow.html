@@ -73,6 +73,7 @@
       showHeadsUpModal: false,
       showContinueButton: false,
       showServiceScope: false,
+      showAddressInColumn: false,
 
       // Map state
       map: null,
@@ -229,7 +230,7 @@
         "14:30 - 15:00",
       ],
 
-      init() {
+      async init() {
         // Initialize with service type from URL or default
         this.booking.serviceType =
           new URLSearchParams(window.location.search).get("service") ||
@@ -242,6 +243,21 @@
 
         // Set default repeat booking start date
         this.booking.repeat.startDate = tomorrow.toISOString().split("T")[0];
+
+        // Load saved booking data from session
+        try {
+          const response = await fetch('/booking-flow/get-data/');
+          if (response.ok) {
+            const result = await response.json();
+            if (result.data && Object.keys(result.data).length > 0) {
+              // Merge saved data with current booking data
+              Object.assign(this.booking, result.data);
+              console.log('Loaded saved booking data:', result.data);
+            }
+          }
+        } catch (error) {
+          console.error('Error loading saved booking data:', error);
+        }
 
         // Store reference to this component globally for access from dynamically loaded content
         window.bookingFlowComponent = this;
@@ -316,6 +332,9 @@
         this.showServiceModal = false;
         this.serviceModalDismissed = true;
         
+        // Show the address form in the right column
+        this.showAddressInColumn = true;
+        
         // Fix map rendering issue by resizing the map after modal dismiss
         setTimeout(() => {
           if (this.map) {
@@ -348,6 +367,8 @@
 
       selectFrequency(frequency) {
         this.booking.frequency = frequency;
+        // Save state to session
+        this.saveBookingData();
         // Don't navigate immediately - wait for date bucket selection
       },
 
@@ -365,6 +386,9 @@
           this.booking.date = laterDate.toISOString().split("T")[0];
         }
         
+        // Save state to session
+        this.saveBookingData();
+        
         // Navigate based on frequency
         if (this.booking.frequency === 'one-time') {
           this.goToScreen(8); // Go to one-time booking details
@@ -381,6 +405,8 @@
           this.booking.details.extraTasks.push(taskId);
         }
         this.calculatePricing();
+        // Save state to session
+        this.saveBookingData();
       },
 
       updateDuration(change) {
@@ -389,6 +415,8 @@
           this.booking.details.duration + change
         );
         this.calculatePricing();
+        // Save state to session
+        this.saveBookingData();
       },
 
       // Update duration based on home size selection
@@ -400,6 +428,8 @@
           this.booking.details.duration = homeSizeOption.duration;
         }
         this.calculatePricing();
+        // Save state to session
+        this.saveBookingData();
       },
 
       calculatePricing() {
@@ -676,6 +706,56 @@
         this.showContinueButton = true;
       },
 
+      // Save booking data to session
+      async saveBookingData() {
+        try {
+          const response = await fetch('/booking-flow/save-data/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(this.booking),
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            console.log('Booking data saved:', result);
+          }
+        } catch (error) {
+          console.error('Error saving booking data:', error);
+        }
+      },
+      
+      // Complete booking and create in database
+      async completeBooking() {
+        try {
+          const response = await fetch('/booking-flow/payment/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(this.booking),
+          });
+          
+          if (response.ok) {
+            const result = await response.json();
+            console.log('Booking created:', result);
+            
+            // Store success message in sessionStorage for dashboard
+            sessionStorage.setItem('bookingSuccess', 'true');
+            
+            // Redirect to dashboard
+            window.location.href = '/dashboard/';
+          } else {
+            const error = await response.json();
+            alert('Error creating booking: ' + error.message);
+          }
+        } catch (error) {
+          console.error('Error completing booking:', error);
+          alert('Error creating booking. Please try again.');
+        }
+      },
+      
       // Helper methods
       formatCurrency(amount) {
         return `R${amount}`;
