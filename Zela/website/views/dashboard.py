@@ -300,6 +300,92 @@ class ProfileUpdateView(LoginRequiredMixin, FormView):
         kwargs['instance'] = self.request.user
         return kwargs
     
+    def get_context_data(self, **kwargs):
+        """Add context data for profile tab."""
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        
+        # Get user's payment methods (currently we don't have a PaymentMethod model)
+        # For now, we'll get unique payment gateways used in past payments
+        payment_methods = []
+        if user.role == 'customer':
+            used_gateways = Payment.objects.filter(
+                booking__customer=user,
+                status='success'
+            ).values_list('gateway', flat=True).distinct()
+            
+            for gateway in used_gateways:
+                payment_methods.append({
+                    'type': gateway.replace('_', ' ').title(),
+                    'last_four': '****',  # We don't store card details
+                    'icon': gateway,
+                })
+        
+        # Get recent transactions
+        recent_transactions = []
+        if user.role == 'customer':
+            # Get customer payments
+            payments = Payment.objects.filter(
+                booking__customer=user
+            ).select_related('booking', 'booking__service_task').order_by('-created_at')[:10]
+            
+            for payment in payments:
+                recent_transactions.append({
+                    'id': payment.reference,
+                    'date': payment.created_at,
+                    'description': f'Booking: {payment.booking.service_task.name if payment.booking.service_task else "Service"}',
+                    'amount': payment.amount,
+                    'amount_display': payment.amount_display,
+                    'status': payment.status,
+                    'status_display': payment.get_status_display(),
+                    'type': 'payment',
+                })
+        else:  # provider
+            # Get provider payouts
+            payouts = Payout.objects.filter(
+                provider=user
+            ).order_by('-created_at')[:10]
+            
+            for payout in payouts:
+                recent_transactions.append({
+                    'id': f'PAYOUT-{payout.id}',
+                    'date': payout.created_at,
+                    'description': f'Payout for week {payout.week_display}',
+                    'amount': payout.net_amount,
+                    'amount_display': payout.net_amount_display,
+                    'status': payout.status,
+                    'status_display': payout.get_status_display(),
+                    'type': 'payout',
+                })
+        
+        # Get profile completion percentage
+        profile_fields = ['first_name', 'last_name', 'email', 'phone']
+        completed_fields = sum(1 for field in profile_fields if getattr(user, field))
+        profile_completion = int((completed_fields / len(profile_fields)) * 100)
+        
+        # Check if user has verified email (simplified check)
+        email_verified = bool(user.email)
+        
+        # Get notification preferences (we'll need to create a model for this later)
+        notification_preferences = {
+            'email_notifications': True,
+            'sms_notifications': True,
+            'newsletter': False,
+            'marketing': False,
+        }
+        
+        context.update({
+            'user': user,
+            'payment_methods': payment_methods,
+            'recent_transactions': recent_transactions,
+            'profile_completion': profile_completion,
+            'email_verified': email_verified,
+            'notification_preferences': notification_preferences,
+            'has_company_info': False,  # We don't have a company model yet
+        })
+        
+        return context
+    
     def form_valid(self, form):
         """Handle valid profile update."""
         form.save()

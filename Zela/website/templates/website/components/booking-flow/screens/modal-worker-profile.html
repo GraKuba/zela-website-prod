@@ -47,7 +47,7 @@
   @open-worker-profile.window="isOpen = true; selectedWorker = $event.detail.workerId"
   @close-worker-profile.window="isOpen = false"
 >
-  <!-- Subtle overlay to tint the background content -->
+  <!-- Semi-transparent overlay to dim the background content -->
   <div
     x-show="isOpen"
     x-transition:enter="transition-opacity ease-out duration-300"
@@ -56,7 +56,7 @@
     x-transition:leave="transition-opacity ease-in duration-200"
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
-    class="fixed inset-0 bg-gray-900 bg-opacity-30 z-40"
+    class="fixed inset-0 bg-black/30 z-40"
     @click="isOpen = false"
   ></div>
 

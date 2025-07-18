@@ -16,8 +16,8 @@
         </p>
       </div>
       <div class="flex items-center space-x-2">
-        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-        <span class="text-sm text-gray-500">Profile 85% complete</span>
+        <div class="w-2 h-2 {% if profile_completion >= 80 %}bg-green-500{% elif profile_completion >= 50 %}bg-yellow-500{% else %}bg-red-500{% endif %} rounded-full"></div>
+        <span class="text-sm text-gray-500">Profile {{ profile_completion }}% complete</span>
       </div>
     </div>
   </div>
@@ -102,7 +102,7 @@
               type="text"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
               style="focus:ring-color: #035d73"
-              value="Jakub"
+              value="{{ form.first_name.value|default:user.first_name }}"
               placeholder="Enter your first name"
             />
           </div>
@@ -114,7 +114,7 @@
               type="text"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
               style="focus:ring-color: #035d73"
-              value="Grabarczyk"
+              value="{{ form.last_name.value|default:user.last_name }}"
               placeholder="Enter your last name"
             />
           </div>
@@ -129,16 +129,23 @@
             <input
               type="email"
               class="w-full px-4 py-3 pr-12 bg-gray-50 border border-gray-300 rounded-lg text-gray-500"
-              value="grabarczyk.kuba@gmail.com"
+              value="{{ user.email }}"
               disabled
             />
             <div
               class="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2"
             >
+              {% if email_verified %}
               <span
                 class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full"
                 >Verified</span
               >
+              {% else %}
+              <span
+                class="text-xs text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full"
+                >Unverified</span
+              >
+              {% endif %}
               <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
                 <svg
                   class="h-4 w-4"
@@ -171,7 +178,7 @@
             type="tel"
             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
             style="focus:ring-color: #035d73"
-            value="+27643825809"
+            value="{{ form.phone.value|default:user.phone }}"
             placeholder="Enter your phone number"
           />
           <p class="text-xs text-gray-500 mt-1">
@@ -266,9 +273,10 @@
           <label class="flex items-center space-x-3 cursor-pointer">
             <input
               type="checkbox"
+              name="email_notifications"
               class="w-4 h-4 border-gray-300 rounded focus:ring-2 cursor-pointer"
               style="color: #035d73; --tw-ring-color: #035d73"
-              checked
+              {% if notification_preferences.email_notifications %}checked{% endif %}
             />
             <div>
               <p class="text-sm font-medium text-gray-900">
@@ -283,9 +291,10 @@
           <label class="flex items-center space-x-3 cursor-pointer">
             <input
               type="checkbox"
+              name="sms_notifications"
               class="w-4 h-4 border-gray-300 rounded focus:ring-2 cursor-pointer"
               style="color: #035d73; --tw-ring-color: #035d73"
-              checked
+              {% if notification_preferences.sms_notifications %}checked{% endif %}
             />
             <div>
               <p class="text-sm font-medium text-gray-900">SMS Notifications</p>
@@ -296,8 +305,10 @@
           <label class="flex items-center space-x-3 cursor-pointer">
             <input
               type="checkbox"
+              name="newsletter"
               class="w-4 h-4 border-gray-300 rounded focus:ring-2 cursor-pointer"
               style="color: #035d73; --tw-ring-color: #035d73"
+              {% if notification_preferences.newsletter %}checked{% endif %}
             />
             <div>
               <p class="text-sm font-medium text-gray-900">Newsletter</p>
@@ -310,8 +321,10 @@
           <label class="flex items-center space-x-3 cursor-pointer">
             <input
               type="checkbox"
+              name="marketing"
               class="w-4 h-4 border-gray-300 rounded focus:ring-2 cursor-pointer"
               style="color: #035d73; --tw-ring-color: #035d73"
+              {% if notification_preferences.marketing %}checked{% endif %}
             />
             <div>
               <p class="text-sm font-medium text-gray-900">
@@ -397,6 +410,145 @@
         Add Company Details
       </button>
     </div>
+  </div>
+
+  <!-- Payment Methods Section -->
+  {% if user.role == 'customer' %}
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center space-x-3 mb-6">
+      <div
+        class="w-10 h-10 rounded-full flex items-center justify-center"
+        style="background-color: #035d73"
+      >
+        <svg
+          class="w-5 h-5 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+          />
+        </svg>
+      </div>
+      <div class="flex-1">
+        <h2 class="text-lg font-semibold text-gray-900">Payment Methods</h2>
+        <p class="text-sm text-gray-600">Manage your payment options</p>
+      </div>
+      <button
+        class="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-colors duration-200 cursor-pointer text-sm"
+        style="background-color: #035d73"
+      >
+        Add Method
+      </button>
+    </div>
+
+    {% if payment_methods %}
+    <div class="space-y-3">
+      {% for method in payment_methods %}
+      <div class="bg-gray-50 rounded-lg p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
+            <svg class="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-gray-900">{{ method.type }}</p>
+            <p class="text-xs text-gray-500">•••• {{ method.last_four }}</p>
+          </div>
+        </div>
+        <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-8">
+      <p class="text-gray-500">No payment methods saved yet.</p>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Recent Transactions Section -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center space-x-3 mb-6">
+      <div
+        class="w-10 h-10 rounded-full flex items-center justify-center"
+        style="background-color: #035d73"
+      >
+        <svg
+          class="w-5 h-5 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+          />
+        </svg>
+      </div>
+      <div>
+        <h2 class="text-lg font-semibold text-gray-900">Recent Transactions</h2>
+        <p class="text-sm text-gray-600">Your latest {% if user.role == 'customer' %}payments{% else %}payouts{% endif %}</p>
+      </div>
+    </div>
+
+    {% if recent_transactions %}
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th class="pb-3">Reference</th>
+            <th class="pb-3">Date</th>
+            <th class="pb-3">Description</th>
+            <th class="pb-3 text-right">Amount</th>
+            <th class="pb-3 text-center">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          {% for transaction in recent_transactions %}
+          <tr>
+            <td class="py-3 text-sm text-gray-900">{{ transaction.id }}</td>
+            <td class="py-3 text-sm text-gray-500">{{ transaction.date|date:"d M Y" }}</td>
+            <td class="py-3 text-sm text-gray-900">{{ transaction.description }}</td>
+            <td class="py-3 text-sm text-gray-900 text-right">{{ transaction.amount_display }}</td>
+            <td class="py-3 text-center">
+              <span class="px-2 py-1 text-xs rounded-full
+                {% if transaction.status == 'success' or transaction.status == 'completed' %}
+                  bg-green-100 text-green-600
+                {% elif transaction.status == 'pending' or transaction.status == 'processing' %}
+                  bg-yellow-100 text-yellow-600
+                {% else %}
+                  bg-red-100 text-red-600
+                {% endif %}
+              ">
+                {{ transaction.status_display }}
+              </span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-4 text-center">
+      <a href="#" class="text-sm font-medium hover:opacity-80" style="color: #035d73">View All Transactions →</a>
+    </div>
+    {% else %}
+    <div class="text-center py-8">
+      <p class="text-gray-500">No transactions yet.</p>
+    </div>
+    {% endif %}
   </div>
 
   <!-- Action Buttons -->
