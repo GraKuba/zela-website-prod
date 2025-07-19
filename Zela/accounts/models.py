@@ -39,6 +39,56 @@ class User(AbstractUser):
         verbose_name_plural = 'Users'
 
 
+class Profile(models.Model):
+    """Base profile model for all users."""
+    
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="profile", 
+        help_text="User account for this profile"
+    )
+    first_name = models.CharField(
+        max_length=150,
+        blank=True,
+        help_text="User's first name"
+    )
+    last_name = models.CharField(
+        max_length=150,
+        blank=True,
+        help_text="User's last name"
+    )
+    profile_picture = models.ImageField(
+        upload_to="profile_pictures/",
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'gif'])],
+        help_text="User's profile picture"
+    )
+    email_notifications = models.BooleanField(
+        default=True,
+        help_text="Receive email notifications"
+    )
+    sms_notifications = models.BooleanField(
+        default=False,
+        help_text="Receive SMS notifications"
+    )
+    newsletter = models.BooleanField(
+        default=True,
+        help_text="Subscribe to newsletter"
+    )
+    marketing_communications = models.BooleanField(
+        default=False,
+        help_text="Receive marketing communications"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self) -> str:
+        return f"{self.user.get_full_name() or self.user.username} - Profile"
+    
+    
+
 class ProviderProfile(models.Model):
     """Extended profile for service providers."""
     

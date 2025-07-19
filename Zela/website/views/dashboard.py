@@ -9,7 +9,7 @@ from django import forms
 from bookings.models import Booking, Rating
 from payments.models import Payment, Payout
 from notifications.models import Notification
-from accounts.models import User, ProviderProfile
+from accounts.models import User, ProviderProfile, Profile
 from datetime import datetime, timedelta
 from typing import Dict, Any
 
@@ -77,6 +77,9 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
         # Get unread notifications
         unread_notifications = user.notifications.filter(is_read=False).count()
         
+        # Get or create user profile
+        profile, created = Profile.objects.get_or_create(user=user)
+        
         # Build dashboard_data for template compatibility
         dashboard_data = {
             'next_booking': {
@@ -129,12 +132,43 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
             
             cancelled_bookings_list = all_bookings.filter(status='cancelled')
         
+        # Get profile completion percentage
+        # Check both User and Profile fields
+        user_fields = ['email', 'phone']
+        profile_fields = ['first_name', 'last_name', 'profile_picture']
+        
+        completed_fields = 0
+        # Check user fields
+        for field in user_fields:
+            if getattr(user, field):
+                completed_fields += 1
+        
+        # Check profile fields
+        for field in profile_fields:
+            value = getattr(profile, field, None)
+            if value and (field != 'profile_picture' or value.name):
+                completed_fields += 1
+        
+        total_fields = len(user_fields) + len(profile_fields)
+        profile_completion = int((completed_fields / total_fields) * 100) if total_fields > 0 else 0
+        
+        # Get notification preferences
+        notification_preferences = {
+            'email_notifications': profile.email_notifications,
+            'sms_notifications': profile.sms_notifications,
+            'newsletter': profile.newsletter,
+            'marketing_communications': profile.marketing_communications,
+        }
+        
         context.update({
             'title': 'Dashboard - Zela',
             'dashboard_stats': dashboard_stats,
             'dashboard_data': dashboard_data,  # Added for template compatibility
             'unread_notifications': unread_notifications,
             'is_provider': user.role == 'provider',
+            'profile': profile,
+            'profile_completion': profile_completion,
+            'notification_preferences': notification_preferences,
             'upcoming_bookings_list': upcoming_bookings_list,
             'recurring_bookings_list': recurring_bookings_list,
             'completed_bookings_list': completed_bookings_list,
@@ -252,7 +286,7 @@ class BookingUpdatePartial(LoginRequiredMixin, UpdateView):
             })
         
         messages.success(self.request, 'Booking updated successfully.')
-        return redirect('dashboard-bookings')
+        return redirect('website:dashboard-bookings')
     
     def form_invalid(self, form):
         """Handle invalid booking update."""
@@ -266,26 +300,48 @@ class BookingUpdatePartial(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class ProfileUpdateForm(forms.ModelForm):
-    """Profile update form."""
+class ProfileUpdateForm(forms.Form):
+    """Combined profile update form for User and Profile models."""
     
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'phone', 'email']
-        widgets = {
-            'first_name': forms.TextInput(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-            }),
-            'last_name': forms.TextInput(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-            }),
-            'phone': forms.TextInput(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-            }),
-            'email': forms.EmailInput(attrs={
-                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-            }),
-        }
+    # Profile model fields
+    first_name = forms.CharField(
+        max_length=150,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+        })
+    )
+    last_name = forms.CharField(
+        max_length=150,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+        })
+    )
+    
+    # User model fields
+    phone = forms.CharField(
+        max_length=20,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+        })
+    )
+    
+    # Profile picture
+    profile_picture = forms.ImageField(
+        required=False,
+        widget=forms.FileInput(attrs={
+            'class': 'hidden',
+            'accept': 'image/*'
+        })
+    )
+    
+    # Notification preferences
+    email_notifications = forms.BooleanField(required=False)
+    sms_notifications = forms.BooleanField(required=False)
+    newsletter = forms.BooleanField(required=False)
+    marketing_communications = forms.BooleanField(required=False)
 
 
 class ProfileUpdateView(LoginRequiredMixin, FormView):
@@ -295,15 +351,30 @@ class ProfileUpdateView(LoginRequiredMixin, FormView):
     template_name = 'website/components/dashboard/tabs/profile.html'
     
     def get_form_kwargs(self):
-        """Pass user instance to form."""
+        """Pass initial data to form."""
         kwargs = super().get_form_kwargs()
-        kwargs['instance'] = self.request.user
+        user = self.request.user
+        profile, created = Profile.objects.get_or_create(user=user)
+        
+        # Set initial data from both models
+        kwargs['initial'] = {
+            'first_name': profile.first_name or user.first_name,
+            'last_name': profile.last_name or user.last_name,
+            'phone': user.phone,
+            'email_notifications': profile.email_notifications,
+            'sms_notifications': profile.sms_notifications,
+            'newsletter': profile.newsletter,
+            'marketing_communications': profile.marketing_communications,
+        }
         return kwargs
     
     def get_context_data(self, **kwargs):
         """Add context data for profile tab."""
         context = super().get_context_data(**kwargs)
         user = self.request.user
+        
+        # Get or create user profile
+        profile, created = Profile.objects.get_or_create(user=user)
         
         # Get user's payment methods (currently we don't have a PaymentMethod model)
         # For now, we'll get unique payment gateways used in past payments
@@ -359,23 +430,39 @@ class ProfileUpdateView(LoginRequiredMixin, FormView):
                 })
         
         # Get profile completion percentage
-        profile_fields = ['first_name', 'last_name', 'email', 'phone']
-        completed_fields = sum(1 for field in profile_fields if getattr(user, field))
-        profile_completion = int((completed_fields / len(profile_fields)) * 100)
+        # Check both User and Profile fields
+        user_fields = ['email', 'phone']
+        profile_fields = ['first_name', 'last_name', 'profile_picture']
+        
+        completed_fields = 0
+        # Check user fields
+        for field in user_fields:
+            if getattr(user, field):
+                completed_fields += 1
+        
+        # Check profile fields
+        for field in profile_fields:
+            value = getattr(profile, field, None)
+            if value and (field != 'profile_picture' or value.name):
+                completed_fields += 1
+        
+        total_fields = len(user_fields) + len(profile_fields)
+        profile_completion = int((completed_fields / total_fields) * 100) if total_fields > 0 else 0
         
         # Check if user has verified email (simplified check)
         email_verified = bool(user.email)
         
-        # Get notification preferences (we'll need to create a model for this later)
+        # Get notification preferences from profile
         notification_preferences = {
-            'email_notifications': True,
-            'sms_notifications': True,
-            'newsletter': False,
-            'marketing': False,
+            'email_notifications': profile.email_notifications,
+            'sms_notifications': profile.sms_notifications,
+            'newsletter': profile.newsletter,
+            'marketing_communications': profile.marketing_communications,
         }
         
         context.update({
             'user': user,
+            'profile': profile,
             'payment_methods': payment_methods,
             'recent_transactions': recent_transactions,
             'profile_completion': profile_completion,
@@ -388,7 +475,27 @@ class ProfileUpdateView(LoginRequiredMixin, FormView):
     
     def form_valid(self, form):
         """Handle valid profile update."""
-        form.save()
+        user = self.request.user
+        profile, created = Profile.objects.get_or_create(user=user)
+        
+        # Update Profile model fields
+        profile.first_name = form.cleaned_data['first_name']
+        profile.last_name = form.cleaned_data['last_name']
+        
+        # Handle profile picture upload
+        if 'profile_picture' in self.request.FILES:
+            profile.profile_picture = self.request.FILES['profile_picture']
+        
+        # Update notification preferences
+        profile.email_notifications = form.cleaned_data['email_notifications']
+        profile.sms_notifications = form.cleaned_data['sms_notifications']
+        profile.newsletter = form.cleaned_data['newsletter']
+        profile.marketing_communications = form.cleaned_data['marketing_communications']
+        profile.save()
+        
+        # Update User model fields
+        user.phone = form.cleaned_data['phone']
+        user.save()
         
         if self.request.htmx:
             return JsonResponse({
@@ -397,7 +504,7 @@ class ProfileUpdateView(LoginRequiredMixin, FormView):
             })
         
         messages.success(self.request, 'Profile updated successfully.')
-        return redirect('dashboard-profile')
+        return redirect('website:dashboard')
     
     def form_invalid(self, form):
         """Handle invalid profile update."""
@@ -489,7 +596,7 @@ class RatingCreatePartial(LoginRequiredMixin, CreateView):
             })
         
         messages.success(self.request, 'Thank you for your rating!')
-        return redirect('dashboard-bookings')
+        return redirect('website:dashboard-bookings')
     
     def form_invalid(self, form):
         """Handle invalid rating creation."""

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
-from .models import User, ProviderProfile
+from .models import User, ProviderProfile, Profile
 
 
 @admin.register(User)
@@ -99,3 +99,61 @@ class ProviderProfileAdmin(admin.ModelAdmin):
         updated = queryset.update(is_approved=False)
         self.message_user(request, f'{updated} providers rejected.')
     reject_providers.short_description = 'Reject selected providers'
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    """User profile admin."""
+    
+    list_display = (
+        'user_display', 'has_profile_picture', 'full_name', 
+        'email_notifications', 'sms_notifications', 'newsletter', 
+        'marketing_communications', 'created_at'
+    )
+    list_filter = ('email_notifications', 'sms_notifications', 'newsletter', 
+                   'marketing_communications', 'created_at', 'updated_at')
+    search_fields = ('user__username', 'user__email', 'first_name', 'last_name')
+    readonly_fields = ('created_at', 'updated_at')
+    ordering = ('-created_at',)
+    
+    fieldsets = (
+        ('User Information', {
+            'fields': ('user', 'first_name', 'last_name'),
+        }),
+        ('Profile Picture', {
+            'fields': ('profile_picture',),
+        }),
+        ('Notification Preferences', {
+            'fields': ('email_notifications', 'sms_notifications', 
+                      'newsletter', 'marketing_communications'),
+            'classes': ('collapse',),
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def user_display(self, obj):
+        """Display user with username and email."""
+        return format_html(
+            '<strong>{}</strong><br><small>{}</small>',
+            obj.user.username, obj.user.email
+        )
+    user_display.short_description = 'User'
+    
+    def has_profile_picture(self, obj):
+        """Check if profile has a picture."""
+        return bool(obj.profile_picture)
+    has_profile_picture.boolean = True
+    has_profile_picture.short_description = 'Has Picture'
+    
+    def full_name(self, obj):
+        """Display full name from profile or user."""
+        first = obj.first_name or obj.user.first_name
+        last = obj.last_name or obj.user.last_name
+        if first or last:
+            return f"{first} {last}".strip()
+        return "-"
+    full_name.short_description = 'Full Name'
+    
