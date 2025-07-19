@@ -7,7 +7,8 @@ from .views.help_center import HelpCenterView, HelpCenterSearch, HelpArticleView
 from .views.auth import RegisterWizardView, SignInView, SignOutView
 from .views.dashboard import (
     DashboardShellView, BookingListPartial, BookingUpdatePartial,
-    ProfileUpdateView, RatingCreatePartial
+    ProfileUpdateView, RatingCreatePartial, AddPaymentMethodView,
+    set_default_payment_method
 )
 from .views.providers import ProviderLandingView, ProviderApplicationWizard, ApplyWorkerView
 from .views.booking import booking_flow, booking_screen, save_booking_data, get_booking_data, process_payment, get_available_workers
@@ -47,6 +48,8 @@ urlpatterns = [
     path('dashboard/booking/<int:pk>/update/', BookingUpdatePartial.as_view(), name='dashboard-booking-update'),
     path('dashboard/profile/', ProfileUpdateView.as_view(), name='dashboard-profile'),
     path('dashboard/booking/<int:booking_pk>/rate/', RatingCreatePartial.as_view(), name='dashboard-rating-create'),
+    path('dashboard/payment-method/add/', AddPaymentMethodView.as_view(), name='add-payment-method'),
+    path('dashboard/payment-method/<int:pk>/set-default/', set_default_payment_method, name='set-default-payment'),
     
     # Provider onboarding
     path('providers/', ProviderLandingView.as_view(), name='providers'),

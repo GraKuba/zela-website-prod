@@ -197,3 +197,110 @@ class Payout(models.Model):
         verbose_name_plural = 'Payouts'
         ordering = ['-week_start']
         unique_together = ['provider', 'week_start']
+
+
+class RecentTransaction(models.Model):
+    """Unified transaction history for users."""
+    
+    TRANSACTION_TYPE_CHOICES = [
+        ("payment", "Payment"),
+        ("payout", "Payout"),
+        ("refund", "Refund"),
+        ("commission", "Commission"),
+        ("adjustment", "Adjustment"),
+        ("deposit", "Deposit"),
+        ("withdrawal", "Withdrawal"),
+    ]
+    
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("processing", "Processing"),
+        ("completed", "Completed"),
+        ("failed", "Failed"),
+        ("cancelled", "Cancelled"),
+    ]
+    
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="recent_transactions",
+        help_text="User associated with this transaction"
+    )
+    transaction_type = models.CharField(
+        max_length=20,
+        choices=TRANSACTION_TYPE_CHOICES,
+        help_text="Type of transaction"
+    )
+    reference = models.CharField(
+        max_length=120,
+        unique=True,
+        help_text="Unique transaction reference"
+    )
+    amount = models.PositiveIntegerField(
+        help_text="Transaction amount in AOA"
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="pending",
+        help_text="Transaction status"
+    )
+    description = models.CharField(
+        max_length=255,
+        help_text="Transaction description"
+    )
+    payment = models.ForeignKey(
+        Payment,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="Related payment record"
+    )
+    payout = models.ForeignKey(
+        Payout,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="Related payout record"
+    )
+    metadata = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="Additional transaction data"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def save(self, *args, **kwargs):
+        """Generate unique reference if not provided."""
+        if not self.reference:
+            prefix = self.transaction_type[:3].upper()
+            self.reference = f"{prefix}-{uuid.uuid4().hex[:12].upper()}"
+        super().save(*args, **kwargs)
+    
+    def __str__(self) -> str:
+        return f"{self.get_transaction_type_display()} {self.reference} - {self.user.get_full_name()}"
+    
+    @property
+    def amount_display(self) -> str:
+        """Return formatted amount."""
+        return f"AOA {self.amount:,}"
+    
+    @property
+    def is_credit(self) -> bool:
+        """Check if transaction adds money to user's account."""
+        return self.transaction_type in ["payout", "refund", "deposit"]
+    
+    @property
+    def is_debit(self) -> bool:
+        """Check if transaction removes money from user's account."""
+        return self.transaction_type in ["payment", "commission", "withdrawal"]
+    
+    class Meta:
+        verbose_name = 'Recent Transaction'
+        verbose_name_plural = 'Recent Transactions'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', '-created_at']),
+            models.Index(fields=['transaction_type', 'status']),
+        ]

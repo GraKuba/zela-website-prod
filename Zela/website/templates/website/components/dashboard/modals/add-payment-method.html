@@ -1,0 +1,268 @@
+<!-- Add Payment Method Modal -->
+<div 
+  id="add-payment-modal"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+  x-data="{ showModal: true }"
+  x-show="showModal"
+  x-transition:enter="transition ease-out duration-300"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="transition ease-in duration-200"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
+  @keydown.escape="showModal = false; htmx.remove('#add-payment-modal')"
+>
+  <div 
+    class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden"
+    @click.away="showModal = false; htmx.remove('#add-payment-modal')"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 transform scale-90"
+    x-transition:enter-end="opacity-100 transform scale-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 transform scale-100"
+    x-transition:leave-end="opacity-0 transform scale-90"
+  >
+    <!-- Modal Header -->
+    <div class="px-6 py-4 border-b border-gray-200">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-semibold" style="color: #011e41">
+          Add Payment Method
+        </h3>
+        <button
+          @click="showModal = false; htmx.remove('#add-payment-modal')"
+          class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          <svg class="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Body -->
+    <form 
+      hx-post="{% url 'website:add-payment-method' %}"
+      hx-target="#payment-methods-container"
+      hx-swap="innerHTML"
+      hx-on::after-request="if(event.detail.successful) { htmx.remove('#add-payment-modal'); }"
+      class="p-6 space-y-4"
+    >
+      {% csrf_token %}
+      
+      <!-- Payment Method Type -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Payment Type
+        </label>
+        <div class="grid grid-cols-3 gap-3">
+          <label class="relative cursor-pointer">
+            <input type="radio" name="kind" value="card" checked class="peer sr-only">
+            <div class="border-2 rounded-lg p-3 text-center transition-all peer-checked:border-[#035d73] peer-checked:bg-[#035d73]/5">
+              <svg class="w-6 h-6 mx-auto mb-1 text-gray-600 peer-checked:text-[#035d73]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+              </svg>
+              <span class="text-xs font-medium">Card</span>
+            </div>
+          </label>
+          
+          <label class="relative cursor-pointer">
+            <input type="radio" name="kind" value="paypal" class="peer sr-only">
+            <div class="border-2 rounded-lg p-3 text-center transition-all peer-checked:border-[#035d73] peer-checked:bg-[#035d73]/5">
+              <svg class="w-6 h-6 mx-auto mb-1 text-gray-600 peer-checked:text-[#035d73]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.419c.037-.325.327-.569.656-.569h6.974c2.234 0 3.889.424 4.922 1.26.522.423.875.935 1.049 1.522.174.587.192 1.282.055 2.066-.138.787-.396 1.484-.766 2.073-.371.589-.875 1.1-1.499 1.519-.624.419-1.387.738-2.268.949-.882.21-1.911.316-3.059.316H8.83L7.076 21.337zm2.47-9.293h1.962c.676 0 1.267-.078 1.756-.232.49-.154.845-.395 1.056-.716.21-.321.332-.728.361-1.209.029-.48-.063-.848-.273-1.092-.21-.244-.585-.367-1.114-.367H10.68l-.906 3.616h1.772z"/>
+              </svg>
+              <span class="text-xs font-medium">PayPal</span>
+            </div>
+          </label>
+          
+          <label class="relative cursor-pointer">
+            <input type="radio" name="kind" value="apple" class="peer sr-only">
+            <div class="border-2 rounded-lg p-3 text-center transition-all peer-checked:border-[#035d73] peer-checked:bg-[#035d73]/5">
+              <svg class="w-6 h-6 mx-auto mb-1 text-gray-600 peer-checked:text-[#035d73]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.05 20.28c-.98.95-2.05.88-3.08.42-1.09-.46-2.08-.48-3.24 0-1.45.62-2.21.44-3.06-.42C2.8 15.61 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.13 1.87-2.4 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09zM11.94 7.19c-.16-2.26 1.68-4.11 3.94-4.39.29 2.66-2.5 4.65-3.94 4.39z"/>
+              </svg>
+              <span class="text-xs font-medium">Apple Pay</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Card Details (shown by default) -->
+      <div id="card-details" x-data="{ cardNumber: '', showCardType: '' }">
+        <!-- Card Number -->
+        <div>
+          <label for="card-number" class="block text-sm font-medium text-gray-700 mb-1">
+            Card Number
+          </label>
+          <div class="relative">
+            <input
+              type="text"
+              id="card-number"
+              name="card_number"
+              x-model="cardNumber"
+              @input="
+                // Format card number with spaces
+                cardNumber = $event.target.value.replace(/\s/g, '');
+                if (cardNumber.length > 0) {
+                  cardNumber = cardNumber.match(/.{1,4}/g).join(' ');
+                }
+                $event.target.value = cardNumber;
+                
+                // Detect card type
+                if (cardNumber.startsWith('4')) {
+                  showCardType = 'visa';
+                } else if (cardNumber.startsWith('5')) {
+                  showCardType = 'mastercard';
+                } else if (cardNumber.startsWith('3')) {
+                  showCardType = 'amex';
+                } else {
+                  showCardType = '';
+                }
+              "
+              maxlength="19"
+              placeholder="1234 5678 9012 3456"
+              class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+              required
+            >
+            <div class="absolute right-3 top-2.5">
+              <span x-show="showCardType === 'visa'" class="text-blue-600 font-bold text-sm">VISA</span>
+              <span x-show="showCardType === 'mastercard'" class="text-red-500 font-bold text-sm">MC</span>
+              <span x-show="showCardType === 'amex'" class="text-blue-500 font-bold text-sm">AMEX</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expiry and CVV -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="expiry" class="block text-sm font-medium text-gray-700 mb-1">
+              Expiry Date
+            </label>
+            <input
+              type="text"
+              id="expiry"
+              name="expiry"
+              placeholder="MM/YY"
+              maxlength="5"
+              @input="
+                // Format MM/YY
+                let value = $event.target.value.replace(/\s/g, '').replace(/\//g, '');
+                if (value.length >= 2) {
+                  value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                }
+                $event.target.value = value;
+              "
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+              required
+            >
+          </div>
+          
+          <div>
+            <label for="cvv" class="block text-sm font-medium text-gray-700 mb-1">
+              CVV
+            </label>
+            <input
+              type="text"
+              id="cvv"
+              name="cvv"
+              placeholder="123"
+              maxlength="4"
+              pattern="[0-9]{3,4}"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+              required
+            >
+          </div>
+        </div>
+
+        <!-- Cardholder Name -->
+        <div>
+          <label for="cardholder-name" class="block text-sm font-medium text-gray-700 mb-1">
+            Cardholder Name
+          </label>
+          <input
+            type="text"
+            id="cardholder-name"
+            name="cardholder_name"
+            placeholder="John Doe"
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent"
+            required
+          >
+        </div>
+      </div>
+
+      <!-- PayPal Details (hidden by default) -->
+      <div id="paypal-details" class="hidden">
+        <div class="text-center py-8">
+          <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.419c.037-.325.327-.569.656-.569h6.974c2.234 0 3.889.424 4.922 1.26.522.423.875.935 1.049 1.522.174.587.192 1.282.055 2.066-.138.787-.396 1.484-.766 2.073-.371.589-.875 1.1-1.499 1.519-.624.419-1.387.738-2.268.949-.882.21-1.911.316-3.059.316H8.83L7.076 21.337zm2.47-9.293h1.962c.676 0 1.267-.078 1.756-.232.49-.154.845-.395 1.056-.716.21-.321.332-.728.361-1.209.029-.48-.063-.848-.273-1.092-.21-.244-.585-.367-1.114-.367H10.68l-.906 3.616h1.772z"/>
+          </svg>
+          <p class="text-gray-600 mb-4">You'll be redirected to PayPal to complete the setup</p>
+        </div>
+      </div>
+
+      <!-- Apple Pay Details (hidden by default) -->
+      <div id="apple-details" class="hidden">
+        <div class="text-center py-8">
+          <svg class="w-16 h-16 mx-auto mb-4 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.05 20.28c-.98.95-2.05.88-3.08.42-1.09-.46-2.08-.48-3.24 0-1.45.62-2.21.44-3.06-.42C2.8 15.61 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.13 1.87-2.4 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09zM11.94 7.19c-.16-2.26 1.68-4.11 3.94-4.39.29 2.66-2.5 4.65-3.94 4.39z"/>
+          </svg>
+          <p class="text-gray-600 mb-4">Use Touch ID or Face ID to confirm Apple Pay setup</p>
+        </div>
+      </div>
+
+      <!-- Error Messages -->
+      <div id="payment-errors" class="hidden">
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+          <span id="error-message"></span>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-end space-x-3 pt-4">
+        <button
+          type="button"
+          @click="showModal = false; htmx.remove('#add-payment-modal')"
+          class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-colors"
+          style="background-color: #035d73"
+        >
+          Add Payment Method
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Handle payment method type switching
+  document.querySelectorAll('input[name="kind"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      const cardDetails = document.getElementById('card-details');
+      const paypalDetails = document.getElementById('paypal-details');
+      const appleDetails = document.getElementById('apple-details');
+      
+      // Hide all details
+      cardDetails.classList.add('hidden');
+      paypalDetails.classList.add('hidden');
+      appleDetails.classList.add('hidden');
+      
+      // Show selected details
+      switch(e.target.value) {
+        case 'card':
+          cardDetails.classList.remove('hidden');
+          break;
+        case 'paypal':
+          paypalDetails.classList.remove('hidden');
+          break;
+        case 'apple':
+          appleDetails.classList.remove('hidden');
+          break;
+      }
+    });
+  });
+</script>

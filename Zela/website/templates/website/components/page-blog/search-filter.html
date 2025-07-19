@@ -6,8 +6,8 @@
     <div
       x-data="{ 
             searchTerm: '',
-            selectedCategory: 'All categories',
-            categories: ['All categories', 'Cleaning', 'Garden', 'News', 'DIY']
+            selectedCategory: 'Todas as categorias',
+            categories: ['Todas as categorias', 'Limpeza', 'Jardim', 'Notícias', 'DIY']
         }"
       class="flex flex-col md:flex-row gap-4 md:gap-6 items-center justify-center"
     >
@@ -33,7 +33,7 @@
         <input
           type="text"
           x-model="searchTerm"
-          placeholder="Search articles…"
+          placeholder="Pesquisar artigos…"
           class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-full text-[#011E41] placeholder-[#4A5A70] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors"
         />
       </div>
@@ -88,7 +88,7 @@
       <button
         class="md:hidden w-full bg-[#011E41] text-[#FDEA00] py-3 px-6 rounded-full font-semibold hover:bg-[#022951] transition-colors"
       >
-        Apply Filters
+        Aplicar Filtros
       </button>
     </div>
   </div>

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Payment, Payout
+from .models import Payment, Payout, RecentTransaction
 
 
 @admin.register(Payment)
@@ -105,3 +105,65 @@ class PayoutAdmin(admin.ModelAdmin):
         """Display formatted net amount."""
         return format_html('<strong>AOA {:,}</strong>', obj.net_amount)
     net_amount_display.short_description = 'Net Amount'
+
+
+@admin.register(RecentTransaction)
+class RecentTransactionAdmin(admin.ModelAdmin):
+    """Recent Transaction admin."""
+    
+    list_display = (
+        'reference', 'user_display', 'transaction_type', 'amount_display',
+        'status', 'description', 'created_at'
+    )
+    list_filter = ('transaction_type', 'status', 'created_at')
+    search_fields = ('reference', 'user__username', 'user__email', 'description')
+    readonly_fields = ('reference', 'created_at', 'updated_at', 'metadata')
+    ordering = ('-created_at',)
+    
+    fieldsets = (
+        ('Transaction Information', {
+            'fields': ('user', 'transaction_type', 'reference', 'amount', 'description'),
+        }),
+        ('Status', {
+            'fields': ('status',),
+        }),
+        ('Related Records', {
+            'fields': ('payment', 'payout'),
+            'classes': ('collapse',),
+        }),
+        ('Additional Data', {
+            'fields': ('metadata',),
+            'classes': ('collapse',),
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def user_display(self, obj):
+        """Display user info."""
+        name = obj.user.get_full_name() or obj.user.username
+        return format_html(
+            '<strong>{}</strong><br><small>{}</small>',
+            name, obj.user.email
+        )
+    user_display.short_description = 'User'
+    
+    def amount_display(self, obj):
+        """Display formatted amount with credit/debit indicator."""
+        if obj.is_credit:
+            color = 'green'
+            prefix = '+'
+        elif obj.is_debit:
+            color = 'red'
+            prefix = '-'
+        else:
+            color = 'black'
+            prefix = ''
+        
+        return format_html(
+            '<span style="color: {}"><strong>{}AOA {:,}</strong></span>',
+            color, prefix, obj.amount
+        )
+    amount_display.short_description = 'Amount'

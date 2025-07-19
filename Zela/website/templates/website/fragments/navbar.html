@@ -17,31 +17,31 @@
       href="/"
       class="text-[#4A5A70] hover:text-[#015F73] transition-colors font-medium"
     >
-      Home
+      Início
     </a>
     <a
       href="/about/"
       class="text-[#4A5A70] hover:text-[#015F73] transition-colors font-medium"
     >
-      About
+      Sobre
     </a>
     <a
       href="/services/"
       class="text-[#4A5A70] hover:text-[#015F73] transition-colors font-medium"
     >
-      Services
+      Serviços
     </a>
     <a
       href="/pricing/"
       class="text-[#4A5A70] hover:text-[#015F73] transition-colors font-medium"
     >
-      Pricing
+      Preços
     </a>
     <a
       href="/contact/"
       class="text-[#4A5A70] hover:text-[#015F73] transition-colors font-medium"
     >
-      Contact
+      Contacto
     </a>
     <a
       href="{% url 'website:blog' %}"
@@ -105,19 +105,19 @@
           href="{% url 'website:dashboard' %}"
           class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
         >
-          Dashboard
+          Painel de Controlo
         </a>
         <a
           href="{% url 'website:dashboard' %}?tab=profile"
           class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
         >
-          Profile
+          Perfil
         </a>
         <a
           href="{% url 'website:dashboard' %}?tab=settings"
           class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
         >
-          Settings
+          Configurações
         </a>
         <hr class="my-1 border-gray-200" />
         <form method="post" action="{% url 'accounts:logout' %}" class="block">
@@ -126,7 +126,7 @@
             type="submit"
             class="w-full text-left px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
           >
-            Log Out
+            Sair
           </button>
         </form>
       </div>
@@ -137,13 +137,13 @@
       href="{% url 'website:sign-in' %}"
       class="border border-[#015F73] text-[#015F73] px-6 py-2 rounded-full font-semibold hover:bg-[#015F73] hover:text-white transition-colors"
     >
-      Log In
+      Entrar
     </a>
     <a
       href="{% url 'website:register' %}"
       class="bg-[#015f73] text-[#FDEA00] px-6 py-2 rounded-full font-semibold hover:bg-[#014a5a] transition-colors shadow-lg"
     >
-      Sign Up
+      Registar
     </a>
     {% endif %}
   </div>

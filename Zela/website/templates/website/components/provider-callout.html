@@ -12,7 +12,7 @@
         <div class="relative">
           <img
             src="{% static 'juliana.webp' %}"
-            alt="Zela service provider scanning QR code on phone"
+            alt="Prestador de serviços Zela a digitalizar código QR no telemóvel"
             class="w-full max-w-md mx-auto h-auto object-cover rounded-2xl shadow-lg"
             loading="lazy"
           />
@@ -29,13 +29,13 @@
       <div class="order-2 md:order-2">
         <!-- Section Heading -->
         <h2 class="text-5xl font-bold text-[#011E41] mb-6 leading-tight">
-          Earn on Your Own Terms
+          Ganhe nos Seus Próprios Termos
         </h2>
 
         <!-- Supporting Copy -->
         <p class="text-lg text-[#4A5A70] mb-8 leading-relaxed">
-          Join Zela and pick the jobs, hours, and areas that suit you. Get paid
-          weekly—no middle-men, full support.
+          Junte-se à Zela e escolha os trabalhos, horários e áreas que lhe
+          convêm. Receba pagamentos semanais—sem intermediários, apoio total.
         </p>
 
         <!-- Benefits List -->
@@ -45,9 +45,11 @@
               class="w-2 h-2 bg-[#FDEA00] rounded-full mt-3 flex-shrink-0"
             ></div>
             <div>
-              <span class="font-semibold text-[#011E41]">Weekly payouts</span>
+              <span class="font-semibold text-[#011E41]"
+                >Pagamentos semanais</span
+              >
               <span class="text-[#4A5A70]">
-                straight to mobile money or bank</span
+                diretamente para dinheiro móvel ou banco</span
               >
             </div>
           </li>
@@ -57,9 +59,9 @@
             ></div>
             <div>
               <span class="font-semibold text-[#011E41]"
-                >Choose your hours</span
+                >Escolha os seus horários</span
               >
-              <span class="text-[#4A5A70]"> and service area</span>
+              <span class="text-[#4A5A70]"> e área de serviço</span>
             </div>
           </li>
           <li class="flex items-start gap-3">
@@ -68,9 +70,9 @@
             ></div>
             <div>
               <span class="font-semibold text-[#011E41]"
-                >Free skills training</span
+                >Formação gratuita de competências</span
               >
-              <span class="text-[#4A5A70]"> & ratings boost</span>
+              <span class="text-[#4A5A70]"> e impulso de avaliações</span>
             </div>
           </li>
           <li class="flex items-start gap-3">
@@ -78,8 +80,12 @@
               class="w-2 h-2 bg-[#FDEA00] rounded-full mt-3 flex-shrink-0"
             ></div>
             <div>
-              <span class="font-semibold text-[#011E41]">Safety first</span>
-              <span class="text-[#4A5A70]"> with GPS-logged visits</span>
+              <span class="font-semibold text-[#011E41]"
+                >Segurança primeiro</span
+              >
+              <span class="text-[#4A5A70]">
+                com visitas registadas por GPS</span
+              >
             </div>
           </li>
           <li class="flex items-start gap-3">
@@ -87,14 +93,20 @@
               class="w-2 h-2 bg-[#FDEA00] rounded-full mt-3 flex-shrink-0"
             ></div>
             <div>
-              <span class="font-semibold text-[#011E41]">Grow your income</span>
-              <span class="text-[#4A5A70]"> by keeping a 4.8★+ score</span>
+              <span class="font-semibold text-[#011E41]"
+                >Aumente o seu rendimento</span
+              >
+              <span class="text-[#4A5A70]">
+                mantendo uma pontuação de 4.8★+</span
+              >
             </div>
           </li>
         </ul>
 
         <!-- CTA Button -->
-        {% include 'website/fragments/cta-button.html' with href='/apply-worker/' text='Apply as a Service Pro' hx_get='/apply-worker/' hx_target='body' hx_swap='outerHTML' %}
+        {% include 'website/fragments/cta-button.html' with
+        href='/apply-worker/' text='Candidatar-se como Profissional de Serviços'
+        hx_get='/apply-worker/' hx_target='body' hx_swap='outerHTML' %}
       </div>
     </div>
   </div>

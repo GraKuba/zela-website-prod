@@ -1,7 +1,7 @@
 {% extends "website/layouts/base.html" %}
 {% load static %}
 
-{% block title %}Apply as a Service Pro - Join Zela{% endblock %}
+{% block title %}Candidatar-se como Prestador de Serviços - Junte-se à Zela{% endblock %}
 
 {% block content %}
 <!-- Apply as Worker Page -->
@@ -18,15 +18,15 @@
             class="text-5xl font-bold mb-6 leading-tight"
             style="color: #ffffff; font-weight: 700; line-height: 1.1"
           >
-            Join the Zela<br />
-            <span style="color: #fdea00">Community</span>
+            Junte-se à<br />
+            <span style="color: #fdea00">Comunidade Zela</span>
           </h1>
           <p
             class="text-xl mb-8 leading-relaxed"
             style="color: #ffffff; opacity: 0.9"
           >
-            Transform your skills into steady income. Set your own schedule,
-            choose your service area, and get paid weekly.
+            Transforme as suas competências em rendimento estável. Defina o seu próprio horário,
+            escolha a sua área de serviço e receba pagamentos semanais.
           </p>
           <div class="flex flex-wrap gap-4">
             <div class="flex items-center gap-2">
@@ -41,7 +41,7 @@
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <span>Weekly Payouts</span>
+              <span>Pagamentos Semanais</span>
             </div>
             <div class="flex items-center gap-2">
               <svg
@@ -55,7 +55,7 @@
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <span>Flexible Schedule</span>
+              <span>Horário Flexível</span>
             </div>
             <div class="flex items-center gap-2">
               <svg
@@ -69,7 +69,7 @@
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <span>Full Support</span>
+              <span>Apoio Completo</span>
             </div>
           </div>
         </div>
@@ -78,7 +78,7 @@
         <div class="order-first lg:order-last">
           <img
             src="{% static 'juliana.webp' %}"
-            alt="Zela service provider"
+            alt="Prestador de serviços Zela"
             class="w-full h-auto object-cover rounded-2xl shadow-2xl"
           />
         </div>
@@ -94,10 +94,10 @@
           class="text-4xl font-bold mb-6"
           style="color: #011e41; font-weight: 700"
         >
-          Start Your Application
+          Inicie a Sua Candidatura
         </h2>
         <p class="text-xl text-[#4A5A70] max-w-2xl mx-auto">
-          Fill out the form below and we'll get back to you within 24 hours
+          Preencha o formulário abaixo e responderemos em 24 horas
         </p>
       </div>
 
@@ -110,7 +110,7 @@
           <div class="grid md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
-                >Full Name *</label
+                >Nome Completo *</label
               >
               <input
                 type="text"
@@ -121,7 +121,7 @@
             </div>
             <div>
               <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
-                >Phone Number *</label
+                >Número de Telefone *</label
               >
               <input
                 type="tel"
@@ -135,7 +135,7 @@
           <div class="grid md:grid-cols-2 gap-6">
             <div>
               <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
-                >Email Address *</label
+                >Endereço de Email *</label
               >
               <input
                 type="email"
@@ -146,7 +146,7 @@
             </div>
             <div>
               <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
-                >Date of Birth *</label
+                >Data de Nascimento *</label
               >
               <input
                 type="date"
@@ -159,7 +159,7 @@
 
           <div>
             <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
-              >Address *</label
+              >Morada *</label
             >
             <textarea
               x-model="form.address"
@@ -172,7 +172,7 @@
           <!-- Services -->
           <div>
             <label class="block text-sm font-bold text-[#011E41] mb-4 cursor-pointer"
-              >Services You'd Like to Provide *</label
+              >Serviços que Gostaria de Prestar *</label
             >
             <div class="grid md:grid-cols-3 gap-4">
               <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
@@ -182,7 +182,7 @@
                   value="house-cleaning"
                   class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
-                <span class="text-[#4A5A70]">House Cleaning</span>
+                <span class="text-[#4A5A70]">Limpeza Doméstica</span>
               </label>
               <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                 <input
@@ -191,7 +191,7 @@
                   value="office-cleaning"
                   class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
-                <span class="text-[#4A5A70]">Office Cleaning</span>
+                <span class="text-[#4A5A70]">Limpeza de Escritório</span>
               </label>
               <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                 <input
@@ -200,7 +200,7 @@
                   value="deep-cleaning"
                   class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
-                <span class="text-[#4A5A70]">Deep Cleaning</span>
+                <span class="text-[#4A5A70]">Limpeza Profunda</span>
               </label>
               <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                 <input
@@ -209,7 +209,7 @@
                   value="move-in-out"
                   class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
-                <span class="text-[#4A5A70]">Move-in/out</span>
+                <span class="text-[#4A5A70]">Mudanças</span>
               </label>
               <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                 <input
@@ -218,7 +218,7 @@
                   value="laundry"
                   class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
-                <span class="text-[#4A5A70]">Laundry</span>
+                <span class="text-[#4A5A70]">Lavandaria</span>
               </label>
               <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                 <input
@@ -227,7 +227,7 @@
                   value="gardening"
                   class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                 />
-                <span class="text-[#4A5A70]">Gardening</span>
+                <span class="text-[#4A5A70]">Jardinagem</span>
               </label>
             </div>
           </div>
@@ -235,30 +235,30 @@
           <!-- Experience -->
           <div>
             <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
-              >Years of Experience *</label
+              >Anos de Experiência *</label
             >
             <select
               x-model="form.experience"
               required
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent hover:border-[#035d73] hover:shadow-md transition-all duration-200 cursor-pointer"
             >
-              <option value="">Select experience level</option>
-              <option value="0-1">0-1 years</option>
-              <option value="1-3">1-3 years</option>
-              <option value="3-5">3-5 years</option>
-              <option value="5+">5+ years</option>
+              <option value="">Selecione o nível de experiência</option>
+              <option value="0-1">0-1 anos</option>
+              <option value="1-3">1-3 anos</option>
+              <option value="3-5">3-5 anos</option>
+              <option value="5+">5+ anos</option>
             </select>
           </div>
 
           <!-- Availability -->
           <div>
             <label class="block text-sm font-bold text-[#011E41] mb-4 cursor-pointer"
-              >Availability *</label
+              >Disponibilidade *</label
             >
             <div class="grid md:grid-cols-2 gap-4">
               <div>
                 <label class="block text-sm text-[#4A5A70] mb-2 cursor-pointer"
-                  >Preferred Days</label
+                  >Dias Preferidos</label
                 >
                 <div class="space-y-2">
                   <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
@@ -268,7 +268,7 @@
                       value="monday"
                       class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
-                    <span class="text-[#4A5A70]">Monday</span>
+                    <span class="text-[#4A5A70]">Segunda-feira</span>
                   </label>
                   <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
@@ -277,7 +277,7 @@
                       value="tuesday"
                       class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
-                    <span class="text-[#4A5A70]">Tuesday</span>
+                    <span class="text-[#4A5A70]">Terça-feira</span>
                   </label>
                   <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
@@ -286,7 +286,7 @@
                       value="wednesday"
                       class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
-                    <span class="text-[#4A5A70]">Wednesday</span>
+                    <span class="text-[#4A5A70]">Quarta-feira</span>
                   </label>
                   <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
@@ -295,7 +295,7 @@
                       value="thursday"
                       class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
-                    <span class="text-[#4A5A70]">Thursday</span>
+                    <span class="text-[#4A5A70]">Quinta-feira</span>
                   </label>
                   <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
@@ -304,7 +304,7 @@
                       value="friday"
                       class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
-                    <span class="text-[#4A5A70]">Friday</span>
+                    <span class="text-[#4A5A70]">Sexta-feira</span>
                   </label>
                   <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
@@ -313,7 +313,7 @@
                       value="saturday"
                       class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
-                    <span class="text-[#4A5A70]">Saturday</span>
+                    <span class="text-[#4A5A70]">Sábado</span>
                   </label>
                   <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
@@ -322,13 +322,13 @@
                       value="sunday"
                       class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
-                    <span class="text-[#4A5A70]">Sunday</span>
+                    <span class="text-[#4A5A70]">Domingo</span>
                   </label>
                 </div>
               </div>
               <div>
                 <label class="block text-sm text-[#4A5A70] mb-2"
-                  >Preferred Times</label
+                  >Horários Preferidos</label
                 >
                 <div class="space-y-2">
                   <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
@@ -338,7 +338,7 @@
                       value="morning"
                       class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
-                    <span class="text-[#4A5A70]">Morning (6AM-12PM)</span>
+                    <span class="text-[#4A5A70]">Manhã (6h-12h)</span>
                   </label>
                   <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
@@ -347,7 +347,7 @@
                       value="afternoon"
                       class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
-                    <span class="text-[#4A5A70]">Afternoon (12PM-6PM)</span>
+                    <span class="text-[#4A5A70]">Tarde (12h-18h)</span>
                   </label>
                   <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors duration-200">
                     <input
@@ -356,7 +356,7 @@
                       value="evening"
                       class="mr-3 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
                     />
-                    <span class="text-[#4A5A70]">Evening (6PM-10PM)</span>
+                    <span class="text-[#4A5A70]">Noite (18h-22h)</span>
                   </label>
                 </div>
               </div>
@@ -366,12 +366,12 @@
           <!-- Additional Info -->
           <div>
             <label class="block text-sm font-bold text-[#011E41] mb-2 cursor-pointer"
-              >Tell Us About Yourself</label
+              >Conte-nos Sobre Si</label
             >
             <textarea
               x-model="form.additionalInfo"
               rows="4"
-              placeholder="Tell us about your experience, why you want to join Zela, and any additional skills you have..."
+              placeholder="Conte-nos sobre a sua experiência, por que quer juntar-se à Zela e quaisquer competências adicionais que tenha..."
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#035d73] focus:border-transparent hover:border-[#035d73] hover:shadow-md transition-all duration-200 resize-none"
             ></textarea>
           </div>
@@ -386,9 +386,8 @@
                 class="mt-1 rounded border-gray-300 text-[#035d73] focus:ring-[#035d73] cursor-pointer hover:border-[#035d73] transition-colors duration-200"
               />
               <span class="text-sm text-[#4A5A70]"
-                >I agree to the background check process and understand that all
-                information provided will be verified. I also agree to Zela's
-                terms of service and privacy policy.</span
+                >Concordo com o processo de verificação de antecedentes e entendo que todas as
+                informações fornecidas serão verificadas. Também concordo com os termos de serviço e política de privacidade da Zela.</span
               >
             </label>
           </div>
@@ -401,8 +400,8 @@
               class="bg-[#035d73] text-white px-12 py-4 rounded-full font-semibold text-lg hover:bg-[#024a5a] hover:shadow-xl transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               :class="{'opacity-50 cursor-not-allowed': isSubmitting}"
             >
-              <span x-show="!isSubmitting">Submit Application</span>
-              <span x-show="isSubmitting">Submitting...</span>
+              <span x-show="!isSubmitting">Submeter Candidatura</span>
+              <span x-show="isSubmitting">A Submeter...</span>
             </button>
           </div>
 
@@ -412,9 +411,9 @@
             x-transition
             class="text-center p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg"
           >
-            <p class="font-semibold">Application submitted successfully!</p>
+            <p class="font-semibold">Candidatura submetida com sucesso!</p>
             <p class="text-sm">
-              We'll review your application and get back to you within 24 hours.
+              Vamos analisar a sua candidatura e responderemos em 24 horas.
             </p>
           </div>
         </form>
@@ -430,10 +429,10 @@
           class="text-4xl font-bold mb-6"
           style="color: #011e41; font-weight: 700"
         >
-          Requirements to Join
+          Requisitos para se Juntar
         </h2>
         <p class="text-xl text-[#4A5A70] max-w-2xl mx-auto">
-          We maintain high standards to ensure quality service for our clients
+          Mantemos padrões elevados para garantir qualidade de serviço aos nossos clientes
         </p>
       </div>
 
@@ -457,10 +456,10 @@
             </div>
             <div>
               <h3 class="text-lg font-bold text-[#011E41] mb-2">
-                Valid Identification
+                Identificação Válida
               </h3>
               <p class="text-[#4A5A70]">
-                Angolan ID (BI) or valid passport required for verification
+                BI angolano ou passaporte válido necessário para verificação
               </p>
             </div>
           </div>
@@ -483,10 +482,10 @@
             </div>
             <div>
               <h3 class="text-lg font-bold text-[#011E41] mb-2">
-                18+ Years Old
+                18+ Anos
               </h3>
               <p class="text-[#4A5A70]">
-                Must be at least 18 years old to apply
+                Deve ter pelo menos 18 anos para se candidatar
               </p>
             </div>
           </div>
@@ -509,10 +508,10 @@
             </div>
             <div>
               <h3 class="text-lg font-bold text-[#011E41] mb-2">
-                Background Check
+                Verificação de Antecedentes
               </h3>
               <p class="text-[#4A5A70]">
-                Clean criminal record and reference verification
+                Registo criminal limpo e verificação de referências
               </p>
             </div>
           </div>
@@ -534,9 +533,9 @@
               </svg>
             </div>
             <div>
-              <h3 class="text-lg font-bold text-[#011E41] mb-2">Experience</h3>
+              <h3 class="text-lg font-bold text-[#011E41] mb-2">Experiência</h3>
               <p class="text-[#4A5A70]">
-                Previous cleaning or household service experience preferred
+                Experiência anterior em limpeza ou serviços domésticos preferível
               </p>
             </div>
           </div>
@@ -559,33 +558,33 @@
             </div>
             <div>
               <h3 class="text-lg font-bold text-[#011E41] mb-2">
-                Reliable Transport
+                Transporte Fiável
               </h3>
               <p class="text-[#4A5A70]">
-                Access to reliable transportation to reach job locations
+                Acesso a transporte fiável para chegar aos locais de trabalho
               </p>
             </div>
           </div>
         </div>
 
         <div class="bg-[#F5F5F5] rounded-2xl p-8">
-          <h3 class="text-2xl font-bold text-[#011E41] mb-6">Quick Stats</h3>
+          <h3 class="text-2xl font-bold text-[#011E41] mb-6">Estatísticas Rápidas</h3>
           <div class="space-y-4">
             <div class="flex justify-between items-center">
-              <span class="text-[#4A5A70]">Average Weekly Income</span>
-              <span class="text-xl font-bold text-[#011E41]">AOA 45,000+</span>
+              <span class="text-[#4A5A70]">Rendimento Semanal Médio</span>
+              <span class="text-xl font-bold text-[#011E41]">AOA 45.000+</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-[#4A5A70]">Active Professionals</span>
+              <span class="text-[#4A5A70]">Profissionais Ativos</span>
               <span class="text-xl font-bold text-[#011E41]">500+</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-[#4A5A70]">Customer Satisfaction</span>
-              <span class="text-xl font-bold text-[#011E41]">4.8/5</span>
+              <span class="text-[#4A5A70]">Satisfação dos Clientes</span>
+              <span class="text-xl font-bold text-[#011E41]">4,8/5</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-[#4A5A70]">Jobs Completed</span>
-              <span class="text-xl font-bold text-[#011E41]">15,000+</span>
+              <span class="text-[#4A5A70]">Trabalhos Concluídos</span>
+              <span class="text-xl font-bold text-[#011E41]">15.000+</span>
             </div>
           </div>
         </div>
@@ -601,10 +600,10 @@
           class="text-4xl font-bold mb-6"
           style="color: #011e41; font-weight: 700"
         >
-          Why Choose Zela?
+          Por Que Escolher a Zela?
         </h2>
         <p class="text-xl text-[#4A5A70] max-w-2xl mx-auto">
-          We provide everything you need to succeed as a service professional
+          Fornecemos tudo o que precisa para ter sucesso como profissional de serviços
         </p>
       </div>
 
@@ -631,11 +630,11 @@
             </svg>
           </div>
           <h3 class="text-xl font-bold mb-4" style="color: #011e41">
-            Weekly Payouts
+            Pagamentos Semanais
           </h3>
           <p class="text-[#4A5A70]">
-            Get paid every week directly to your mobile money or bank account.
-            No waiting, no delays.
+            Receba pagamentos todas as semanas diretamente na sua conta de dinheiro móvel ou conta bancária.
+            Sem esperas, sem atrasos.
           </p>
         </div>
 
@@ -661,11 +660,11 @@
             </svg>
           </div>
           <h3 class="text-xl font-bold mb-4" style="color: #011e41">
-            Flexible Schedule
+            Horário Flexível
           </h3>
           <p class="text-[#4A5A70]">
-            Work when you want, where you want. Set your own hours and choose
-            your service area.
+            Trabalhe quando quiser, onde quiser. Defina os seus próprios horários e escolha
+            a sua área de serviço.
           </p>
         </div>
 
@@ -691,11 +690,11 @@
             </svg>
           </div>
           <h3 class="text-xl font-bold mb-4" style="color: #011e41">
-            Safety & Security
+            Segurança & Proteção
           </h3>
           <p class="text-[#4A5A70]">
-            All jobs are GPS-logged and insured. We provide safety equipment and
-            emergency support.
+            Todos os trabalhos são registados por GPS e segurados. Fornecemos equipamento de segurança e
+            apoio de emergência.
           </p>
         </div>
 
@@ -721,11 +720,11 @@
             </svg>
           </div>
           <h3 class="text-xl font-bold mb-4" style="color: #011e41">
-            Free Training
+            Formação Gratuita
           </h3>
           <p class="text-[#4A5A70]">
-            Access professional training courses and skill development programs
-            at no cost.
+            Aceda a cursos de formação profissional e programas de desenvolvimento de competências
+            sem custos.
           </p>
         </div>
 
@@ -751,11 +750,11 @@
             </svg>
           </div>
           <h3 class="text-xl font-bold mb-4" style="color: #011e41">
-            Growing Community
+            Comunidade em Crescimento
           </h3>
           <p class="text-[#4A5A70]">
-            Join 500+ active professionals and grow your network within the Zela
-            community.
+            Junte-se a mais de 500 profissionais ativos e cresça a sua rede dentro da
+            comunidade Zela.
           </p>
         </div>
 
@@ -781,11 +780,11 @@
             </svg>
           </div>
           <h3 class="text-xl font-bold mb-4" style="color: #011e41">
-            Instant Bookings
+            Reservas Instantâneas
           </h3>
           <p class="text-[#4A5A70]">
-            Get job notifications instantly and accept bookings that fit your
-            schedule.
+            Receba notificações de trabalhos instantaneamente e aceite reservas que se adequem ao seu
+            horário.
           </p>
         </div>
       </div>
@@ -834,7 +833,7 @@
         } catch (error) {
           console.error("Error submitting application:", error);
           alert(
-            "There was an error submitting your application. Please try again."
+            "Houve um erro ao submeter a sua candidatura. Por favor, tente novamente."
           );
         } finally {
           this.isSubmitting = false;

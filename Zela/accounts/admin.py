@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
-from .models import User, ProviderProfile, Profile
+from .models import User, ProviderProfile, Profile, PaymentMethod, Location
 
 
 @admin.register(User)
@@ -156,4 +156,140 @@ class ProfileAdmin(admin.ModelAdmin):
             return f"{first} {last}".strip()
         return "-"
     full_name.short_description = 'Full Name'
+
+
+@admin.register(PaymentMethod)
+class PaymentMethodAdmin(admin.ModelAdmin):
+    """Payment method admin."""
     
+    list_display = (
+        'user_display', 'kind', 'brand_display', 'last4_display', 
+        'expiry_display', 'is_default', 'is_active', 'added_at'
+    )
+    list_filter = ('kind', 'brand', 'is_default', 'is_active', 'added_at')
+    search_fields = ('user__username', 'user__email', 'user__first_name', 
+                     'user__last_name', 'last4', 'provider_id')
+    readonly_fields = ('added_at',)
+    ordering = ('-added_at',)
+    
+    fieldsets = (
+        ('User Information', {
+            'fields': ('user',),
+        }),
+        ('Payment Details', {
+            'fields': ('kind', 'provider_id', 'brand', 'last4', 'is_default', 'is_active'),
+        }),
+        ('Card Details', {
+            'fields': ('expiry_month', 'expiry_year'),
+            'description': 'Only applicable for card payment methods',
+        }),
+        ('Metadata', {
+            'fields': ('added_at',),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def user_display(self, obj):
+        """Display user with name and email."""
+        name = obj.user.get_full_name() or obj.user.username
+        return format_html(
+            '<strong>{}</strong><br><small>{}</small>',
+            name, obj.user.email
+        )
+    user_display.short_description = 'User'
+    
+    def brand_display(self, obj):
+        """Display card brand with icon."""
+        if obj.brand:
+            brand_icons = {
+                'visa': '💳',
+                'mastercard': '💳',
+                'amex': '💳',
+                'discover': '💳',
+            }
+            icon = brand_icons.get(obj.brand.lower(), '💳')
+            return format_html('{} {}', icon, obj.brand.title())
+        return '-'
+    brand_display.short_description = 'Brand'
+    
+    def last4_display(self, obj):
+        """Display masked card number."""
+        if obj.last4:
+            return f'•••• •••• •••• {obj.last4}'
+        return '-'
+    last4_display.short_description = 'Card Number'
+    
+    def expiry_display(self, obj):
+        """Display card expiry date."""
+        if obj.expiry_month and obj.expiry_year:
+            return f'{obj.expiry_month:02d}/{obj.expiry_year % 100:02d}'
+        return '-'
+    expiry_display.short_description = 'Expires'
+    
+    def get_queryset(self, request):
+        """Optimize query with related objects."""
+        return super().get_queryset(request).select_related('user')
+
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    """Location admin."""
+    
+    list_display = (
+        'user_display', 'name', 'address_display', 'city', 'is_main', 'created_at'
+    )
+    list_filter = ('is_main', 'city', 'province', 'created_at')
+    search_fields = ('user__username', 'user__email', 'name', 'address_line_1', 'city')
+    readonly_fields = ('created_at', 'updated_at')
+    ordering = ('-created_at',)
+    
+    fieldsets = (
+        ('User Information', {
+            'fields': ('user',),
+        }),
+        ('Location Details', {
+            'fields': ('name', 'is_main'),
+        }),
+        ('Address', {
+            'fields': ('address_line_1', 'address_line_2', 'city', 'province', 'postal_code', 'country'),
+        }),
+        ('Coordinates', {
+            'fields': ('latitude', 'longitude'),
+            'classes': ('collapse',),
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def user_display(self, obj):
+        """Display user with name and email."""
+        name = obj.user.get_full_name() or obj.user.username
+        return format_html(
+            '<strong>{}</strong><br><small>{}</small>',
+            name, obj.user.email
+        )
+    user_display.short_description = 'User'
+    
+    def address_display(self, obj):
+        """Display short address."""
+        address = obj.address_line_1
+        if obj.address_line_2:
+            address += f", {obj.address_line_2}"
+        return address
+    address_display.short_description = 'Address'
+    
+    def get_queryset(self, request):
+        """Optimize query with related objects."""
+        return super().get_queryset(request).select_related('user')
+    
+    actions = ['set_as_main_location']
+    
+    def set_as_main_location(self, request, queryset):
+        """Set selected locations as main."""
+        for location in queryset:
+            location.is_main = True
+            location.save()
+        self.message_user(request, f'{queryset.count()} location(s) set as main.')
+    set_as_main_location.short_description = 'Set as main location'

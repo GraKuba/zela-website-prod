@@ -8,7 +8,8 @@ from .help_center import HelpCenterView, HelpCenterSearch, HelpArticleView
 from .auth import RegisterWizardView, SignInView, SignOutView
 from .dashboard import (
     DashboardShellView, BookingListPartial, BookingUpdatePartial,
-    ProfileUpdateView, RatingCreatePartial
+    ProfileUpdateView, RatingCreatePartial, AddPaymentMethodView,
+    set_default_payment_method
 )
 from .providers import ProviderLandingView, ProviderApplicationWizard
 

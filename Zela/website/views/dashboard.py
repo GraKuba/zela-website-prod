@@ -1,17 +1,20 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView, ListView, UpdateView, CreateView, FormView
-from django.http import JsonResponse
+from django.views.generic import TemplateView, ListView, UpdateView, CreateView, FormView, View
+from django.http import JsonResponse, HttpResponse
 from django.db.models import Q, Count, Sum, Avg
 from django.utils import timezone
 from django.contrib import messages
 from django import forms
+from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
 from bookings.models import Booking, Rating
-from payments.models import Payment, Payout
+from payments.models import Payment, Payout, RecentTransaction
 from notifications.models import Notification
-from accounts.models import User, ProviderProfile, Profile
+from accounts.models import User, ProviderProfile, Profile, PaymentMethod
 from datetime import datetime, timedelta
 from typing import Dict, Any
+import uuid
 
 
 class DashboardShellView(LoginRequiredMixin, TemplateView):
@@ -160,6 +163,12 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
             'marketing_communications': profile.marketing_communications,
         }
         
+        # Get user's payment methods
+        payment_methods = user.payment_methods.filter(is_active=True).order_by('-is_default', '-added_at')
+        
+        # Get user locations
+        locations = user.locations.all().order_by('-is_main', '-created_at')
+        
         context.update({
             'title': 'Dashboard - Zela',
             'dashboard_stats': dashboard_stats,
@@ -177,6 +186,8 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
             'recurring_bookings_count': len(recurring_bookings_list),
             'completed_bookings_count': completed_bookings_list.count(),
             'cancelled_bookings_count': cancelled_bookings_list.count(),
+            'payment_methods': payment_methods,
+            'locations': locations,
         })
         
         return context
@@ -392,42 +403,25 @@ class ProfileUpdateView(LoginRequiredMixin, FormView):
                     'icon': gateway,
                 })
         
-        # Get recent transactions
+        # Get recent transactions from the new model
         recent_transactions = []
-        if user.role == 'customer':
-            # Get customer payments
-            payments = Payment.objects.filter(
-                booking__customer=user
-            ).select_related('booking', 'booking__service_task').order_by('-created_at')[:10]
-            
-            for payment in payments:
-                recent_transactions.append({
-                    'id': payment.reference,
-                    'date': payment.created_at,
-                    'description': f'Booking: {payment.booking.service_task.name if payment.booking.service_task else "Service"}',
-                    'amount': payment.amount,
-                    'amount_display': payment.amount_display,
-                    'status': payment.status,
-                    'status_display': payment.get_status_display(),
-                    'type': 'payment',
-                })
-        else:  # provider
-            # Get provider payouts
-            payouts = Payout.objects.filter(
-                provider=user
-            ).order_by('-created_at')[:10]
-            
-            for payout in payouts:
-                recent_transactions.append({
-                    'id': f'PAYOUT-{payout.id}',
-                    'date': payout.created_at,
-                    'description': f'Payout for week {payout.week_display}',
-                    'amount': payout.net_amount,
-                    'amount_display': payout.net_amount_display,
-                    'status': payout.status,
-                    'status_display': payout.get_status_display(),
-                    'type': 'payout',
-                })
+        transactions = RecentTransaction.objects.filter(
+            user=user
+        ).select_related('payment', 'payout').order_by('-created_at')[:10]
+        
+        for transaction in transactions:
+            recent_transactions.append({
+                'id': transaction.reference,
+                'date': transaction.created_at,
+                'description': transaction.description,
+                'amount': transaction.amount,
+                'amount_display': transaction.amount_display,
+                'status': transaction.status,
+                'status_display': transaction.get_status_display(),
+                'type': transaction.transaction_type,
+                'is_credit': transaction.is_credit,
+                'is_debit': transaction.is_debit,
+            })
         
         # Get profile completion percentage
         # Check both User and Profile fields
@@ -607,4 +601,137 @@ class RatingCreatePartial(LoginRequiredMixin, CreateView):
                 'message': 'Please check your form and try again.'
             })
         
-        return super().form_invalid(form) 
+        return super().form_invalid(form)
+
+
+class AddPaymentMethodView(LoginRequiredMixin, View):
+    """Handle adding new payment methods."""
+    
+    def get(self, request):
+        """Return the add payment method modal."""
+        return render(request, 'website/components/dashboard/modals/add-payment-method.html')
+    
+    def post(self, request):
+        """Create a new payment method."""
+        user = request.user
+        kind = request.POST.get('kind', 'card')
+        
+        try:
+            if kind == 'card':
+                # Extract card details
+                card_number = request.POST.get('card_number', '').replace(' ', '')
+                expiry = request.POST.get('expiry', '')
+                cvv = request.POST.get('cvv', '')
+                cardholder_name = request.POST.get('cardholder_name', '')
+                
+                # Basic validation
+                if not all([card_number, expiry, cvv, cardholder_name]):
+                    raise ValueError("All card fields are required")
+                
+                # Extract expiry month and year
+                if '/' in expiry:
+                    month, year = expiry.split('/')
+                    expiry_month = int(month)
+                    expiry_year = 2000 + int(year)  # Convert YY to YYYY
+                else:
+                    raise ValueError("Invalid expiry date format")
+                
+                # Detect card brand
+                if card_number.startswith('4'):
+                    brand = 'visa'
+                elif card_number.startswith('5'):
+                    brand = 'mastercard'
+                elif card_number.startswith('3'):
+                    brand = 'amex'
+                else:
+                    brand = 'other'
+                
+                # If this is the first payment method, set it as default
+                is_first = not user.payment_methods.filter(is_active=True).exists()
+                
+                # Create payment method
+                # In production, you would tokenize the card with your payment processor
+                # For now, we'll generate a mock provider_id
+                payment_method = PaymentMethod.objects.create(
+                    user=user,
+                    kind=kind,
+                    provider_id=f"pm_{uuid.uuid4().hex[:16]}",  # Mock provider ID
+                    brand=brand,
+                    last4=card_number[-4:],
+                    expiry_month=expiry_month,
+                    expiry_year=expiry_year,
+                    is_default=is_first,
+                    is_active=True
+                )
+                
+                # If this is not the first card but user wants it as default,
+                # unset other defaults (this would be handled by a checkbox in the form)
+                if request.POST.get('set_as_default') == 'true' and not is_first:
+                    user.payment_methods.exclude(id=payment_method.id).update(is_default=False)
+                    payment_method.is_default = True
+                    payment_method.save()
+                
+            elif kind in ['paypal', 'apple']:
+                # For PayPal and Apple Pay, we'd normally redirect to their auth flow
+                # For now, create a mock payment method
+                is_first = not user.payment_methods.filter(is_active=True).exists()
+                
+                payment_method = PaymentMethod.objects.create(
+                    user=user,
+                    kind=kind,
+                    provider_id=f"{kind}_{uuid.uuid4().hex[:16]}",
+                    is_default=is_first,
+                    is_active=True
+                )
+            else:
+                raise ValueError("Invalid payment method type")
+            
+            # Get all payment methods for the user to return updated list
+            payment_methods = user.payment_methods.filter(is_active=True).order_by('-is_default', '-added_at')
+            
+            # Return updated payment methods list
+            return render(request, 'website/components/dashboard/tabs/wallet-payment-methods.html', {
+                'payment_methods': payment_methods
+            })
+            
+        except Exception as e:
+            # Return error response
+            if request.htmx:
+                return HttpResponse(
+                    f'<div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">{str(e)}</div>',
+                    status=400
+                )
+            messages.error(request, f"Error adding payment method: {str(e)}")
+            return redirect('website:dashboard')
+
+
+@login_required
+@require_http_methods(["POST"])
+def set_default_payment_method(request, pk):
+    """Set a payment method as default."""
+    try:
+        payment_method = get_object_or_404(PaymentMethod, pk=pk, user=request.user, is_active=True)
+        
+        # Unset all other defaults
+        request.user.payment_methods.exclude(id=payment_method.id).update(is_default=False)
+        
+        # Set this one as default
+        payment_method.is_default = True
+        payment_method.save()
+        
+        # Get all payment methods for the user
+        payment_methods = request.user.payment_methods.filter(is_active=True).order_by('-is_default', '-added_at')
+        
+        # Return updated payment methods list
+        return render(request, 'website/components/dashboard/tabs/wallet-payment-methods.html', {
+            'payment_methods': payment_methods
+        })
+        
+    except Exception as e:
+        if request.htmx:
+            return HttpResponse(
+                f'<div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">Error: {str(e)}</div>',
+                status=400
+            )
+        messages.error(request, f"Error setting default payment method: {str(e)}")
+        return redirect('website:dashboard')

@@ -6,10 +6,10 @@
     <div class="bg-white rounded-3xl shadow-lg p-8 md:p-12">
       <div class="text-center mb-12">
         <h2 class="text-3xl md:text-4xl font-bold text-[#011E41] mb-4">
-          Send Us a Message
+          Envie-nos uma Mensagem
         </h2>
         <p class="text-lg text-[#4A5A70] leading-relaxed">
-          Fill out the form and we'll reply within one business day.
+          Preencha o formulário e responderemos num dia útil.
         </p>
       </div>
 
@@ -27,21 +27,21 @@
                     this.errors = {};
                     
                     if (!this.fullName.trim()) {
-                        this.errors.fullName = 'Full name is required';
+                        this.errors.fullName = 'Nome completo é obrigatório';
                     }
                     
                     if (!this.email.trim()) {
-                        this.errors.email = 'Email is required';
+                        this.errors.email = 'Email é obrigatório';
                     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
-                        this.errors.email = 'Please enter a valid email address';
+                        this.errors.email = 'Por favor, introduza um endereço de email válido';
                     }
                     
                     if (!this.topic) {
-                        this.errors.topic = 'Please select a topic';
+                        this.errors.topic = 'Por favor, selecione um tema';
                     }
                     
                     if (!this.message.trim()) {
-                        this.errors.message = 'Message is required';
+                        this.errors.message = 'Mensagem é obrigatória';
                     }
                     
                     return Object.keys(this.errors).length === 0;
@@ -81,7 +81,7 @@
               for="fullName"
               class="block text-sm font-semibold text-[#011E41] mb-2"
             >
-              Full Name *
+              Nome Completo *
             </label>
             <input
               type="text"
@@ -89,7 +89,7 @@
               x-model="fullName"
               :class="{'border-red-500': errors.fullName, 'border-gray-300': !errors.fullName}"
               class="w-full px-4 py-3 border rounded-lg text-[#011E41] placeholder-[#4A5A70] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors"
-              placeholder="Enter your full name"
+              placeholder="Introduza o seu nome completo"
             />
             <p
               x-show="errors.fullName"
@@ -104,7 +104,7 @@
               for="email"
               class="block text-sm font-semibold text-[#011E41] mb-2"
             >
-              Email Address *
+              Endereço de Email *
             </label>
             <input
               type="email"
@@ -112,7 +112,7 @@
               x-model="email"
               :class="{'border-red-500': errors.email, 'border-gray-300': !errors.email}"
               class="w-full px-4 py-3 border rounded-lg text-[#011E41] placeholder-[#4A5A70] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors"
-              placeholder="Enter your email address"
+              placeholder="Introduza o seu endereço de email"
             />
             <p
               x-show="errors.email"
@@ -127,14 +127,14 @@
               for="phone"
               class="block text-sm font-semibold text-[#011E41] mb-2"
             >
-              Phone (optional)
+              Telefone (opcional)
             </label>
             <input
               type="tel"
               id="phone"
               x-model="phone"
               class="w-full px-4 py-3 border border-gray-300 rounded-lg text-[#011E41] placeholder-[#4A5A70] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors"
-              placeholder="Enter your phone number"
+              placeholder="Introduza o seu número de telefone"
             />
           </div>
 
@@ -144,7 +144,7 @@
               for="topic"
               class="block text-sm font-semibold text-[#011E41] mb-2"
             >
-              Topic *
+              Tema *
             </label>
             <select
               id="topic"
@@ -152,11 +152,11 @@
               :class="{'border-red-500': errors.topic, 'border-gray-300': !errors.topic}"
               class="w-full px-4 py-3 border rounded-lg text-[#011E41] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors"
             >
-              <option value="" disabled>Select a topic</option>
-              <option value="Booking Issue">Booking Issue</option>
-              <option value="General Question">General Question</option>
-              <option value="Provider Inquiry">Provider Inquiry</option>
-              <option value="Media/Press">Media/Press</option>
+              <option value="" disabled>Selecione um tema</option>
+              <option value="Booking Issue">Problema com Reserva</option>
+              <option value="General Question">Pergunta Geral</option>
+              <option value="Provider Inquiry">Consulta sobre Prestador</option>
+              <option value="Media/Press">Media/Imprensa</option>
             </select>
             <p
               x-show="errors.topic"
@@ -171,7 +171,7 @@
               for="message"
               class="block text-sm font-semibold text-[#011E41] mb-2"
             >
-              Your Message *
+              A Sua Mensagem *
             </label>
             <textarea
               id="message"
@@ -179,7 +179,7 @@
               :class="{'border-red-500': errors.message, 'border-gray-300': !errors.message}"
               rows="6"
               class="w-full px-4 py-3 border rounded-lg text-[#011E41] placeholder-[#4A5A70] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors resize-vertical"
-              placeholder="Tell us how we can help you..."
+              placeholder="Diga-nos como podemos ajudá-lo..."
             ></textarea>
             <p
               x-show="errors.message"
@@ -196,7 +196,7 @@
               :class="{'opacity-50 cursor-not-allowed': isSubmitting}"
               class="bg-[#011E41] text-[#FDEA00] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#022951] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2 disabled:hover:bg-[#011E41]"
             >
-              <span x-show="!isSubmitting">Send Message</span>
+              <span x-show="!isSubmitting">Enviar Mensagem</span>
               <span x-show="isSubmitting" class="flex items-center">
                 <svg
                   class="animate-spin -ml-1 mr-3 h-5 w-5 text-[#FDEA00]"
@@ -217,7 +217,7 @@
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                Sending...
+                A Enviar...
               </span>
             </button>
           </div>

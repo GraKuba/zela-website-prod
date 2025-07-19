@@ -1,14 +1,17 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth.password_validation import validate_password
 from django.contrib import messages
 from django.views.generic import FormView
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.urls import reverse_lazy
 from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from django import forms
-from .models import User
+from .models import User, Location
+from .forms import LocationForm
 import json
 import re
 
@@ -287,3 +290,122 @@ class ZelaLogoutView(LogoutView):
         messages.success(request, 'You have been successfully logged out.')
         
         return response
+
+
+@login_required
+def location_list(request):
+    """Display user's locations in dashboard."""
+    locations = request.user.locations.all()
+    
+    context = {
+        'locations': locations,
+        'form': LocationForm(user=request.user)
+    }
+    
+    # Handle HTMX request
+    if request.headers.get('HX-Request'):
+        return render(request, 'website/components/dashboard/tabs/addresses.html', context)
+    
+    # Full page request
+    return render(request, 'website/dashboard.html', context)
+
+
+@login_required
+@require_http_methods(["POST"])
+def location_create(request):
+    """Create a new location."""
+    form = LocationForm(request.POST, user=request.user)
+    
+    if form.is_valid():
+        location = form.save(commit=False)
+        location.user = request.user
+        location.save()
+        
+        messages.success(request, 'Location added successfully.')
+        
+        # Return updated location list for HTMX
+        if request.headers.get('HX-Request'):
+            locations = request.user.locations.all()
+            return render(request, 'website/components/dashboard/tabs/addresses.html', {
+                'locations': locations,
+                'form': LocationForm(user=request.user)
+            })
+    else:
+        messages.error(request, 'Please correct the errors below.')
+    
+    return redirect('website:dashboard')
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def location_edit(request, location_id):
+    """Edit an existing location."""
+    location = get_object_or_404(Location, id=location_id, user=request.user)
+    
+    if request.method == 'POST':
+        form = LocationForm(request.POST, instance=location, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Location updated successfully.')
+            
+            # Return updated location list for HTMX
+            if request.headers.get('HX-Request'):
+                locations = request.user.locations.all()
+                return render(request, 'website/components/dashboard/tabs/addresses.html', {
+                    'locations': locations,
+                    'form': LocationForm(user=request.user)
+                })
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = LocationForm(instance=location, user=request.user)
+    
+    # Return edit form for HTMX
+    if request.headers.get('HX-Request'):
+        return render(request, 'website/components/dashboard/location-edit.html', {
+            'form': form,
+            'location': location
+        })
+    
+    return redirect('website:dashboard')
+
+
+@login_required
+@require_http_methods(["DELETE"])
+def location_delete(request, location_id):
+    """Delete a location."""
+    location = get_object_or_404(Location, id=location_id, user=request.user)
+    location.delete()
+    
+    messages.success(request, 'Location deleted successfully.')
+    
+    # Return updated location list for HTMX
+    if request.headers.get('HX-Request'):
+        locations = request.user.locations.all()
+        return render(request, 'website/components/dashboard/tabs/addresses.html', {
+            'locations': locations,
+            'form': LocationForm(user=request.user)
+        })
+    
+    return HttpResponse(status=204)
+
+
+@login_required
+@require_http_methods(["POST"])
+def location_set_main(request, location_id):
+    """Set a location as the main location."""
+    location = get_object_or_404(Location, id=location_id, user=request.user)
+    location.is_main = True
+    location.save()  # This will automatically set other locations to not main
+    
+    messages.success(request, f'{location.name} is now your main location.')
+    
+    # Return updated location list for HTMX
+    if request.headers.get('HX-Request'):
+        locations = request.user.locations.all()
+        return render(request, 'website/components/dashboard/tabs/addresses.html', {
+            'locations': locations,
+            'form': LocationForm(user=request.user)
+        })
+    
+    return redirect('website:dashboard')
