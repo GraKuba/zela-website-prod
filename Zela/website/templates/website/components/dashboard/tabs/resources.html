@@ -119,45 +119,133 @@
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Video Training Progress -->
-      <div class="rounded-lg p-4" style="background-color: #e6f7ff; border: 1px solid #035d73">
-        <div class="flex items-center justify-between mb-2">
-          <h4 class="font-medium" style="color: #035d73">Video Training</h4>
-          <span class="text-sm" style="color: #024954" x-text="trainingProgress.videosWatched + '/' + trainingProgress.totalVideos"></span>
+      <div class="rounded-lg p-6" style="background-color: #e6f7ff; border: 1px solid #035d73">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center mr-3" style="background-color: #035d73">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-semibold text-lg" style="color: #035d73">Video Training</h4>
+              <p class="text-sm" style="color: #024954">Complete all videos to unlock bonus</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-2xl font-bold" style="color: #035d73" x-text="trainingProgress.videosWatched"></div>
+            <div class="text-sm" style="color: #024954">of <span x-text="trainingProgress.totalVideos"></span> videos</div>
+          </div>
         </div>
-        <div class="w-full rounded-full h-3 mb-2" style="background-color: #b8eaff">
-          <div 
-            class="h-3 rounded-full transition-all duration-300"
-            style="background-color: #035d73"
-            :style="'width: ' + (trainingProgress.videosWatched / trainingProgress.totalVideos * 100) + '%'"
-          ></div>
+        
+        <div class="mb-4">
+          <div class="flex justify-between text-sm mb-3">
+            <span class="font-medium" style="color: #011e41">Progress</span>
+            <span class="font-bold text-lg" style="color: #035d73" x-text="Math.round(trainingProgress.videosWatched / trainingProgress.totalVideos * 100) + '%'"></span>
+          </div>
+          <div class="w-full rounded-full h-6 shadow-inner" style="background-color: #e0f2fe; border: 2px solid #b8eaff">
+            <div 
+              class="h-6 rounded-full transition-all duration-700 ease-out relative overflow-hidden shadow-md"
+              style="background: linear-gradient(90deg, #035d73 0%, #024954 100%); min-width: 8px;"
+              :style="'width: ' + Math.max(8, (trainingProgress.videosWatched / trainingProgress.totalVideos * 100)) + '%'"
+            >
+              <div class="absolute inset-0 bg-white opacity-30 animate-pulse"></div>
+              <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
+                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between text-xs mt-2" style="color: #024954">
+            <span>0%</span>
+            <span>100%</span>
+          </div>
         </div>
-        <div class="text-sm" style="color: #024954" x-text="Math.round(trainingProgress.videosWatched / trainingProgress.totalVideos * 100) + '% complete'"></div>
+        
+        <div class="flex items-center justify-between">
+          <div class="text-sm" style="color: #024954">
+            <span x-text="trainingProgress.totalVideos - trainingProgress.videosWatched"></span> videos remaining
+          </div>
+          <div class="flex items-center space-x-1">
+            <template x-for="i in trainingProgress.totalVideos" :key="i">
+              <div 
+                class="w-2 h-2 rounded-full transition-all duration-200"
+                :class="i <= trainingProgress.videosWatched ? 'bg-blue-500' : 'bg-gray-300'"
+              ></div>
+            </template>
+          </div>
+        </div>
       </div>
       
       <!-- Certification Progress -->
-      <div class="rounded-lg p-4" style="background-color: #fff7e6; border: 1px solid #fdea00">
-        <div class="flex items-center justify-between mb-2">
-          <h4 class="font-medium" style="color: #f59e0b">Certifications</h4>
-          <span class="text-sm" style="color: #92400e" x-text="trainingProgress.certificationsEarned + '/' + trainingProgress.totalCertifications"></span>
+      <div class="rounded-lg p-6" style="background-color: #fef3c7; border: 1px solid #f59e0b">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center mr-3" style="background-color: #d97706">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-semibold text-lg" style="color: #d97706">Certifications</h4>
+              <p class="text-sm" style="color: #92400e">Earn certificates to boost earnings</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-2xl font-bold" style="color: #d97706" x-text="trainingProgress.certificationsEarned"></div>
+            <div class="text-sm" style="color: #92400e">of <span x-text="trainingProgress.totalCertifications"></span> certs</div>
+          </div>
         </div>
-        <div class="w-full rounded-full h-3 mb-2" style="background-color: #fef3c7">
-          <div 
-            class="h-3 rounded-full transition-all duration-300"
-            style="background-color: #fdea00"
-            :style="'width: ' + (trainingProgress.certificationsEarned / trainingProgress.totalCertifications * 100) + '%'"
-          ></div>
+        
+        <div class="mb-4">
+          <div class="flex justify-between text-sm mb-3">
+            <span class="font-medium" style="color: #011e41">Progress</span>
+            <span class="font-bold text-lg" style="color: #d97706" x-text="Math.round(trainingProgress.certificationsEarned / trainingProgress.totalCertifications * 100) + '%'"></span>
+          </div>
+          <div class="w-full rounded-full h-6 shadow-inner" style="background-color: #fef3c7; border: 2px solid #fde68a">
+            <div 
+              class="h-6 rounded-full transition-all duration-700 ease-out relative overflow-hidden shadow-md"
+              style="background: linear-gradient(90deg, #d97706 0%, #b45309 100%); min-width: 8px;"
+              :style="'width: ' + Math.max(8, (trainingProgress.certificationsEarned / trainingProgress.totalCertifications * 100)) + '%'"
+            >
+              <div class="absolute inset-0 bg-white opacity-30 animate-pulse"></div>
+              <div class="absolute right-2 top-1/2 transform -translate-y-1/2">
+                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between text-xs mt-2" style="color: #92400e">
+            <span>0%</span>
+            <span>100%</span>
+          </div>
         </div>
-        <div class="text-sm" style="color: #92400e" x-text="Math.round(trainingProgress.certificationsEarned / trainingProgress.totalCertifications * 100) + '% complete'"></div>
+        
+        <div class="flex items-center justify-between">
+          <div class="text-sm" style="color: #92400e">
+            <span x-text="trainingProgress.totalCertifications - trainingProgress.certificationsEarned"></span> certs remaining
+          </div>
+          <div class="flex items-center space-x-1">
+            <template x-for="i in trainingProgress.totalCertifications" :key="i">
+              <div 
+                class="w-2 h-2 rounded-full transition-all duration-200"
+                :class="i <= trainingProgress.certificationsEarned ? 'bg-yellow-500' : 'bg-gray-300'"
+              ></div>
+            </template>
+          </div>
+        </div>
       </div>
     </div>
     
-    <div class="mt-6 p-4 rounded-lg" style="background-color: #fff7e6; border: 1px solid #fdea00">
+    <div class="mt-6 p-4 rounded-lg" style="background-color: #fef3c7; border: 1px solid #f59e0b">
       <div class="flex items-start">
-        <svg class="w-5 h-5 mr-2 mt-0.5" style="color: #f59e0b" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5 mr-2 mt-0.5" style="color: #d97706" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 15.5c-.77.833.192 2.5 1.732 2.5z"/>
         </svg>
         <div class="text-sm">
-          <div class="font-medium" style="color: #f59e0b">Complete Your Training for Bonus!</div>
+          <div class="font-medium" style="color: #d97706">Complete Your Training for Bonus!</div>
           <div class="mt-1" style="color: #92400e">
             Finish all training videos by month-end to earn a R$ 100 completion bonus
           </div>
@@ -214,7 +302,7 @@
         <template x-for="video in trainingVideos" :key="video.id">
           <div 
             class="border rounded-lg p-4"
-            :class="video.completed ? 'border-green-200 bg-green-50' : 'border-gray-200'"
+            :class="video.completed ? 'border-blue-200 bg-blue-50' : 'border-gray-200'"
           >
             <div class="flex items-start justify-between mb-3">
               <div class="flex-1">
@@ -230,7 +318,8 @@
               <div class="ml-4">
                 <svg 
                   x-show="video.completed"
-                  class="w-6 h-6 text-green-600" 
+                  class="w-6 h-6" 
+                  style="color: #035d73"
                   fill="none" stroke="currentColor" viewBox="0 0 24 24"
                 >
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
@@ -247,9 +336,9 @@
             
             <button 
               class="w-full py-2 px-4 rounded-lg text-sm font-medium transition-colors text-white"
-              :style="video.completed ? 'background-color: #fdea00; color: #000; cursor: pointer' : 'background-color: #035d73; cursor: pointer'"
-              :onmouseover="video.completed ? 'this.style.backgroundColor=\"#fcd34d\"' : 'this.style.backgroundColor=\"#024954\"'"
-              :onmouseout="video.completed ? 'this.style.backgroundColor=\"#fdea00\"' : 'this.style.backgroundColor=\"#035d73\"'"
+              :style="video.completed ? 'background-color: #d97706; color: #fff; cursor: pointer' : 'background-color: #035d73; cursor: pointer'"
+              :onmouseover="video.completed ? 'this.style.backgroundColor=\"#b45309\"' : 'this.style.backgroundColor=\"#024954\"'"
+              :onmouseout="video.completed ? 'this.style.backgroundColor=\"#d97706\"' : 'this.style.backgroundColor=\"#035d73\"'"
             >
               <span x-text="video.completed ? 'Watch Again' : 'Start Watching'"></span>
             </button>
@@ -303,7 +392,7 @@
           <ul class="space-y-2">
             <template x-for="(guideline, index) in section.guidelines" :key="index">
               <li class="flex items-start">
-                <svg class="w-5 h-5 text-green-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" style="color: #035d73" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
                 </svg>
                 <span class="text-sm text-gray-700" x-text="guideline"></span>
@@ -376,8 +465,8 @@
             </ul>
           </div>
           
-          <div class="rounded-lg p-4" style="background-color: #fff7e6; border: 1px solid #fdea00">
-            <h6 class="font-medium mb-2" style="color: #f59e0b">During Service</h6>
+          <div class="rounded-lg p-4" style="background-color: #fef3c7; border: 1px solid #f59e0b">
+            <h6 class="font-medium mb-2" style="color: #d97706">During Service</h6>
             <ul class="space-y-1 text-sm" style="color: #92400e">
               <li>• Work systematically room by room</li>
               <li>• Use appropriate products</li>
@@ -455,7 +544,7 @@
       </button>
       
       <button class="flex items-center justify-center p-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors" style="cursor: pointer">
-        <svg class="w-6 h-6 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-6 h-6 mr-3" style="color: #035d73" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
         </svg>
         <div class="text-left">

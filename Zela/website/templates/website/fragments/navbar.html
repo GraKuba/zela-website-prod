@@ -103,19 +103,19 @@
       >
         <a
           href="{% url 'website:dashboard' %}"
-          class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
+          class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors cursor-pointer"
         >
           Painel de Controlo
         </a>
         <a
           href="{% url 'website:dashboard' %}?tab=profile"
-          class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
+          class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors cursor-pointer"
         >
           Perfil
         </a>
         <a
           href="{% url 'website:dashboard' %}?tab=settings"
-          class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
+          class="block px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors cursor-pointer"
         >
           Configurações
         </a>
@@ -124,7 +124,7 @@
           {% csrf_token %}
           <button
             type="submit"
-            class="w-full text-left px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors"
+            class="w-full text-left px-4 py-2 text-sm text-[#4A5A70] hover:bg-gray-100 transition-colors cursor-pointer"
           >
             Sair
           </button>

@@ -1,486 +1,547 @@
-<!-- Profile & KYC Documents Tab -->
+<!-- Profile Tab -->
 <div
   x-show="currentTab === 'kyc' && isProviderMode"
   x-transition:enter="transition ease-out duration-300"
   x-transition:enter-start="opacity-0 transform translate-y-4"
   x-transition:enter-end="opacity-100 transform translate-y-0"
-  class="space-y-6"
+  class="space-y-8"
   x-data="{
-    verificationStatus: 'pending',
+    verificationStatus: '{{ provider.is_approved|yesno:"verified,pending" }}',
     profileData: {
-      firstName: 'João',
-      lastName: 'Silva',
-      email: 'joao.silva@example.com',
-      phone: '+244 123 456 789',
-      address: '123 Rua Principal, Luanda',
-      dateOfBirth: '1990-05-15',
-      nationalId: '1234567890123'
-    },
-    documents: [
-      {
-        id: 'national-id',
-        type: 'National ID',
-        status: 'verified',
-        uploadDate: '2024-06-15',
-        expiryDate: '2029-05-15',
-        fileName: 'national_id_front.pdf',
-        required: true
-      },
-      {
-        id: 'proof-address',
-        type: 'Proof of Address',
-        status: 'verified',
-        uploadDate: '2024-06-15',
-        expiryDate: null,
-        fileName: 'utility_bill.pdf',
-        required: true
-      },
-      {
-        id: 'bank-statement',
-        type: 'Bank Statement',
-        status: 'pending',
-        uploadDate: '2024-07-01',
-        expiryDate: null,
-        fileName: 'bank_statement.pdf',
-        required: true
-      },
-      {
-        id: 'criminal-record',
-        type: 'Criminal Record Check',
-        status: 'expired',
-        uploadDate: '2023-06-15',
-        expiryDate: '2024-06-15',
-        fileName: 'criminal_record.pdf',
-        required: true
-      },
-      {
-        id: 'insurance',
-        type: 'Insurance Certificate',
-        status: 'missing',
-        uploadDate: null,
-        expiryDate: null,
-        fileName: null,
-        required: false
-      }
-    ],
-    contracts: [
-      {
-        id: 'service-agreement',
-        title: 'Service Provider Agreement',
-        type: 'contract',
-        status: 'signed',
-        signedDate: '2024-06-15',
-        version: '2.1'
-      },
-      {
-        id: 'privacy-policy',
-        title: 'Privacy Policy',
-        type: 'policy',
-        status: 'acknowledged',
-        signedDate: '2024-06-15',
-        version: '1.3'
-      },
-      {
-        id: 'terms-service',
-        title: 'Terms of Service',
-        type: 'terms',
-        status: 'signed',
-        signedDate: '2024-06-15',
-        version: '1.8'
-      }
-    ]
+      firstName: '{{ profile.first_name|default:"" }}',
+      lastName: '{{ profile.last_name|default:"" }}',
+      email: '{{ user.email|default:"" }}',
+      phone: '{{ user.phone|default:"" }}',
+      address: '{{ profile.address|default:"" }}',
+      dateOfBirth: '{{ profile.date_of_birth|date:"Y-m-d"|default:"" }}',
+      nationalId: '{{ profile.national_id_number|default:"" }}'
+    }
   }"
 >
-  <!-- Verification Status Overview -->
+  <!-- Page Header -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-6">
-      <h3 class="text-lg font-semibold" style="color: #011e41">Account Verification Status</h3>
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">My Profile</h1>
+        <p class="text-gray-600 mt-1">
+          Manage your personal information and verification status
+        </p>
+      </div>
       <div class="flex items-center space-x-2">
-        <div 
-          class="px-3 py-1 rounded-full text-sm font-medium"
-          :class="{
-            'bg-green-100 text-green-800': verificationStatus === 'verified',
-            'bg-yellow-100 text-yellow-800': verificationStatus === 'pending',
-            'bg-red-100 text-red-800': verificationStatus === 'rejected'
-          }"
-        >
-          <span x-text="verificationStatus === 'verified' ? 'Verified' : verificationStatus === 'pending' ? 'Pending Review' : 'Needs Attention'"></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Profile Completion -->
-      <div class="text-center p-4 rounded-lg" style="background-color: #e6f7ff; border: 1px solid #035d73">
-        <div class="text-3xl font-bold mb-2" style="color: #035d73">85%</div>
-        <div class="text-sm" style="color: #024954">Profile Complete</div>
-      </div>
-      
-      <!-- Documents Status -->
-      <div class="text-center p-4 rounded-lg" style="background-color: #fff7e6; border: 1px solid #fdea00">
-        <div class="text-3xl font-bold mb-2" style="color: #f59e0b">3/5</div>
-        <div class="text-sm" style="color: #92400e">Documents Verified</div>
-      </div>
-      
-      <!-- Account Status -->
-      <div class="text-center p-4 rounded-lg" style="background-color: #e6f7ff; border: 1px solid #035d73">
-        <div class="text-3xl font-bold mb-2" style="color: #035d73">Active</div>
-        <div class="text-sm" style="color: #024954">Account Status</div>
-      </div>
-    </div>
-    
-    <div class="mt-6 p-4 rounded-lg" style="background-color: #fff7e6; border: 1px solid #fdea00">
-      <div class="flex items-start">
-        <svg class="w-5 h-5 mr-2 mt-0.5" style="color: #f59e0b" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 15.5c-.77.833.192 2.5 1.732 2.5z"/>
-        </svg>
-        <div class="text-sm">
-          <div class="font-medium" style="color: #f59e0b">Action Required</div>
-          <div class="mt-1" style="color: #92400e">
-            Please update your expired Criminal Record Check to maintain full verification status.
-          </div>
-        </div>
+        {% if provider.is_approved %}
+          <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+          <span class="text-sm text-gray-500">Verified provider</span>
+        {% else %}
+          <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+          <span class="text-sm text-gray-500">Verification pending</span>
+        {% endif %}
       </div>
     </div>
   </div>
 
-  <!-- Personal Information -->
+  <!-- Personal Information Section -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-6">
-      <h3 class="text-lg font-semibold" style="color: #011e41">Personal Information</h3>
-      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
-        Edit Profile
-      </button>
+    <div class="flex items-center space-x-3 mb-6">
+      <div
+        class="w-10 h-10 rounded-full flex items-center justify-center"
+        style="background-color: #035d73"
+      >
+        <svg
+          class="w-5 h-5 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+          />
+        </svg>
+      </div>
+      <div>
+        <h2 class="text-lg font-semibold text-gray-900">
+          Personal Information
+        </h2>
+        <p class="text-sm text-gray-600">
+          Update your basic details and contact information
+        </p>
+      </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-          <input 
-            type="text" 
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >First Name</label
+          >
+          <input
+            type="text"
+            name="first_name"
             x-model="profileData.firstName"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled
-          >
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
+            style="--tw-ring-color: #035d73"
+            placeholder="Enter your first name"
+            {% if not profile.first_name %}:placeholder-shown="true"{% endif %}
+          />
+          {% if not profile.first_name %}
+          <p class="text-sm text-gray-500 mt-1">Please enter your first name</p>
+          {% endif %}
         </div>
-        
+
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-          <input 
-            type="text" 
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Last Name</label
+          >
+          <input
+            type="text"
+            name="last_name"
             x-model="profileData.lastName"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled
-          >
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
+            style="--tw-ring-color: #035d73"
+            placeholder="Enter your last name"
+            {% if not profile.last_name %}:placeholder-shown="true"{% endif %}
+          />
+          {% if not profile.last_name %}
+          <p class="text-sm text-gray-500 mt-1">Please enter your last name</p>
+          {% endif %}
         </div>
-        
+
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-          <input 
-            type="email" 
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Email Address</label
+          >
+          <input
+            type="email"
+            name="email"
             x-model="profileData.email"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled
-          >
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
+            style="--tw-ring-color: #035d73"
+            placeholder="Enter your email address"
+            readonly
+          />
+          <p class="text-sm text-gray-500 mt-1">Email cannot be changed</p>
         </div>
-        
+
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-          <input 
-            type="tel" 
-            x-model="profileData.phone"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Phone Number</label
           >
+          <input
+            type="tel"
+            name="phone"
+            x-model="profileData.phone"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
+            style="--tw-ring-color: #035d73"
+            placeholder="+244 XXX XXX XXX"
+            {% if not user.phone %}:placeholder-shown="true"{% endif %}
+          />
+          {% if not user.phone %}
+          <p class="text-sm text-gray-500 mt-1">Add your phone number for better communication</p>
+          {% endif %}
         </div>
       </div>
-      
+
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-          <textarea 
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Address</label
+          >
+          <textarea
+            name="address"
             x-model="profileData.address"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
+            style="--tw-ring-color: #035d73"
             rows="3"
-            disabled
+            placeholder="Enter your full address"
+            {% if not profile.address %}:placeholder-shown="true"{% endif %}
           ></textarea>
+          {% if not profile.address %}
+          <p class="text-sm text-gray-500 mt-1">Your address helps us verify your identity</p>
+          {% endif %}
         </div>
-        
+
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
-          <input 
-            type="date" 
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Date of Birth</label
+          >
+          <input
+            type="date"
+            name="date_of_birth"
             x-model="profileData.dateOfBirth"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled
-          >
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
+            style="--tw-ring-color: #035d73"
+            {% if not profile.date_of_birth %}:placeholder-shown="true"{% endif %}
+          />
+          {% if not profile.date_of_birth %}
+          <p class="text-sm text-gray-500 mt-1">Required for age verification</p>
+          {% endif %}
         </div>
-        
+
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">National ID Number</label>
-          <input 
-            type="text" 
-            x-model="profileData.nationalId"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >National ID Number</label
           >
+          <input
+            type="text"
+            name="national_id_number"
+            x-model="profileData.nationalId"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
+            style="--tw-ring-color: #035d73"
+            placeholder="Enter your national ID number"
+            {% if not profile.national_id_number %}:placeholder-shown="true"{% endif %}
+          />
+          {% if not profile.national_id_number %}
+          <p class="text-sm text-gray-500 mt-1">Required for identity verification</p>
+          {% endif %}
         </div>
       </div>
+    </div>
+    
+    <!-- Save Button for Personal Information -->
+    <div class="mt-6 flex justify-end">
+      <button
+        type="submit"
+        @click="saveProfile()"
+        class="px-6 py-2 text-white rounded-lg hover:opacity-90 transition-colors duration-200 cursor-pointer"
+        style="background-color: #fdea00; color: #000"
+        onmouseover="this.style.backgroundColor='#fcd34d'"
+        onmouseout="this.style.backgroundColor='#fdea00'">
+        Save Changes
+      </button>
     </div>
   </div>
 
   <!-- Document Management -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
-      <h3 class="text-lg font-semibold" style="color: #011e41">Identity Documents</h3>
-      <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #fdea00; color: #000; cursor: pointer" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
+      <h3 class="text-lg font-semibold" style="color: #011e41">
+        Identity Documents
+      </h3>
+      <button
+        onclick="document.getElementById('upload-new').click()"
+        class="text-sm text-white px-4 py-2 rounded-lg transition-colors"
+        style="background-color: #fdea00; color: #000; cursor: pointer"
+        onmouseover="this.style.backgroundColor='#fcd34d'"
+        onmouseout="this.style.backgroundColor='#fdea00'"
+      >
         Upload New Document
       </button>
     </div>
 
     <div class="space-y-4">
-      <template x-for="document in documents" :key="document.id">
-        <div class="border border-gray-200 rounded-lg p-4">
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center">
-              <div 
-                class="w-10 h-10 rounded-full flex items-center justify-center mr-3"
-                :class="{
-                  'bg-green-100': document.status === 'verified',
-                  'bg-yellow-100': document.status === 'pending',
-                  'bg-red-100': document.status === 'expired',
-                  'bg-gray-100': document.status === 'missing'
-                }"
-              >
-                <svg 
-                  class="w-5 h-5"
-                  :class="{
-                    'text-green-600': document.status === 'verified',
-                    'text-yellow-600': document.status === 'pending',
-                    'text-red-600': document.status === 'expired',
-                    'text-gray-600': document.status === 'missing'
-                  }"
-                  fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                >
-                  <path 
-                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    :d="document.status === 'verified' ? 'M9 12l2 2 4-4' : document.status === 'pending' ? 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' : document.status === 'expired' ? 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 15.5c-.77.833.192 2.5 1.732 2.5z' : 'M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z'"
-                  />
-                </svg>
-              </div>
-              <div>
-                <h4 class="font-medium text-gray-900" x-text="document.type"></h4>
-                <div class="flex items-center space-x-2 text-sm text-gray-500">
-                  <span x-show="document.required" class="text-red-600">Required</span>
-                  <span x-show="!document.required" class="text-gray-500">Optional</span>
-                  <span x-show="document.fileName">•</span>
-                  <span x-show="document.fileName" x-text="document.fileName"></span>
-                </div>
+      <!-- Display existing documents -->
+      {% for doc in provider_documents %}
+      <div class="border border-gray-200 rounded-lg p-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center mr-3
+              {% if doc.status == 'verified' %}bg-green-100{% elif doc.status == 'pending' %}bg-yellow-100{% elif doc.status == 'expired' or doc.is_expired %}bg-red-100{% else %}bg-gray-100{% endif %}">
+              <svg class="w-5 h-5
+                {% if doc.status == 'verified' %}text-green-600{% elif doc.status == 'pending' %}text-yellow-600{% elif doc.status == 'expired' or doc.is_expired %}text-red-600{% else %}text-gray-600{% endif %}"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {% if doc.status == 'verified' %}
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
+                {% elif doc.status == 'pending' %}
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                {% elif doc.status == 'expired' or doc.is_expired %}
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 15.5c-.77.833.192 2.5 1.732 2.5z" />
+                {% else %}
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                {% endif %}
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-900">{{ doc.get_document_type_display }}</h4>
+              <div class="flex items-center space-x-2 text-sm text-gray-500">
+                {% if doc.is_required %}
+                  <span class="text-red-600">Required</span>
+                {% else %}
+                  <span class="text-gray-500">Optional</span>
+                {% endif %}
+                {% if doc.file_name %}
+                  <span>•</span>
+                  <span>{{ doc.file_name }}</span>
+                {% endif %}
               </div>
             </div>
-            
-            <div class="flex items-center space-x-2">
-              <span 
-                class="px-2 py-1 rounded-full text-xs font-medium"
-                :class="{
-                  'bg-green-100 text-green-800': document.status === 'verified',
-                  'bg-yellow-100 text-yellow-800': document.status === 'pending',
-                  'bg-red-100 text-red-800': document.status === 'expired',
-                  'bg-gray-100 text-gray-600': document.status === 'missing'
-                }"
-                x-text="document.status.charAt(0).toUpperCase() + document.status.slice(1)"
-              ></span>
-              
-              <button 
-                x-show="document.status !== 'missing'"
-                class="text-sm hover:underline"
-                style="color: #035d73; cursor: pointer"
-              >
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <span class="px-2 py-1 rounded-full text-xs font-medium
+              {% if doc.status == 'verified' %}bg-green-100 text-green-800{% elif doc.status == 'pending' %}bg-yellow-100 text-yellow-800{% elif doc.status == 'expired' or doc.is_expired %}bg-red-100 text-red-800{% else %}bg-gray-100 text-gray-600{% endif %}">
+              {{ doc.get_status_display }}
+            </span>
+
+            {% if doc.file %}
+              <a href="{{ doc.file.url }}" target="_blank" class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
                 View
-              </button>
-              
-              <button 
-                x-show="document.status === 'expired' || document.status === 'missing'"
+              </a>
+            {% endif %}
+
+            {% if doc.status == 'expired' or doc.is_expired %}
+              <button
+                onclick="document.getElementById('upload-{{ doc.document_type }}').click()"
                 class="text-sm text-white px-3 py-1 rounded transition-colors"
                 style="background-color: #035d73; cursor: pointer"
                 onmouseover="this.style.backgroundColor='#024954'"
-                onmouseout="this.style.backgroundColor='#035d73'"
-              >
-                <span x-text="document.status === 'missing' ? 'Upload' : 'Renew'"></span>
+                onmouseout="this.style.backgroundColor='#035d73'">
+                Renew
               </button>
-            </div>
-          </div>
-          
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
-            <div x-show="document.uploadDate">
-              <strong>Uploaded:</strong> <span x-text="document.uploadDate"></span>
-            </div>
-            <div x-show="document.expiryDate">
-              <strong>Expires:</strong> <span x-text="document.expiryDate"></span>
-            </div>
-            <div x-show="document.status === 'expired'" class="text-red-600">
-              <strong>Status:</strong> Document has expired
-            </div>
+            {% endif %}
           </div>
         </div>
-      </template>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+          {% if doc.uploaded_at %}
+            <div>
+              <strong>Uploaded:</strong> {{ doc.uploaded_at|date:"Y-m-d" }}
+            </div>
+          {% endif %}
+          {% if doc.expiry_date %}
+            <div>
+              <strong>Expires:</strong> {{ doc.expiry_date|date:"Y-m-d" }}
+            </div>
+          {% endif %}
+          {% if doc.is_expired %}
+            <div class="text-red-600">
+              <strong>Status:</strong> Document has expired
+            </div>
+          {% endif %}
+          {% if doc.status == 'rejected' and doc.rejection_reason %}
+            <div class="text-red-600 col-span-3">
+              <strong>Rejection reason:</strong> {{ doc.rejection_reason }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+      
+      <!-- Show missing required documents -->
+      {% for missing_doc in missing_documents %}
+      <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center mr-3 bg-gray-100">
+              <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-900">{{ missing_doc.display_name }}</h4>
+              <div class="flex items-center space-x-2 text-sm text-gray-500">
+                <span class="text-red-600">Required</span>
+                <span>•</span>
+                <span>Not uploaded</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <span class="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+              Missing
+            </span>
+            <button
+              onclick="document.getElementById('upload-{{ missing_doc.document_type }}').click()"
+              class="text-sm text-white px-3 py-1 rounded transition-colors"
+              style="background-color: #035d73; cursor: pointer"
+              onmouseover="this.style.backgroundColor='#024954'"
+              onmouseout="this.style.backgroundColor='#035d73'">
+              Upload
+            </button>
+          </div>
+        </div>
+        <div class="text-sm text-gray-600">
+          <p>This document is required for profile verification. Please upload to continue.</p>
+        </div>
+      </div>
+      {% endfor %}
     </div>
   </div>
 
   <!-- Legal Documents & Contracts -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
-      <h3 class="text-lg font-semibold" style="color: #011e41">Legal Documents & Contracts</h3>
-      <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
+      <h3 class="text-lg font-semibold" style="color: #011e41">
+        Legal Documents & Contracts
+      </h3>
+      <button
+        class="text-sm hover:underline"
+        style="color: #035d73; cursor: pointer"
+      >
         Download All Documents
       </button>
     </div>
 
     <div class="space-y-4">
-      <template x-for="contract in contracts" :key="contract.id">
-        <div class="border border-gray-200 rounded-lg p-4">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-3">
-                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                </svg>
-              </div>
-              <div>
-                <h4 class="font-medium text-gray-900" x-text="contract.title"></h4>
-                <div class="text-sm text-gray-500">
-                  Version <span x-text="contract.version"></span> • Signed on <span x-text="contract.signedDate"></span>
-                </div>
+      {% for contract in provider_contracts %}
+      <div class="border border-gray-200 rounded-lg p-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+              <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-medium text-gray-900">{{ contract.title }}</h4>
+              <div class="text-sm text-gray-500">
+                Version {{ contract.version }}
+                {% if contract.signed_at %}
+                  • Signed on {{ contract.signed_at|date:"Y-m-d" }}
+                {% else %}
+                  • Not yet signed
+                {% endif %}
               </div>
             </div>
-            
-            <div class="flex items-center space-x-2">
-              <span 
-                class="px-2 py-1 rounded-full text-xs font-medium"
-                :class="{
-                  'bg-green-100 text-green-800': contract.status === 'signed',
-                  'bg-blue-100 text-blue-800': contract.status === 'acknowledged'
-                }"
-                x-text="contract.status.charAt(0).toUpperCase() + contract.status.slice(1)"
-              ></span>
-              
-              <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <span class="px-2 py-1 rounded-full text-xs font-medium
+              {% if contract.status == 'signed' %}bg-green-100 text-green-800
+              {% elif contract.status == 'acknowledged' %}bg-blue-100 text-blue-800
+              {% elif contract.status == 'pending' %}bg-yellow-100 text-yellow-800
+              {% else %}bg-gray-100 text-gray-600{% endif %}">
+              {{ contract.get_status_display }}
+            </span>
+
+            {% if contract.file %}
+              <a href="{{ contract.file.url }}" target="_blank" class="text-sm hover:underline"
+                style="color: #035d73; cursor: pointer">
                 Download PDF
+              </a>
+            {% endif %}
+            
+            {% if contract.status == 'pending' %}
+              <button
+                class="text-sm text-white px-3 py-1 rounded transition-colors"
+                style="background-color: #035d73; cursor: pointer"
+                onmouseover="this.style.backgroundColor='#024954'"
+                onmouseout="this.style.backgroundColor='#035d73'">
+                Sign Now
               </button>
-            </div>
+            {% endif %}
           </div>
         </div>
-      </template>
+      </div>
+      {% empty %}
+      <div class="text-center py-8">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No contracts yet</h3>
+        <p class="mt-1 text-sm text-gray-500">Legal documents will appear here once available.</p>
+      </div>
+      {% endfor %}
     </div>
   </div>
 
-  <!-- Account Settings -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h3 class="text-lg font-semibold mb-6" style="color: #011e41">Account Settings</h3>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="space-y-4">
-        <h4 class="font-medium text-gray-900">Security Settings</h4>
-        
-        <div class="space-y-3">
-          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-            <div>
-              <div class="font-medium text-gray-900">Two-Factor Authentication</div>
-              <div class="text-sm text-gray-500">Add an extra layer of security</div>
-            </div>
-            <button class="text-sm text-white px-3 py-1 rounded transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
-              Enable
-            </button>
-          </div>
-          
-          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-            <div>
-              <div class="font-medium text-gray-900">Change Password</div>
-              <div class="text-sm text-gray-500">Update your account password</div>
-            </div>
-            <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
-              Change
-            </button>
-          </div>
-          
-          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-            <div>
-              <div class="font-medium text-gray-900">Login Activity</div>
-              <div class="text-sm text-gray-500">View recent login attempts</div>
-            </div>
-            <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
-              View
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      <div class="space-y-4">
-        <h4 class="font-medium text-gray-900">Privacy Settings</h4>
-        
-        <div class="space-y-3">
-          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-            <div>
-              <div class="font-medium text-gray-900">Data Export</div>
-              <div class="text-sm text-gray-500">Download your account data</div>
-            </div>
-            <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
-              Export
-            </button>
-          </div>
-          
-          <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-            <div>
-              <div class="font-medium text-gray-900">Account Deletion</div>
-              <div class="text-sm text-gray-500">Permanently delete your account</div>
-            </div>
-            <button class="text-sm text-red-600 hover:text-red-800" style="cursor: pointer">
-              Delete
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Support & Help -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">Need Help?</h3>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="text-center p-4 border border-gray-200 rounded-lg">
-        <svg class="w-8 h-8 mx-auto mb-2" style="color: #035d73" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-        </svg>
-        <div class="font-medium text-gray-900 mb-1">Live Chat</div>
-        <div class="text-sm text-gray-500 mb-3">Get instant help from our support team</div>
-        <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
-          Start Chat
-        </button>
-      </div>
-      
-      <div class="text-center p-4 border border-gray-200 rounded-lg">
-        <svg class="w-8 h-8 mx-auto mb-2" style="color: #035d73" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-        </svg>
-        <div class="font-medium text-gray-900 mb-1">Email Support</div>
-        <div class="text-sm text-gray-500 mb-3">Send us a detailed message</div>
-        <button class="text-sm text-white px-4 py-2 rounded-lg transition-colors" style="background-color: #fdea00; color: #000; cursor: pointer" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
-          Send Email
-        </button>
-      </div>
-      
-      <div class="text-center p-4 border border-gray-200 rounded-lg">
-        <svg class="w-8 h-8 mx-auto mb-2" style="color: #035d73" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-        </svg>
-        <div class="font-medium text-gray-900 mb-1">Help Center</div>
-        <div class="text-sm text-gray-500 mb-3">Browse our FAQ and guides</div>
-        <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">
-          Visit Help Center
-        </button>
-      </div>
-    </div>
-  </div>
+
+  <!-- Hidden file inputs for document uploads -->
+  <form id="document-upload-form" style="display: none;">
+    {% csrf_token %}
+    <input type="file" id="upload-national_id" name="national_id" accept=".pdf,.jpg,.jpeg,.png" onchange="uploadDocument('national_id')">
+    <input type="file" id="upload-proof_address" name="proof_address" accept=".pdf,.jpg,.jpeg,.png" onchange="uploadDocument('proof_address')">
+    <input type="file" id="upload-bank_statement" name="bank_statement" accept=".pdf,.jpg,.jpeg,.png" onchange="uploadDocument('bank_statement')">
+    <input type="file" id="upload-criminal_record" name="criminal_record" accept=".pdf,.jpg,.jpeg,.png" onchange="uploadDocument('criminal_record')">
+    <input type="file" id="upload-insurance" name="insurance" accept=".pdf,.jpg,.jpeg,.png" onchange="uploadDocument('insurance')">
+    <input type="file" id="upload-new" name="new_document" accept=".pdf,.jpg,.jpeg,.png" onchange="uploadDocument('new')">
+  </form>
+
 </div>
+
+<script>
+function saveProfile() {
+  // Get all form data
+  const formData = new FormData();
+  formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+  
+  // Get all input values
+  const inputs = document.querySelectorAll('#currentTab input[name], #currentTab textarea[name]');
+  inputs.forEach(input => {
+    formData.append(input.name, input.value);
+  });
+  
+  // Send AJAX request
+  fetch('{% url "website:profile-update" %}', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.ok) {
+      // Show success message
+      if (window.toastComponent) {
+        window.toastComponent.addToast('Profile updated successfully!', 'success');
+      }
+    } else {
+      // Show error message
+      if (window.toastComponent) {
+        window.toastComponent.addToast('Failed to update profile. Please try again.', 'error');
+      }
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    if (window.toastComponent) {
+      window.toastComponent.addToast('An error occurred. Please try again.', 'error');
+    }
+  });
+}
+
+function uploadDocument(documentType) {
+  const fileInput = document.getElementById('upload-' + documentType);
+  const file = fileInput.files[0];
+  
+  if (!file) return;
+  
+  const formData = new FormData();
+  formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+  formData.append('document_type', documentType === 'new' ? 'other' : documentType);
+  formData.append('file', file);
+  
+  // Show loading state
+  if (window.toastComponent) {
+    window.toastComponent.addToast('Uploading document...', 'info');
+  }
+  
+  fetch('{% url "website:upload-document" %}', {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.ok) {
+      // Show success message
+      if (window.toastComponent) {
+        window.toastComponent.addToast('Document uploaded successfully!', 'success');
+      }
+      // Reload the tab to show updated documents
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
+    } else {
+      // Show error message
+      if (window.toastComponent) {
+        window.toastComponent.addToast(data.message || 'Failed to upload document.', 'error');
+      }
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    if (window.toastComponent) {
+      window.toastComponent.addToast('An error occurred during upload.', 'error');
+    }
+  });
+}
+</script>

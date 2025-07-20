@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
-from .models import User, ProviderProfile, Profile, PaymentMethod, Location
+from .models import User, ProviderProfile, Profile, PaymentMethod, Location, DistanceRequest, ProviderDocument, ProviderContract
 
 
 @admin.register(User)
@@ -293,3 +293,206 @@ class LocationAdmin(admin.ModelAdmin):
             location.save()
         self.message_user(request, f'{queryset.count()} location(s) set as main.')
     set_as_main_location.short_description = 'Set as main location'
+
+
+@admin.register(DistanceRequest)
+class DistanceRequestAdmin(admin.ModelAdmin):
+    """Distance request admin."""
+    
+    list_display = (
+        'provider_display', 'route_display', 'distance_km', 
+        'surcharge_display', 'service_name', 'status', 'created_at'
+    )
+    list_filter = ('status', 'created_at')
+    search_fields = (
+        'provider__username', 'provider__email', 
+        'from_location', 'to_location', 'service_name'
+    )
+    readonly_fields = ('created_at', 'updated_at')
+    ordering = ('-created_at',)
+    
+    fieldsets = (
+        ('Provider Information', {
+            'fields': ('provider',),
+        }),
+        ('Request Details', {
+            'fields': ('booking', 'from_location', 'to_location', 
+                      'distance_km', 'surcharge_amount', 'service_name'),
+        }),
+        ('Status', {
+            'fields': ('status',),
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def provider_display(self, obj):
+        """Display provider with name."""
+        name = obj.provider.get_full_name() or obj.provider.username
+        return name
+    provider_display.short_description = 'Provider'
+    
+    def route_display(self, obj):
+        """Display route."""
+        return f"{obj.from_location} → {obj.to_location}"
+    route_display.short_description = 'Route'
+    
+    def surcharge_display(self, obj):
+        """Display surcharge with currency."""
+        return f"R$ {obj.surcharge_amount:.2f}"
+    surcharge_display.short_description = 'Surcharge'
+    
+    def get_queryset(self, request):
+        """Optimize query with related objects."""
+        return super().get_queryset(request).select_related('provider', 'booking')
+
+
+@admin.register(ProviderDocument)
+class ProviderDocumentAdmin(admin.ModelAdmin):
+    """Provider document admin."""
+    
+    list_display = (
+        'provider_display', 'document_type', 'status', 'file_name',
+        'is_required', 'uploaded_at', 'expiry_date', 'is_expired'
+    )
+    list_filter = ('status', 'document_type', 'is_required', 'uploaded_at', 'expiry_date')
+    search_fields = (
+        'provider__user__username', 'provider__user__email',
+        'provider__user__first_name', 'provider__user__last_name',
+        'file_name', 'rejection_reason'
+    )
+    readonly_fields = ('uploaded_at', 'verified_at', 'is_expired')
+    ordering = ('-uploaded_at',)
+    
+    fieldsets = (
+        ('Provider Information', {
+            'fields': ('provider',),
+        }),
+        ('Document Details', {
+            'fields': ('document_type', 'file', 'file_name', 'is_required'),
+        }),
+        ('Verification', {
+            'fields': ('status', 'verified_by', 'verified_at', 'rejection_reason'),
+        }),
+        ('Validity', {
+            'fields': ('expiry_date', 'is_expired'),
+        }),
+        ('Timestamps', {
+            'fields': ('uploaded_at',),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def provider_display(self, obj):
+        """Display provider with name."""
+        name = obj.provider.user.get_full_name() or obj.provider.user.username
+        return format_html(
+            '<strong>{}</strong><br><small>{}</small>',
+            name, obj.provider.user.email
+        )
+    provider_display.short_description = 'Provider'
+    
+    def get_queryset(self, request):
+        """Optimize query with related objects."""
+        return super().get_queryset(request).select_related(
+            'provider__user', 'verified_by'
+        )
+    
+    actions = ['verify_documents', 'reject_documents', 'mark_as_expired']
+    
+    def verify_documents(self, request, queryset):
+        """Verify selected documents."""
+        from django.utils import timezone
+        updated = queryset.update(
+            status='verified',
+            verified_by=request.user,
+            verified_at=timezone.now()
+        )
+        self.message_user(request, f'{updated} document(s) verified.')
+    verify_documents.short_description = 'Verify selected documents'
+    
+    def reject_documents(self, request, queryset):
+        """Reject selected documents."""
+        updated = queryset.update(status='rejected')
+        self.message_user(request, f'{updated} document(s) rejected.')
+    reject_documents.short_description = 'Reject selected documents'
+    
+    def mark_as_expired(self, request, queryset):
+        """Mark selected documents as expired."""
+        updated = queryset.update(status='expired')
+        self.message_user(request, f'{updated} document(s) marked as expired.')
+    mark_as_expired.short_description = 'Mark as expired'
+
+
+@admin.register(ProviderContract)
+class ProviderContractAdmin(admin.ModelAdmin):
+    """Provider contract admin."""
+    
+    list_display = (
+        'provider_display', 'title', 'contract_type', 'version',
+        'status', 'signed_at', 'expires_at', 'is_active'
+    )
+    list_filter = ('status', 'contract_type', 'created_at', 'signed_at', 'expires_at')
+    search_fields = (
+        'provider__user__username', 'provider__user__email',
+        'provider__user__first_name', 'provider__user__last_name',
+        'title'
+    )
+    readonly_fields = ('created_at', 'is_active')
+    ordering = ('-created_at',)
+    
+    fieldsets = (
+        ('Provider Information', {
+            'fields': ('provider',),
+        }),
+        ('Contract Details', {
+            'fields': ('contract_type', 'title', 'version', 'file'),
+        }),
+        ('Signature', {
+            'fields': ('status', 'signed_at', 'ip_address'),
+        }),
+        ('Validity', {
+            'fields': ('expires_at', 'is_active'),
+        }),
+        ('Timestamps', {
+            'fields': ('created_at',),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def provider_display(self, obj):
+        """Display provider with name."""
+        name = obj.provider.user.get_full_name() or obj.provider.user.username
+        return format_html(
+            '<strong>{}</strong><br><small>{}</small>',
+            name, obj.provider.user.email
+        )
+    provider_display.short_description = 'Provider'
+    
+    def get_queryset(self, request):
+        """Optimize query with related objects."""
+        return super().get_queryset(request).select_related('provider__user')
+    
+    actions = ['mark_as_signed', 'mark_as_acknowledged']
+    
+    def mark_as_signed(self, request, queryset):
+        """Mark selected contracts as signed."""
+        from django.utils import timezone
+        updated = queryset.update(
+            status='signed',
+            signed_at=timezone.now()
+        )
+        self.message_user(request, f'{updated} contract(s) marked as signed.')
+    mark_as_signed.short_description = 'Mark as signed'
+    
+    def mark_as_acknowledged(self, request, queryset):
+        """Mark selected contracts as acknowledged."""
+        from django.utils import timezone
+        updated = queryset.update(
+            status='acknowledged',
+            signed_at=timezone.now()
+        )
+        self.message_user(request, f'{updated} contract(s) marked as acknowledged.')
+    mark_as_acknowledged.short_description = 'Mark as acknowledged'

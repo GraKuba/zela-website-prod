@@ -5,22 +5,116 @@
   x-transition:enter-start="opacity-0 transform translate-y-4"
   x-transition:enter-end="opacity-100 transform translate-y-0"
   class="space-y-6"
+  x-init="
+    serviceAreas = {{ service_areas|safe|default:'[]' }};
+    maxTravelDistance = {{ provider.max_travel_distance|default:25 }};
+    preferredRadius = {{ provider.preferred_radius|default:15 }};
+    travelSettings.includeTrafficTime = {{ provider.include_traffic_time|lower|default:'true' }};
+    travelSettings.avoidTolls = {{ provider.avoid_tolls|lower|default:'false' }};
+    travelSettings.preferMainRoads = {{ provider.prefer_main_roads|lower|default:'true' }};
+  "
   x-data="{
     mapView: 'coverage',
-    serviceAreas: [
-      { name: 'Luanda Centro', enabled: true, surcharge: 0, color: '#10b981' },
-      { name: 'Maianga', enabled: true, surcharge: 0, color: '#10b981' },
-      { name: 'Ingombota', enabled: true, surcharge: 5, color: '#f59e0b' },
-      { name: 'Rangel', enabled: true, surcharge: 10, color: '#f59e0b' },
-      { name: 'Cazenga', enabled: false, surcharge: 15, color: '#ef4444' },
-      { name: 'Viana', enabled: false, surcharge: 20, color: '#ef4444' }
-    ],
+    serviceAreas: [],
     maxTravelDistance: 25,
     preferredRadius: 15,
     travelSettings: {
       includeTrafficTime: true,
       avoidTolls: false,
       preferMainRoads: true
+    },
+    saveServiceAreaSettings() {
+      // Prepare data
+      const data = {
+        service_areas: this.serviceAreas,
+        max_travel_distance: parseInt(this.maxTravelDistance),
+        preferred_radius: parseInt(this.preferredRadius),
+        include_traffic_time: this.travelSettings.includeTrafficTime,
+        avoid_tolls: this.travelSettings.avoidTolls,
+        prefer_main_roads: this.travelSettings.preferMainRoads
+      };
+      
+      // Send update request
+      fetch('/dashboard/provider/service-areas/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.ok) {
+          // Show success message
+          window.showToast && window.showToast('Service areas updated successfully', 'success');
+          // Reload page to update statistics
+          setTimeout(() => window.location.reload(), 1000);
+        } else {
+          window.showToast && window.showToast('Error updating service areas', 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        window.showToast && window.showToast('Error updating service areas', 'error');
+      });
+    },
+    resetToDefaults() {
+      // Get default service areas from provider method
+      const defaultAreas = [
+        {'name': 'Luanda Centro', 'enabled': true, 'surcharge': 0, 'color': '#10b981'},
+        {'name': 'Maianga', 'enabled': true, 'surcharge': 0, 'color': '#10b981'},
+        {'name': 'Ingombota', 'enabled': true, 'surcharge': 5, 'color': '#f59e0b'},
+        {'name': 'Rangel', 'enabled': true, 'surcharge': 10, 'color': '#f59e0b'},
+        {'name': 'Cazenga', 'enabled': false, 'surcharge': 15, 'color': '#ef4444'},
+        {'name': 'Viana', 'enabled': false, 'surcharge': 20, 'color': '#ef4444'}
+      ];
+      
+      // Reset to defaults
+      this.serviceAreas = defaultAreas;
+      this.maxTravelDistance = 25;
+      this.preferredRadius = 15;
+      this.travelSettings = {
+        includeTrafficTime: true,
+        avoidTolls: false,
+        preferMainRoads: true
+      };
+      
+      // Save defaults
+      this.saveServiceAreaSettings();
+    },
+    launchMapEditor() {
+      // Show map editor modal or redirect to map editor page
+      window.showToast && window.showToast('Map editor launching...', 'info');
+      // You can implement a full map editor modal here or redirect
+      // For now, we'll show a placeholder
+      alert('Map editor would open here. This feature requires integration with a mapping service like Google Maps or Mapbox.');
+    },
+    openFullScreenMap() {
+      // Open map in full screen
+      const mapContainer = document.querySelector('.map-container');
+      if (mapContainer && mapContainer.requestFullscreen) {
+        mapContainer.requestFullscreen();
+      } else {
+        // Fallback - open in new window
+        window.open('/dashboard/map/fullscreen/', 'map', 'width=1200,height=800');
+      }
+    },
+    viewAllDistanceRequests() {
+      // Navigate to all distance requests page
+      window.location.href = '/dashboard/distance-requests/';
+    },
+    openAddAreaModal() {
+      // Store reference to this component
+      window.serviceAreaComponent = this;
+      // Dispatch event to open modal
+      window.dispatchEvent(new CustomEvent('open-service-area-modal'));
+    },
+    openEditAreaModal(area) {
+      // Store reference to this component
+      window.serviceAreaComponent = this;
+      // Dispatch event to open modal with area data
+      window.dispatchEvent(new CustomEvent('open-edit-service-area-modal', { detail: area }));
     }
   }"
 >
@@ -49,15 +143,40 @@
     </div>
     
     <!-- Map Placeholder -->
-    <div class="bg-gray-100 rounded-lg h-96 flex items-center justify-center border-2 border-dashed border-gray-300">
-      <div class="text-center">
+    <div class="bg-gray-100 rounded-lg h-96 flex items-center justify-center border-2 border-dashed border-gray-300 map-container">
+      <!-- Coverage View -->
+      <div x-show="mapView === 'coverage'" class="text-center">
         <svg class="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
         </svg>
-        <h4 class="text-lg font-medium text-gray-900 mb-2">Interactive Service Area Map</h4>
-        <p class="text-gray-600 mb-4">Draw polygons to define your service areas and set distance-based pricing</p>
-        <button class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+        <h4 class="text-lg font-medium text-gray-900 mb-2">Service Area Coverage Map</h4>
+        <p class="text-gray-600 mb-4">Draw polygons to define your service areas</p>
+        <button 
+          @click="launchMapEditor()"
+          class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" 
+          style="background-color: #035d73; cursor: pointer" 
+          onmouseover="this.style.backgroundColor='#024954'" 
+          onmouseout="this.style.backgroundColor='#035d73'"
+        >
           Launch Map Editor
+        </button>
+      </div>
+      
+      <!-- Distance View -->
+      <div x-show="mapView === 'distance'" x-cloak class="text-center">
+        <svg class="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+        </svg>
+        <h4 class="text-lg font-medium text-gray-900 mb-2">Distance-Based Pricing Map</h4>
+        <p class="text-gray-600 mb-4">Set pricing based on travel distance from your location</p>
+        <button 
+          @click="launchMapEditor()"
+          class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" 
+          style="background-color: #035d73; cursor: pointer" 
+          onmouseover="this.style.backgroundColor='#024954'" 
+          onmouseout="this.style.backgroundColor='#035d73'"
+        >
+          Configure Distance Pricing
         </button>
       </div>
     </div>
@@ -78,7 +197,13 @@
           <span class="text-sm text-gray-600">Extended zones (R$ 15+ surcharge)</span>
         </div>
       </div>
-      <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">Full Screen Map</button>
+      <button 
+        @click="openFullScreenMap()"
+        class="text-sm hover:underline" 
+        style="color: #035d73; cursor: pointer"
+      >
+        Full Screen Map
+      </button>
     </div>
   </div>
 
@@ -124,13 +249,23 @@
                     :class="area.enabled ? 'translate-x-6' : 'translate-x-1'"
                   ></span>
                 </button>
-                <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">Edit</button>
+                <button 
+                  @click="openEditAreaModal(area)"
+                  class="text-sm hover:underline" 
+                  style="color: #035d73; cursor: pointer"
+                >
+                  Edit
+                </button>
               </div>
             </div>
           </template>
         </div>
         
-        <button class="mt-4 w-full py-2 px-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-700 transition-colors" style="cursor: pointer">
+        <button 
+          @click="openAddAreaModal()"
+          class="mt-4 w-full py-2 px-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-700 transition-colors" 
+          style="cursor: pointer"
+        >
           + Add New Area
         </button>
       </div>
@@ -231,10 +366,22 @@
     </div>
     
     <div class="mt-6 pt-4 border-t border-gray-200">
-      <button class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" style="background-color: #035d73" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
+      <button 
+        @click="saveServiceAreaSettings()"
+        class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" 
+        style="background-color: #035d73" 
+        onmouseover="this.style.backgroundColor='#024954'" 
+        onmouseout="this.style.backgroundColor='#035d73'"
+      >
         Save Area Settings
       </button>
-      <button class="ml-2 px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" style="background-color: #fdea00; color: #000; cursor: pointer" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
+      <button 
+        @click="resetToDefaults()"
+        class="ml-2 px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" 
+        style="background-color: #fdea00; color: #000; cursor: pointer" 
+        onmouseover="this.style.backgroundColor='#fcd34d'" 
+        onmouseout="this.style.backgroundColor='#fdea00'"
+      >
         Reset to Defaults
       </button>
     </div>
@@ -300,22 +447,22 @@
     
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
       <div class="text-center p-4 bg-gray-50 rounded-lg">
-        <div class="text-2xl font-bold text-gray-900">4</div>
+        <div class="text-2xl font-bold text-gray-900">{{ active_areas_count|default:0 }}</div>
         <div class="text-sm text-gray-600">Active Areas</div>
       </div>
       
       <div class="text-center p-4 bg-gray-50 rounded-lg">
-        <div class="text-2xl font-bold text-gray-900">~850k</div>
+        <div class="text-2xl font-bold text-gray-900">~{{ population_covered|default:'850k' }}</div>
         <div class="text-sm text-gray-600">Population Covered</div>
       </div>
       
       <div class="text-center p-4 bg-gray-50 rounded-lg">
-        <div class="text-2xl font-bold text-gray-900">25 km</div>
+        <div class="text-2xl font-bold text-gray-900">{{ provider.max_travel_distance|default:25 }} km</div>
         <div class="text-sm text-gray-600">Max Distance</div>
       </div>
       
       <div class="text-center p-4 bg-gray-50 rounded-lg">
-        <div class="text-2xl font-bold text-gray-900">R$ 7.50</div>
+        <div class="text-2xl font-bold text-gray-900">R$ {{ avg_surcharge|default:0|floatformat:2 }}</div>
         <div class="text-sm text-gray-600">Avg. Surcharge</div>
       </div>
     </div>
@@ -325,40 +472,255 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-lg font-semibold" style="color: #011e41">Recent Distance Requests</h3>
-      <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">View All</button>
+      <button 
+        @click="viewAllDistanceRequests()"
+        class="text-sm hover:underline" 
+        style="color: #035d73; cursor: pointer"
+      >
+        View All
+      </button>
     </div>
     
     <div class="space-y-3">
-      <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
+      {% if recent_distance_requests %}
+        {% for request in recent_distance_requests %}
+      <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg hover:border-gray-200 transition-colors">
         <div>
-          <div class="font-medium text-gray-900">Maianga → Rangel</div>
-          <div class="text-sm text-gray-600">12.3 km • Standard Clean</div>
+          <div class="font-medium text-gray-900">{{ request.from_location }} → {{ request.to_location }}</div>
+          <div class="text-sm text-gray-600">{{ request.distance_km }} km • {{ request.service_name }}</div>
         </div>
         <div class="text-right">
-          <div class="font-medium text-gray-900">+R$ 10.00</div>
-          <div class="text-xs text-green-600">Accepted</div>
+          <div class="font-medium text-gray-900">+R$ {{ request.surcharge_amount|floatformat:2 }}</div>
+          <div class="text-xs {% if request.status == 'accepted' %}text-green-600{% elif request.status == 'declined' %}text-red-600{% elif request.status == 'completed' %}text-green-600{% else %}text-yellow-600{% endif %}">{{ request.get_status_display }}</div>
         </div>
       </div>
-      
-      <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
-        <div>
-          <div class="font-medium text-gray-900">Centro → Viana</div>
-          <div class="text-sm text-gray-600">28.7 km • Deep Clean</div>
+        {% endfor %}
+      {% else %}
+        <div class="text-center py-8">
+          <div class="p-3 rounded-full bg-gray-100 w-16 h-16 mx-auto flex items-center justify-center">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <h3 class="mt-3 text-sm font-medium text-gray-900">No recent distance requests</h3>
+          <p class="mt-1 text-sm text-gray-500">Extended distance jobs will appear here</p>
         </div>
-        <div class="text-right">
-          <div class="font-medium text-gray-900">+R$ 25.00</div>
-          <div class="text-xs text-red-600">Declined</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Modals placed outside the main component -->
+<div id="service-area-modals">
+  <!-- Add Service Area Modal -->
+  <div x-data="{ 
+         open: false, 
+         areaName: '', 
+         surcharge: 0, 
+         color: '#10b981',
+         init() {
+           window.addEventListener('open-service-area-modal', () => {
+             this.open = true;
+             this.areaName = '';
+             this.surcharge = 0;
+             this.color = '#10b981';
+           });
+         },
+         addArea() {
+           if (!this.areaName.trim()) {
+             alert('Please enter an area name');
+             return;
+           }
+           
+           // Get the service area component
+           if (window.serviceAreaComponent) {
+             window.serviceAreaComponent.serviceAreas.push({
+               name: this.areaName,
+               enabled: true,
+               surcharge: parseFloat(this.surcharge),
+               color: this.color
+             });
+             window.serviceAreaComponent.saveServiceAreaSettings();
+             this.open = false;
+           }
+         }
+       }" 
+       x-show="open" 
+       x-cloak
+       class="relative z-50"
+       aria-labelledby="modal-title" 
+       role="dialog" 
+       aria-modal="true">
+    <div x-show="open" class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div x-show="open" 
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-black/40 transition-opacity" 
+             @click="open = false"></div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+
+        <div x-show="open" 
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Add Service Area</h3>
+            
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Area Name</label>
+                <input type="text" x-model="areaName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Surcharge (R$)</label>
+                <input type="number" x-model="surcharge" min="0" step="5" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Color</label>
+                <div class="flex space-x-2">
+                  <button @click="color = '#10b981'" class="w-8 h-8 rounded" style="background-color: #10b981"></button>
+                  <button @click="color = '#f59e0b'" class="w-8 h-8 rounded" style="background-color: #f59e0b"></button>
+                  <button @click="color = '#ef4444'" class="w-8 h-8 rounded" style="background-color: #ef4444"></button>
+                  <button @click="color = '#6366f1'" class="w-8 h-8 rounded" style="background-color: #6366f1"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+            <button @click="addArea()" 
+                    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm"
+                    style="background-color: #035d73">
+              Add Area
+            </button>
+            <button @click="open = false" 
+                    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
-      
-      <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
-        <div>
-          <div class="font-medium text-gray-900">Ingombota → Maianga</div>
-          <div class="text-sm text-gray-600">8.1 km • Express Clean</div>
-        </div>
-        <div class="text-right">
-          <div class="font-medium text-gray-900">+R$ 5.00</div>
-          <div class="text-xs text-green-600">Completed</div>
+    </div>
+  </div>
+
+  <!-- Edit Service Area Modal -->
+  <div x-data="{ 
+         open: false, 
+         area: null, 
+         editName: '', 
+         editSurcharge: 0, 
+         editColor: '#10b981',
+         init() {
+           window.addEventListener('open-edit-service-area-modal', (event) => {
+             this.open = true;
+             this.area = event.detail;
+             this.editName = this.area.name;
+             this.editSurcharge = this.area.surcharge;
+             this.editColor = this.area.color;
+           });
+         },
+         updateArea() {
+           if (window.serviceAreaComponent && this.area) {
+             const areaIndex = window.serviceAreaComponent.serviceAreas.findIndex(a => a.name === this.area.name);
+             if (areaIndex !== -1) {
+               window.serviceAreaComponent.serviceAreas[areaIndex].name = this.editName;
+               window.serviceAreaComponent.serviceAreas[areaIndex].surcharge = parseFloat(this.editSurcharge);
+               window.serviceAreaComponent.serviceAreas[areaIndex].color = this.editColor;
+               window.serviceAreaComponent.saveServiceAreaSettings();
+             }
+             this.open = false;
+           }
+         },
+         deleteArea() {
+           if (window.serviceAreaComponent && this.area) {
+             window.serviceAreaComponent.serviceAreas = window.serviceAreaComponent.serviceAreas.filter(a => a.name !== this.area.name);
+             window.serviceAreaComponent.saveServiceAreaSettings();
+             this.open = false;
+           }
+         }
+       }" 
+       x-show="open" 
+       x-cloak
+       class="relative z-50"
+       aria-labelledby="modal-title" 
+       role="dialog" 
+       aria-modal="true">
+    <div x-show="open" class="fixed inset-0 z-50 overflow-y-auto">
+      <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div x-show="open" 
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="fixed inset-0 bg-black bg-opacity-40 transition-opacity" 
+             @click="open = false"></div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+
+        <div x-show="open" 
+             x-transition:enter="ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave="ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Edit Service Area</h3>
+            
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Area Name</label>
+                <input type="text" x-model="editName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Surcharge (R$)</label>
+                <input type="number" x-model="editSurcharge" min="0" step="5" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Color</label>
+                <div class="flex space-x-2">
+                  <button @click="editColor = '#10b981'" class="w-8 h-8 rounded" style="background-color: #10b981"></button>
+                  <button @click="editColor = '#f59e0b'" class="w-8 h-8 rounded" style="background-color: #f59e0b"></button>
+                  <button @click="editColor = '#ef4444'" class="w-8 h-8 rounded" style="background-color: #ef4444"></button>
+                  <button @click="editColor = '#6366f1'" class="w-8 h-8 rounded" style="background-color: #6366f1"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+            <button @click="updateArea()" 
+                    class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white sm:ml-3 sm:w-auto sm:text-sm"
+                    style="background-color: #035d73">
+              Save Changes
+            </button>
+            <button @click="deleteArea()" 
+                    class="mt-3 w-full inline-flex justify-center rounded-md border border-red-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-red-700 hover:bg-red-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+              Delete
+            </button>
+            <button @click="open = false" 
+                    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>

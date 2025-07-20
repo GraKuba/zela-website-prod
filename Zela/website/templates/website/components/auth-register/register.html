@@ -1,5 +1,4 @@
-{% extends 'website/layouts/base.html' %} {% load static %} {% block title %}{{
-title }}{% endblock %} {% block content %}
+{% extends 'website/layouts/base.html' %} {% load static %} {% block title %}Criar Conta - Zela{% endblock %} {% block content %}
 <!-- Include Navbar -->
 {% include 'website/fragments/navbar.html' %}
 
@@ -14,10 +13,11 @@ title }}{% endblock %} {% block content %}
       <!-- Header -->
       <div class="px-8 py-12 text-center">
         <h1 class="text-4xl font-bold mb-4" style="color: #035d73">
-          Create Your Free Zela Account
+          Criar a Sua Conta Gratuita Zela
         </h1>
         <p class="text-lg mb-8" style="color: #4a5a70">
-          Book services faster, track your bookings and earn referral credits.
+          Reserve serviços mais rapidamente, acompanhe as suas reservas e ganhe
+          créditos de referência.
         </p>
 
         <!-- Step Badge -->
@@ -25,9 +25,9 @@ title }}{% endblock %} {% block content %}
           class="inline-block px-4 py-2 rounded-full text-sm font-medium mb-8"
           style="background-color: #fdea00; color: #035d73"
         >
-          Step <span x-text="currentStep"></span> of 2 –
+          Passo <span x-text="currentStep"></span> de 2 –
           <span
-            x-text="currentStep === 1 ? 'Personal Details' : 'Address Details'"
+            x-text="currentStep === 1 ? 'Dados Pessoais' : 'Dados de Morada'"
           ></span>
         </div>
       </div>
@@ -45,14 +45,14 @@ title }}{% endblock %} {% block content %}
               class="block text-sm font-semibold mb-2"
               style="color: #035d73"
             >
-              Full Name *
+              Nome Completo *
             </label>
             <input
               type="text"
               id="fullName"
               name="full_name"
               x-model="formData.fullName"
-              placeholder="Enter your full name"
+              placeholder="Introduza o seu nome completo"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
               required
             />
@@ -77,7 +77,7 @@ title }}{% endblock %} {% block content %}
               id="email"
               name="email"
               x-model="formData.email"
-              placeholder="Enter your email address"
+              placeholder="Introduza o seu endereço de email"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
               required
             />
@@ -95,14 +95,14 @@ title }}{% endblock %} {% block content %}
               class="block text-sm font-semibold mb-2"
               style="color: #035d73"
             >
-              Phone *
+              Telefone *
             </label>
             <input
               type="tel"
               id="phone"
               name="phone"
               x-model="formData.phone"
-              placeholder="Enter your phone number"
+              placeholder="Introduza o seu número de telefone"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
               required
             />
@@ -120,14 +120,14 @@ title }}{% endblock %} {% block content %}
               class="block text-sm font-semibold mb-2"
               style="color: #035d73"
             >
-              Password *
+              Palavra-passe *
             </label>
             <input
               type="password"
               id="password"
               name="password"
               x-model="formData.password"
-              placeholder="Create a secure password"
+              placeholder="Criar uma palavra-passe segura"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
               @input="updatePasswordStrength()"
               required
@@ -158,7 +158,7 @@ title }}{% endblock %} {% block content %}
                     'text-gray-500': !passwordChecks.minLength
                   }"
                 >
-                  At least 8 characters
+                  Pelo menos 8 caracteres
                 </span>
               </div>
 
@@ -180,7 +180,7 @@ title }}{% endblock %} {% block content %}
                     'text-gray-500': !passwordChecks.hasUpper
                   }"
                 >
-                  One uppercase letter (A-Z)
+                  Uma letra maiúscula (A-Z)
                 </span>
               </div>
 
@@ -202,7 +202,7 @@ title }}{% endblock %} {% block content %}
                     'text-gray-500': !passwordChecks.hasLower
                   }"
                 >
-                  One lowercase letter (a-z)
+                  Uma letra minúscula (a-z)
                 </span>
               </div>
 
@@ -224,7 +224,7 @@ title }}{% endblock %} {% block content %}
                     'text-gray-500': !passwordChecks.hasNumber
                   }"
                 >
-                  One number (0-9)
+                  Um número (0-9)
                 </span>
               </div>
 
@@ -246,7 +246,7 @@ title }}{% endblock %} {% block content %}
                     'text-gray-500': !passwordChecks.hasSpecial
                   }"
                 >
-                  One special character (!@#$%^&*)
+                  Um carácter especial (!@#$%^&*)
                 </span>
               </div>
             </div>
@@ -255,7 +255,7 @@ title }}{% endblock %} {% block content %}
             <div class="mt-4">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-sm font-medium" style="color: #035d73"
-                  >Password Strength:</span
+                  >Força da Palavra-passe:</span
                 >
                 <span
                   class="text-sm font-semibold capitalize"
@@ -289,14 +289,14 @@ title }}{% endblock %} {% block content %}
               class="block text-sm font-semibold mb-2"
               style="color: #035d73"
             >
-              Confirm Password *
+              Confirmar Palavra-passe *
             </label>
             <input
               type="password"
               id="confirmPassword"
               name="confirm_password"
               x-model="formData.confirmPassword"
-              placeholder="Confirm your password"
+              placeholder="Confirmar a sua palavra-passe"
               class="w-full px-4 py-3 rounded-xl border-2 transition-colors"
               :class="{
                 'border-green-500': formData.confirmPassword && formData.password === formData.confirmPassword,
@@ -332,10 +332,10 @@ title }}{% endblock %} {% block content %}
               <span
                 class="text-xs transition-colors duration-200"
                 :class="{
-                  'text-green-600': formData.password === formData.confirmPassword,
-                  'text-red-600': formData.password !== formData.confirmPassword
-                }"
-                x-text="formData.password === formData.confirmPassword ? 'Passwords match' : 'Passwords do not match'"
+                    'text-green-600': formData.password === formData.confirmPassword,
+                    'text-red-600': formData.password !== formData.confirmPassword
+                  }"
+                x-text="formData.password === formData.confirmPassword ? 'Palavras-passe coincidem' : 'Palavras-passe não coincidem'"
               ></span>
             </div>
           </div>
@@ -350,7 +350,7 @@ title }}{% endblock %} {% block content %}
               class="mr-3 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
             />
             <label for="marketingOptIn" class="text-sm" style="color: #4a5a70">
-              Send me tips & promo codes (optional)
+              Enviar-me dicas e códigos promocionais (opcional)
             </label>
           </div>
 
@@ -361,7 +361,7 @@ title }}{% endblock %} {% block content %}
             class="w-full py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
             style="background-color: #035d73; color: #fdea00"
           >
-            Continue
+            Continuar
           </button>
         </div>
 
@@ -374,14 +374,14 @@ title }}{% endblock %} {% block content %}
               class="block text-sm font-semibold mb-2"
               style="color: #035d73"
             >
-              Address Line 1 *
+              Linha de Morada 1 *
             </label>
             <input
               type="text"
               id="addressLine1"
               name="address_line1"
               x-model="formData.addressLine1"
-              placeholder="Enter your street address"
+              placeholder="Introduza a sua morada"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
               required
             />
@@ -399,7 +399,7 @@ title }}{% endblock %} {% block content %}
               class="block text-sm font-semibold mb-2"
               style="color: #035d73"
             >
-              Area / Neighbourhood *
+              Área / Bairro *
             </label>
             <select
               id="area"
@@ -408,12 +408,12 @@ title }}{% endblock %} {% block content %}
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
               required
             >
-              <option value="">Select your area</option>
-              <option value="city-centre">City Centre</option>
-              <option value="suburbs">Suburbs</option>
-              <option value="waterfront">Waterfront</option>
-              <option value="northern-suburbs">Northern Suburbs</option>
-              <option value="southern-suburbs">Southern Suburbs</option>
+              <option value="">Selecionar a sua área</option>
+              <option value="city-centre">Centro da Cidade</option>
+              <option value="suburbs">Subúrbios</option>
+              <option value="waterfront">Frente Marítima</option>
+              <option value="northern-suburbs">Subúrbios do Norte</option>
+              <option value="southern-suburbs">Subúrbios do Sul</option>
             </select>
             <div
               x-show="errors.area"
@@ -429,14 +429,14 @@ title }}{% endblock %} {% block content %}
               class="block text-sm font-semibold mb-2"
               style="color: #035d73"
             >
-              Referral Code (optional)
+              Código de Referência (opcional)
             </label>
             <input
               type="text"
               id="referralCode"
               name="referral_code"
               x-model="formData.referralCode"
-              placeholder="Enter referral code if you have one"
+              placeholder="Introduza o código de referência se tiver um"
               class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-colors"
             />
             <div
@@ -457,19 +457,19 @@ title }}{% endblock %} {% block content %}
               required
             />
             <label for="termsConsent" class="text-sm" style="color: #4a5a70">
-              By creating an account you agree to our
+              Ao criar uma conta, concorda com os nossos
               <a
                 href="{% url 'website:terms-of-service' %}"
                 class="underline cursor-pointer"
                 style="color: #035d73"
-                >Terms of Service</a
+                >Termos de Serviço</a
               >
-              and
+              e
               <a
                 href="{% url 'website:privacy-policy' %}"
                 class="underline cursor-pointer"
                 style="color: #035d73"
-                >Privacy Policy</a
+                >Política de Privacidade</a
               >.
             </label>
           </div>
@@ -487,7 +487,7 @@ title }}{% endblock %} {% block content %}
               class="flex-1 py-4 rounded-full font-semibold text-lg border-2 transition-all duration-200 cursor-pointer"
               style="border-color: #035d73; color: #035d73"
             >
-              Back
+              Voltar
             </button>
             <button
               type="submit"
@@ -495,8 +495,8 @@ title }}{% endblock %} {% block content %}
               class="flex-1 py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 cursor-pointer"
               style="background-color: #035d73; color: #fdea00"
             >
-              <span x-show="!isSubmitting">Create Account</span>
-              <span x-show="isSubmitting">Creating...</span>
+              <span x-show="!isSubmitting">Criar Conta</span>
+              <span x-show="isSubmitting">A criar...</span>
             </button>
           </div>
         </div>
@@ -505,13 +505,13 @@ title }}{% endblock %} {% block content %}
       <!-- Sign In Link -->
       <div class="px-8 pb-8 text-center">
         <p class="text-sm" style="color: #69768b">
-          Already have an account?
+          Já tem uma conta?
           <a
             href="{% url 'website:sign-in' %}"
             class="font-semibold underline cursor-pointer"
             style="color: #035d73"
           >
-            Sign in
+            Iniciar sessão
           </a>
         </p>
       </div>
@@ -582,35 +582,36 @@ title }}{% endblock %} {% block content %}
 
         // Client-side validation
         if (!this.formData.fullName) {
-          this.errors.full_name = "Full name is required";
+          this.errors.full_name = "Nome completo é obrigatório";
         }
 
         if (!this.formData.email) {
-          this.errors.email = "Email is required";
+          this.errors.email = "Email é obrigatório";
         }
 
         if (!this.formData.phone) {
-          this.errors.phone = "Phone number is required";
+          this.errors.phone = "Número de telefone é obrigatório";
         }
 
         if (!this.formData.password) {
-          this.errors.password = "Password is required";
+          this.errors.password = "Palavra-passe é obrigatória";
         }
 
         if (!this.formData.confirmPassword) {
-          this.errors.confirm_password = "Please confirm your password";
+          this.errors.confirm_password =
+            "Por favor confirme a sua palavra-passe";
         }
 
         if (!this.formData.addressLine1) {
-          this.errors.address_line1 = "Address is required";
+          this.errors.address_line1 = "Morada é obrigatória";
         }
 
         if (!this.formData.area) {
-          this.errors.area = "Area is required";
+          this.errors.area = "Área é obrigatória";
         }
 
         if (!this.formData.termsConsent) {
-          this.errors.terms_consent = "You must agree to the terms";
+          this.errors.terms_consent = "Deve concordar com os termos";
         }
 
         // Check password requirements
@@ -619,11 +620,12 @@ title }}{% endblock %} {% block content %}
         );
 
         if (!allRequirementsMet) {
-          this.errors.password = "Password does not meet all requirements";
+          this.errors.password =
+            "A palavra-passe não cumpre todos os requisitos";
         }
 
         if (this.formData.password !== this.formData.confirmPassword) {
-          this.errors.confirm_password = "Passwords do not match";
+          this.errors.confirm_password = "As palavras-passe não coincidem";
         }
 
         // If there are client-side errors, don't submit
@@ -663,7 +665,7 @@ title }}{% endblock %} {% block content %}
 
           if (data.success) {
             // Show success message and redirect
-            alert("🎉 Account created successfully! Welcome to Zela.");
+            alert("🎉 Conta criada com sucesso! Bem-vindo à Zela.");
             window.location.href = data.redirect;
           } else {
             // Show validation errors
@@ -682,12 +684,12 @@ title }}{% endblock %} {% block content %}
                 this.currentStep = 1;
               }
             } else {
-              alert("Registration failed. Please try again.");
+              alert("Registo falhou. Por favor tente novamente.");
             }
           }
         } catch (error) {
           console.error("Registration error:", error);
-          alert("Registration failed. Please try again.");
+          alert("Registo falhou. Por favor tente novamente.");
         } finally {
           this.isSubmitting = false;
         }

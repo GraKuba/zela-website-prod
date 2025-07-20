@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Payment, Payout, RecentTransaction
+from .models import Payment, Payout, RecentTransaction, ProviderWallet, EarningsHistory, PayoutRequest
 
 
 @admin.register(Payment)
@@ -167,3 +167,166 @@ class RecentTransactionAdmin(admin.ModelAdmin):
             color, prefix, obj.amount
         )
     amount_display.short_description = 'Amount'
+
+
+@admin.register(ProviderWallet)
+class ProviderWalletAdmin(admin.ModelAdmin):
+    """Provider Wallet admin."""
+    
+    list_display = (
+        'provider_display', 'available_balance_display', 'pending_balance_display',
+        'total_balance_display', 'last_payout_date', 'updated_at'
+    )
+    list_filter = ('created_at', 'updated_at', 'last_payout_date')
+    search_fields = ('provider__username', 'provider__email')
+    readonly_fields = ('created_at', 'updated_at')
+    ordering = ('-updated_at',)
+    
+    fieldsets = (
+        ('Provider', {
+            'fields': ('provider',),
+        }),
+        ('Balances', {
+            'fields': ('available_balance', 'pending_balance', 'total_withdrawn'),
+        }),
+        ('Payout Information', {
+            'fields': ('last_payout_date',),
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def provider_display(self, obj):
+        """Display provider info."""
+        name = obj.provider.get_full_name() or obj.provider.username
+        return format_html(
+            '<strong>{}</strong><br><small>{}</small>',
+            name, obj.provider.email
+        )
+    provider_display.short_description = 'Provider'
+    
+    def available_balance_display(self, obj):
+        """Display formatted available balance."""
+        return format_html('<strong>R$ {:,.2f}</strong>', obj.available_balance)
+    available_balance_display.short_description = 'Available'
+    
+    def pending_balance_display(self, obj):
+        """Display formatted pending balance."""
+        return format_html('<strong>R$ {:,.2f}</strong>', obj.pending_balance)
+    pending_balance_display.short_description = 'Pending'
+    
+    def total_balance_display(self, obj):
+        """Display formatted total balance."""
+        return format_html('<strong>R$ {:,.2f}</strong>', obj.total_balance)
+    total_balance_display.short_description = 'Total'
+
+
+@admin.register(EarningsHistory)
+class EarningsHistoryAdmin(admin.ModelAdmin):
+    """Earnings History admin."""
+    
+    list_display = (
+        'provider_display', 'date', 'jobs_count', 'gross_amount_display',
+        'commission_amount_display', 'tips_amount_display', 'net_amount_display'
+    )
+    list_filter = ('date', 'created_at')
+    search_fields = ('provider__username', 'provider__email')
+    readonly_fields = ('net_amount', 'created_at', 'updated_at')
+    ordering = ('-date',)
+    date_hierarchy = 'date'
+    
+    fieldsets = (
+        ('Provider & Date', {
+            'fields': ('provider', 'date', 'jobs_count'),
+        }),
+        ('Earnings', {
+            'fields': ('gross_amount', 'commission_amount', 'tips_amount', 'net_amount'),
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def provider_display(self, obj):
+        """Display provider info."""
+        name = obj.provider.get_full_name() or obj.provider.username
+        return format_html('<strong>{}</strong>', name)
+    provider_display.short_description = 'Provider'
+    
+    def gross_amount_display(self, obj):
+        """Display formatted gross amount."""
+        return format_html('R$ {:,.2f}', obj.gross_amount)
+    gross_amount_display.short_description = 'Gross'
+    
+    def commission_amount_display(self, obj):
+        """Display formatted commission amount."""
+        return format_html('<span style="color: red">-R$ {:,.2f}</span>', obj.commission_amount)
+    commission_amount_display.short_description = 'Commission'
+    
+    def tips_amount_display(self, obj):
+        """Display formatted tips amount."""
+        return format_html('<span style="color: green">+R$ {:,.2f}</span>', obj.tips_amount)
+    tips_amount_display.short_description = 'Tips'
+    
+    def net_amount_display(self, obj):
+        """Display formatted net amount."""
+        return format_html('<strong>R$ {:,.2f}</strong>', obj.net_amount)
+    net_amount_display.short_description = 'Net'
+
+
+@admin.register(PayoutRequest)
+class PayoutRequestAdmin(admin.ModelAdmin):
+    """Payout Request admin."""
+    
+    list_display = (
+        'reference', 'provider_display', 'payout_type', 'amount_display',
+        'fee_amount_display', 'net_amount_display', 'status', 'requested_at'
+    )
+    list_filter = ('payout_type', 'status', 'requested_at', 'processed_at')
+    search_fields = ('reference', 'provider__username', 'provider__email', 'bank_reference')
+    readonly_fields = ('reference', 'net_amount', 'requested_at', 'processed_at', 'completed_at')
+    ordering = ('-requested_at',)
+    
+    fieldsets = (
+        ('Request Information', {
+            'fields': ('provider', 'reference', 'payout_type'),
+        }),
+        ('Amounts', {
+            'fields': ('amount', 'fee_amount', 'net_amount'),
+        }),
+        ('Status', {
+            'fields': ('status', 'bank_reference'),
+        }),
+        ('Timestamps', {
+            'fields': ('requested_at', 'processed_at', 'completed_at'),
+        }),
+    )
+    
+    def provider_display(self, obj):
+        """Display provider info."""
+        name = obj.provider.get_full_name() or obj.provider.username
+        return format_html(
+            '<strong>{}</strong><br><small>{}</small>',
+            name, obj.provider.email
+        )
+    provider_display.short_description = 'Provider'
+    
+    def amount_display(self, obj):
+        """Display formatted amount."""
+        return format_html('<strong>R$ {:,.2f}</strong>', obj.amount)
+    amount_display.short_description = 'Amount'
+    
+    def fee_amount_display(self, obj):
+        """Display formatted fee amount."""
+        if obj.fee_amount > 0:
+            return format_html('<span style="color: red">-R$ {:,.2f}</span>', obj.fee_amount)
+        return 'R$ 0.00'
+    fee_amount_display.short_description = 'Fee'
+    
+    def net_amount_display(self, obj):
+        """Display formatted net amount."""
+        return format_html('<strong style="color: green">R$ {:,.2f}</strong>', obj.net_amount)
+    net_amount_display.short_description = 'Net Amount'

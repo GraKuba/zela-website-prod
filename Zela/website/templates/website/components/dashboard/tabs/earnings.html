@@ -1,65 +1,78 @@
-<!-- Earnings & Payouts Tab -->
+<!-- Earnings Tab Content -->
 <div
   x-show="currentTab === 'earnings' && isProviderMode"
   x-transition:enter="transition ease-out duration-300"
   x-transition:enter-start="opacity-0 transform translate-y-4"
   x-transition:enter-end="opacity-100 transform translate-y-0"
-  class="space-y-6"
-  x-data="{
-    currentBalance: 1247.50,
-    pendingPayouts: 280.00,
-    weeklyEarnings: [
-      { week: 'Jul 1-7', amount: 1240.00, jobs: 8 },
-      { week: 'Jun 24-30', amount: 980.50, jobs: 6 },
-      { week: 'Jun 17-23', amount: 1150.00, jobs: 7 },
-      { week: 'Jun 10-16', amount: 890.00, jobs: 5 }
-    ],
-    recentTransactions: [
-      { id: 'tx-001', type: 'earning', description: 'Deep Clean - Maria Silva', amount: 280.00, date: '2024-07-10', status: 'completed' },
-      { id: 'tx-002', type: 'payout', description: 'Weekly Payout', amount: -750.00, date: '2024-07-08', status: 'processed' },
-      { id: 'tx-003', type: 'earning', description: 'Office Clean - TechCorp', amount: 450.00, date: '2024-07-07', status: 'completed' },
-      { id: 'tx-004', type: 'tip', description: 'Tip from Ana Rodrigues', amount: 30.00, date: '2024-07-09', status: 'received' }
-    ],
-    earningsChart: {
-      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      data: [180, 220, 280, 150, 320, 420, 380]
-    }
-  }"
 >
-  <!-- Real-time Earnings Overview -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <!-- Current Balance -->
+  <div class="space-y-6">
+    <!-- Earnings Overview Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+    <!-- Available Balance -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-sm font-medium text-gray-900">Available Balance</h3>
-          <p class="text-3xl font-bold mt-2" style="color: #035d73" x-text="'R$ ' + currentBalance.toFixed(2)"></p>
-          <div class="flex items-center mt-2">
-            <svg class="h-4 w-4 text-green-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/>
-            </svg>
-            <span class="text-sm text-green-600">+18% this week</span>
-          </div>
+          <p class="text-sm font-medium text-gray-600">Available Balance</p>
+          <p class="text-2xl font-bold text-[#011e41] mt-1">
+            AOA {{ wallet.available_balance|floatformat:0|default:"0" }}
+          </p>
+          <p class="text-xs text-gray-500 mt-1">Ready to withdraw</p>
         </div>
-        <div class="p-3 rounded-full" style="background-color: #e6f7ff">
-          <svg class="h-8 w-8" style="color: #035d73" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+        <div class="p-3 bg-green-100 rounded-full">
+          <svg
+            class="w-6 h-6 text-green-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+            ></path>
           </svg>
         </div>
       </div>
+      {% if wallet.available_balance > 0 %}
+      <button
+        class="mt-4 w-full px-3 py-2 bg-[#035d73] text-white text-sm font-medium rounded-lg hover:bg-[#024854] transition-colors"
+        hx-get="/dashboard/request-payout/"
+        hx-target="#modal-container"
+        hx-swap="innerHTML"
+      >
+        Request Payout
+      </button>
+      {% else %}
+      <div class="mt-4 text-center">
+        <p class="text-xs text-gray-500">Complete jobs to earn money</p>
+      </div>
+      {% endif %}
     </div>
 
     <!-- Pending Payouts -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-sm font-medium text-gray-900">Pending Payouts</h3>
-          <p class="text-3xl font-bold mt-2" style="color: #f59e0b" x-text="'R$ ' + pendingPayouts.toFixed(2)"></p>
-          <div class="text-sm text-gray-500 mt-2">Processing in 2-3 days</div>
+          <p class="text-sm font-medium text-gray-600">Pending Payouts</p>
+          <p class="text-2xl font-bold text-[#011e41] mt-1">
+            AOA {{ pending_payouts|floatformat:0|default:"0" }}
+          </p>
+          <p class="text-xs text-gray-500 mt-1">Processing</p>
         </div>
-        <div class="p-3 rounded-full" style="background-color: #fff7e6">
-          <svg class="h-8 w-8" style="color: #f59e0b" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        <div class="p-3 bg-yellow-100 rounded-full">
+          <svg
+            class="w-6 h-6 text-yellow-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
           </svg>
         </div>
       </div>
@@ -69,160 +82,424 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-sm font-medium text-gray-900">This Week's Jobs</h3>
-          <p class="text-3xl font-bold mt-2" style="color: #8b5cf6">8</p>
-          <div class="text-sm text-gray-500 mt-2">Avg. R$ 155.00 per job</div>
+          <p class="text-sm font-medium text-gray-600">This Week's Jobs</p>
+          <p class="text-2xl font-bold text-[#011e41] mt-1">
+            {{ current_week_jobs|default:"0" }}
+          </p>
+          <p class="text-xs text-gray-500 mt-1">Completed</p>
         </div>
-        <div class="p-3 rounded-full" style="background-color: #fff7e6">
-          <svg class="h-8 w-8" style="color: #fdea00" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v6a2 2 0 01-2 2H9V5z"/>
+        <div class="p-3 bg-blue-100 rounded-full">
+          <svg
+            class="w-6 h-6 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- This Week's Earnings -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-600">This Week's Earnings</p>
+          <p class="text-2xl font-bold text-[#011e41] mt-1">
+            AOA {{ current_week_earnings|floatformat:0|default:"0" }}
+          </p>
+          <div class="flex items-center mt-1">
+            {% if earnings_growth > 0 %}
+            <svg
+              class="w-4 h-4 text-green-500 mr-1"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <span class="text-xs text-green-600">{{ earnings_growth }}%</span>
+            {% elif earnings_growth < 0 %}
+            <svg
+              class="w-4 h-4 text-red-500 mr-1"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <span class="text-xs text-red-600"
+              >{{ earnings_growth|floatformat:1 }}%</span
+            >
+            {% else %}
+            <span class="text-xs text-gray-500">No change</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="p-3 bg-purple-100 rounded-full">
+          <svg
+            class="w-6 h-6 text-purple-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            ></path>
           </svg>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Payout Actions -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-4">
-      <h3 class="text-lg font-semibold" style="color: #011e41">Payout Options</h3>
-      <span class="text-sm text-gray-500">Minimum payout: R$ 50.00</span>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Instant Payout -->
-      <div class="border border-gray-200 rounded-lg p-4">
-        <div class="flex items-center justify-between mb-3">
-          <h4 class="font-medium text-gray-900">Instant Payout</h4>
-          <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Available now</span>
+  <!-- Weekly Performance Chart -->
+  <div
+    class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+    x-data="earningsTab"
+    data-earnings-transactions='{{ earnings_transactions|default:"[]"|escapejs }}'
+    data-daily-earnings='{{ daily_earnings|default:"[]"|escapejs }}'
+    data-chart-labels='{{ earnings_chart_labels|default:"[]"|escapejs }}'
+    data-weekly-data='{{ weekly_earnings_data|default:"[]"|escapejs }}'
+    data-current-week-jobs="{{ current_week_jobs|default:0 }}"
+    data-total-week-earnings="{{ total_week_earnings|default:0 }}"
+  >
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-lg font-semibold text-[#011e41]">Weekly Performance</h3>
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center">
+          <div class="w-3 h-3 bg-[#035d73] rounded-full mr-2"></div>
+          <span class="text-sm text-gray-600">Earnings</span>
         </div>
-        <p class="text-sm text-gray-600 mb-4">Get your money in minutes. 1.5% fee applies.</p>
-        <button 
-          class="w-full px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors"
-          style="background-color: #035d73"
-          :disabled="currentBalance < 50"
-          :class="currentBalance < 50 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-opacity-90'"
-          :style="currentBalance >= 50 ? 'cursor: pointer' : ''"
-        >
-          Request Instant Payout
-        </button>
-      </div>
-
-      <!-- Standard Payout -->
-      <div class="border border-gray-200 rounded-lg p-4">
-        <div class="flex items-center justify-between mb-3">
-          <h4 class="font-medium text-gray-900">Standard Payout</h4>
-          <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">2-3 business days</span>
+        <div class="flex items-center">
+          <div class="w-3 h-3 bg-[#fdea00] rounded-full mr-2"></div>
+          <span class="text-sm text-gray-600">Jobs</span>
         </div>
-        <p class="text-sm text-gray-600 mb-4">Free transfer to your bank account. No fees.</p>
-        <button 
-          class="w-full px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors"
-          style="background-color: #fdea00; color: #000"
-          :disabled="currentBalance < 50"
-          :class="currentBalance < 50 ? 'opacity-50 cursor-not-allowed' : ''"
-          :style="currentBalance >= 50 ? 'cursor: pointer' : ''"
-          onmouseover="this.style.backgroundColor='#fcd34d'"
-          onmouseout="this.style.backgroundColor='#fdea00'"
-        >
-          Request Standard Payout
-        </button>
       </div>
     </div>
-  </div>
 
-  <!-- Weekly Earnings Chart -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">This Week's Earnings</h3>
-    
-    <div class="grid grid-cols-7 gap-2 mb-6">
-      <template x-for="(day, index) in earningsChart.labels" :key="index">
-        <div class="text-center">
-          <div class="text-xs text-gray-500 mb-2" x-text="day"></div>
-          <div 
-            class="rounded-lg mx-auto transition-all hover:opacity-80"
-            style="background-color: #035d73; cursor: pointer"
-            :style="'height: ' + (earningsChart.data[index] / 5) + 'px; width: 100%; max-height: 80px;'"
-          ></div>
-          <div class="text-xs text-gray-700 mt-1" x-text="'R$ ' + earningsChart.data[index]"></div>
+    <template x-if="earningsData.hasData">
+      <div>
+        <div class="h-64 relative">
+          <canvas id="earningsChart"></canvas>
         </div>
-      </template>
-    </div>
-    
-    <div class="text-center">
-      <div class="text-2xl font-bold" style="color: #011e41">R$ 1,950.00</div>
-      <div class="text-sm text-gray-500">Total this week</div>
-    </div>
-  </div>
-
-  <!-- Weekly Performance -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">Weekly Performance</h3>
-    
-    <div class="space-y-4">
-      <template x-for="week in weeklyEarnings" :key="week.week">
-        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-          <div>
-            <div class="font-medium text-gray-900" x-text="week.week"></div>
-            <div class="text-sm text-gray-500"><span x-text="week.jobs"></span> jobs completed</div>
+        <div class="mt-4 grid grid-cols-2 gap-4">
+          <div class="text-center">
+            <p class="text-sm text-gray-600">Average per Job</p>
+            <p class="text-lg font-semibold text-[#011e41]">
+              AOA {{ avg_per_job|floatformat:0|default:"0" }}
+            </p>
           </div>
-          <div class="text-right">
-            <div class="font-bold text-gray-900" x-text="'R$ ' + week.amount.toFixed(2)"></div>
-            <div class="text-sm text-gray-500" x-text="'R$ ' + (week.amount / week.jobs).toFixed(2) + ' avg per job'"></div>
+          <div class="text-center">
+            <p class="text-sm text-gray-600">Total This Week</p>
+            <p class="text-lg font-semibold text-[#011e41]">
+              AOA {{ total_week_earnings|floatformat:0|default:"0" }}
+            </p>
           </div>
         </div>
-      </template>
-    </div>
+      </div>
+    </template>
+    <template x-if="!earningsData.hasData">
+      <!-- Empty state -->
+      <div class="h-64 flex flex-col items-center justify-center text-gray-400">
+        <svg
+          class="w-16 h-16 mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+          ></path>
+        </svg>
+        <p class="text-sm font-medium">No earnings data yet</p>
+        <p class="text-xs mt-1">Complete jobs to see your performance</p>
+      </div>
+    </template>
   </div>
 
-  <!-- Transaction History -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-4">
-      <h3 class="text-lg font-semibold" style="color: #011e41">Recent Transactions</h3>
-      <button class="text-sm hover:underline" style="color: #035d73; cursor: pointer">View All</button>
+  <!-- Recent Transactions -->
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div class="p-6 border-b border-gray-200">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-semibold text-[#011e41]">
+          Recent Transactions
+        </h3>
+        <a
+          href="/dashboard/transactions/"
+          class="text-sm text-[#035d73] hover:underline"
+          >View All</a
+        >
+      </div>
     </div>
-    
-    <div class="space-y-3">
-      <template x-for="transaction in recentTransactions" :key="transaction.id">
-        <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
-          <div class="flex items-center">
-            <div 
-              class="w-10 h-10 rounded-full flex items-center justify-center mr-3"
-              :class="{
-                'bg-green-100': transaction.type === 'earning',
-                'bg-blue-100': transaction.type === 'payout',
-                'bg-yellow-100': transaction.type === 'tip'
-              }"
-            >
-              <svg class="w-5 h-5" :class="{
-                'text-green-600': transaction.type === 'earning',
-                'text-blue-600': transaction.type === 'payout',
-                'text-yellow-600': transaction.type === 'tip'
-              }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-              </svg>
+
+    <div class="overflow-hidden" x-data="earningsTab">
+      <template
+        x-if="earningsData.transactions && earningsData.transactions.length > 0"
+      >
+        <div class="divide-y divide-gray-200">
+          <template
+            x-for="transaction in earningsData.transactions"
+            :key="transaction.id"
+          >
+            <div class="p-4 hover:bg-gray-50 transition-colors">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                  <div
+                    class="p-2 rounded-full"
+                    :class="transaction.amount > 0 ? 'bg-green-100' : 'bg-red-100'"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      :class="transaction.amount > 0 ? 'text-green-600' : 'text-red-600'"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        x-show="transaction.amount > 0"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 11l5-5m0 0l5 5m-5-5v12"
+                      ></path>
+                      <path
+                        x-show="transaction.amount <= 0"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 13l-5 5m0 0l-5-5m5 5V6"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p
+                      class="text-sm font-medium text-gray-900"
+                      x-text="transaction.description"
+                    ></p>
+                    <p
+                      class="text-xs text-gray-500"
+                      x-text="formatDate(transaction.date)"
+                    ></p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <p
+                    class="text-sm font-semibold"
+                    :class="transaction.amount > 0 ? 'text-green-600' : 'text-red-600'"
+                    x-text="(transaction.amount > 0 ? '+' : '-') + 'AOA ' + Math.abs(transaction.amount).toLocaleString()"
+                  ></p>
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+                    :class="getStatusClass(transaction.status)"
+                    x-text="transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)"
+                  >
+                  </span>
+                </div>
+              </div>
             </div>
-            <div>
-              <div class="font-medium text-gray-900" x-text="transaction.description"></div>
-              <div class="text-sm text-gray-500" x-text="transaction.date"></div>
-            </div>
-          </div>
-          <div class="text-right">
-            <div 
-              class="font-medium"
-              :class="transaction.amount > 0 ? 'text-green-600' : 'text-red-600'"
-              x-text="(transaction.amount > 0 ? '+' : '') + 'R$ ' + Math.abs(transaction.amount).toFixed(2)"
-            ></div>
-            <div 
-              class="text-xs px-2 py-1 rounded-full"
-              :class="{
-                'bg-green-100 text-green-800': transaction.status === 'completed' || transaction.status === 'received',
-                'bg-blue-100 text-blue-800': transaction.status === 'processed'
-              }"
-              x-text="transaction.status"
-            ></div>
-          </div>
+          </template>
+        </div>
+      </template>
+      <template
+        x-if="!earningsData.transactions || earningsData.transactions.length === 0"
+      >
+        <!-- Empty state -->
+        <div class="p-12 text-center">
+          <svg
+            class="w-16 h-16 mx-auto text-gray-400 mb-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+            ></path>
+          </svg>
+          <p class="text-sm font-medium text-gray-900 mb-1">
+            No transactions yet
+          </p>
+          <p class="text-xs text-gray-500">
+            Your earnings and payouts will appear here
+          </p>
         </div>
       </template>
     </div>
+  </div>
+
+  <!-- Modal Container -->
+  <div id="modal-container"></div>
   </div>
 </div>
+
+<!-- Initialize earnings data and Chart.js -->
+<script>
+  document.addEventListener("alpine:init", () => {
+    Alpine.data("earningsTab", () => ({
+      earningsData: {
+        transactions: [],
+        dailyEarnings: [],
+        chartLabels: [],
+        weeklyData: [],
+        hasData: false,
+      },
+      chartInstance: null,
+
+      init() {
+        // Get data from data attributes
+        const element = this.$el;
+        this.earningsData = {
+          transactions: JSON.parse(
+            element.dataset.earningsTransactions || "[]"
+          ),
+          dailyEarnings: JSON.parse(element.dataset.dailyEarnings || "[]"),
+          chartLabels: JSON.parse(element.dataset.chartLabels || "[]"),
+          weeklyData: JSON.parse(element.dataset.weeklyData || "[]"),
+          hasData:
+            parseInt(element.dataset.currentWeekJobs || "0") > 0 ||
+            parseInt(element.dataset.totalWeekEarnings || "0") > 0,
+        };
+
+        if (this.earningsData.hasData) {
+          // Load Chart.js if not already loaded
+          if (!window.Chart) {
+            const script = document.createElement("script");
+            script.src = "https://cdn.jsdelivr.net/npm/chart.js";
+            script.onload = () => {
+              this.$nextTick(() => this.initChart());
+            };
+            document.head.appendChild(script);
+          } else {
+            this.$nextTick(() => this.initChart());
+          }
+        }
+      },
+
+      initChart() {
+        const ctx = document.getElementById("earningsChart");
+        if (ctx && window.Chart) {
+          this.chartInstance = new Chart(ctx.getContext("2d"), {
+            type: "line",
+            data: {
+              labels: this.earningsData.chartLabels,
+              datasets: [
+                {
+                  label: "Daily Earnings",
+                  data: this.earningsData.dailyEarnings,
+                  borderColor: "#035d73",
+                  backgroundColor: "rgba(3, 93, 115, 0.1)",
+                  borderWidth: 2,
+                  tension: 0.4,
+                  fill: true,
+                  pointBackgroundColor: "#035d73",
+                  pointBorderColor: "#fff",
+                  pointBorderWidth: 2,
+                  pointRadius: 4,
+                  pointHoverRadius: 6,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false,
+                },
+                tooltip: {
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  padding: 12,
+                  cornerRadius: 8,
+                  titleFont: {
+                    size: 14,
+                    weight: "normal",
+                  },
+                  bodyFont: {
+                    size: 16,
+                    weight: "bold",
+                  },
+                  callbacks: {
+                    label: function (context) {
+                      return "AOA " + context.parsed.y.toLocaleString();
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: {
+                    drawBorder: false,
+                    color: "#e5e7eb",
+                  },
+                  ticks: {
+                    callback: function (value) {
+                      return "AOA " + value.toLocaleString();
+                    },
+                    color: "#6b7280",
+                    padding: 8,
+                  },
+                },
+                x: {
+                  grid: {
+                    display: false,
+                    drawBorder: false,
+                  },
+                  ticks: {
+                    color: "#6b7280",
+                    padding: 8,
+                  },
+                },
+              },
+              interaction: {
+                intersect: false,
+                mode: "index",
+              },
+            },
+          });
+        }
+      },
+
+      formatDate(dateStr) {
+        return new Date(dateStr).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+      },
+
+      getStatusClass(status) {
+        switch (status) {
+          case "completed":
+            return "bg-green-100 text-green-800";
+          case "pending":
+            return "bg-yellow-100 text-yellow-800";
+          case "failed":
+            return "bg-red-100 text-red-800";
+          default:
+            return "bg-gray-100 text-gray-800";
+        }
+      },
+    }));
+  });
+</script>

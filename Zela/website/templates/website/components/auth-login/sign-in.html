@@ -1,5 +1,4 @@
-{% extends 'website/layouts/base.html' %} {% load static %} {% block title %}{{
-title }}{% endblock %} {% block content %}
+{% extends 'website/layouts/base.html' %} {% load static %} {% block title %}Iniciar Sessão - Zela{% endblock %} {% block content %}
 <!-- Include Navbar -->
 {% include 'website/fragments/navbar.html' %}
 
@@ -13,10 +12,10 @@ title }}{% endblock %} {% block content %}
       <!-- Header -->
       <div class="px-8 py-12 text-center">
         <h1 class="text-4xl font-bold mb-4" style="color: #035d73">
-          Welcome Back
+          Bem-vindo de Volta
         </h1>
         <p class="text-lg mb-8" style="color: #4a5a70">
-          Sign in to manage bookings or apply as a provider.
+          Inicie sessão para gerir reservas ou candidatar-se como prestador.
         </p>
       </div>
 
@@ -32,7 +31,7 @@ title }}{% endblock %} {% block content %}
               class="block text-sm font-semibold mb-2"
               style="color: #035d73"
             >
-              Email Address *
+              Endereço de Email *
             </label>
             {{ form.email }} {% if form.email.errors %}
             <div class="mt-1 text-sm text-red-600">
@@ -50,7 +49,7 @@ title }}{% endblock %} {% block content %}
               class="block text-sm font-semibold mb-2"
               style="color: #035d73"
             >
-              Password *
+              Palavra-passe *
             </label>
             {{ form.password }} {% if form.password.errors %}
             <div class="mt-1 text-sm text-red-600">
@@ -69,7 +68,7 @@ title }}{% endblock %} {% block content %}
               class="ml-3 text-sm"
               style="color: #4a5a70"
             >
-              Keep me signed in on this device
+              Manter-me com sessão iniciada neste dispositivo
             </label>
           </div>
 
@@ -88,7 +87,7 @@ title }}{% endblock %} {% block content %}
             class="w-full py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
             style="background-color: #035d73; color: #fdea00"
           >
-            Sign In
+            Iniciar Sessão
           </button>
         </form>
 
@@ -99,7 +98,7 @@ title }}{% endblock %} {% block content %}
           </div>
           <div class="relative flex justify-center text-sm">
             <span class="px-4 bg-white" style="color: #69768b">
-              or continue with
+              ou continuar com
             </span>
           </div>
         </div>
@@ -132,9 +131,9 @@ title }}{% endblock %} {% block content %}
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            Sign in with Google
+            Iniciar sessão com Google
             <span class="ml-2 text-xs bg-gray-100 px-2 py-1 rounded-full">
-              Coming Soon
+              Em Breve
             </span>
           </button>
 
@@ -153,7 +152,7 @@ title }}{% endblock %} {% block content %}
             </svg>
             Facebook
             <span class="ml-2 text-xs bg-gray-100 px-2 py-1 rounded-full">
-              Coming Soon
+              Em Breve
             </span>
           </button>
         </div>
@@ -161,13 +160,13 @@ title }}{% endblock %} {% block content %}
         <!-- Register Link -->
         <div class="mt-8 text-center">
           <p class="text-sm" style="color: #69768b">
-            New to Zela?
+            Novo na Zela?
             <a
               href="{% url 'website:register' %}"
               class="font-semibold underline cursor-pointer"
               style="color: #035d73"
             >
-              Create an account
+              Criar uma conta
             </a>
           </p>
         </div>

@@ -9,12 +9,13 @@ from django import forms
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from bookings.models import Booking, Rating
-from payments.models import Payment, Payout, RecentTransaction
+from payments.models import Payment, Payout, RecentTransaction, ProviderWallet, EarningsHistory, PayoutRequest
 from notifications.models import Notification
-from accounts.models import User, ProviderProfile, Profile, PaymentMethod
-from datetime import datetime, timedelta
+from accounts.models import User, ProviderProfile, Profile, PaymentMethod, DistanceRequest
+from datetime import datetime, timedelta, date
 from typing import Dict, Any
 import uuid
+from decimal import Decimal
 
 
 class DashboardShellView(LoginRequiredMixin, TemplateView):
@@ -169,12 +170,347 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
         # Get user locations
         locations = user.locations.all().order_by('-is_main', '-created_at')
         
+        # Additional context for provider dashboard
+        provider_context = {}
+        if user.role == 'provider':
+            provider_profile = getattr(user, 'provider', None)
+            if provider_profile:
+                # Calculate provider metrics
+                provider_context['provider'] = provider_profile
+                
+                # Enhance next_job with additional properties
+                if next_booking:
+                    # Add time_until property
+                    time_diff = next_booking.start_at - timezone.now()
+                    minutes_until = int(time_diff.total_seconds() / 60)
+                    next_booking.time_until = minutes_until if minutes_until > 0 else 0
+                    
+                    # Add scheduled_date and scheduled_end for template compatibility
+                    next_booking.scheduled_date = next_booking.start_at
+                    next_booking.scheduled_end = next_booking.end_at
+                    
+                    # Create a simple address object for template compatibility
+                    class SimpleAddress:
+                        def __init__(self, address_str):
+                            self.full_address = address_str
+                    
+                    if isinstance(next_booking.address, str):
+                        next_booking.address = SimpleAddress(next_booking.address)
+                
+                provider_context['next_job'] = next_booking  # Pass next_booking as next_job
+                
+                # Generate compliance alerts (example logic)
+                compliance_alerts = []
+                if not provider_profile.is_approved:
+                    compliance_alerts.append({
+                        'title': 'Complete Your Verification',
+                        'message': 'Upload your KYC documents to start accepting jobs'
+                    })
+                # Add more compliance checks as needed
+                provider_context['compliance_alerts'] = compliance_alerts
+                
+                # Calculate additional provider stats if needed
+                from django.db.models import Count, Q
+                from datetime import timedelta
+                
+                # Get jobs completed count
+                jobs_completed = user.jobs.filter(status='completed').count()
+                
+                # Calculate completion rate (completed vs total accepted)
+                total_accepted = user.jobs.filter(
+                    status__in=['accepted', 'in_progress', 'completed', 'cancelled']
+                ).count()
+                
+                # Update provider profile statistics
+                provider_profile.jobs_completed = jobs_completed
+                provider_profile.jobs_total = total_accepted
+                
+                if total_accepted > 0:
+                    provider_profile.completion_rate = (jobs_completed / total_accepted) * 100
+                else:
+                    provider_profile.completion_rate = 0
+                
+                # Get or create provider wallet
+                wallet, created = ProviderWallet.objects.get_or_create(
+                    provider=user,
+                    defaults={'available_balance': 0, 'pending_balance': 0}
+                )
+                
+                # Calculate this week's earnings from actual data
+                today = timezone.now().date()
+                week_start = today - timedelta(days=today.weekday())  # Monday of current week
+                week_end = week_start + timedelta(days=6)  # Sunday
+                
+                # Get current week's earnings
+                current_week_earnings = EarningsHistory.objects.filter(
+                    provider=user,
+                    date__gte=week_start,
+                    date__lte=week_end
+                ).aggregate(
+                    total_gross=Sum('gross_amount'),
+                    total_net=Sum('net_amount'),
+                    total_jobs=Sum('jobs_count'),
+                    total_tips=Sum('tips_amount')
+                )
+                
+                # Get earnings for the past 4 weeks
+                four_weeks_ago = week_start - timedelta(weeks=4)
+                weekly_earnings_data = []
+                
+                for i in range(4):
+                    week_offset = timedelta(weeks=i)
+                    week_start_date = week_start - week_offset
+                    week_end_date = week_start_date + timedelta(days=6)
+                    
+                    week_data = EarningsHistory.objects.filter(
+                        provider=user,
+                        date__gte=week_start_date,
+                        date__lte=week_end_date
+                    ).aggregate(
+                        amount=Sum('net_amount'),
+                        jobs=Sum('jobs_count')
+                    )
+                    
+                    weekly_earnings_data.append({
+                        'week': f"{week_start_date.strftime('%b %d')}-{week_end_date.strftime('%d')}",
+                        'amount': float(week_data['amount'] or 0),
+                        'jobs': week_data['jobs'] or 0
+                    })
+                
+                # Get daily earnings for current week chart
+                daily_earnings = []
+                days_of_week = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                
+                for i in range(7):
+                    day_date = week_start + timedelta(days=i)
+                    day_earnings = EarningsHistory.objects.filter(
+                        provider=user,
+                        date=day_date
+                    ).aggregate(
+                        amount=Sum('net_amount')
+                    )
+                    daily_earnings.append(float(day_earnings['amount'] or 0))
+                
+                # Get recent earnings transactions for earnings tab
+                earnings_transactions = []
+                transactions = RecentTransaction.objects.filter(
+                    user=user,
+                    transaction_type__in=['earning', 'payout', 'tip']
+                ).order_by('-created_at')[:10]
+                
+                for trans in transactions:
+                    earnings_transactions.append({
+                        'id': trans.reference,
+                        'type': trans.transaction_type,
+                        'description': trans.description,
+                        'amount': float(trans.amount) if trans.is_credit else -float(trans.amount),
+                        'date': trans.created_at.strftime('%Y-%m-%d'),
+                        'status': trans.status
+                    })
+                
+                # Get pending payouts
+                pending_payouts = PayoutRequest.objects.filter(
+                    provider=user,
+                    status__in=['pending', 'processing']
+                ).aggregate(
+                    total=Sum('amount')
+                )
+                
+                # Calculate average per job for this week
+                avg_per_job = 0
+                if current_week_earnings['total_jobs'] and current_week_earnings['total_jobs'] > 0:
+                    avg_per_job = float(current_week_earnings['total_net'] or 0) / current_week_earnings['total_jobs']
+                
+                weekly_earnings = float(current_week_earnings['total_net'] or 0)
+                
+                # Only update if values have changed to avoid unnecessary DB writes
+                if (provider_profile.total_earnings != weekly_earnings or
+                    provider_profile.jobs_completed != jobs_completed or
+                    provider_profile.jobs_total != total_accepted):
+                    provider_profile.total_earnings = weekly_earnings
+                    provider_profile.save(update_fields=['jobs_completed', 'jobs_total', 'completion_rate', 'total_earnings'])
+                
+                # Get job lists for job queue tab
+                upcoming_jobs = user.jobs.filter(
+                    status__in=['accepted'],
+                    start_at__gt=timezone.now()
+                ).select_related('customer', 'service_task__category').order_by('start_at')
+                
+                in_progress_jobs = user.jobs.filter(
+                    status='in_progress'
+                ).select_related('customer', 'service_task__category').order_by('-updated_at')
+                
+                completed_jobs = user.jobs.filter(
+                    status='completed'
+                ).select_related('customer', 'service_task__category').prefetch_related('rating').order_by('-updated_at')[:10]  # Show last 10
+                
+                provider_context['upcoming_jobs'] = upcoming_jobs
+                provider_context['in_progress_jobs'] = in_progress_jobs
+                provider_context['completed_jobs'] = completed_jobs
+                provider_context['upcoming_jobs_count'] = upcoming_jobs.count()
+                provider_context['in_progress_jobs_count'] = in_progress_jobs.count()
+                provider_context['completed_jobs_count'] = user.jobs.filter(status='completed').count()
+                
+                # Get working hours and service areas
+                import json
+                
+                try:
+                    # Initialize working hours if empty
+                    if not provider_profile.working_hours:
+                        provider_profile.working_hours = provider_profile.get_default_working_hours()
+                        provider_profile.save(update_fields=['working_hours'])
+                    
+                    # Initialize service areas if empty
+                    if not provider_profile.service_areas:
+                        provider_profile.service_areas = provider_profile.get_default_service_areas()
+                        provider_profile.save(update_fields=['service_areas'])
+                    
+                    # Pass data for availability and service area tabs
+                    provider_context['working_hours'] = json.dumps(provider_profile.working_hours)
+                    provider_context['service_areas'] = json.dumps(provider_profile.service_areas)
+                    provider_context['time_off_requests'] = json.dumps([])  # Empty for now, can be implemented later
+                    
+                    # Calculate statistics for service areas
+                    active_areas = [area for area in provider_profile.service_areas if area.get('enabled', False)]
+                    provider_context['active_areas_count'] = len(active_areas)
+                    
+                    # Calculate average surcharge
+                    if active_areas:
+                        total_surcharge = sum(area.get('surcharge', 0) for area in active_areas)
+                        provider_context['avg_surcharge'] = total_surcharge / len(active_areas)
+                    else:
+                        provider_context['avg_surcharge'] = 0
+                    
+                    # Get recent distance requests
+                    recent_distance_requests = DistanceRequest.objects.filter(
+                        provider=user
+                    ).select_related('booking').order_by('-created_at')[:5]
+                    
+                    provider_context['recent_distance_requests'] = recent_distance_requests
+                    
+                    # Calculate population covered based on active areas
+                    # This is a simplified calculation - in production you'd use actual demographic data
+                    population_per_area = {
+                        'Luanda Centro': 250000,
+                        'Maianga': 180000,
+                        'Ingombota': 150000,
+                        'Rangel': 200000,
+                        'Cazenga': 170000,
+                        'Viana': 220000,
+                        'Kilamba': 190000,
+                        'Talatona': 160000,
+                    }
+                    
+                    total_population = 0
+                    for area in active_areas:
+                        total_population += population_per_area.get(area.get('name', ''), 100000)
+                    
+                    # Format population for display
+                    if total_population >= 1000000:
+                        population_covered = f"{total_population / 1000000:.1f}M"
+                    else:
+                        population_covered = f"{total_population / 1000:.0f}k"
+                    
+                    provider_context['population_covered'] = population_covered
+                
+                    # Get provider documents for KYC tab
+                    try:
+                        from accounts.models import ProviderDocument, ProviderContract
+                        provider_documents = ProviderDocument.objects.filter(
+                            provider=provider_profile
+                        ).order_by('document_type')
+                        
+                        provider_contracts = ProviderContract.objects.filter(
+                            provider=provider_profile
+                        ).order_by('-created_at')
+                        
+                        provider_context['provider_documents'] = provider_documents
+                        provider_context['provider_contracts'] = provider_contracts
+                        
+                        # Get missing required documents
+                        existing_types = list(provider_documents.values_list('document_type', flat=True))
+                        required_types = ['national_id', 'proof_address', 'bank_statement', 'criminal_record']
+                        missing_documents = []
+                        
+                        for doc_type in required_types:
+                            if doc_type not in existing_types:
+                                missing_documents.append({
+                                    'document_type': doc_type,
+                                    'display_name': dict(ProviderDocument.DOCUMENT_TYPES).get(doc_type, doc_type)
+                                })
+                        
+                        provider_context['missing_documents'] = missing_documents
+                    except:
+                        provider_context['provider_documents'] = []
+                        provider_context['provider_contracts'] = []
+                        provider_context['missing_documents'] = []
+                except Exception as e:
+                    # Fallback for when database columns don't exist yet
+                    print(f"Warning: Provider profile fields not available: {e}")
+                    provider_context['working_hours'] = json.dumps(provider_profile.get_default_working_hours())
+                    provider_context['service_areas'] = json.dumps(provider_profile.get_default_service_areas())
+                    provider_context['time_off_requests'] = json.dumps([])
+                    provider_context['active_areas_count'] = 4
+                    provider_context['avg_surcharge'] = 7.5
+                    provider_context['recent_distance_requests'] = []
+                    provider_context['population_covered'] = '850k'
+                    provider_context['provider_documents'] = []
+                    provider_context['provider_contracts'] = []
+                    provider_context['missing_documents'] = []
+                
+                # Add earnings data to context
+                provider_context['wallet'] = {
+                    'available_balance': float(wallet.available_balance),
+                    'pending_balance': float(wallet.pending_balance),
+                    'total_balance': float(wallet.total_balance)
+                }
+                provider_context['pending_payouts'] = float(pending_payouts['total'] or 0)
+                provider_context['current_week_jobs'] = current_week_earnings['total_jobs'] or 0
+                provider_context['current_week_earnings'] = weekly_earnings
+                provider_context['avg_per_job'] = avg_per_job
+                provider_context['weekly_earnings_data'] = json.dumps(weekly_earnings_data)
+                provider_context['daily_earnings'] = json.dumps(daily_earnings)
+                provider_context['earnings_chart_labels'] = json.dumps(days_of_week)
+                provider_context['earnings_transactions'] = json.dumps(earnings_transactions if earnings_transactions else [])
+                provider_context['total_week_earnings'] = sum(daily_earnings)
+                
+                # Calculate week-over-week growth
+                if len(weekly_earnings_data) >= 2:
+                    last_week = weekly_earnings_data[1]['amount'] if weekly_earnings_data[1]['amount'] > 0 else 1
+                    this_week = weekly_earnings_data[0]['amount']
+                    growth_percentage = ((this_week - last_week) / last_week) * 100
+                else:
+                    growth_percentage = 0
+                    
+                provider_context['earnings_growth'] = round(growth_percentage, 1)
+        
+        # Get recent transactions for all tabs that need them
+        recent_transactions = []
+        transactions = RecentTransaction.objects.filter(
+            user=user
+        ).select_related('payment', 'payout').order_by('-created_at')[:10]
+        
+        for transaction in transactions:
+            recent_transactions.append({
+                'id': transaction.reference,
+                'date': transaction.created_at,
+                'description': transaction.description,
+                'amount': transaction.amount,
+                'amount_display': transaction.amount_display,
+                'status': transaction.status,
+                'status_display': transaction.get_status_display(),
+                'type': transaction.transaction_type,
+                'is_credit': transaction.is_credit,
+                'is_debit': transaction.is_debit,
+            })
+        
         context.update({
             'title': 'Dashboard - Zela',
             'dashboard_stats': dashboard_stats,
             'dashboard_data': dashboard_data,  # Added for template compatibility
             'unread_notifications': unread_notifications,
             'is_provider': user.role == 'provider',
+            'recent_transactions': recent_transactions,  # Added for all tabs
             'profile': profile,
             'profile_completion': profile_completion,
             'notification_preferences': notification_preferences,
@@ -188,6 +524,7 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
             'cancelled_bookings_count': cancelled_bookings_list.count(),
             'payment_methods': payment_methods,
             'locations': locations,
+            **provider_context  # Add provider-specific context
         })
         
         return context
@@ -735,3 +1072,230 @@ def set_default_payment_method(request, pk):
             )
         messages.error(request, f"Error setting default payment method: {str(e)}")
         return redirect('website:dashboard')
+
+
+@login_required
+@require_http_methods(["POST"])
+def update_provider_availability(request):
+    """Update provider availability status."""
+    if request.user.role != 'provider':
+        return JsonResponse({'error': 'Not authorized'}, status=403)
+    
+    try:
+        import json
+        data = json.loads(request.body)
+        provider_profile = request.user.provider
+        
+        # Update availability fields
+        if 'is_available' in data:
+            provider_profile.is_available = data['is_available']
+        
+        if 'accepts_same_day' in data:
+            provider_profile.accepts_same_day = data['accepts_same_day']
+        
+        provider_profile.save()
+        
+        return JsonResponse({
+            'ok': 1,
+            'message': 'Availability updated successfully',
+            'is_available': provider_profile.is_available,
+            'accepts_same_day': provider_profile.accepts_same_day
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'ok': 0,
+            'error': str(e)
+        }, status=400)
+
+
+@login_required
+@require_http_methods(["POST"])
+def update_provider_schedule(request):
+    """Update provider working hours schedule."""
+    if request.user.role != 'provider':
+        return JsonResponse({'error': 'Not authorized'}, status=403)
+    
+    try:
+        import json
+        data = json.loads(request.body)
+        provider_profile = request.user.provider
+        
+        # Update working hours
+        if 'working_hours' in data:
+            provider_profile.working_hours = data['working_hours']
+            provider_profile.save()
+        
+        return JsonResponse({
+            'ok': 1,
+            'message': 'Schedule updated successfully',
+            'working_hours': provider_profile.working_hours
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'ok': 0,
+            'error': str(e)
+        }, status=400)
+
+
+@login_required
+@require_http_methods(["POST"])
+def update_service_areas(request):
+    """Update provider service areas."""
+    if request.user.role != 'provider':
+        return JsonResponse({'error': 'Not authorized'}, status=403)
+    
+    try:
+        import json
+        data = json.loads(request.body)
+        provider_profile = request.user.provider
+        
+        # Update service areas
+        if 'service_areas' in data:
+            provider_profile.service_areas = data['service_areas']
+        
+        # Update travel settings
+        if 'max_travel_distance' in data:
+            provider_profile.max_travel_distance = data['max_travel_distance']
+        
+        if 'preferred_radius' in data:
+            provider_profile.preferred_radius = data['preferred_radius']
+        
+        if 'include_traffic_time' in data:
+            provider_profile.include_traffic_time = data['include_traffic_time']
+        
+        if 'avoid_tolls' in data:
+            provider_profile.avoid_tolls = data['avoid_tolls']
+        
+        if 'prefer_main_roads' in data:
+            provider_profile.prefer_main_roads = data['prefer_main_roads']
+        
+        provider_profile.save()
+        
+        return JsonResponse({
+            'ok': 1,
+            'message': 'Service areas updated successfully',
+            'service_areas': provider_profile.service_areas,
+            'travel_settings': {
+                'max_travel_distance': provider_profile.max_travel_distance,
+                'preferred_radius': provider_profile.preferred_radius,
+                'include_traffic_time': provider_profile.include_traffic_time,
+                'avoid_tolls': provider_profile.avoid_tolls,
+                'prefer_main_roads': provider_profile.prefer_main_roads
+            }
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'ok': 0,
+            'error': str(e)
+        }, status=400)
+
+@login_required
+@require_http_methods(["POST"])
+def upload_document(request):
+    """Handle document upload for providers."""
+    if request.user.role != 'provider':
+        return JsonResponse({'ok': 0, 'message': 'Only providers can upload documents'}, status=403)
+    
+    try:
+        from accounts.models import ProviderDocument
+        provider_profile = request.user.provider
+        document_type = request.POST.get('document_type')
+        file = request.FILES.get('file')
+        
+        if not file:
+            return JsonResponse({'ok': 0, 'message': 'No file provided'}, status=400)
+        
+        # Validate file size (max 10MB)
+        if file.size > 10 * 1024 * 1024:
+            return JsonResponse({'ok': 0, 'message': 'File size must be less than 10MB'}, status=400)
+        
+        # Check if document of this type already exists
+        existing_doc = ProviderDocument.objects.filter(
+            provider=provider_profile,
+            document_type=document_type
+        ).first()
+        
+        if existing_doc:
+            # Update existing document
+            existing_doc.file = file
+            existing_doc.file_name = file.name
+            existing_doc.status = 'pending'  # Reset to pending for re-verification
+            existing_doc.uploaded_at = timezone.now()
+            existing_doc.save()
+            document = existing_doc
+        else:
+            # Create new document
+            document = ProviderDocument.objects.create(
+                provider=provider_profile,
+                document_type=document_type,
+                file=file,
+                file_name=file.name,
+                status='pending',
+                is_required=document_type in ['national_id', 'proof_address', 'bank_statement', 'criminal_record']
+            )
+        
+        # Create notification for admin
+        admin_users = User.objects.filter(role='admin', is_active=True)
+        for admin in admin_users:
+            Notification.objects.create(
+                user=admin,
+                title="New Document Uploaded",
+                message=f"{provider_profile.user.get_full_name()} uploaded {document.get_document_type_display()}",
+                notification_type="document",
+                link=f"/admin/accounts/providerdocument/{document.id}/change/"
+            )
+        
+        return JsonResponse({
+            'ok': 1,
+            'message': 'Document uploaded successfully. It will be reviewed soon.',
+            'document_id': document.id
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'ok': 0,
+            'message': f'Error uploading document: {str(e)}'
+        }, status=400)
+
+
+@login_required
+@require_http_methods(["POST"])
+def update_profile(request):
+    """Update user profile information."""
+    try:
+        user = request.user
+        profile, created = Profile.objects.get_or_create(user=user)
+        
+        # Update profile fields
+        profile.first_name = request.POST.get('first_name', '')
+        profile.last_name = request.POST.get('last_name', '')
+        profile.address = request.POST.get('address', '')
+        profile.national_id_number = request.POST.get('national_id_number', '')
+        
+        # Handle date of birth
+        dob_str = request.POST.get('date_of_birth', '')
+        if dob_str:
+            try:
+                profile.date_of_birth = datetime.strptime(dob_str, '%Y-%m-%d').date()
+            except ValueError:
+                pass
+        
+        profile.save()
+        
+        # Update user phone
+        user.phone = request.POST.get('phone', '')
+        user.save()
+        
+        return JsonResponse({
+            'ok': 1,
+            'message': 'Profile updated successfully'
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'ok': 0,
+            'message': f'Error updating profile: {str(e)}'
+        }, status=400)

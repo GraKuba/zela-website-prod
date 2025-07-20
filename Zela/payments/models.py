@@ -199,6 +199,206 @@ class Payout(models.Model):
         unique_together = ['provider', 'week_start']
 
 
+class ProviderWallet(models.Model):
+    """Wallet for tracking provider balances and earnings."""
+    
+    provider = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="wallet",
+        help_text="Provider who owns this wallet"
+    )
+    available_balance = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Balance available for withdrawal"
+    )
+    pending_balance = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Balance pending from recent jobs"
+    )
+    total_withdrawn = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Total amount withdrawn all time"
+    )
+    last_payout_date = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Date of last payout"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Wallet - {self.provider.get_full_name()}"
+    
+    @property
+    def total_balance(self):
+        """Get total balance (available + pending)."""
+        return self.available_balance + self.pending_balance
+    
+    class Meta:
+        verbose_name = 'Provider Wallet'
+        verbose_name_plural = 'Provider Wallets'
+
+
+class EarningsHistory(models.Model):
+    """Track daily earnings for providers."""
+    
+    provider = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="earnings_history",
+        help_text="Provider who earned this"
+    )
+    date = models.DateField(
+        help_text="Date of earnings"
+    )
+    jobs_count = models.PositiveIntegerField(
+        default=0,
+        help_text="Number of jobs completed"
+    )
+    gross_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Total earnings before commission"
+    )
+    commission_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Platform commission"
+    )
+    tips_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Tips received"
+    )
+    net_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Net earnings after commission"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def save(self, *args, **kwargs):
+        """Calculate net amount."""
+        self.net_amount = self.gross_amount - self.commission_amount + self.tips_amount
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return f"{self.provider.get_full_name()} - {self.date}"
+    
+    class Meta:
+        verbose_name = 'Earnings History'
+        verbose_name_plural = 'Earnings Histories'
+        unique_together = ['provider', 'date']
+        ordering = ['-date']
+
+
+class PayoutRequest(models.Model):
+    """Payout requests from providers."""
+    
+    TYPE_CHOICES = [
+        ("instant", "Instant Payout"),
+        ("standard", "Standard Payout"),
+    ]
+    
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("processing", "Processing"),
+        ("completed", "Completed"),
+        ("failed", "Failed"),
+        ("cancelled", "Cancelled"),
+    ]
+    
+    provider = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="payout_requests",
+        help_text="Provider requesting payout"
+    )
+    payout_type = models.CharField(
+        max_length=20,
+        choices=TYPE_CHOICES,
+        help_text="Type of payout"
+    )
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        help_text="Requested amount"
+    )
+    fee_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Fee for instant payout"
+    )
+    net_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        help_text="Amount after fees"
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="pending",
+        help_text="Request status"
+    )
+    reference = models.CharField(
+        max_length=120,
+        unique=True,
+        help_text="Unique payout reference"
+    )
+    bank_reference = models.CharField(
+        max_length=120,
+        blank=True,
+        help_text="Bank transfer reference"
+    )
+    requested_at = models.DateTimeField(auto_now_add=True)
+    processed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When payout was processed"
+    )
+    completed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When payout was completed"
+    )
+    
+    def save(self, *args, **kwargs):
+        """Generate reference and calculate fees."""
+        if not self.reference:
+            self.reference = f"PO-{uuid.uuid4().hex[:12].upper()}"
+        
+        # Calculate fees for instant payout (1.5%)
+        if self.payout_type == "instant" and not self.fee_amount:
+            self.fee_amount = self.amount * 0.015
+        
+        # Calculate net amount
+        self.net_amount = self.amount - self.fee_amount
+        
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return f"{self.reference} - {self.provider.get_full_name()}"
+    
+    class Meta:
+        verbose_name = 'Payout Request'
+        verbose_name_plural = 'Payout Requests'
+        ordering = ['-requested_at']
+
+
 class RecentTransaction(models.Model):
     """Unified transaction history for users."""
     
@@ -210,6 +410,8 @@ class RecentTransaction(models.Model):
         ("adjustment", "Adjustment"),
         ("deposit", "Deposit"),
         ("withdrawal", "Withdrawal"),
+        ("earning", "Earning"),
+        ("tip", "Tip"),
     ]
     
     STATUS_CHOICES = [
@@ -289,12 +491,12 @@ class RecentTransaction(models.Model):
     @property
     def is_credit(self) -> bool:
         """Check if transaction adds money to user's account."""
-        return self.transaction_type in ["payout", "refund", "deposit"]
+        return self.transaction_type in ["earning", "tip", "refund", "deposit"]
     
     @property
     def is_debit(self) -> bool:
         """Check if transaction removes money from user's account."""
-        return self.transaction_type in ["payment", "commission", "withdrawal"]
+        return self.transaction_type in ["payout", "payment", "commission", "withdrawal"]
     
     class Meta:
         verbose_name = 'Recent Transaction'

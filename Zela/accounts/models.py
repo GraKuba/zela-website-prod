@@ -65,6 +65,20 @@ class Profile(models.Model):
         validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'gif'])],
         help_text="User's profile picture"
     )
+    date_of_birth = models.DateField(
+        null=True,
+        blank=True,
+        help_text="User's date of birth"
+    )
+    national_id_number = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="National ID number"
+    )
+    address = models.TextField(
+        blank=True,
+        help_text="Full address"
+    )
     email_notifications = models.BooleanField(
         default=True,
         help_text="Receive email notifications"
@@ -128,6 +142,75 @@ class ProviderProfile(models.Model):
         default=0,
         help_text="Total number of ratings received"
     )
+    
+    # Performance statistics
+    total_earnings = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Total earnings from all completed jobs"
+    )
+    jobs_completed = models.PositiveIntegerField(
+        default=0,
+        help_text="Total number of completed jobs"
+    )
+    jobs_total = models.PositiveIntegerField(
+        default=0,
+        help_text="Total number of jobs assigned"
+    )
+    completion_rate = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=0,
+        help_text="Job completion rate percentage"
+    )
+    
+    # Availability status
+    is_available = models.BooleanField(
+        default=True,
+        help_text="Whether provider is currently available for work"
+    )
+    accepts_same_day = models.BooleanField(
+        default=True,
+        help_text="Whether provider accepts same-day bookings"
+    )
+    
+    # Working hours (stored as JSON)
+    working_hours = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="Weekly working hours schedule"
+    )
+    
+    # Service areas and coverage
+    service_areas = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="List of service areas with surcharges"
+    )
+    max_travel_distance = models.PositiveIntegerField(
+        default=25,
+        help_text="Maximum travel distance in kilometers"
+    )
+    preferred_radius = models.PositiveIntegerField(
+        default=15,
+        help_text="Preferred working radius in kilometers"
+    )
+    
+    # Travel preferences
+    include_traffic_time = models.BooleanField(
+        default=True,
+        help_text="Include traffic time in travel estimates"
+    )
+    avoid_tolls = models.BooleanField(
+        default=False,
+        help_text="Avoid toll roads when possible"
+    )
+    prefer_main_roads = models.BooleanField(
+        default=True,
+        help_text="Prefer main roads over shortcuts"
+    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -141,9 +224,214 @@ class ProviderProfile(models.Model):
             return "No ratings yet"
         return f"{self.rating_average:.1f} ({self.rating_count} reviews)"
     
+    def update_completion_rate(self):
+        """Update the completion rate based on jobs completed vs total."""
+        if self.jobs_total > 0:
+            self.completion_rate = (self.jobs_completed / self.jobs_total) * 100
+        else:
+            self.completion_rate = 0
+        self.save(update_fields=['completion_rate'])
+    
+    def get_default_working_hours(self):
+        """Return default working hours structure."""
+        return {
+            'monday': {'enabled': True, 'start': '08:00', 'end': '18:00'},
+            'tuesday': {'enabled': True, 'start': '08:00', 'end': '18:00'},
+            'wednesday': {'enabled': True, 'start': '08:00', 'end': '18:00'},
+            'thursday': {'enabled': True, 'start': '08:00', 'end': '18:00'},
+            'friday': {'enabled': True, 'start': '08:00', 'end': '18:00'},
+            'saturday': {'enabled': True, 'start': '09:00', 'end': '16:00'},
+            'sunday': {'enabled': False, 'start': '10:00', 'end': '15:00'}
+        }
+    
+    def get_default_service_areas(self):
+        """Return default service areas for Luanda."""
+        return [
+            {'name': 'Luanda Centro', 'enabled': True, 'surcharge': 0, 'color': '#10b981'},
+            {'name': 'Maianga', 'enabled': True, 'surcharge': 0, 'color': '#10b981'},
+            {'name': 'Ingombota', 'enabled': True, 'surcharge': 5, 'color': '#f59e0b'},
+            {'name': 'Rangel', 'enabled': True, 'surcharge': 10, 'color': '#f59e0b'},
+            {'name': 'Cazenga', 'enabled': False, 'surcharge': 15, 'color': '#ef4444'},
+            {'name': 'Viana', 'enabled': False, 'surcharge': 20, 'color': '#ef4444'}
+        ]
+    
     class Meta:
         verbose_name = 'Provider Profile'
         verbose_name_plural = 'Provider Profiles'
+
+
+class ProviderDocument(models.Model):
+    """KYC and verification documents for providers."""
+    
+    DOCUMENT_TYPES = [
+        ('national_id', 'National ID'),
+        ('proof_address', 'Proof of Address'),
+        ('bank_statement', 'Bank Statement'),
+        ('criminal_record', 'Criminal Record Check'),
+        ('insurance', 'Insurance Certificate'),
+        ('license', 'Professional License'),
+        ('other', 'Other Document'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('pending', 'Pending Review'),
+        ('verified', 'Verified'),
+        ('rejected', 'Rejected'),
+        ('expired', 'Expired'),
+    ]
+    
+    provider = models.ForeignKey(
+        ProviderProfile,
+        on_delete=models.CASCADE,
+        related_name="documents",
+        help_text="Provider who owns this document"
+    )
+    document_type = models.CharField(
+        max_length=20,
+        choices=DOCUMENT_TYPES,
+        help_text="Type of document"
+    )
+    file = models.FileField(
+        upload_to="kyc_documents/",
+        validators=[FileExtensionValidator(allowed_extensions=['pdf', 'jpg', 'jpeg', 'png'])],
+        help_text="Document file"
+    )
+    file_name = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Original file name"
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',
+        help_text="Document verification status"
+    )
+    is_required = models.BooleanField(
+        default=True,
+        help_text="Whether this document is required"
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    verified_at = models.DateTimeField(null=True, blank=True)
+    expiry_date = models.DateField(
+        null=True,
+        blank=True,
+        help_text="Document expiry date"
+    )
+    rejection_reason = models.TextField(
+        blank=True,
+        help_text="Reason for rejection if applicable"
+    )
+    verified_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="verified_documents",
+        help_text="Admin who verified this document"
+    )
+    
+    def __str__(self) -> str:
+        return f"{self.provider.user.get_full_name()} - {self.get_document_type_display()}"
+    
+    @property
+    def is_expired(self) -> bool:
+        """Check if document is expired."""
+        if self.expiry_date:
+            from django.utils import timezone
+            return self.expiry_date < timezone.now().date()
+        return False
+    
+    class Meta:
+        verbose_name = "Provider Document"
+        verbose_name_plural = "Provider Documents"
+        ordering = ['-uploaded_at']
+        unique_together = [['provider', 'document_type']]
+
+
+class ProviderContract(models.Model):
+    """Legal contracts and agreements for providers."""
+    
+    CONTRACT_TYPES = [
+        ('service_agreement', 'Service Provider Agreement'),
+        ('privacy_policy', 'Privacy Policy'),
+        ('terms_service', 'Terms of Service'),
+        ('nda', 'Non-Disclosure Agreement'),
+        ('commission_agreement', 'Commission Agreement'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('signed', 'Signed'),
+        ('acknowledged', 'Acknowledged'),
+        ('expired', 'Expired'),
+    ]
+    
+    provider = models.ForeignKey(
+        ProviderProfile,
+        on_delete=models.CASCADE,
+        related_name="contracts",
+        help_text="Provider who signed this contract"
+    )
+    contract_type = models.CharField(
+        max_length=30,
+        choices=CONTRACT_TYPES,
+        help_text="Type of contract"
+    )
+    title = models.CharField(
+        max_length=255,
+        help_text="Contract title"
+    )
+    version = models.CharField(
+        max_length=10,
+        help_text="Contract version"
+    )
+    file = models.FileField(
+        upload_to="contracts/",
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+        help_text="Contract PDF file"
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',
+        help_text="Contract status"
+    )
+    signed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When the contract was signed"
+    )
+    ip_address = models.GenericIPAddressField(
+        null=True,
+        blank=True,
+        help_text="IP address when signed"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Contract expiry date"
+    )
+    
+    def __str__(self) -> str:
+        return f"{self.provider.user.get_full_name()} - {self.title}"
+    
+    @property
+    def is_active(self) -> bool:
+        """Check if contract is active."""
+        if self.status not in ['signed', 'acknowledged']:
+            return False
+        if self.expires_at:
+            from django.utils import timezone
+            return self.expires_at > timezone.now()
+        return True
+    
+    class Meta:
+        verbose_name = "Provider Contract"
+        verbose_name_plural = "Provider Contracts"
+        ordering = ['-created_at']
+        unique_together = [['provider', 'contract_type', 'version']]
 
 
 class PaymentMethod(models.Model):
@@ -205,6 +493,72 @@ class PaymentMethod(models.Model):
         verbose_name_plural = "Payment Methods"
         ordering = ['-is_default', '-added_at']
         unique_together = [['user', 'provider_id']]
+
+
+class DistanceRequest(models.Model):
+    """Track distance-based service requests to/from providers."""
+    
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('declined', 'Declined'),
+        ('completed', 'Completed'),
+        ('expired', 'Expired'),
+    ]
+    
+    provider = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="distance_requests",
+        help_text="Provider who received this request"
+    )
+    booking = models.ForeignKey(
+        'bookings.Booking',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="distance_request",
+        help_text="Associated booking if accepted"
+    )
+    from_location = models.CharField(
+        max_length=255,
+        help_text="Starting location/neighborhood"
+    )
+    to_location = models.CharField(
+        max_length=255,
+        help_text="Service location/neighborhood"
+    )
+    distance_km = models.DecimalField(
+        max_digits=5,
+        decimal_places=1,
+        help_text="Distance in kilometers"
+    )
+    surcharge_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0,
+        help_text="Distance surcharge amount"
+    )
+    service_name = models.CharField(
+        max_length=255,
+        help_text="Service requested"
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',
+        help_text="Request status"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self) -> str:
+        return f"{self.from_location} → {self.to_location} ({self.distance_km}km)"
+    
+    class Meta:
+        verbose_name = "Distance Request"
+        verbose_name_plural = "Distance Requests"
+        ordering = ['-created_at']
 
 
 class Location(models.Model):

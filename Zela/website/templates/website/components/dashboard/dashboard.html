@@ -37,13 +37,11 @@
          unreadMessages: {{ dashboard_data.unread_messages }}
        },
        init() {
-         // Ensure providers always start in provider mode
          if (this.user.is_provider && !this.isProviderMode) {
            this.isProviderMode = true;
            this.currentTab = 'pro-overview';
          }
          
-         // Check for booking success message
          if (sessionStorage.getItem('bookingSuccess') === 'true') {
            sessionStorage.removeItem('bookingSuccess');
            setTimeout(() => {
@@ -70,7 +68,7 @@
            'ratings': 'Ratings & Reviews',
            'wallet-promos': 'Wallet / Promos',
            'resources': 'Resources & Training',
-           'kyc': 'Profile & KYC Docs',
+           'kyc': 'Profile',
            'settings': 'Settings'
          };
          return tabNames[this.currentTab] || 'Dashboard';
@@ -313,7 +311,7 @@
               d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
             />
           </svg>
-          <span class="truncate">Pro Overview</span>
+          <span class="truncate">Overview</span>
         </button>
 
         <button
@@ -497,7 +495,7 @@
               d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
             />
           </svg>
-          <span class="truncate">Account / KYC Docs</span>
+          <span class="truncate">Profile</span>
         </button>
 
         <button
@@ -620,7 +618,7 @@
             </button>
             <div class="border-t border-gray-200"></div>
             <button
-              onclick="window.location.href='{% url 'website:sign-out' %}'"
+              @click="window.location.href='{% url 'website:sign-out' %}'"
               class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
             >
               Sign Out
@@ -677,8 +675,9 @@
       </div>
     </header>
 
-    <!-- Tab Content - Scrollable -->
-    <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+    <!-- Tab Content - Scrollable with proper container -->
+    <main class="flex-1 overflow-y-auto bg-gray-50">
+      <div class="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
       <!-- Tab Contents -->
       {% include 'website/components/dashboard/tabs/overview.html' %}
       {% include 'website/components/dashboard/tabs/bookings.html' %}
@@ -690,15 +689,17 @@
 
       <!-- Provider Tabs -->
       {% include 'website/components/dashboard/tabs/pro-overview.html' %}
+      {% include 'website/components/dashboard/tabs/earnings.html' %}
       {% include 'website/components/dashboard/tabs/job-queue.html' %}
       {% include 'website/components/dashboard/tabs/availability.html' %}
-      {% include 'website/components/dashboard/tabs/service-area.html' %}
-      {% include 'website/components/dashboard/tabs/earnings.html' %}
       {% include 'website/components/dashboard/tabs/ratings.html' %}
       {% include 'website/components/dashboard/tabs/wallet-promos.html' %}
       {% include 'website/components/dashboard/tabs/resources.html' %}
       {% include 'website/components/dashboard/tabs/kyc.html' %}
       {% include 'website/components/dashboard/tabs/settings.html' %}
+      {% include 'website/components/dashboard/tabs/service-area.html' %}
+
+      </div>
     </main>
   </div>
 </div>

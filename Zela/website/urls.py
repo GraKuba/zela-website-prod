@@ -8,7 +8,9 @@ from .views.auth import RegisterWizardView, SignInView, SignOutView
 from .views.dashboard import (
     DashboardShellView, BookingListPartial, BookingUpdatePartial,
     ProfileUpdateView, RatingCreatePartial, AddPaymentMethodView,
-    set_default_payment_method
+    set_default_payment_method, update_provider_availability,
+    update_provider_schedule, update_service_areas, upload_document,
+    update_profile
 )
 from .views.providers import ProviderLandingView, ProviderApplicationWizard, ApplyWorkerView
 from .views.booking import booking_flow, booking_screen, save_booking_data, get_booking_data, process_payment, get_available_workers
@@ -50,6 +52,15 @@ urlpatterns = [
     path('dashboard/booking/<int:booking_pk>/rate/', RatingCreatePartial.as_view(), name='dashboard-rating-create'),
     path('dashboard/payment-method/add/', AddPaymentMethodView.as_view(), name='add-payment-method'),
     path('dashboard/payment-method/<int:pk>/set-default/', set_default_payment_method, name='set-default-payment'),
+    
+    # Provider availability endpoints
+    path('dashboard/provider/availability/', update_provider_availability, name='update-provider-availability'),
+    path('dashboard/provider/schedule/', update_provider_schedule, name='update-provider-schedule'),
+    path('dashboard/provider/service-areas/', update_service_areas, name='update-service-areas'),
+    
+    # Profile and document management
+    path('dashboard/upload-document/', upload_document, name='upload-document'),
+    path('dashboard/update-profile/', update_profile, name='profile-update'),
     
     # Provider onboarding
     path('providers/', ProviderLandingView.as_view(), name='providers'),
