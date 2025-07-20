@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from bookings.models import Booking, Rating
 from payments.models import Payment, Payout, RecentTransaction, ProviderWallet, EarningsHistory, PayoutRequest
 from notifications.models import Notification
-from accounts.models import User, ProviderProfile, Profile, PaymentMethod, DistanceRequest
+from accounts.models import User, ProviderProfile, Profile, PaymentMethod, DistanceRequest, UserSettings
 from datetime import datetime, timedelta, date
 from typing import Dict, Any
 import uuid
@@ -83,6 +83,9 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
         
         # Get or create user profile
         profile, created = Profile.objects.get_or_create(user=user)
+        
+        # Get or create user settings
+        settings = UserSettings.get_or_create_for_user(user)
         
         # Build dashboard_data for template compatibility
         dashboard_data = {
@@ -512,6 +515,7 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
             'is_provider': user.role == 'provider',
             'recent_transactions': recent_transactions,  # Added for all tabs
             'profile': profile,
+            'settings': settings,  # Add user settings
             'profile_completion': profile_completion,
             'notification_preferences': notification_preferences,
             'upcoming_bookings_list': upcoming_bookings_list,
@@ -947,8 +951,80 @@ class AddPaymentMethodView(LoginRequiredMixin, View):
     def get(self, request):
         """Return the add payment method modal."""
         return render(request, 'website/components/dashboard/modals/add-payment-method.html')
+
+
+class ProviderRatingsPartial(LoginRequiredMixin, TemplateView):
+    """Provider ratings and reviews tab partial."""
     
-    def post(self, request):
+    template_name = 'website/components/dashboard/partials/ratings-content.html'
+    
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
+        """Add ratings context data."""
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        
+        # Ensure user is a provider
+        if user.role != 'provider':
+            context['error'] = "Only providers can view ratings."
+            return context
+        
+        # Get provider profile
+        provider_profile = getattr(user, 'provider', None)
+        if not provider_profile:
+            context['error'] = "Provider profile not found."
+            return context
+        
+        # Get all ratings for this provider
+        ratings = Rating.objects.filter(
+            booking__provider=user
+        ).select_related('booking', 'booking__customer').order_by('-created')
+        
+        # Calculate rating breakdown with percentages
+        rating_breakdown = {}
+        total_count = ratings.count()
+        for i in range(1, 6):
+            count = ratings.filter(score=i).count()
+            percentage = round((count / total_count * 100)) if total_count > 0 else 0
+            rating_breakdown[i] = {
+                'count': count,
+                'percentage': percentage
+            }
+        
+        # Get stats for the current month
+        now = timezone.now()
+        month_start = datetime(now.year, now.month, 1)
+        month_ratings = ratings.filter(created__gte=month_start)
+        
+        # Calculate response stats (placeholder - you might want to track actual replies)
+        total_with_comments = ratings.exclude(comment='').count()
+        
+        context.update({
+            'provider_profile': provider_profile,
+            'overall_rating': provider_profile.rating_average or 0,
+            'total_reviews': provider_profile.rating_count or 0,
+            'rating_breakdown': rating_breakdown,
+            'ratings': ratings[:10],  # Show first 10, implement pagination later
+            'reviews_this_month': month_ratings.count(),
+            'positive_reviews_percentage': self._calculate_positive_percentage(ratings),
+            'total_with_comments': total_with_comments,
+            'has_ratings': ratings.exists(),
+        })
+        
+        return context
+    
+    def _calculate_positive_percentage(self, ratings):
+        """Calculate percentage of positive reviews (4 stars and above)."""
+        if not ratings.exists():
+            return 0
+        
+        positive_count = ratings.filter(score__gte=4).count()
+        total_count = ratings.count()
+        return round((positive_count / total_count) * 100) if total_count > 0 else 0
+
+
+@require_http_methods(["POST"])
+@login_required
+def add_payment_method(request):
         """Create a new payment method."""
         user = request.user
         kind = request.POST.get('kind', 'card')
@@ -1084,16 +1160,27 @@ def update_provider_availability(request):
     try:
         import json
         data = json.loads(request.body)
+        
+        # Get provider profile
         provider_profile = request.user.provider
         
         # Update availability fields
+        fields_to_update = []
+        
         if 'is_available' in data:
             provider_profile.is_available = data['is_available']
+            fields_to_update.append('is_available')
         
         if 'accepts_same_day' in data:
             provider_profile.accepts_same_day = data['accepts_same_day']
+            fields_to_update.append('accepts_same_day')
         
-        provider_profile.save()
+        # Save only the updated fields
+        if fields_to_update:
+            provider_profile.save(update_fields=fields_to_update)
+        
+        # Refresh from database to ensure we have the latest values
+        provider_profile.refresh_from_db()
         
         return JsonResponse({
             'ok': 1,
@@ -1283,6 +1370,17 @@ def update_profile(request):
             except ValueError:
                 pass
         
+        # Handle profile picture upload
+        if 'profile_picture' in request.FILES:
+            profile_picture = request.FILES['profile_picture']
+            # Validate file size (5MB max)
+            if profile_picture.size > 5 * 1024 * 1024:
+                return JsonResponse({
+                    'ok': False,
+                    'message': 'Profile picture must be less than 5MB'
+                })
+            profile.profile_picture = profile_picture
+        
         profile.save()
         
         # Update user phone
@@ -1290,12 +1388,81 @@ def update_profile(request):
         user.save()
         
         return JsonResponse({
-            'ok': 1,
+            'ok': True,
             'message': 'Profile updated successfully'
         })
         
     except Exception as e:
         return JsonResponse({
-            'ok': 0,
+            'ok': False,
             'message': f'Error updating profile: {str(e)}'
+        }, status=400)
+
+
+@login_required
+@require_http_methods(["POST"])
+def update_settings(request):
+    """Update user settings."""
+    try:
+        import json
+        data = json.loads(request.body)
+        
+        user = request.user
+        settings = UserSettings.get_or_create_for_user(user)
+        profile, created = Profile.objects.get_or_create(user=user)
+        
+        # Update notification settings
+        if 'notificationSettings' in data:
+            ns = data['notificationSettings']
+            settings.job_alerts = ns.get('jobAlerts', settings.job_alerts)
+            settings.payment_alerts = ns.get('paymentAlerts', settings.payment_alerts)
+            settings.weekly_reports = ns.get('weeklyReports', settings.weekly_reports)
+            settings.push_notifications = ns.get('pushNotifications', settings.push_notifications)
+            settings.system_updates = ns.get('systemUpdates', settings.system_updates)
+            
+            # Update profile notification settings
+            profile.email_notifications = ns.get('emailNotifications', profile.email_notifications)
+            profile.sms_notifications = ns.get('smsNotifications', profile.sms_notifications)
+            profile.marketing_communications = ns.get('marketingEmails', profile.marketing_communications)
+        
+        # Update privacy settings
+        if 'privacySettings' in data:
+            ps = data['privacySettings']
+            settings.profile_visibility = ps.get('profileVisibility', settings.profile_visibility)
+            settings.share_location = ps.get('shareLocation', settings.share_location)
+            settings.share_statistics = ps.get('shareStatistics', settings.share_statistics)
+            settings.allow_reviews = ps.get('allowReviews', settings.allow_reviews)
+            settings.data_collection = ps.get('dataCollection', settings.data_collection)
+        
+        # Update preferences
+        if 'preferences' in data:
+            prefs = data['preferences']
+            settings.language = prefs.get('language', settings.language)
+            settings.timezone = prefs.get('timezone', settings.timezone)
+            settings.currency = prefs.get('currency', settings.currency)
+            settings.theme = prefs.get('theme', settings.theme)
+            settings.map_view = prefs.get('mapView', settings.map_view)
+        
+        # Update work settings (provider only)
+        if user.role == 'provider' and 'workSettings' in data:
+            ws = data['workSettings']
+            settings.auto_accept_jobs = ws.get('autoAcceptJobs', settings.auto_accept_jobs)
+            settings.max_jobs_per_day = str(ws.get('maxJobsPerDay', settings.max_jobs_per_day))
+            settings.preferred_job_types = ws.get('preferredJobTypes', settings.preferred_job_types)
+            settings.minimum_job_value = ws.get('minimumJobValue', settings.minimum_job_value)
+            settings.travel_radius = ws.get('travelRadius', settings.travel_radius)
+        
+        # Save both models
+        settings.save()
+        profile.save()
+        
+        return JsonResponse({
+            'ok': 1,
+            'message': 'Settings updated successfully'
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'ok': 0,
+            'message': f'Error updating settings: {str(e)}'
         }, status=400)

@@ -1,41 +1,86 @@
 <!-- Settings & Notifications Tab -->
+<!-- JSON data for settings -->
+<script type="application/json" id="settings-data">
+  {
+    "notificationSettings": {
+      "jobAlerts": {{ settings.job_alerts|yesno:"true,false" }},
+      "emailNotifications": {{ profile.email_notifications|yesno:"true,false" }},
+      "smsNotifications": {{ profile.sms_notifications|yesno:"true,false" }},
+      "pushNotifications": {{ settings.push_notifications|yesno:"true,false" }},
+      "marketingEmails": {{ profile.marketing_communications|yesno:"true,false" }},
+      "weeklyReports": {{ settings.weekly_reports|yesno:"true,false" }},
+      "paymentAlerts": {{ settings.payment_alerts|yesno:"true,false" }},
+      "systemUpdates": {{ settings.system_updates|yesno:"true,false" }}
+    },
+    "privacySettings": {
+      "profileVisibility": "{{ settings.profile_visibility }}",
+      "shareLocation": {{ settings.share_location|yesno:"true,false" }},
+      "shareStatistics": {{ settings.share_statistics|yesno:"true,false" }},
+      "allowReviews": {{ settings.allow_reviews|yesno:"true,false" }},
+      "dataCollection": {{ settings.data_collection|yesno:"true,false" }}
+    },
+    "preferences": {
+      "language": "{{ settings.language }}",
+      "timezone": "{{ settings.timezone }}",
+      "currency": "{{ settings.currency }}",
+      "theme": "{{ settings.theme }}",
+      "mapView": "{{ settings.map_view }}"
+    },
+    "workSettings": {
+      "autoAcceptJobs": {{ settings.auto_accept_jobs|yesno:"true,false" }},
+      "maxJobsPerDay": "{{ settings.max_jobs_per_day }}",
+      "preferredJobTypes": {{ settings.preferred_job_types|safe|default:"[]" }},
+      "minimumJobValue": {{ settings.minimum_job_value }},
+      "travelRadius": {{ settings.travel_radius }}
+    }
+  }
+</script>
+
 <div
   x-show="currentTab === 'settings'"
   x-transition:enter="transition ease-out duration-300"
   x-transition:enter-start="opacity-0 transform translate-y-4"
   x-transition:enter-end="opacity-100 transform translate-y-0"
   class="space-y-6"
+  x-init="
+    const settingsData = JSON.parse(document.getElementById('settings-data').textContent);
+    notificationSettings = settingsData.notificationSettings;
+    privacySettings = settingsData.privacySettings;
+    preferences = settingsData.preferences;
+    workSettings = settingsData.workSettings;
+  "
   x-data="{
-    notificationSettings: {
-      jobAlerts: true,
-      emailNotifications: true,
-      smsNotifications: false,
-      pushNotifications: true,
-      marketingEmails: false,
-      weeklyReports: true,
-      paymentAlerts: true,
-      systemUpdates: true
-    },
-    privacySettings: {
-      profileVisibility: 'public',
-      shareLocation: true,
-      shareStatistics: false,
-      allowReviews: true,
-      dataCollection: true
-    },
-    preferences: {
-      language: 'pt',
-      timezone: 'Africa/Luanda',
-      currency: 'AOA',
-      theme: 'light',
-      mapView: 'satellite'
-    },
-    workSettings: {
-      autoAcceptJobs: false,
-      maxJobsPerDay: 5,
-      preferredJobTypes: ['cleaning', 'deep_cleaning'],
-      minimumJobValue: 100,
-      travelRadius: 15
+    notificationSettings: {},
+    privacySettings: {},
+    preferences: {},
+    workSettings: {},
+    saveSettings() {
+      // Function to save settings via AJAX
+      fetch('/dashboard/settings/update/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: JSON.stringify({
+          notificationSettings: this.notificationSettings,
+          privacySettings: this.privacySettings,
+          preferences: this.preferences,
+          workSettings: this.workSettings
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.ok) {
+          // Show success message
+          alert('Settings saved successfully!');
+        } else {
+          alert('Error saving settings: ' + data.message);
+        }
+      })
+      .catch(error => {
+        alert('Error saving settings: ' + error);
+      });
     }
   }"
 >
@@ -46,6 +91,7 @@
         Notification Settings
       </h3>
       <button
+        @click="saveSettings"
         class="text-sm text-white px-4 py-2 rounded-lg transition-colors"
         style="background-color: #035d73; cursor: pointer"
         onmouseover="this.style.backgroundColor='#024954'"
@@ -668,46 +714,6 @@
           </button>
         </div>
       </div>
-    </div>
-  </div>
-
-  <!-- App Information -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h3 class="text-lg font-semibold mb-6" style="color: #011e41">
-      App Information
-    </h3>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="text-center p-4 border border-gray-200 rounded-lg">
-        <div class="font-medium text-gray-900 mb-1">Version</div>
-        <div class="text-2xl font-bold mb-2" style="color: #035d73">2.4.1</div>
-        <div class="text-sm text-gray-500">Latest version</div>
-      </div>
-
-      <div class="text-center p-4 border border-gray-200 rounded-lg">
-        <div class="font-medium text-gray-900 mb-1">Last Updated</div>
-        <div class="text-2xl font-bold mb-2" style="color: #035d73">Jul 10</div>
-        <div class="text-sm text-gray-500">2024</div>
-      </div>
-    </div>
-
-    <div class="mt-6 flex justify-center space-x-4">
-      <button
-        class="text-sm text-white px-4 py-2 rounded-lg transition-colors"
-        style="background-color: #035d73; cursor: pointer"
-        onmouseover="this.style.backgroundColor='#024954'"
-        onmouseout="this.style.backgroundColor='#035d73'"
-      >
-        Check for Updates
-      </button>
-      <button
-        class="text-sm text-white px-4 py-2 rounded-lg transition-colors"
-        style="background-color: #fdea00; color: #000; cursor: pointer"
-        onmouseover="this.style.backgroundColor='#fcd34d'"
-        onmouseout="this.style.backgroundColor='#fdea00'"
-      >
-        Rate Our App
-      </button>
     </div>
   </div>
 </div>

@@ -1,41 +1,30 @@
 {% extends 'website/layouts/base.html' %} {% load static %} {% block title%}{{title }}{% endblock %} {% block content %}
 <!-- Toast Component -->
 {% include 'website/components/toast.html' %}
+{% csrf_token %}
+
+<!-- JSON data for JavaScript -->
+{{ is_provider|json_script:"is-provider-data" }}
+{{ dashboard_data|json_script:"dashboard-data" }}
 
 <div
   class="min-h-screen flex"
   style="background-color: #f5f5f5"
   x-cloak
   x-data="{
-       currentTab: {{ is_provider|yesno:"'pro-overview','overview'" }},
-       isProviderMode: {{ is_provider|yesno:'true,false' }},
+       currentTab: JSON.parse(document.getElementById('is-provider-data').textContent) ? 'pro-overview' : 'overview',
+       isProviderMode: JSON.parse(document.getElementById('is-provider-data').textContent),
        sidebarOpen: false,
        userDropdownOpen: false,
        user: {
-         name: '{{ user.get_full_name|default:user.username }}',
-         email: '{{ user.email }}',
+         name: '{{ user.get_full_name|default:user.username|escapejs }}',
+         email: '{{ user.email|escapejs }}',
          avatar: '{% static "juliana.webp" %}',
-         is_provider: {{ is_provider|yesno:'true,false' }},
+         is_provider: JSON.parse(document.getElementById('is-provider-data').textContent),
          provider_verified: false
        },
 
-       dashboardData: {
-         nextBooking: {
-           date: '{{ dashboard_data.next_booking.date }}',
-           time: '{{ dashboard_data.next_booking.time }}',
-           service: '{{ dashboard_data.next_booking.service }}',
-           address: '{{ dashboard_data.next_booking.address }}',
-           provider: '{{ dashboard_data.next_booking.provider }}',
-           countdown: '{{ dashboard_data.next_booking.countdown }}'
-         },
-         walletBalance: {{ dashboard_data.wallet_balance }},
-         referralCredits: {{ dashboard_data.referral_credits }},
-         totalBookings: {{ dashboard_data.total_bookings }},
-         upcomingBookings: {{ dashboard_data.upcoming_bookings }},
-         completedBookings: {{ dashboard_data.completed_bookings }},
-         notificationsCount: {{ dashboard_data.notifications_count }},
-         unreadMessages: {{ dashboard_data.unread_messages }}
-       },
+       dashboardData: JSON.parse(document.getElementById('dashboard-data').textContent),
        init() {
          if (this.user.is_provider && !this.isProviderMode) {
            this.isProviderMode = true;
@@ -429,7 +418,8 @@
           <span class="truncate">Ratings & Reviews</span>
         </button>
 
-        <button
+        <!-- Wallet / Promos Tab - Temporarily hidden -->
+        <!-- <button
           @click="currentTab = 'wallet-promos'; sidebarOpen = false"
           class="w-full flex items-center px-4 py-3 text-sm font-medium text-left rounded-lg transition-all duration-200 cursor-pointer group"
           :class="currentTab === 'wallet-promos' ? 'text-white border-r-4' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'"
@@ -450,7 +440,7 @@
             />
           </svg>
           <span class="truncate">Wallet / Promos</span>
-        </button>
+        </button> -->
 
         <button
           @click="currentTab = 'resources'; sidebarOpen = false"
@@ -693,7 +683,6 @@
       {% include 'website/components/dashboard/tabs/job-queue.html' %}
       {% include 'website/components/dashboard/tabs/availability.html' %}
       {% include 'website/components/dashboard/tabs/ratings.html' %}
-      {% include 'website/components/dashboard/tabs/wallet-promos.html' %}
       {% include 'website/components/dashboard/tabs/resources.html' %}
       {% include 'website/components/dashboard/tabs/kyc.html' %}
       {% include 'website/components/dashboard/tabs/settings.html' %}

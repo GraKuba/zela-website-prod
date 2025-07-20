@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
-from .models import User, ProviderProfile, Profile, PaymentMethod, Location, DistanceRequest, ProviderDocument, ProviderContract
+from .models import User, ProviderProfile, Profile, PaymentMethod, Location, DistanceRequest, ProviderDocument, ProviderContract, UserSettings
 
 
 @admin.register(User)
@@ -35,23 +35,48 @@ class ProviderProfileAdmin(admin.ModelAdmin):
     """Provider profile admin."""
     
     list_display = (
-        'user_display', 'service_area', 'is_approved', 'rating_display', 
+        'user_display', 'service_area', 'is_approved', 'is_available',
+        'rating_display', 'completion_rate_display', 'total_earnings_display',
         'skills_count', 'created_at'
     )
-    list_filter = ('is_approved', 'service_area', 'created_at')
+    list_filter = (
+        'is_approved', 'is_available', 'accepts_same_day', 
+        'include_traffic_time', 'avoid_tolls', 'prefer_main_roads',
+        'service_area', 'created_at'
+    )
     search_fields = ('user__username', 'user__email', 'user__first_name', 'user__last_name', 'service_area')
-    readonly_fields = ('created_at', 'updated_at', 'rating_average', 'rating_count')
+    readonly_fields = (
+        'created_at', 'updated_at', 'rating_average', 'rating_count',
+        'total_earnings', 'jobs_completed', 'jobs_total', 'completion_rate'
+    )
     ordering = ('-created_at',)
     
     fieldsets = (
         ('Provider Information', {
-            'fields': ('user', 'is_approved', 'bio', 'service_area'),
+            'fields': ('user', 'is_approved', 'bio'),
+        }),
+        ('Availability', {
+            'fields': ('is_available', 'accepts_same_day', 'working_hours'),
+        }),
+        ('Service Areas & Coverage', {
+            'fields': (
+                'service_area', 'service_areas', 'max_travel_distance',
+                'preferred_radius'
+            ),
+        }),
+        ('Travel Preferences', {
+            'fields': (
+                'include_traffic_time', 'avoid_tolls', 'prefer_main_roads'
+            ),
         }),
         ('Skills & Documents', {
             'fields': ('skills', 'id_document'),
         }),
-        ('Ratings', {
-            'fields': ('rating_average', 'rating_count'),
+        ('Performance Statistics', {
+            'fields': (
+                'rating_average', 'rating_count', 'total_earnings',
+                'jobs_completed', 'jobs_total', 'completion_rate'
+            ),
             'classes': ('collapse',),
         }),
         ('Timestamps', {
@@ -85,6 +110,16 @@ class ProviderProfileAdmin(admin.ModelAdmin):
         """Display number of skills."""
         return len(obj.skills) if obj.skills else 0
     skills_count.short_description = 'Skills'
+    
+    def completion_rate_display(self, obj):
+        """Display completion rate."""
+        return f"{obj.completion_rate:.1f}%"
+    completion_rate_display.short_description = 'Completion Rate'
+    
+    def total_earnings_display(self, obj):
+        """Display total earnings with currency."""
+        return f"Kz {obj.total_earnings:,.2f}"
+    total_earnings_display.short_description = 'Total Earnings'
     
     actions = ['approve_providers', 'reject_providers']
     
@@ -496,3 +531,65 @@ class ProviderContractAdmin(admin.ModelAdmin):
         )
         self.message_user(request, f'{updated} contract(s) marked as acknowledged.')
     mark_as_acknowledged.short_description = 'Mark as acknowledged'
+
+
+@admin.register(UserSettings)
+class UserSettingsAdmin(admin.ModelAdmin):
+    """User settings admin."""
+    
+    list_display = (
+        'user_display', 'language', 'timezone', 'currency', 'theme', 
+        'profile_visibility', 'created_at'
+    )
+    list_filter = (
+        'language', 'currency', 'theme', 'profile_visibility',
+        'job_alerts', 'payment_alerts', 'created_at'
+    )
+    search_fields = ('user__username', 'user__email', 'user__first_name', 'user__last_name')
+    readonly_fields = ('created_at', 'updated_at')
+    ordering = ('-created_at',)
+    
+    fieldsets = (
+        ('User Information', {
+            'fields': ('user',),
+        }),
+        ('Notification Settings', {
+            'fields': (
+                'job_alerts', 'payment_alerts', 'weekly_reports',
+                'push_notifications', 'system_updates'
+            ),
+        }),
+        ('Privacy Settings', {
+            'fields': (
+                'profile_visibility', 'share_location', 'share_statistics',
+                'allow_reviews', 'data_collection'
+            ),
+        }),
+        ('Work Preferences', {
+            'fields': (
+                'auto_accept_jobs', 'max_jobs_per_day', 'preferred_job_types',
+                'minimum_job_value', 'travel_radius'
+            ),
+            'description': 'Only applicable for provider users',
+        }),
+        ('App Preferences', {
+            'fields': ('language', 'timezone', 'currency', 'theme', 'map_view'),
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',),
+        }),
+    )
+    
+    def user_display(self, obj):
+        """Display user with name and email."""
+        name = obj.user.get_full_name() or obj.user.username
+        return format_html(
+            '<strong>{}</strong><br><small>{}</small>',
+            name, obj.user.email
+        )
+    user_display.short_description = 'User'
+    
+    def get_queryset(self, request):
+        """Optimize query with related objects."""
+        return super().get_queryset(request).select_related('user')

@@ -10,7 +10,7 @@ from .views.dashboard import (
     ProfileUpdateView, RatingCreatePartial, AddPaymentMethodView,
     set_default_payment_method, update_provider_availability,
     update_provider_schedule, update_service_areas, upload_document,
-    update_profile
+    update_profile, ProviderRatingsPartial, update_settings
 )
 from .views.providers import ProviderLandingView, ProviderApplicationWizard, ApplyWorkerView
 from .views.booking import booking_flow, booking_screen, save_booking_data, get_booking_data, process_payment, get_available_workers
@@ -50,6 +50,7 @@ urlpatterns = [
     path('dashboard/booking/<int:pk>/update/', BookingUpdatePartial.as_view(), name='dashboard-booking-update'),
     path('dashboard/profile/', ProfileUpdateView.as_view(), name='dashboard-profile'),
     path('dashboard/booking/<int:booking_pk>/rate/', RatingCreatePartial.as_view(), name='dashboard-rating-create'),
+    path('dashboard/ratings/', ProviderRatingsPartial.as_view(), name='dashboard-ratings'),
     path('dashboard/payment-method/add/', AddPaymentMethodView.as_view(), name='add-payment-method'),
     path('dashboard/payment-method/<int:pk>/set-default/', set_default_payment_method, name='set-default-payment'),
     
@@ -61,6 +62,7 @@ urlpatterns = [
     # Profile and document management
     path('dashboard/upload-document/', upload_document, name='upload-document'),
     path('dashboard/update-profile/', update_profile, name='profile-update'),
+    path('dashboard/settings/update/', update_settings, name='update-settings'),
     
     # Provider onboarding
     path('providers/', ProviderLandingView.as_view(), name='providers'),

@@ -1,4 +1,10 @@
 <!-- Availability & Service Area Tab -->
+{{ provider.is_available|json_script:"provider-is-available" }}
+{{ provider.accepts_same_day|json_script:"provider-accepts-same-day" }}
+{{ working_hours|json_script:"working-hours-data" }}
+{{ time_off_requests|json_script:"time-off-requests-data" }}
+{{ service_areas|json_script:"service-areas-data" }}
+
 <div
   x-show="currentTab === 'availability' && isProviderMode"
   x-transition:enter="transition ease-out duration-300"
@@ -6,12 +12,46 @@
   x-transition:enter-end="opacity-100 transform translate-y-0"
   class="space-y-6"
   x-init="
-    isAvailable = {{ provider.is_available|lower|default:'false' }};
-    workingHours = {{ working_hours|safe|default:'{}' }};
-    timeOffRequests = {{ time_off_requests|safe|default:'[]' }};
-    serviceAreas = {{ service_areas|safe|default:'[]' }};
-    quickToggleToday = {{ provider.accepts_same_day|lower|default:'false' }};
-    scheduleModified = false;
+    const providerIsAvailable = JSON.parse(document.getElementById('provider-is-available').textContent || 'false');
+    const providerAcceptsSameDay = JSON.parse(document.getElementById('provider-accepts-same-day').textContent || 'false');
+    const workingHoursData = JSON.parse(document.getElementById('working-hours-data').textContent || '{}');
+    const timeOffRequestsData = JSON.parse(document.getElementById('time-off-requests-data').textContent || '[]');
+    const serviceAreasData = JSON.parse(document.getElementById('service-areas-data').textContent || '[]');
+    
+    // Ensure we only have the 7 days of the week
+    const validDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+    const filteredWorkingHours = {};
+    
+    // If working hours data exists, filter to only valid days
+    if (workingHoursData && typeof workingHoursData === 'object') {
+      for (const day of validDays) {
+        if (workingHoursData[day]) {
+          filteredWorkingHours[day] = workingHoursData[day];
+        } else {
+          // Add default if missing
+          filteredWorkingHours[day] = {
+            enabled: day !== 'sunday',
+            start: '08:00',
+            end: day === 'saturday' ? '16:00' : (day === 'sunday' ? '15:00' : '18:00')
+          };
+        }
+      }
+    } else {
+      // Create default working hours
+      for (const day of validDays) {
+        filteredWorkingHours[day] = {
+          enabled: day !== 'sunday',
+          start: '08:00',
+          end: day === 'saturday' ? '16:00' : (day === 'sunday' ? '15:00' : '18:00')
+        };
+      }
+    }
+    
+    isAvailable = providerIsAvailable;
+    quickToggleToday = providerAcceptsSameDay;
+    workingHours = filteredWorkingHours;
+    timeOffRequests = timeOffRequestsData;
+    serviceAreas = serviceAreasData;
   "
   x-data="{
     isAvailable: false,
@@ -29,9 +69,10 @@
     
     calculateTotalWeeklyHours() {
       let total = 0;
-      for (const [day, schedule] of Object.entries(this.workingHours)) {
-        if (schedule.enabled) {
-          total += this.calculateHours(schedule.start, schedule.end);
+      const validDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+      for (const day of validDays) {
+        if (this.workingHours[day] && this.workingHours[day].enabled) {
+          total += this.calculateHours(this.workingHours[day].start, this.workingHours[day].end);
         }
       }
       return total;
@@ -57,13 +98,22 @@
         
         const data = await response.json();
         if (data.ok) {
-          console.log('Availability updated successfully');
+          // Update local state with server response to ensure sync
+          this.isAvailable = data.is_available;
+          this.quickToggleToday = data.accepts_same_day;
+          showNotification('Availability updated successfully!', 'success');
         } else {
           alert('Error updating availability: ' + data.error);
+          // Revert the toggle on error
+          this.isAvailable = !this.isAvailable;
+          this.quickToggleToday = !this.quickToggleToday;
         }
       } catch (error) {
         console.error('Error:', error);
         alert('Network error updating availability');
+        // Revert the toggle on error
+        this.isAvailable = !this.isAvailable;
+        this.quickToggleToday = !this.quickToggleToday;
       }
     },
     
@@ -98,6 +148,17 @@
         this.timeOffRequests = this.timeOffRequests.filter(r => r.id !== requestId);
         console.log('Cancelling time off request:', requestId);
       }
+    },
+    
+    getOrderedWorkingDays() {
+      const dayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+      const orderedDays = [];
+      for (const day of dayOrder) {
+        if (this.workingHours[day]) {
+          orderedDays.push({ name: day, ...this.workingHours[day] });
+        }
+      }
+      return orderedDays;
     }
   }">
   <!-- Availability Status Toggle -->
@@ -109,9 +170,8 @@
       </div>
       <button
         @click="isAvailable = !isAvailable; updateAvailability()"
-        class="relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
-        :class="isAvailable ? 'bg-gray-300' : 'bg-gray-300'"
-        :style="isAvailable ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
+        class="relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer"
+        :style="isAvailable ? 'background-color: #035d73' : 'background-color: #e5e7eb'"
       >
         <span
           class="inline-block h-6 w-6 transform rounded-full bg-white transition-transform shadow-sm"
@@ -175,9 +235,8 @@
       </div>
       <button
         @click="quickToggleToday = !quickToggleToday; updateAvailability()"
-        class="relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
-        :class="quickToggleToday ? 'bg-gray-300' : 'bg-gray-300'"
-        :style="quickToggleToday ? 'background-color: #fdea00; cursor: pointer' : 'cursor: pointer'"
+        class="relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer"
+        :style="quickToggleToday ? 'background-color: #fdea00' : 'background-color: #e5e7eb'"
       >
         <span
           class="inline-block h-6 w-6 transform rounded-full bg-white transition-transform shadow-sm"
@@ -221,37 +280,36 @@
     </div>
     
     <div class="space-y-3">
-      <template x-for="(day, dayName) in workingHours" :key="dayName">
+      <template x-for="day in getOrderedWorkingDays()" :key="day.name">
         <div class="flex items-center justify-between p-4 border rounded-lg transition-all duration-200"
              :class="day.enabled ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'">
           <div class="flex items-center">
             <button
-              @click="workingHours[dayName].enabled = !workingHours[dayName].enabled; scheduleModified = true"
-              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
-              :class="day.enabled ? 'bg-gray-300' : 'bg-gray-300'"
-              :style="day.enabled ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
+              @click="workingHours[day.name].enabled = !workingHours[day.name].enabled; scheduleModified = true"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer"
+              :style="workingHours[day.name].enabled ? 'background-color: #035d73' : 'background-color: #e5e7eb'"
             >
               <span
                 class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm"
-                :class="day.enabled ? 'translate-x-6' : 'translate-x-1'"
+                :class="workingHours[day.name].enabled ? 'translate-x-6' : 'translate-x-1'"
               ></span>
             </button>
             <div class="ml-3">
-              <span class="text-sm font-medium text-gray-900 capitalize" x-text="dayName"></span>
-              <span class="ml-2 text-xs" :class="day.enabled ? 'text-green-600' : 'text-gray-500'">
-                <template x-if="day.enabled">
-                  <span x-text="`${calculateHours(day.start, day.end)} hours`"></span>
+              <span class="text-sm font-medium text-gray-900 capitalize" x-text="day.name"></span>
+              <span class="ml-2 text-xs" :class="workingHours[day.name].enabled ? 'text-green-600' : 'text-gray-500'">
+                <template x-if="workingHours[day.name].enabled">
+                  <span x-text="`${calculateHours(workingHours[day.name].start, workingHours[day.name].end)} hours`"></span>
                 </template>
-                <template x-if="!day.enabled">
+                <template x-if="!workingHours[day.name].enabled">
                   <span>Day off</span>
                 </template>
               </span>
             </div>
           </div>
           
-          <div class="flex items-center space-x-2" x-show="day.enabled" x-transition>
+          <div class="flex items-center space-x-2" x-show="workingHours[day.name].enabled" x-transition>
             <select 
-              x-model="workingHours[dayName].start"
+              x-model="workingHours[day.name].start"
               @change="scheduleModified = true"
               class="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-offset-0"
               :style="'border-color: #035d73; focus:ring-color: #035d73'"
@@ -267,7 +325,7 @@
             </select>
             <span class="text-gray-500 text-sm">to</span>
             <select 
-              x-model="workingHours[dayName].end"
+              x-model="workingHours[day.name].end"
               @change="scheduleModified = true"
               class="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-offset-0"
               :style="'border-color: #035d73; focus:ring-color: #035d73'"
@@ -338,9 +396,8 @@
           <div class="flex items-center">
             <button
               @click="area.enabled = !area.enabled; scheduleModified = true"
-              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
-              :class="area.enabled ? 'bg-gray-300' : 'bg-gray-300'"
-              :style="area.enabled ? 'background-color: #035d73; cursor: pointer' : 'cursor: pointer'"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer"
+              :style="area.enabled ? 'background-color: #035d73' : 'background-color: #e5e7eb'"
             >
               <span
                 class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm"

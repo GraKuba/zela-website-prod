@@ -561,6 +561,156 @@ class DistanceRequest(models.Model):
         ordering = ['-created_at']
 
 
+class UserSettings(models.Model):
+    """User settings and preferences."""
+    
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="settings",
+        help_text="User account for these settings"
+    )
+    
+    # Notification Settings
+    job_alerts = models.BooleanField(
+        default=True,
+        help_text="Get notified when new jobs match your preferences"
+    )
+    payment_alerts = models.BooleanField(
+        default=True,
+        help_text="Notifications about payments and payouts"
+    )
+    weekly_reports = models.BooleanField(
+        default=True,
+        help_text="Summary of your weekly performance"
+    )
+    push_notifications = models.BooleanField(
+        default=True,
+        help_text="App notifications on your mobile device"
+    )
+    system_updates = models.BooleanField(
+        default=True,
+        help_text="Important system updates and maintenance"
+    )
+    
+    # Privacy Settings
+    profile_visibility = models.CharField(
+        max_length=20,
+        choices=[
+            ('public', 'Public'),
+            ('customers', 'Customers Only'),
+            ('private', 'Private')
+        ],
+        default='public',
+        help_text="Control who can see your profile information"
+    )
+    share_location = models.BooleanField(
+        default=True,
+        help_text="Allow customers to see your approximate location"
+    )
+    share_statistics = models.BooleanField(
+        default=False,
+        help_text="Share your performance statistics"
+    )
+    allow_reviews = models.BooleanField(
+        default=True,
+        help_text="Let customers leave reviews on your profile"
+    )
+    data_collection = models.BooleanField(
+        default=True,
+        help_text="Allow Zela to collect usage data for improvements"
+    )
+    
+    # Work Preferences (Provider Only)
+    auto_accept_jobs = models.BooleanField(
+        default=False,
+        help_text="Automatically accept jobs that match your criteria"
+    )
+    max_jobs_per_day = models.CharField(
+        max_length=10,
+        default='5',
+        help_text="Maximum jobs per day (number or 'unlimited')"
+    )
+    preferred_job_types = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="List of preferred job types"
+    )
+    minimum_job_value = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=100,
+        help_text="Minimum job value in AOA"
+    )
+    travel_radius = models.PositiveIntegerField(
+        default=15,
+        help_text="Travel radius in kilometers"
+    )
+    
+    # App Preferences
+    language = models.CharField(
+        max_length=5,
+        choices=[
+            ('pt', 'Português'),
+            ('en', 'English'),
+            ('fr', 'Français')
+        ],
+        default='pt',
+        help_text="Preferred language"
+    )
+    timezone = models.CharField(
+        max_length=50,
+        default='Africa/Luanda',
+        help_text="Preferred timezone"
+    )
+    currency = models.CharField(
+        max_length=3,
+        choices=[
+            ('AOA', 'Kwanza (AOA)'),
+            ('USD', 'US Dollar (USD)'),
+            ('EUR', 'Euro (EUR)')
+        ],
+        default='AOA',
+        help_text="Preferred currency"
+    )
+    theme = models.CharField(
+        max_length=10,
+        choices=[
+            ('light', 'Light'),
+            ('dark', 'Dark'),
+            ('auto', 'Auto')
+        ],
+        default='light',
+        help_text="App theme"
+    )
+    map_view = models.CharField(
+        max_length=20,
+        choices=[
+            ('standard', 'Standard'),
+            ('satellite', 'Satellite'),
+            ('hybrid', 'Hybrid')
+        ],
+        default='satellite',
+        help_text="Preferred map view"
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self) -> str:
+        return f"{self.user.username} - Settings"
+    
+    @classmethod
+    def get_or_create_for_user(cls, user):
+        """Get or create settings for a user."""
+        settings, created = cls.objects.get_or_create(user=user)
+        return settings
+    
+    class Meta:
+        verbose_name = "User Settings"
+        verbose_name_plural = "User Settings"
+
+
 class Location(models.Model):
     """User location/address model."""
     
