@@ -44,36 +44,38 @@
       <div class="space-y-3">
         <div class="flex justify-between">
           <span class="text-gray-600">Service:</span>
-          <span class="font-medium" style="color: #011e41"
-            >Indoor Cleaning</span
-          >
+          <span class="font-medium" style="color: #011e41" id="service-name">
+            Indoor Cleaning
+          </span>
         </div>
 
         <div class="flex justify-between">
           <span class="text-gray-600">Date & Time:</span>
-          <span class="font-medium" style="color: #011e41"
-            >Sun 6 Jul @ 07:00</span
-          >
+          <span class="font-medium" style="color: #011e41" id="date-time">
+            Loading...
+          </span>
         </div>
 
         <div class="flex justify-between">
           <span class="text-gray-600">Location:</span>
-          <span class="font-medium" style="color: #011e41"
-            >1 Osborne Rd, Mowbray...</span
-          >
+          <span class="font-medium" style="color: #011e41" id="location">
+            Loading...
+          </span>
         </div>
 
         <div class="flex justify-between">
           <span class="text-gray-600">Duration:</span>
-          <span class="font-medium" style="color: #011e41">5.5 hours</span>
+          <span class="font-medium" style="color: #011e41" id="duration">
+            Loading...
+          </span>
         </div>
 
         <div class="border-t pt-3">
           <div class="flex justify-between">
             <span class="text-gray-600 font-medium">Total Paid:</span>
-            <span class="font-bold text-lg" style="color: #011e41"
-              >R770.00</span
-            >
+            <span class="font-bold text-lg" style="color: #011e41" id="total-paid">
+              Loading...
+            </span>
           </div>
         </div>
       </div>
@@ -124,5 +126,45 @@
   function goToDashboard() {
     // Navigate to dashboard
     window.location.href = "/dashboard/";
+  }
+  
+  // Update booking summary with dynamic data
+  document.addEventListener('DOMContentLoaded', function() {
+    updateBookingSummary();
+  });
+  
+  function updateBookingSummary() {
+    if (window.bookingFlowComponent) {
+      const booking = window.bookingFlowComponent.booking;
+      
+      // Update service name
+      const serviceName = window.bookingFlowComponent.serviceInfo[booking.serviceType]?.name || 'Indoor Cleaning';
+      document.getElementById('service-name').textContent = serviceName;
+      
+      // Update date and time
+      if (booking.date) {
+        const date = new Date(booking.date);
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
+        const dateStr = `${days[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]} @ ${booking.details.startTime || '07:00'}`;
+        document.getElementById('date-time').textContent = dateStr;
+      }
+      
+      // Update location
+      const location = booking.location.streetAddress || 'Location not set';
+      const truncatedLocation = location.length > 30 ? location.substring(0, 27) + '...' : location;
+      document.getElementById('location').textContent = truncatedLocation;
+      
+      // Update duration
+      document.getElementById('duration').textContent = `${booking.details.duration} hours`;
+      
+      // Update total paid (including tip)
+      const totalWithTip = booking.pricing.total + booking.tip.amount;
+      document.getElementById('total-paid').textContent = `R${totalWithTip.toFixed(2)}`;
+    } else {
+      // Fallback if component not available
+      setTimeout(updateBookingSummary, 100);
+    }
   }
 </script>

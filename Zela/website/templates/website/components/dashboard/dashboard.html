@@ -17,26 +17,33 @@
        sidebarOpen: false,
        userDropdownOpen: false,
        user: {
-         name: '{{ user.get_full_name|default:user.username|escapejs }}',
+         name: '{% if profile.first_name or profile.last_name %}{{ profile.first_name|default:"" }} {{ profile.last_name|default:"" }}{% elif user.first_name or user.last_name %}{{ user.first_name|default:"" }} {{ user.last_name|default:"" }}{% else %}{{ user.username }}{% endif %}'.trim(),
          email: '{{ user.email|escapejs }}',
-         avatar: '{% static "juliana.webp" %}',
+         avatar: '{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}{% static "juliana.webp" %}{% endif %}',
          is_provider: JSON.parse(document.getElementById('is-provider-data').textContent),
          provider_verified: false
        },
 
        dashboardData: JSON.parse(document.getElementById('dashboard-data').textContent),
+       showBookingSuccessModal: false,
        init() {
          if (this.user.is_provider && !this.isProviderMode) {
            this.isProviderMode = true;
            this.currentTab = 'pro-overview';
          }
          
+         // Check if we need to navigate to a specific tab
+         const navigateToTab = sessionStorage.getItem('navigateToTab');
+         if (navigateToTab && !this.isProviderMode) {
+           this.currentTab = navigateToTab;
+           sessionStorage.removeItem('navigateToTab');
+         }
+         
          if (sessionStorage.getItem('bookingSuccess') === 'true') {
            sessionStorage.removeItem('bookingSuccess');
+           // Show modal instead of just toast
            setTimeout(() => {
-             if (window.toastComponent && window.toastComponent.addToast) {
-               window.toastComponent.addToast('🎉 Congratulations! Your booking has been successfully created.', 'success');
-             }
+             this.showBookingSuccessModal = true;
            }, 500);
          }
        },
@@ -560,6 +567,7 @@
             class="h-10 w-10 rounded-full object-cover flex-shrink-0"
             :src="user.avatar"
             :alt="user.name"
+            @error="$event.target.src='{% static "juliana.webp" %}'"
           />
           <div class="ml-3 flex-1 text-left min-w-0">
             <p class="text-sm font-semibold truncate" style="color: #011e41" x-text="user.name"></p>
@@ -690,6 +698,85 @@
 
       </div>
     </main>
+  </div>
+  
+  <!-- Booking Success Modal -->
+  <div 
+    x-show="showBookingSuccessModal"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+    @keydown.escape="showBookingSuccessModal = false"
+  >
+    <div 
+      class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden"
+      @click.away="showBookingSuccessModal = false"
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0 transform scale-90"
+      x-transition:enter-end="opacity-100 transform scale-100"
+      x-transition:leave="transition ease-in duration-200"
+      x-transition:leave-start="opacity-100 transform scale-100"
+      x-transition:leave-end="opacity-0 transform scale-90"
+    >
+      <!-- Modal Content -->
+      <div class="p-8 text-center">
+        <!-- Success Icon -->
+        <div class="mb-6">
+          <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Success Message -->
+        <h2 class="text-2xl font-bold mb-3" style="color: #011e41">
+          Booking Successfully Created! 🎉
+        </h2>
+        <p class="text-gray-600 mb-8">
+          Your cleaning service has been booked. You'll receive a confirmation email shortly with all the details.
+        </p>
+        
+        <!-- What's Next Section -->
+        <div class="bg-blue-50 rounded-xl p-4 mb-6 text-left">
+          <h4 class="text-sm font-semibold mb-2" style="color: #011e41">What happens next?</h4>
+          <div class="space-y-2 text-sm text-gray-700">
+            <div class="flex items-start">
+              <span class="mr-2">📧</span>
+              <span>Check your email for booking confirmation</span>
+            </div>
+            <div class="flex items-start">
+              <span class="mr-2">🔔</span>
+              <span>We'll notify you when your provider is on the way</span>
+            </div>
+            <div class="flex items-start">
+              <span class="mr-2">💬</span>
+              <span>You can message your provider through the app</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex gap-3">
+          <button
+            @click="showBookingSuccessModal = false"
+            class="flex-1 py-3 px-6 bg-gray-100 text-gray-700 font-semibold rounded-full hover:bg-gray-200 transition-colors duration-200 cursor-pointer"
+          >
+            View Bookings
+          </button>
+          <button
+            @click="window.location.href = '/book/'"
+            class="flex-1 py-3 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
+          >
+            Book Another
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

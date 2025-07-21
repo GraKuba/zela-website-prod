@@ -168,26 +168,6 @@
         </div>
       </div>
 
-      <!-- Apply Voucher -->
-      <div class="bg-white border border-gray-200 rounded-2xl p-6">
-        <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-          Apply a Voucher
-        </h4>
-        <div class="flex space-x-2">
-          <input
-            type="text"
-            id="voucher-input"
-            placeholder="Add voucher code"
-            class="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm"
-          />
-          <button
-            onclick="applyVoucher()"
-            class="px-6 py-3 bg-[#015e73] text-white font-semibold rounded-lg hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
-          >
-            Apply
-          </button>
-        </div>
-      </div>
     </div>
 
     <!-- Right Column - Payment Method Selection -->
@@ -310,24 +290,30 @@
           </div>
         </div>
 
-        <!-- Card Selection -->
-        <div class="mb-8">
+        <!-- Payment Info -->
+        <div class="mb-8" id="payment-info-section" style="display: none;">
           <h3 class="text-xl font-bold mb-4" style="color: #011e41">
-            Choose a card to use for this payment
+            Payment Information
           </h3>
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-2">
-              Select card
-            </label>
-            <select
-              id="card-select"
-              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm bg-white"
-            >
-              <option value="">Select card</option>
-              <option value="card1">**** **** **** 1234</option>
-              <option value="card2">**** **** **** 5678</option>
-            </select>
+          
+          <!-- Test Mode Notice -->
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div class="text-sm text-blue-800">
+                <p class="font-medium mb-1">Test Mode Active</p>
+                <p>Payment processing is currently in test mode. No actual charges will be made.</p>
+              </div>
+            </div>
           </div>
+
+          <!-- Saved Cards -->
+          <div class="space-y-3 mb-4" id="saved-cards-container">
+            <!-- Cards will be loaded here dynamically -->
+          </div>
+          
           <button
             onclick="addNewCard()"
             class="flex items-center text-green-600 hover:text-green-700 font-medium transition-colors duration-200 cursor-pointer"
@@ -406,6 +392,76 @@
     if (window.bookingFlowComponent) {
       window.bookingFlowComponent.booking.payment.method = method;
     }
+    
+    // Show payment info section for credit card
+    const paymentInfoSection = document.getElementById('payment-info-section');
+    if (paymentInfoSection) {
+      paymentInfoSection.style.display = method === 'credit-card' ? 'block' : 'none';
+    }
+    
+    // Load saved cards if credit card is selected
+    if (method === 'credit-card') {
+      loadSavedCards();
+    }
+  }
+  
+  function loadSavedCards() {
+    // Load saved cards from the user's profile
+    fetch('/api/payment-methods/')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('saved-cards-container');
+        if (container && data.cards) {
+          container.innerHTML = data.cards.map(card => `
+            <div class="border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-[#015e73] transition-colors"
+                 onclick="selectCard('${card.id}')">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="card" value="${card.id}" class="text-[#015e73]" />
+                  <div>
+                    <div class="font-medium">•••• •••• •••• ${card.last4}</div>
+                    <div class="text-sm text-gray-500">${card.brand} - Expires ${card.exp_month}/${card.exp_year}</div>
+                  </div>
+                </div>
+                ${card.is_default ? '<span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Default</span>' : ''}
+              </div>
+            </div>
+          `).join('');
+        }
+      })
+      .catch(error => {
+        console.log('Using mock data for cards');
+        // Mock data for demo
+        const container = document.getElementById('saved-cards-container');
+        if (container) {
+          container.innerHTML = `
+            <div class="border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-[#015e73] transition-colors"
+                 onclick="selectCard('mock-1')">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="card" value="mock-1" class="text-[#015e73]" />
+                  <div>
+                    <div class="font-medium">•••• •••• •••• 4242</div>
+                    <div class="text-sm text-gray-500">Visa - Expires 12/25</div>
+                  </div>
+                </div>
+                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Default</span>
+              </div>
+            </div>
+          `;
+        }
+      });
+  }
+  
+  function selectCard(cardId) {
+    if (window.bookingFlowComponent) {
+      window.bookingFlowComponent.booking.payment.cardId = cardId;
+    }
+    // Update radio button
+    const radio = document.querySelector(`input[value="${cardId}"]`);
+    if (radio) {
+      radio.checked = true;
+    }
   }
 
   function applyVoucher() {
@@ -458,11 +514,28 @@
       alert("Please select a payment method first");
       return;
     }
+    
+    // For credit card, check if a card is selected
+    if (selectedPaymentMethod === 'credit-card') {
+      const selectedCard = document.querySelector('input[name="card"]:checked');
+      if (!selectedCard) {
+        alert("Please select a card or add a new one");
+        return;
+      }
+    }
 
     // Use the global component if available
     if (window.bookingFlowComponent) {
-      // For now, directly complete the booking since we're mocking payment
-      window.bookingFlowComponent.completeBooking();
+      // Show a loading state or confirmation
+      const continueBtn = event.target;
+      const originalText = continueBtn.textContent;
+      continueBtn.textContent = 'Processing...';
+      continueBtn.disabled = true;
+      
+      // Complete the booking after a short delay for UX
+      setTimeout(() => {
+        window.bookingFlowComponent.completeBooking();
+      }, 1000);
     } else {
       console.error("Could not find booking flow component");
     }

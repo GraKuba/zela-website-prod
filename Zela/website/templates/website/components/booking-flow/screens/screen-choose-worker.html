@@ -76,14 +76,12 @@
         <!-- Pricing Display -->
         <div class="bg-gray-900 text-white rounded-2xl p-4">
           <div class="flex justify-between items-center mb-2">
-            <div class="text-2xl font-bold" x-text="booking.details.duration">
-              6
+            <div class="text-2xl font-bold" x-text="booking.details.duration + ' hrs'">
             </div>
             <div
               class="text-2xl font-bold"
               x-text="formatCurrency(booking.pricing.bookingCost)"
             >
-              R340
             </div>
           </div>
           <div class="flex justify-between text-sm text-gray-300">
@@ -99,11 +97,14 @@
         <div class="flex items-center justify-between mb-4">
           <div>
             <div class="text-sm text-gray-600 mb-1">Where:</div>
-            <div class="text-sm font-medium" style="color: #011e41">
-              45 Lodewyk Rd, Newfields, Cape ...
+            <div class="text-sm font-medium" style="color: #011e41" x-text="booking.location.streetAddress.substring(0, 30) + (booking.location.streetAddress.length > 30 ? '...' : '')">
             </div>
           </div>
-          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+          <button 
+            @click="goToScreen(1)"
+            class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
+            title="Edit location"
+          >
             <svg
               class="w-4 h-4"
               fill="none"
@@ -124,11 +125,14 @@
         <div class="flex items-center justify-between mb-4">
           <div>
             <div class="text-sm text-gray-600 mb-1">What:</div>
-            <div class="text-sm font-medium" style="color: #011e41">
-              Indoor Cleaning
+            <div class="text-sm font-medium" style="color: #011e41" x-text="serviceInfo[booking.serviceType]?.name || 'Indoor Cleaning'">
             </div>
           </div>
-          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+          <button 
+            @click="alert('Service type cannot be changed at this stage. Please start a new booking.')"
+            class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
+            title="Service type cannot be changed"
+          >
             <svg
               class="w-4 h-4"
               fill="none"
@@ -150,10 +154,15 @@
           <div>
             <div class="text-sm text-gray-600 mb-1">When:</div>
             <div class="text-sm font-medium" style="color: #011e41">
-              Mon 7 Jul @ 07:00
+              <span x-text="booking.dateBucket === 'tomorrow' ? 'Tomorrow' : new Date(booking.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })"></span>
+              @ <span x-text="booking.details.startTime || '07:00'"></span>
             </div>
           </div>
-          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+          <button 
+            @click="goToScreen(7)"
+            class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
+            title="Edit date and time"
+          >
             <svg
               class="w-4 h-4"
               fill="none"
@@ -224,230 +233,17 @@
           Choose your worker
         </h2>
 
-        <!-- Worker Cards -->
+        <!-- Worker Cards Container - Will be populated dynamically -->
         <div class="space-y-6">
-          <!-- Worker 1: Memory Mudede -->
-          <div class="bg-white border border-gray-200 rounded-2xl p-6">
-            <div class="flex items-start space-x-4">
-              <!-- Profile Picture -->
-              <div
-                class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 overflow-hidden"
-              >
-                <img
-                  src="{% static 'beatriz.webp' %}"
-                  alt="Memory Mudede"
-                  class="w-full h-full object-cover"
-                />
-              </div>
-
-              <!-- Worker Details -->
-              <div class="flex-1">
-                <h3 class="text-xl font-bold mb-2" style="color: #011e41">
-                  Memory Mudede
-                </h3>
-                <div class="flex items-center mb-2">
-                  <svg
-                    class="w-4 h-4 text-[#015e73] mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
-                    />
-                  </svg>
-                  <span class="text-sm font-medium" style="color: #011e41"
-                    >98% Recommend</span
-                  >
-                </div>
-                <div class="text-sm text-gray-600 mb-4">
-                  <span class="font-bold">423</span> Jobs Completed
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex space-x-3">
-                  <button
-                    @click="viewWorkerProfile('memory-mudede')"
-                    class="flex-1 bg-white border border-[#015e73] text-[#015e73] font-medium py-2 px-4 rounded-xl hover:bg-[#015e73]/5 transition-colors cursor-pointer"
-                  >
-                    View profile
-                  </button>
-                  <button
-                    @click="chooseWorker('memory-mudede')"
-                    class="flex-1 bg-[#015e73] text-white font-medium py-2 px-4 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
-                  >
-                    Choose me
-                  </button>
-                </div>
-              </div>
+          <!-- Workers will be loaded here dynamically -->
+          <!-- Fallback message if no workers -->
+          <div class="text-center py-8 text-gray-500">
+            <div class="mb-4">
+              <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
             </div>
-          </div>
-
-          <!-- Worker 2: Annah Havo -->
-          <div class="bg-white border border-gray-200 rounded-2xl p-6">
-            <div class="flex items-start space-x-4">
-              <!-- Profile Picture -->
-              <div
-                class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 overflow-hidden"
-              >
-                <img
-                  src="{% static 'carla.webp' %}"
-                  alt="Annah Havo"
-                  class="w-full h-full object-cover"
-                />
-              </div>
-
-              <!-- Worker Details -->
-              <div class="flex-1">
-                <h3 class="text-xl font-bold mb-2" style="color: #011e41">
-                  Annah Havo
-                </h3>
-                <div class="flex items-center mb-2">
-                  <svg
-                    class="w-4 h-4 text-[#015e73] mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
-                    />
-                  </svg>
-                  <span class="text-sm font-medium" style="color: #011e41"
-                    >99% Recommend</span
-                  >
-                </div>
-                <div class="text-sm text-gray-600 mb-4">
-                  <span class="font-bold">200</span> Jobs Completed
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex space-x-3">
-                  <button
-                    @click="viewWorkerProfile('annah-havo')"
-                    class="flex-1 bg-white border border-[#015e73] text-[#015e73] font-medium py-2 px-4 rounded-xl hover:bg-[#015e73]/5 transition-colors cursor-pointer"
-                  >
-                    View profile
-                  </button>
-                  <button
-                    @click="chooseWorker('annah-havo')"
-                    class="flex-1 bg-[#015e73] text-white font-medium py-2 px-4 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
-                  >
-                    Choose me
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Worker 3: Epiphaniah Matarirano -->
-          <div class="bg-white border border-gray-200 rounded-2xl p-6">
-            <div class="flex items-start space-x-4">
-              <!-- Profile Picture -->
-              <div
-                class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 overflow-hidden"
-              >
-                <img
-                  src="{% static 'isabella.webp' %}"
-                  alt="Epiphaniah Matarirano"
-                  class="w-full h-full object-cover"
-                />
-              </div>
-
-              <!-- Worker Details -->
-              <div class="flex-1">
-                <h3 class="text-xl font-bold mb-2" style="color: #011e41">
-                  Epiphaniah Matarirano
-                </h3>
-                <div class="flex items-center mb-2">
-                  <svg
-                    class="w-4 h-4 text-[#015e73] mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
-                    />
-                  </svg>
-                  <span class="text-sm font-medium" style="color: #011e41"
-                    >97% Recommend</span
-                  >
-                </div>
-                <div class="text-sm text-gray-600 mb-4">
-                  <span class="font-bold">115</span> Jobs Completed
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex space-x-3">
-                  <button
-                    @click="viewWorkerProfile('epiphaniah-matarirano')"
-                    class="flex-1 bg-white border border-[#015e73] text-[#015e73] font-medium py-2 px-4 rounded-xl hover:bg-[#015e73]/5 transition-colors cursor-pointer"
-                  >
-                    View profile
-                  </button>
-                  <button
-                    @click="chooseWorker('epiphaniah-matarirano')"
-                    class="flex-1 bg-[#015e73] text-white font-medium py-2 px-4 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
-                  >
-                    Choose me
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Worker 4: Margaret Buleya -->
-          <div class="bg-white border border-gray-200 rounded-2xl p-6">
-            <div class="flex items-start space-x-4">
-              <!-- Profile Picture -->
-              <div
-                class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 overflow-hidden"
-              >
-                <img
-                  src="{% static 'juliana.webp' %}"
-                  alt="Margaret Buleya"
-                  class="w-full h-full object-cover"
-                />
-              </div>
-
-              <!-- Worker Details -->
-              <div class="flex-1">
-                <h3 class="text-xl font-bold mb-2" style="color: #011e41">
-                  Margaret Buleya
-                </h3>
-                <div class="flex items-center mb-2">
-                  <svg
-                    class="w-4 h-4 text-[#015e73] mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
-                    />
-                  </svg>
-                  <span class="text-sm font-medium" style="color: #011e41"
-                    >95% Recommend</span
-                  >
-                </div>
-                <div class="text-sm text-gray-600 mb-4">
-                  <span class="font-bold">66</span> Jobs Completed
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex space-x-3">
-                  <button
-                    @click="viewWorkerProfile('margaret-buleya')"
-                    class="flex-1 bg-white border border-[#015e73] text-[#015e73] font-medium py-2 px-4 rounded-xl hover:bg-[#015e73]/5 transition-colors cursor-pointer"
-                  >
-                    View profile
-                  </button>
-                  <button
-                    @click="chooseWorker('margaret-buleya')"
-                    class="flex-1 bg-[#015e73] text-white font-medium py-2 px-4 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
-                  >
-                    Choose me
-                  </button>
-                </div>
-              </div>
-            </div>
+            <p>Loading available workers...</p>
           </div>
         </div>
       </div>
@@ -455,156 +251,3 @@
   </div>
 </div>
 
-<!-- Alpine.js Data -->
-<script>
-  // Store workers data globally for access
-  let availableWorkers = [];
-  
-  // Load workers when page loads
-  async function loadWorkers() {
-    try {
-      const response = await fetch('/booking-flow/workers/');
-      if (response.ok) {
-        const data = await response.json();
-        if (data.status === 'success') {
-          availableWorkers = data.workers;
-          displayWorkers();
-        }
-      }
-    } catch (error) {
-      console.error('Error loading workers:', error);
-      // Use default workers if loading fails
-      displayDefaultWorkers();
-    }
-  }
-  
-  function displayWorkers() {
-    const container = document.querySelector('.space-y-6');
-    if (!container || !availableWorkers.length) return;
-    
-    // Clear existing content
-    container.innerHTML = '';
-    
-    // Create worker cards
-    availableWorkers.forEach(worker => {
-      const workerCard = createWorkerCard(worker);
-      container.appendChild(workerCard);
-    });
-  }
-  
-  function createWorkerCard(worker) {
-    const div = document.createElement('div');
-    div.className = 'bg-white border border-gray-200 rounded-2xl p-6';
-    div.innerHTML = `
-      <div class="flex items-start space-x-4">
-        <!-- Profile Picture -->
-        <div class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 overflow-hidden">
-          <img
-            src="${worker.avatar || '{% static "generic-avatar.png" %}'}"
-            alt="${worker.name}"
-            class="w-full h-full object-cover"
-            onerror="this.src='{% static "generic-avatar.png" %}'"
-          />
-        </div>
-
-        <!-- Worker Details -->
-        <div class="flex-1">
-          <h3 class="text-xl font-bold mb-2" style="color: #011e41">
-            ${worker.name}
-          </h3>
-          <div class="flex items-center mb-2">
-            <svg
-              class="w-4 h-4 text-[#015e73] mr-2"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
-              />
-            </svg>
-            <span class="text-sm font-medium" style="color: #011e41">
-              ${worker.recommend_rate}% Recommend
-            </span>
-          </div>
-          <div class="text-sm text-gray-600 mb-4">
-            <span class="font-bold">${worker.jobs_completed}</span> Jobs Completed
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex space-x-3">
-            <button
-              onclick="viewWorkerProfile(${worker.id})"
-              class="flex-1 bg-white border border-[#015e73] text-[#015e73] font-medium py-2 px-4 rounded-xl hover:bg-[#015e73]/5 transition-colors cursor-pointer"
-            >
-              View profile
-            </button>
-            <button
-              onclick="chooseWorker(${worker.id})"
-              class="flex-1 bg-[#015e73] text-white font-medium py-2 px-4 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
-            >
-              Choose me
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-    return div;
-  }
-  
-  function displayDefaultWorkers() {
-    // Keep the existing static workers as fallback
-    console.log('Using default workers');
-  }
-
-  function chooseWorker(workerId) {
-    // Handle worker selection
-    console.log("Selected worker:", workerId);
-    
-    // Find worker details
-    const worker = availableWorkers.find(w => w.id === workerId);
-    
-    // Update booking data if global component available
-    if (window.bookingFlowComponent) {
-      window.bookingFlowComponent.booking.provider = {
-        id: workerId,
-        name: worker ? worker.name : 'Selected Worker'
-      };
-      window.bookingFlowComponent.saveBookingData();
-      
-      // Navigate to payment screen
-      window.bookingFlowComponent.goToScreen(13);
-    }
-  }
-
-  function viewWorkerProfile(workerId) {
-    // Handle viewing worker profile
-    console.log("View profile for:", workerId);
-    
-    // Find worker details
-    const worker = availableWorkers.find(w => w.id === workerId);
-    
-    if (worker && window.bookingFlowComponent) {
-      window.bookingFlowComponent.selectedWorker = worker;
-      window.bookingFlowComponent.showWorkerProfile = true;
-    }
-  }
-
-  function chooseForMe() {
-    // Handle automatic worker selection
-    console.log("User chose automatic matching");
-    
-    if (window.bookingFlowComponent) {
-      window.bookingFlowComponent.booking.provider = {
-        id: 'auto',
-        name: 'Zela will choose'
-      };
-      window.bookingFlowComponent.saveBookingData();
-      
-      // Navigate to payment screen
-      window.bookingFlowComponent.goToScreen(13);
-    }
-  }
-  
-  // Load workers when DOM is ready
-  document.addEventListener('DOMContentLoaded', loadWorkers);
-</script>

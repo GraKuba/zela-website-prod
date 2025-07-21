@@ -7,6 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Zela{% endblock %}</title>
     <link rel="icon" type="image/png" href="{% static 'zela-logo.png' %}" />
+
+    <!-- Preload critical hero images -->
+    <link rel="preload" as="image" href="{% static 'carla.webp' %}" />
+    <link rel="preload" as="image" href="{% static 'orlando.webp' %}" />
+    <link rel="preload" as="image" href="{% static 'victor.webp' %}" />
+    <link rel="preload" as="image" href="{% static 'juliana.webp' %}" />
+    <link rel="preload" as="image" href="{% static 'pedro.webp' %}" />
+    <link rel="preload" as="image" href="{% static 'raul.webp' %}" />
+    <link rel="preload" as="image" href="{% static 'nadia.webp' %}" />
+    <link rel="preload" as="image" href="{% static 'beatriz.webp' %}" />
+    <link rel="preload" as="image" href="{% static 'juliana2.webp' %}" />
+    <link rel="preload" as="image" href="{% static 'isabella.webp' %}" />
+    <link rel="preload" as="image" href="{% static 'unknown1.webp' %}" />
+
     <script
       src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
       defer
@@ -33,13 +47,13 @@
     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
   >
     <main>{% block content %}{% endblock %}</main>
-    
+
     <!-- HTMX scroll to top on page navigation -->
     <script>
-      document.addEventListener('htmx:afterSwap', function(e) {
+      document.addEventListener("htmx:afterSwap", function (e) {
         // Scroll to top when HTMX swaps the entire body
         if (e.target === document.body) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }
       });
     </script>

@@ -11,6 +11,7 @@ class Booking(models.Model):
     """Customer bookings for services."""
     
     STATUS_CHOICES = [
+        ("pending_confirmation", "Pending Confirmation"),
         ("pending", "Pending"),
         ("accepted", "Accepted"),
         ("in_progress", "In Progress"),
@@ -58,7 +59,7 @@ class Booking(models.Model):
         help_text="Special instructions for the provider"
     )
     status = models.CharField(
-        max_length=12,
+        max_length=20,
         choices=STATUS_CHOICES,
         default="pending",
         help_text="Current booking status"

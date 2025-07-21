@@ -4,12 +4,12 @@
   x-transition:enter="transition ease-out duration-300"
   x-transition:enter-start="opacity-0 transform translate-y-4"
   x-transition:enter-end="opacity-100 transform translate-y-0"
-  class="space-y-8"
 >
   <form
     method="post"
     action="{% url 'website:dashboard-profile' %}"
     enctype="multipart/form-data"
+    class="space-y-8"
   >
     {% csrf_token %}
     <!-- Page Header -->
@@ -133,7 +133,7 @@
                 name="first_name"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
                 style="--tw-ring-color: #035d73"
-                value="{{ profile.first_name|default:user.first_name }}"
+                value="{{ profile.first_name }}"
                 placeholder="Enter your first name"
               />
             </div>
@@ -146,7 +146,7 @@
                 name="last_name"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-opacity-50 focus:border-transparent transition-colors"
                 style="--tw-ring-color: #035d73"
-                value="{{ profile.last_name|default:user.last_name }}"
+                value="{{ profile.last_name }}"
                 placeholder="Enter your last name"
               />
             </div>
@@ -311,12 +311,7 @@
                 name="email_notifications"
                 class="w-4 h-4 border-gray-300 rounded focus:ring-2 cursor-pointer"
                 style="color: #035d73; --tw-ring-color: #035d73"
-                {%
-                if
-                notification_preferences.email_notifications
-                %}checked{%
-                endif
-                %}
+                {% if notification_preferences.email_notifications %}checked{% endif %}
               />
               <div>
                 <p class="text-sm font-medium text-gray-900">
@@ -334,12 +329,7 @@
                 name="sms_notifications"
                 class="w-4 h-4 border-gray-300 rounded focus:ring-2 cursor-pointer"
                 style="color: #035d73; --tw-ring-color: #035d73"
-                {%
-                if
-                notification_preferences.sms_notifications
-                %}checked{%
-                endif
-                %}
+                {% if notification_preferences.sms_notifications %}checked{% endif %}
               />
               <div>
                 <p class="text-sm font-medium text-gray-900">
@@ -355,12 +345,7 @@
                 name="newsletter"
                 class="w-4 h-4 border-gray-300 rounded focus:ring-2 cursor-pointer"
                 style="color: #035d73; --tw-ring-color: #035d73"
-                {%
-                if
-                notification_preferences.newsletter
-                %}checked{%
-                endif
-                %}
+                {% if notification_preferences.newsletter %}checked{% endif %}
               />
               <div>
                 <p class="text-sm font-medium text-gray-900">Newsletter</p>
@@ -376,12 +361,7 @@
                 name="marketing_communications"
                 class="w-4 h-4 border-gray-300 rounded focus:ring-2 cursor-pointer"
                 style="color: #035d73; --tw-ring-color: #035d73"
-                {%
-                if
-                notification_preferences.marketing_communications
-                %}checked{%
-                endif
-                %}
+                {% if notification_preferences.marketing_communications %}checked{% endif %}
               />
               <div>
                 <p class="text-sm font-medium text-gray-900">

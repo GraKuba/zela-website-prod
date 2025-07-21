@@ -155,11 +155,9 @@
 
     <!-- CTA -->
     <div class="text-center mt-12">
-      <button
-        class="text-[#011E41] font-semibold hover:text-[#022951] transition-colors inline-flex items-center gap-2"
-        hx-get="#"
-        hx-target="#reviews-section"
-        hx-swap="outerHTML"
+      <a
+        href="{% url 'website:about' %}"
+        class="text-[#011E41] font-semibold hover:text-[#022951] transition-colors inline-flex items-center gap-2 cursor-pointer"
       >
         Ler Mais Avaliações
         <svg
@@ -175,7 +173,7 @@
             d="M17 8l4 4m0 0l-4 4m4-4H3"
           />
         </svg>
-      </button>
+      </a>
     </div>
   </div>
 </section>

@@ -42,6 +42,34 @@
               Where do you need help?
             </h2>
 
+            <!-- Saved Addresses -->
+            <div x-show="savedAddresses.length > 0" class="mb-6">
+              <label class="block text-sm font-medium mb-2" style="color: #4a5a70">
+                Choose from saved addresses
+              </label>
+              <div class="space-y-2 max-h-40 overflow-y-auto">
+                <template x-for="address in savedAddresses" :key="address.id">
+                  <div
+                    @click="selectSavedAddress(address)"
+                    class="p-3 border border-gray-200 rounded-lg hover:border-[#015e73] hover:bg-[#015e73]/5 cursor-pointer transition-colors"
+                  >
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <div class="font-medium text-sm" x-text="address.name"></div>
+                        <div class="text-xs text-gray-600" x-text="address.full_address"></div>
+                      </div>
+                      <div x-show="address.is_main" class="text-xs bg-[#015e73] text-white px-2 py-1 rounded">
+                        Main
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+              <div class="mt-3 text-center">
+                <span class="text-sm text-gray-500">or</span>
+              </div>
+            </div>
+
             <!-- Unit/Apartment Field -->
             <div class="mb-4">
               <label
@@ -58,7 +86,7 @@
                 <input
                   type="text"
                   x-model="booking.location.unitName"
-                  placeholder="Eg. 2a Elmwood Place"
+                  placeholder="Eg. 2a Apartamento Verde"
                   class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
@@ -80,10 +108,10 @@
                 <input
                   type="text"
                   x-model="booking.location.streetAddress"
-                  placeholder="Eg. 98 Oxford Street, Cape Town"
+                  placeholder="Eg. Rua Major Kanhangulo, Luanda"
                   class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   @input="searchAddress($event.target.value)"
-                  @keydown.enter="searchAddress($event.target.value)"
+                  @keydown.enter.prevent="geocodeAndCenterMap($event.target.value)"
                 />
                 <button
                   class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
@@ -157,6 +185,34 @@
             Where do you need help?
           </h2>
 
+          <!-- Saved Addresses -->
+          <div x-show="savedAddresses.length > 0" class="mb-6">
+            <label class="block text-sm font-medium mb-2" style="color: #4a5a70">
+              Choose from saved addresses
+            </label>
+            <div class="space-y-2 max-h-40 overflow-y-auto">
+              <template x-for="address in savedAddresses" :key="address.id">
+                <div
+                  @click="selectSavedAddress(address)"
+                  class="p-3 border border-gray-200 rounded-lg hover:border-[#015e73] hover:bg-[#015e73]/5 cursor-pointer transition-colors"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <div class="font-medium text-sm" x-text="address.name"></div>
+                      <div class="text-xs text-gray-600" x-text="address.full_address"></div>
+                    </div>
+                    <div x-show="address.is_main" class="text-xs bg-[#015e73] text-white px-2 py-1 rounded">
+                      Main
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+            <div class="mt-3 text-center">
+              <span class="text-sm text-gray-500">or</span>
+            </div>
+          </div>
+
           <!-- Unit/Apartment Field -->
           <div class="mb-4">
             <label
@@ -173,7 +229,7 @@
               <input
                 type="text"
                 x-model="booking.location.unitName"
-                placeholder="Eg. 2a Elmwood Place"
+                placeholder="Eg. 2a Apartamento Verde"
                 class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
@@ -195,10 +251,10 @@
               <input
                 type="text"
                 x-model="booking.location.streetAddress"
-                placeholder="Eg. 98 Oxford Street, Cape Town"
+                placeholder="Eg. Rua Major Kanhangulo, Luanda"
                 class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 @input="searchAddress($event.target.value)"
-                @keydown.enter="searchAddress($event.target.value)"
+                @keydown.enter.prevent="geocodeAndCenterMap($event.target.value)"
               />
               <button
                 class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
@@ -269,8 +325,7 @@
                 </svg>
               </div>
               <div class="ml-6">
-                <h3 class="text-2xl font-bold" style="color: #011e41">
-                  Indoor Cleaning
+                <h3 class="text-2xl font-bold" style="color: #011e41" x-text="serviceInfo[booking.serviceType]?.name || 'Indoor Cleaning'">
                 </h3>
               </div>
             </div>
@@ -281,9 +336,7 @@
               ✕
             </button>
           </div>
-          <p class="text-gray-700 leading-relaxed text-lg">
-            With Indoor Cleaning, get 3.5 to 10 hours of top-to-bottom
-            comprehensive cleaning of your home.
+          <p class="text-gray-700 leading-relaxed text-lg" x-text="serviceInfo[booking.serviceType]?.description || 'Get professional cleaning services for your home.'">
           </p>
         </div>
 

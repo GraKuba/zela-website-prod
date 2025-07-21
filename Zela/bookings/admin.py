@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from django.db.models import Avg
 from .models import Booking, Rating
 
 
@@ -62,7 +61,7 @@ class BookingAdmin(admin.ModelAdmin):
     
     def total_price_display(self, obj):
         """Display formatted total price."""
-        return format_html('<strong>AOA {:,}</strong>', obj.total_price)
+        return format_html('<strong>{}</strong>', obj.total_price_display)
     total_price_display.short_description = 'Total Price'
     
     actions = ['mark_accepted', 'mark_in_progress', 'mark_completed', 'mark_cancelled']

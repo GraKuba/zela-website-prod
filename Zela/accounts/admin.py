@@ -101,8 +101,8 @@ class ProviderProfileAdmin(admin.ModelAdmin):
         
         stars = "★" * int(obj.rating_average) + "☆" * (5 - int(obj.rating_average))
         return format_html(
-            '{} <small>({:.1f} avg, {} reviews)</small>',
-            stars, obj.rating_average, obj.rating_count
+            '{} <small>({} avg, {} reviews)</small>',
+            stars, f'{obj.rating_average:.1f}', obj.rating_count
         )
     rating_display.short_description = 'Rating'
     
@@ -113,12 +113,12 @@ class ProviderProfileAdmin(admin.ModelAdmin):
     
     def completion_rate_display(self, obj):
         """Display completion rate."""
-        return f"{obj.completion_rate:.1f}%"
+        return format_html('{}%', f'{obj.completion_rate:.1f}')
     completion_rate_display.short_description = 'Completion Rate'
     
     def total_earnings_display(self, obj):
         """Display total earnings with currency."""
-        return f"Kz {obj.total_earnings:,.2f}"
+        return format_html('Kz {}', f'{obj.total_earnings:,.2f}')
     total_earnings_display.short_description = 'Total Earnings'
     
     actions = ['approve_providers', 'reject_providers']

@@ -94,11 +94,14 @@
         <div class="flex items-center justify-between mb-4">
           <div>
             <div class="text-sm text-gray-600 mb-1">Where:</div>
-            <div class="text-sm font-medium" style="color: #011e41">
-              1 Osborne Rd, Mowbray, Cape To...
+            <div class="text-sm font-medium" style="color: #011e41" x-text="booking.location.streetAddress.substring(0, 30) + (booking.location.streetAddress.length > 30 ? '...' : '')">
             </div>
           </div>
-          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+          <button 
+            @click="goToScreen(1)"
+            class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
+            title="Edit location"
+          >
             <svg
               class="w-4 h-4"
               fill="none"
@@ -119,11 +122,14 @@
         <div class="flex items-center justify-between">
           <div>
             <div class="text-sm text-gray-600 mb-1">What:</div>
-            <div class="text-sm font-medium" style="color: #011e41">
-              Indoor Cleaning
+            <div class="text-sm font-medium" style="color: #011e41" x-text="serviceInfo[booking.serviceType]?.name || 'Indoor Cleaning'">
             </div>
           </div>
-          <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+          <button 
+            @click="alert('Service type cannot be changed at this stage. Please start a new booking.')"
+            class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
+            title="Service type cannot be changed"
+          >
             <svg
               class="w-4 h-4"
               fill="none"

@@ -828,7 +828,9 @@ class ProfileUpdateView(LoginRequiredMixin, FormView):
         profile.marketing_communications = form.cleaned_data['marketing_communications']
         profile.save()
         
-        # Update User model fields
+        # Update User model fields to keep them in sync
+        user.first_name = form.cleaned_data['first_name']
+        user.last_name = form.cleaned_data['last_name']
         user.phone = form.cleaned_data['phone']
         user.save()
         
@@ -1383,7 +1385,9 @@ def update_profile(request):
         
         profile.save()
         
-        # Update user phone
+        # Update user fields to keep them in sync
+        user.first_name = request.POST.get('first_name', '')
+        user.last_name = request.POST.get('last_name', '')
         user.phone = request.POST.get('phone', '')
         user.save()
         
