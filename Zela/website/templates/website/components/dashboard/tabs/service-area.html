@@ -144,40 +144,19 @@
     
     <!-- Map Placeholder -->
     <div class="bg-gray-100 rounded-lg h-96 flex items-center justify-center border-2 border-dashed border-gray-300 map-container">
-      <!-- Coverage View -->
-      <div x-show="mapView === 'coverage'" class="text-center">
+      <!-- Coming Soon Content -->
+      <div class="text-center">
         <svg class="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
         </svg>
-        <h4 class="text-lg font-medium text-gray-900 mb-2">Service Area Coverage Map</h4>
-        <p class="text-gray-600 mb-4">Draw polygons to define your service areas</p>
-        <button 
-          @click="launchMapEditor()"
-          class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" 
-          style="background-color: #035d73; cursor: pointer" 
-          onmouseover="this.style.backgroundColor='#024954'" 
-          onmouseout="this.style.backgroundColor='#035d73'"
-        >
-          Launch Map Editor
-        </button>
-      </div>
-      
-      <!-- Distance View -->
-      <div x-show="mapView === 'distance'" x-cloak class="text-center">
-        <svg class="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-        </svg>
-        <h4 class="text-lg font-medium text-gray-900 mb-2">Distance-Based Pricing Map</h4>
-        <p class="text-gray-600 mb-4">Set pricing based on travel distance from your location</p>
-        <button 
-          @click="launchMapEditor()"
-          class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" 
-          style="background-color: #035d73; cursor: pointer" 
-          onmouseover="this.style.backgroundColor='#024954'" 
-          onmouseout="this.style.backgroundColor='#035d73'"
-        >
-          Configure Distance Pricing
-        </button>
+        <h4 class="text-lg font-medium text-gray-900 mb-2">Mapa de Área de Serviço</h4>
+        <p class="text-gray-600 mb-4">Visualização interativa do mapa disponível em breve</p>
+        <div class="inline-flex items-center px-4 py-2 bg-gray-200 rounded-full opacity-50 cursor-not-allowed">
+          <span class="text-gray-700 font-medium">Visualizar Mapa</span>
+          <span class="ml-2 text-xs bg-gray-100 px-2 py-1 rounded-full">
+            Em Breve
+          </span>
+        </div>
       </div>
     </div>
     
