@@ -35,13 +35,12 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
         if user.role == 'customer':
             total_bookings = user.bookings.count()
             upcoming_bookings = user.bookings.filter(
-                status__in=['pending', 'accepted', 'in_progress'],
-                start_at__gt=timezone.now()
+                status__in=['pending_confirmation', 'pending', 'accepted', 'in_progress']
             ).count()
             
             # Get next booking
             next_booking = user.bookings.filter(
-                status__in=['pending', 'accepted'],
+                status__in=['pending_confirmation', 'pending', 'accepted'],
                 start_at__gt=timezone.now()
             ).order_by('start_at').first()
             
@@ -55,8 +54,7 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
         else:  # provider
             total_jobs = user.jobs.count()
             upcoming_jobs = user.jobs.filter(
-                status__in=['accepted', 'in_progress'],
-                start_at__gt=timezone.now()
+                status__in=['accepted', 'in_progress']
             ).count()
             
             # Get next job for provider (equivalent to next_booking for customer)
@@ -113,8 +111,7 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
             all_bookings = user.bookings.select_related('provider', 'service_task').order_by('-start_at')
             
             upcoming_bookings_list = all_bookings.filter(
-                status__in=['pending', 'accepted', 'in_progress'],
-                start_at__gt=timezone.now()
+                status__in=['pending_confirmation', 'pending', 'accepted', 'in_progress']
             )
             
             # Recurring bookings would need a separate model or field to track
@@ -129,8 +126,7 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
             all_bookings = user.jobs.select_related('customer', 'service_task').order_by('-start_at')
             
             upcoming_bookings_list = all_bookings.filter(
-                status__in=['accepted', 'in_progress'],
-                start_at__gt=timezone.now()
+                status__in=['accepted', 'in_progress']
             )
             
             recurring_bookings_list = []
@@ -335,8 +331,7 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
                 
                 # Get job lists for job queue tab
                 upcoming_jobs = user.jobs.filter(
-                    status__in=['accepted'],
-                    start_at__gt=timezone.now()
+                    status__in=['accepted']
                 ).select_related('customer', 'service_task__category').order_by('start_at')
                 
                 in_progress_jobs = user.jobs.filter(

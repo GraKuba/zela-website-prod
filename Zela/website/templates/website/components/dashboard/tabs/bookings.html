@@ -112,7 +112,9 @@
                     <h3 class="font-semibold text-gray-900">{{ booking.service_task.name }}</h3>
                     <span
                       class="px-2 py-1 text-xs font-medium rounded-full"
-                      {% if booking.status == 'pending' %}
+                      {% if booking.status == 'pending_confirmation' %}
+                        style="background-color: #ff9800; color: white"
+                      {% elif booking.status == 'pending' %}
                         style="background-color: #fdea00; color: #035d73"
                       {% elif booking.status == 'accepted' %}
                         style="background-color: #035d73; color: white"
@@ -120,7 +122,7 @@
                         style="background-color: #035d73; color: white"
                       {% endif %}
                     >
-                      {% if booking.status == 'pending' %}Pending{% elif booking.status == 'accepted' %}Confirmed{% else %}In Progress{% endif %}
+                      {% if booking.status == 'pending_confirmation' %}Pending Confirmation{% elif booking.status == 'pending' %}Pending{% elif booking.status == 'accepted' %}Confirmed{% else %}In Progress{% endif %}
                     </span>
                   </div>
                   {% if booking.provider %}
