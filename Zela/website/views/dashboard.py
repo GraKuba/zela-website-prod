@@ -32,7 +32,27 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
         next_booking = None
         
         # Get basic user stats
-        if user.role == 'customer':
+        if user.role == 'admin':
+            # Admins see all bookings
+            total_bookings = Booking.objects.count()
+            upcoming_bookings = Booking.objects.filter(
+                status__in=['pending_confirmation', 'pending', 'accepted', 'in_progress']
+            ).count()
+            
+            # Get next booking
+            next_booking = Booking.objects.filter(
+                status__in=['pending_confirmation', 'pending', 'accepted'],
+                start_at__gt=timezone.now()
+            ).order_by('start_at').first()
+            
+            dashboard_stats = {
+                'total_bookings': total_bookings,
+                'upcoming_bookings': upcoming_bookings,
+                'completed_bookings': Booking.objects.filter(status='completed').count(),
+                'next_booking': next_booking,
+            }
+            
+        elif user.role == 'customer':
             total_bookings = user.bookings.count()
             upcoming_bookings = user.bookings.filter(
                 status__in=['pending_confirmation', 'pending', 'accepted', 'in_progress']
@@ -106,7 +126,23 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
         }
         
         # Fetch bookings for the bookings tab
-        if user.role == 'customer':
+        if user.role == 'admin':
+            # Admins see all bookings
+            all_bookings = Booking.objects.select_related('customer', 'provider', 'service_task').order_by('-start_at')
+            
+            upcoming_bookings_list = all_bookings.filter(
+                status__in=['pending_confirmation', 'pending', 'accepted', 'in_progress']
+            )
+            
+            # Recurring bookings would need a separate model or field to track
+            # For now, we'll leave it empty
+            recurring_bookings_list = []
+            
+            completed_bookings_list = all_bookings.filter(status='completed')
+            
+            cancelled_bookings_list = all_bookings.filter(status='cancelled')
+            
+        elif user.role == 'customer':
             # Get bookings categorized by status
             all_bookings = user.bookings.select_related('provider', 'service_task').order_by('-start_at')
             
@@ -541,7 +577,10 @@ class BookingListPartial(LoginRequiredMixin, ListView):
         """Return bookings for the current user."""
         user = self.request.user
         
-        if user.role == 'customer':
+        if user.role == 'admin':
+            # Admins see all bookings
+            queryset = Booking.objects.all()
+        elif user.role == 'customer':
             queryset = user.bookings.all()
         else:  # provider
             queryset = user.jobs.all()
@@ -559,7 +598,9 @@ class BookingListPartial(LoginRequiredMixin, ListView):
         
         # Get status counts
         user = self.request.user
-        if user.role == 'customer':
+        if user.role == 'admin':
+            base_query = Booking.objects
+        elif user.role == 'customer':
             base_query = user.bookings
         else:
             base_query = user.jobs
