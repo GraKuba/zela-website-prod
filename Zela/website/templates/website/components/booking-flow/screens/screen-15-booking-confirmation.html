@@ -27,54 +27,54 @@
     <!-- Congratulations Message -->
     <div class="mb-8">
       <h1 class="text-3xl font-bold mb-4" style="color: #011e41">
-        Congratulations! 🎉
+        Parabéns! 🎉
       </h1>
-      <p class="text-lg text-gray-600 mb-2">Your booking has been confirmed</p>
+      <p class="text-lg text-gray-600 mb-2">A sua reserva foi confirmada</p>
       <p class="text-sm text-gray-500">
-        You will receive a confirmation email shortly with all the details.
+        Receberá um email de confirmação em breve com todos os detalhes.
       </p>
     </div>
 
     <!-- Booking Details Summary -->
     <div class="bg-gray-50 rounded-2xl p-6 mb-8 text-left">
       <h3 class="text-lg font-bold mb-4" style="color: #011e41">
-        Booking Summary
+        Resumo da Reserva
       </h3>
 
       <div class="space-y-3">
         <div class="flex justify-between">
-          <span class="text-gray-600">Service:</span>
+          <span class="text-gray-600">Serviço:</span>
           <span class="font-medium" style="color: #011e41" id="service-name">
-            Indoor Cleaning
+            Limpeza Interior
           </span>
         </div>
 
         <div class="flex justify-between">
-          <span class="text-gray-600">Date & Time:</span>
+          <span class="text-gray-600">Data e Hora:</span>
           <span class="font-medium" style="color: #011e41" id="date-time">
-            Loading...
+            A carregar...
           </span>
         </div>
 
         <div class="flex justify-between">
-          <span class="text-gray-600">Location:</span>
+          <span class="text-gray-600">Localização:</span>
           <span class="font-medium" style="color: #011e41" id="location">
-            Loading...
+            A carregar...
           </span>
         </div>
 
         <div class="flex justify-between">
-          <span class="text-gray-600">Duration:</span>
+          <span class="text-gray-600">Duração:</span>
           <span class="font-medium" style="color: #011e41" id="duration">
-            Loading...
+            A carregar...
           </span>
         </div>
 
         <div class="border-t pt-3">
           <div class="flex justify-between">
-            <span class="text-gray-600 font-medium">Total Paid:</span>
+            <span class="text-gray-600 font-medium">Total Pago:</span>
             <span class="font-bold text-lg" style="color: #011e41" id="total-paid">
-              Loading...
+              A carregar...
             </span>
           </div>
         </div>
@@ -84,20 +84,20 @@
     <!-- Next Steps -->
     <div class="bg-blue-50 rounded-2xl p-6 mb-8">
       <h4 class="text-lg font-bold mb-3" style="color: #011e41">
-        What's Next?
+        O que vem a seguir?
       </h4>
       <div class="space-y-2 text-sm text-gray-700">
         <div class="flex items-start">
           <span class="text-blue-600 mr-2">📧</span>
-          <span>Check your email for booking confirmation</span>
+          <span>Verifique o seu email para confirmação da reserva</span>
         </div>
         <div class="flex items-start">
           <span class="text-blue-600 mr-2">📱</span>
-          <span>Track your booking in the dashboard</span>
+          <span>Acompanhe a sua reserva no painel</span>
         </div>
         <div class="flex items-start">
           <span class="text-blue-600 mr-2">🏠</span>
-          <span>Prepare your space for the cleaning service</span>
+          <span>Prepare o seu espaço para o serviço de limpeza</span>
         </div>
       </div>
     </div>
@@ -113,9 +113,9 @@
     <!-- Additional Help -->
     <div class="mt-6">
       <p class="text-sm text-gray-500">
-        Need help?
+        Precisa de ajuda?
         <a href="/help-center/" class="text-[#015e73] hover:underline"
-          >Visit our Help Center</a
+          >Visite o nosso Centro de Ajuda</a
         >
       </p>
     </div>
@@ -152,12 +152,12 @@
       }
       
       // Update location
-      const location = booking.location.streetAddress || 'Location not set';
+      const location = booking.location.streetAddress || 'Localização não definida';
       const truncatedLocation = location.length > 30 ? location.substring(0, 27) + '...' : location;
       document.getElementById('location').textContent = truncatedLocation;
       
       // Update duration
-      document.getElementById('duration').textContent = `${booking.details.duration} hours`;
+      document.getElementById('duration').textContent = `${booking.details.duration} horas`;
       
       // Update total paid (including tip)
       const totalWithTip = booking.pricing.total + booking.tip.amount;

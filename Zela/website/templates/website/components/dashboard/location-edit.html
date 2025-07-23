@@ -13,7 +13,7 @@
     <!-- Location Name -->
     <div>
       <label for="edit_name_{{ location.id }}" class="block text-sm font-medium text-gray-700 mb-1">
-        Location Name
+        Nome da Localização
       </label>
       <input
         type="text"
@@ -22,7 +22,7 @@
         value="{{ location.name }}"
         required
         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm"
-        placeholder="e.g., Home, Office"
+        placeholder="ex: Casa, Escritório"
       >
     </div>
 
@@ -30,7 +30,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <div class="sm:col-span-2">
         <label for="edit_address_line_1_{{ location.id }}" class="block text-sm font-medium text-gray-700 mb-1">
-          Street Address
+          Endereço
         </label>
         <input
           type="text"
@@ -39,13 +39,13 @@
           value="{{ location.address_line_1 }}"
           required
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm"
-          placeholder="Street address"
+          placeholder="Endereço da rua"
         >
       </div>
 
       <div class="sm:col-span-2">
         <label for="edit_address_line_2_{{ location.id }}" class="block text-sm font-medium text-gray-700 mb-1">
-          Apartment, Suite, etc. <span class="text-gray-400 text-xs">(optional)</span>
+          Apartamento, Suíte, etc. <span class="text-gray-400 text-xs">(opcional)</span>
         </label>
         <input
           type="text"
@@ -53,7 +53,7 @@
           id="edit_address_line_2_{{ location.id }}"
           value="{{ location.address_line_2|default:'' }}"
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm"
-          placeholder="Apt, Suite, Unit, etc."
+          placeholder="Apto, Suíte, Unidade, etc."
         >
       </div>
     </div>
@@ -62,7 +62,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
       <div>
         <label for="edit_city_{{ location.id }}" class="block text-sm font-medium text-gray-700 mb-1">
-          City
+          Cidade
         </label>
         <input
           type="text"
@@ -71,13 +71,13 @@
           value="{{ location.city }}"
           required
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm"
-          placeholder="City"
+          placeholder="Cidade"
         >
       </div>
 
       <div>
         <label for="edit_province_{{ location.id }}" class="block text-sm font-medium text-gray-700 mb-1">
-          Province
+          Província
         </label>
         <input
           type="text"
@@ -86,13 +86,13 @@
           value="{{ location.province }}"
           required
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm"
-          placeholder="Province/State"
+          placeholder="Província/Estado"
         >
       </div>
 
       <div>
         <label for="edit_postal_code_{{ location.id }}" class="block text-sm font-medium text-gray-700 mb-1">
-          Postal Code
+          Código Postal
         </label>
         <input
           type="text"
@@ -108,7 +108,7 @@
     <!-- Country -->
     <div>
       <label for="edit_country_{{ location.id }}" class="block text-sm font-medium text-gray-700 mb-1">
-        Country
+        País
       </label>
       <select
         name="country"
@@ -116,10 +116,10 @@
         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm cursor-pointer"
       >
         <option value="AO" {% if location.country == 'AO' %}selected{% endif %}>🇦🇴 Angola</option>
-        <option value="BR" {% if location.country == 'BR' %}selected{% endif %}>🇧🇷 Brazil</option>
+        <option value="BR" {% if location.country == 'BR' %}selected{% endif %}>🇧🇷 Brasil</option>
         <option value="PT" {% if location.country == 'PT' %}selected{% endif %}>🇵🇹 Portugal</option>
-        <option value="US" {% if location.country == 'US' %}selected{% endif %}>🇺🇸 United States</option>
-        <option value="GB" {% if location.country == 'GB' %}selected{% endif %}>🇬🇧 United Kingdom</option>
+        <option value="US" {% if location.country == 'US' %}selected{% endif %}>🇺🇸 Estados Unidos</option>
+        <option value="GB" {% if location.country == 'GB' %}selected{% endif %}>🇬🇧 Reino Unido</option>
       </select>
     </div>
 
@@ -133,7 +133,7 @@
           id="edit_is_main_{{ location.id }}"
           class="h-4 w-4 text-[#015e73] focus:ring-[#015e73] border-gray-300 rounded"
         >
-        <span class="ml-2 text-sm text-gray-700">Set as main location</span>
+        <span class="ml-2 text-sm text-gray-700">Definir como localização principal</span>
       </label>
     </div>
     {% endif %}
@@ -148,14 +148,14 @@
       <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
       </svg>
-      Save Changes
+      Guardar Alterações
     </button>
     <button
       type="button"
       @click="editingLocation = null"
       class="px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors cursor-pointer"
     >
-      Cancel
+      Cancelar
     </button>
   </div>
 </form>

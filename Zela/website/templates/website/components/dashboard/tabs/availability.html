@@ -101,7 +101,7 @@
           // Update local state with server response to ensure sync
           this.isAvailable = data.is_available;
           this.quickToggleToday = data.accepts_same_day;
-          showNotification('Availability updated successfully!', 'success');
+          showNotification('Disponibilidade atualizada com sucesso!', 'success');
         } else {
           alert('Error updating availability: ' + data.error);
           // Revert the toggle on error
@@ -133,7 +133,7 @@
         const data = await response.json();
         if (data.ok) {
           this.scheduleModified = false;
-          showNotification('Schedule saved successfully!', 'success');
+          showNotification('Horário salvo com sucesso!', 'success');
         } else {
           alert('Error saving schedule: ' + data.error);
         }
@@ -144,7 +144,7 @@
     },
     
     cancelTimeOffRequest(requestId) {
-      if (confirm('Are you sure you want to cancel this time off request?')) {
+      if (confirm('Tem certeza de que deseja cancelar esta solicitação de folga?')) {
         this.timeOffRequests = this.timeOffRequests.filter(r => r.id !== requestId);
         console.log('Cancelling time off request:', requestId);
       }
@@ -165,8 +165,8 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-4">
       <div>
-        <h3 class="text-lg font-semibold" style="color: #011e41">Availability Status</h3>
-        <p class="text-sm text-gray-600">Toggle your availability for accepting new jobs</p>
+        <h3 class="text-lg font-semibold" style="color: #011e41">Status de Disponibilidade</h3>
+        <p class="text-sm text-gray-600">Alterne sua disponibilidade para aceitar novos trabalhos</p>
       </div>
       <button
         @click="isAvailable = !isAvailable; updateAvailability()"
@@ -198,12 +198,12 @@
           <span 
             class="font-medium text-lg"
             :class="isAvailable ? 'text-green-800' : 'text-red-800'"
-            x-text="isAvailable ? 'Currently Available for Jobs' : 'Currently Unavailable'"
+            x-text="isAvailable ? 'Atualmente Disponível para Trabalhos' : 'Atualmente Indisponível'"
           ></span>
           <p 
             class="text-sm mt-1"
             :class="isAvailable ? 'text-green-700' : 'text-red-700'"
-            x-text="isAvailable ? 'You will receive job notifications and booking requests' : 'You will not receive new job requests until you become available'"
+            x-text="isAvailable ? 'Você receberá notificações de trabalhos e solicitações de reserva' : 'Você não receberá novas solicitações de trabalho até ficar disponível'"
           ></p>
         </div>
       </div>
@@ -213,15 +213,15 @@
     <div x-show="isAvailable" class="mt-4 grid grid-cols-3 gap-4" x-transition>
       <div class="text-center p-3 bg-gray-50 rounded-lg">
         <div class="text-2xl font-bold" style="color: #035d73">{{ provider.jobs_completed|default:0 }}</div>
-        <div class="text-xs text-gray-600">Jobs Today</div>
+        <div class="text-xs text-gray-600">Trabalhos Hoje</div>
       </div>
       <div class="text-center p-3 bg-gray-50 rounded-lg">
         <div class="text-2xl font-bold" style="color: #035d73">{{ upcoming_jobs_count|default:0 }}</div>
-        <div class="text-xs text-gray-600">Upcoming</div>
+        <div class="text-xs text-gray-600">Próximos</div>
       </div>
       <div class="text-center p-3 bg-gray-50 rounded-lg">
         <div class="text-2xl font-bold" style="color: #035d73">{{ provider.completion_rate|floatformat:0|default:0 }}%</div>
-        <div class="text-xs text-gray-600">Completion</div>
+        <div class="text-xs text-gray-600">Conclusão</div>
       </div>
     </div>
   </div>
@@ -230,8 +230,8 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-4">
       <div>
-        <h3 class="text-lg font-semibold" style="color: #011e41">Same-Day Bookings</h3>
-        <p class="text-sm text-gray-600">Accept bookings for today with short notice</p>
+        <h3 class="text-lg font-semibold" style="color: #011e41">Reservas no Mesmo Dia</h3>
+        <p class="text-sm text-gray-600">Aceite reservas para hoje com pouco aviso prévio</p>
       </div>
       <button
         @click="quickToggleToday = !quickToggleToday; updateAvailability()"
@@ -255,9 +255,9 @@
         </div>
         <div>
           <span class="font-medium" :class="quickToggleToday ? 'text-yellow-800' : 'text-gray-700'" 
-                x-text="quickToggleToday ? 'Accepting Same-Day Bookings' : 'Same-Day Bookings Disabled'"></span>
+                x-text="quickToggleToday ? 'Aceitando Reservas no Mesmo Dia' : 'Reservas no Mesmo Dia Desativadas'"></span>
           <p class="text-sm mt-1" :class="quickToggleToday ? 'text-yellow-700' : 'text-gray-600'"
-             x-text="quickToggleToday ? 'Customers can book you for jobs starting in 2+ hours' : 'You only accept advance bookings (tomorrow onwards)'"></p>
+             x-text="quickToggleToday ? 'Clientes podem reservá-lo para trabalhos começando em 2+ horas' : 'Você só aceita reservas antecipadas (amanhã em diante)'"></p>
         </div>
       </div>
     </div>
@@ -266,7 +266,7 @@
   <!-- Weekly Schedule -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-lg font-semibold" style="color: #011e41">Weekly Working Hours</h3>
+      <h3 class="text-lg font-semibold" style="color: #011e41">Horário de Trabalho Semanal</h3>
       <button 
         @click="copyLastWeekSchedule()"
         class="text-sm px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
@@ -275,7 +275,7 @@
         <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
         </svg>
-        Copy Last Week
+        Copiar Última Semana
       </button>
     </div>
     
@@ -298,10 +298,10 @@
               <span class="text-sm font-medium text-gray-900 capitalize" x-text="day.name"></span>
               <span class="ml-2 text-xs" :class="workingHours[day.name].enabled ? 'text-green-600' : 'text-gray-500'">
                 <template x-if="workingHours[day.name].enabled">
-                  <span x-text="`${calculateHours(workingHours[day.name].start, workingHours[day.name].end)} hours`"></span>
+                  <span x-text="`${calculateHours(workingHours[day.name].start, workingHours[day.name].end)} horas`"></span>
                 </template>
                 <template x-if="!workingHours[day.name].enabled">
-                  <span>Day off</span>
+                  <span>Dia de folga</span>
                 </template>
               </span>
             </div>
@@ -323,7 +323,7 @@
               <option value="11:00">11:00 AM</option>
               <option value="12:00">12:00 PM</option>
             </select>
-            <span class="text-gray-500 text-sm">to</span>
+            <span class="text-gray-500 text-sm">até</span>
             <select 
               x-model="workingHours[day.name].end"
               @change="scheduleModified = true"
@@ -350,8 +350,8 @@
     <!-- Total weekly hours summary -->
     <div class="mt-4 p-4 bg-gray-50 rounded-lg">
       <div class="flex justify-between items-center">
-        <span class="text-sm text-gray-600">Total weekly hours:</span>
-        <span class="font-semibold" style="color: #035d73" x-text="calculateTotalWeeklyHours() + ' hours'"></span>
+        <span class="text-sm text-gray-600">Total de horas semanais:</span>
+        <span class="font-semibold" style="color: #035d73" x-text="calculateTotalWeeklyHours() + ' horas'"></span>
       </div>
     </div>
     
@@ -363,13 +363,13 @@
         onmouseover="this.style.backgroundColor='#024954'" 
         onmouseout="this.style.backgroundColor='#035d73'"
       >
-        Save Schedule
+        Salvar Horário
       </button>
       <span class="text-xs text-gray-500" x-show="scheduleModified" x-transition>
         <svg class="w-4 h-4 inline text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-.833-1.732-.833-2.5 0L4.314 3.5c-.77.833.192 3 1.732 3z"/>
         </svg>
-        Unsaved changes
+        Alterações não salvas
       </span>
     </div>
   </div>
@@ -378,11 +378,11 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-4">
       <div>
-        <h3 class="text-lg font-semibold" style="color: #011e41">Service Areas & Coverage</h3>
-        <p class="text-sm text-gray-600">Select the areas where you provide services</p>
+        <h3 class="text-lg font-semibold" style="color: #011e41">Áreas de Serviço e Cobertura</h3>
+        <p class="text-sm text-gray-600">Selecione as áreas onde você fornece serviços</p>
       </div>
       <span class="text-sm px-3 py-1 rounded-full" style="background-color: #e6f7ff; color: #035d73">
-        <span x-text="serviceAreas.filter(a => a.enabled).length"></span> of <span x-text="serviceAreas.length"></span> active
+        <span x-text="serviceAreas.filter(a => a.enabled).length"></span> de <span x-text="serviceAreas.length"></span> ativas
       </span>
     </div>
     
@@ -411,10 +411,10 @@
               </div>
               <div class="text-xs text-gray-500 mt-0.5">
                 <template x-if="area.surcharge > 0">
-                  <span>+R$ <span x-text="area.surcharge"></span> surcharge</span>
+                  <span>+R$ <span x-text="area.surcharge"></span> taxa adicional</span>
                 </template>
                 <template x-if="area.surcharge === 0">
-                  <span class="text-green-600">No surcharge</span>
+                  <span class="text-green-600">Sem taxa adicional</span>
                 </template>
               </div>
             </div>
@@ -424,7 +424,7 @@
             <span 
               class="text-xs px-2 py-1 rounded-full font-medium"
               :class="area.enabled ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'"
-              x-text="area.enabled ? 'Active' : 'Inactive'"
+              x-text="area.enabled ? 'Ativa' : 'Inativa'"
             ></span>
           </div>
         </div>
@@ -434,8 +434,8 @@
         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
         </svg>
-        <h3 class="mt-2 text-sm font-medium text-gray-900">No service areas configured</h3>
-        <p class="mt-1 text-sm text-gray-500">Add service areas to start accepting jobs</p>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Nenhuma área de serviço configurada</h3>
+        <p class="mt-1 text-sm text-gray-500">Adicione áreas de serviço para começar a aceitar trabalhos</p>
       </div>
       {% endif %}
     </div>
@@ -447,8 +447,8 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
         <div class="text-sm">
-          <p class="text-blue-800 font-medium">Distance-based surcharges</p>
-          <p class="text-blue-700 mt-1">Areas further from city center have additional fees to cover travel costs</p>
+          <p class="text-blue-800 font-medium">Taxas baseadas em distância</p>
+          <p class="text-blue-700 mt-1">Áreas mais distantes do centro da cidade têm taxas adicionais para cobrir custos de viagem</p>
         </div>
       </div>
     </div>
@@ -461,7 +461,7 @@
         onmouseover="this.style.backgroundColor='#024954'" 
         onmouseout="this.style.backgroundColor='#035d73'"
       >
-        Update Service Areas
+        Atualizar Áreas de Serviço
       </button>
       <button 
         @click="currentTab = 'service-area'"
@@ -473,7 +473,7 @@
         <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
         </svg>
-        View Coverage Map
+        Ver Mapa de Cobertura
       </button>
     </div>
   </div>
@@ -482,8 +482,8 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-4">
       <div>
-        <h3 class="text-lg font-semibold" style="color: #011e41">Time Off Requests</h3>
-        <p class="text-sm text-gray-600">Manage your scheduled time off</p>
+        <h3 class="text-lg font-semibold" style="color: #011e41">Solicitações de Folga</h3>
+        <p class="text-sm text-gray-600">Gerencie suas folgas programadas</p>
       </div>
       <button 
         @click="$dispatch('open-modal', 'time-off-modal')"
@@ -495,7 +495,7 @@
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg>
-        Request Time Off
+        Solicitar Folga
       </button>
     </div>
     
@@ -532,7 +532,7 @@
                   <div class="font-medium text-gray-900" x-text="request.date"></div>
                   <div class="text-sm text-gray-600 mt-1" x-text="request.reason"></div>
                   <div class="text-xs text-gray-500 mt-1">
-                    <span x-text="request.duration"></span> day(s) off
+                    <span x-text="request.duration"></span> dia(s) de folga
                   </div>
                 </div>
               </div>
@@ -569,13 +569,13 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
           </div>
-          <h3 class="mt-3 text-sm font-medium text-gray-900">No time off scheduled</h3>
-          <p class="mt-1 text-sm text-gray-500">Request time off when you need a break</p>
+          <h3 class="mt-3 text-sm font-medium text-gray-900">Nenhuma folga programada</h3>
+          <p class="mt-1 text-sm text-gray-500">Solicite folga quando precisar de uma pausa</p>
           <button 
             @click="$dispatch('open-modal', 'time-off-modal')"
             class="mt-4 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
           >
-            Schedule Time Off
+            Programar Folga
           </button>
         </div>
       </template>
@@ -585,15 +585,15 @@
     <div x-show="timeOffRequests.length > 0" class="mt-4 grid grid-cols-3 gap-3" x-transition>
       <div class="text-center p-3 bg-gray-50 rounded-lg">
         <div class="text-lg font-bold" style="color: #035d73" x-text="timeOffRequests.filter(r => r.status === 'approved').length"></div>
-        <div class="text-xs text-gray-600">Approved</div>
+        <div class="text-xs text-gray-600">Aprovadas</div>
       </div>
       <div class="text-center p-3 bg-gray-50 rounded-lg">
         <div class="text-lg font-bold" style="color: #fdea00" x-text="timeOffRequests.filter(r => r.status === 'pending').length"></div>
-        <div class="text-xs text-gray-600">Pending</div>
+        <div class="text-xs text-gray-600">Pendentes</div>
       </div>
       <div class="text-center p-3 bg-gray-50 rounded-lg">
         <div class="text-lg font-bold text-red-600" x-text="timeOffRequests.filter(r => r.status === 'rejected').length"></div>
-        <div class="text-xs text-gray-600">Rejected</div>
+        <div class="text-xs text-gray-600">Rejeitadas</div>
       </div>
     </div>
     
@@ -603,11 +603,11 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
         <div class="text-sm">
-          <div class="font-medium" style="color: #035d73">Time Off Policy</div>
+          <div class="font-medium" style="color: #035d73">Política de Folgas</div>
           <div class="mt-1" style="color: #024954">
-            • Submit requests at least 48 hours in advance<br>
-            • Same-day sick leave is allowed with proper documentation<br>
-            • Vacation requests need 1 week advance notice
+            • Envie solicitações com pelo menos 48 horas de antecedência<br>
+            • Licença médica no mesmo dia é permitida com documentação adequada<br>
+            • Solicitações de férias precisam de 1 semana de aviso prévio
           </div>
         </div>
       </div>
@@ -616,7 +616,7 @@
 
   <!-- Quick Actions -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">Quick Actions</h3>
+    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">Ações Rápidas</h3>
     
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <button class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors" style="cursor: pointer">
@@ -626,8 +626,8 @@
           </svg>
         </div>
         <div class="text-left">
-          <div class="font-medium text-gray-900">Copy Last Week</div>
-          <div class="text-sm text-gray-500">Duplicate schedule</div>
+          <div class="font-medium text-gray-900">Copiar Última Semana</div>
+          <div class="text-sm text-gray-500">Duplicar horário</div>
         </div>
       </button>
 
@@ -638,8 +638,8 @@
           </svg>
         </div>
         <div class="text-left">
-          <div class="font-medium text-gray-900">Extended Hours</div>
-          <div class="text-sm text-gray-500">Temporary availability</div>
+          <div class="font-medium text-gray-900">Horário Estendido</div>
+          <div class="text-sm text-gray-500">Disponibilidade temporária</div>
         </div>
       </button>
 
@@ -650,8 +650,8 @@
           </svg>
         </div>
         <div class="text-left">
-          <div class="font-medium text-gray-900">Travel Preferences</div>
-          <div class="text-sm text-gray-500">Distance settings</div>
+          <div class="font-medium text-gray-900">Preferências de Viagem</div>
+          <div class="text-sm text-gray-500">Configurações de distância</div>
         </div>
       </button>
     </div>

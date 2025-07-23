@@ -11,26 +11,26 @@
     <div class="flex items-center justify-between">
       <div>
         <h2 class="text-2xl font-bold" style="color: #011e41">
-          Welcome back, <span x-text="user.name.split(' ')[0]"></span>! 💼
+          Bem-vindo de volta, <span x-text="user.name.split(' ')[0]"></span>! 💼
         </h2>
-        <p class="text-gray-600 mt-1">Ready to make homes sparkle today?</p>
+        <p class="text-gray-600 mt-1">Pronto para deixar as casas brilhando hoje?</p>
       </div>
       <div class="flex items-center space-x-2">
         {% if provider.is_approved %}
         <div
           class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
         >
-          ✓ Verified Provider
+          ✓ Prestador Verificado
         </div>
         {% else %}
         <div
           class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium"
         >
-          ⏳ Pending Verification
+          ⏳ Verificação Pendente
         </div>
         {% endif %}
         <div class="text-right">
-          <div class="text-sm text-gray-500">Rating</div>
+          <div class="text-sm text-gray-500">Avaliação</div>
           <div class="text-2xl font-bold" style="color: #011e41">{{ provider.rating_average|floatformat:2|default:"0.00" }} ⭐</div>
         </div>
       </div>
@@ -45,7 +45,7 @@
     <div class="flex items-start justify-between">
       <div class="flex-1">
         <h3 class="text-lg font-semibold text-blue-900 mb-2">
-          Today's Next Job
+          Próximo Trabalho de Hoje
         </h3>
         <div class="space-y-2">
           <div class="flex items-center text-sm text-blue-700">
@@ -116,7 +116,7 @@
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
               />
             </svg>
-            <span>Client: {{ next_job.customer.get_full_name }}</span>
+            <span>Cliente: {{ next_job.customer.get_full_name }}</span>
           </div>
         </div>
         <div class="mt-4 flex items-center space-x-2">
@@ -141,7 +141,7 @@
           <div
             class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
           >
-            In {{ next_job.time_until|default:"0" }} min
+            Em {{ next_job.time_until|default:"0" }} min
           </div>
         </div>
       </div>
@@ -152,7 +152,7 @@
           onmouseover="this.style.backgroundColor='#024954'"
           onmouseout="this.style.backgroundColor='#035d73'"
         >
-          Start Job
+          Iniciar Trabalho
         </button>
         <button
           class="px-4 py-2 bg-white border rounded-lg text-sm font-medium transition-colors"
@@ -160,13 +160,13 @@
           onmouseover="this.style.backgroundColor='#f0fdfa'"
           onmouseout="this.style.backgroundColor='white'"
         >
-          Get Directions
+          Obter Direções
         </button>
         <button
           class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
           style="cursor: pointer"
         >
-          Contact Client
+          Contactar Cliente
         </button>
       </div>
     </div>
@@ -192,8 +192,8 @@
         </svg>
       </div>
       <div>
-        <h3 class="text-lg font-semibold text-gray-900">No Upcoming Jobs</h3>
-        <p class="text-sm text-gray-600 mt-1">You don't have any jobs scheduled for today. Check your availability settings to receive more bookings.</p>
+        <h3 class="text-lg font-semibold text-gray-900">Sem Trabalhos Próximos</h3>
+        <p class="text-sm text-gray-600 mt-1">Você não tem trabalhos agendados para hoje. Verifique suas configurações de disponibilidade para receber mais reservas.</p>
       </div>
     </div>
   </div>
@@ -205,7 +205,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-sm font-medium text-gray-900">This Week</h3>
+          <h3 class="text-sm font-medium text-gray-900">Esta Semana</h3>
           <p class="text-2xl font-bold mt-1" style="color: #011e41">
             R$ {{ provider.total_earnings|floatformat:2|default:"0.00" }}
           </p>
@@ -248,9 +248,9 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-sm font-medium text-gray-900">Average Rating</h3>
+          <h3 class="text-sm font-medium text-gray-900">Avaliação Média</h3>
           <p class="text-2xl font-bold mt-1" style="color: #011e41">{{ provider.rating_average|floatformat:2|default:"0.00" }} ⭐</p>
-          <div class="text-sm text-gray-500 mt-1">Based on {{ provider.rating_count }} reviews</div>
+          <div class="text-sm text-gray-500 mt-1">Baseado em {{ provider.rating_count }} avaliações</div>
         </div>
         <div class="p-3 rounded-full" style="background-color: #fdea00">
           <svg
@@ -275,9 +275,9 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-sm font-medium text-gray-900">Jobs Completed</h3>
+          <h3 class="text-sm font-medium text-gray-900">Trabalhos Concluídos</h3>
           <p class="text-2xl font-bold mt-1" style="color: #011e41">{{ provider.jobs_completed }}</p>
-          <div class="text-sm text-gray-500 mt-1">All time</div>
+          <div class="text-sm text-gray-500 mt-1">Todos os tempos</div>
         </div>
         <div class="p-3 bg-blue-100 rounded-full">
           <svg
@@ -301,9 +301,9 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-sm font-medium text-gray-900">Completion Rate</h3>
+          <h3 class="text-sm font-medium text-gray-900">Taxa de Conclusão</h3>
           <p class="text-2xl font-bold mt-1" style="color: #011e41">{{ provider.completion_rate|floatformat:1|default:"0.0" }}%</p>
-          <div class="text-sm text-gray-500 mt-1">Last 30 days</div>
+          <div class="text-sm text-gray-500 mt-1">Últimos 30 dias</div>
         </div>
         <div class="p-3 bg-purple-100 rounded-full">
           <svg
@@ -360,7 +360,7 @@
         onmouseover="this.style.backgroundColor='#fcd34d'"
         onmouseout="this.style.backgroundColor='#fdea00'"
       >
-        Update Now
+        Atualizar Agora
       </button>
     </div>
   </div>
@@ -369,7 +369,7 @@
   <!-- Quick Actions -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <h3 class="text-lg font-semibold mb-4" style="color: #011e41">
-      Quick Actions
+      Ações Rápidas
     </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <button
@@ -394,8 +394,8 @@
           </svg>
         </div>
         <div class="text-left">
-          <div class="font-medium text-gray-900">View Job Queue</div>
-          <div class="text-sm text-gray-500">Manage your upcoming jobs</div>
+          <div class="font-medium text-gray-900">Ver Fila de Trabalhos</div>
+          <div class="text-sm text-gray-500">Gerencie seus próximos trabalhos</div>
         </div>
       </button>
 
@@ -421,8 +421,8 @@
           </svg>
         </div>
         <div class="text-left">
-          <div class="font-medium text-gray-900">Update Availability</div>
-          <div class="text-sm text-gray-500">Set your working hours</div>
+          <div class="font-medium text-gray-900">Atualizar Disponibilidade</div>
+          <div class="text-sm text-gray-500">Defina seus horários de trabalho</div>
         </div>
       </button>
 
@@ -448,8 +448,8 @@
           </svg>
         </div>
         <div class="text-left">
-          <div class="font-medium text-gray-900">Request Payout</div>
-          <div class="text-sm text-gray-500">Withdraw your earnings</div>
+          <div class="font-medium text-gray-900">Solicitar Pagamento</div>
+          <div class="text-sm text-gray-500">Retire seus ganhos</div>
         </div>
       </button>
 
@@ -475,8 +475,8 @@
           </svg>
         </div>
         <div class="text-left">
-          <div class="font-medium text-gray-900">View Reviews</div>
-          <div class="text-sm text-gray-500">Check recent feedback</div>
+          <div class="font-medium text-gray-900">Ver Avaliações</div>
+          <div class="text-sm text-gray-500">Verifique feedback recente</div>
         </div>
       </button>
 
@@ -502,8 +502,8 @@
           </svg>
         </div>
         <div class="text-left">
-          <div class="font-medium text-gray-900">Update Documents</div>
-          <div class="text-sm text-gray-500">Manage your KYC docs</div>
+          <div class="font-medium text-gray-900">Atualizar Documentos</div>
+          <div class="text-sm text-gray-500">Gerencie seus documentos KYC</div>
         </div>
       </button>
 
@@ -535,8 +535,8 @@
           </svg>
         </div>
         <div class="text-left">
-          <div class="font-medium text-gray-900">Settings</div>
-          <div class="text-sm text-gray-500">Manage preferences</div>
+          <div class="font-medium text-gray-900">Configurações</div>
+          <div class="text-sm text-gray-500">Gerencie preferências</div>
         </div>
       </button>
     </div>

@@ -20,7 +20,7 @@
               1
             </div>
             <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Details
+              Detalhes
             </div>
           </div>
           <div class="flex items-center">
@@ -29,7 +29,7 @@
             >
               2
             </div>
-            <div class="ml-2 text-sm text-gray-600">Worker</div>
+            <div class="ml-2 text-sm text-gray-600">Trabalhador</div>
           </div>
           <div class="flex items-center">
             <div
@@ -37,7 +37,7 @@
             >
               3
             </div>
-            <div class="ml-2 text-sm text-gray-600">Payment</div>
+            <div class="ml-2 text-sm text-gray-600">Pagamento</div>
           </div>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2">
@@ -68,7 +68,7 @@
       <!-- Booking Details -->
       <div class="bg-white border border-gray-200 rounded-2xl p-6">
         <h3 class="text-lg font-bold mb-4" style="color: #011e41">
-          Booking Details
+          Detalhes da Reserva
         </h3>
 
         <!-- Pricing Display -->
@@ -84,8 +84,8 @@
             ></div>
           </div>
           <div class="flex justify-between text-sm text-gray-300">
-            <div>Est. hours</div>
-            <div>Est. Price</div>
+            <div>Horas Est.</div>
+            <div>Preço Est.</div>
           </div>
         </div>
       </div>
@@ -95,7 +95,7 @@
         <!-- Location -->
         <div class="flex items-center justify-between mb-4">
           <div>
-            <div class="text-sm text-gray-600 mb-1">Where:</div>
+            <div class="text-sm text-gray-600 mb-1">Onde:</div>
             <div class="text-sm font-medium" style="color: #011e41" x-text="booking.location.streetAddress.substring(0, 30) + (booking.location.streetAddress.length > 30 ? '...' : '')">
             </div>
           </div>
@@ -123,12 +123,12 @@
         <!-- Service Type -->
         <div class="flex items-center justify-between">
           <div>
-            <div class="text-sm text-gray-600 mb-1">What:</div>
+            <div class="text-sm text-gray-600 mb-1">O quê:</div>
             <div class="text-sm font-medium" style="color: #011e41" x-text="serviceInfo[booking.serviceType]?.name || 'Indoor Cleaning'">
             </div>
           </div>
           <button 
-            @click="alert('Service type cannot be changed at this stage. Please start a new booking.')"
+            @click="alert('O tipo de serviço não pode ser alterado nesta fase. Por favor, inicie uma nova reserva.')"
             class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
             title="Service type cannot be changed"
           >
@@ -151,9 +151,9 @@
         <!-- When -->
         <div class="flex items-center justify-between">
           <div>
-            <div class="text-sm text-gray-600 mb-1">When:</div>
+            <div class="text-sm text-gray-600 mb-1">Quando:</div>
             <div class="text-sm font-medium" style="color: #011e41">
-              <span x-text="booking.dateBucket === 'tomorrow' ? 'Tomorrow' : new Date(booking.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })"></span>
+              <span x-text="booking.dateBucket === 'tomorrow' ? 'Amanhã' : new Date(booking.date).toLocaleDateString('pt-PT', { weekday: 'short', month: 'short', day: 'numeric' })"></span>
               @ <span x-text="booking.details.startTime || '07:00'"></span>
             </div>
           </div>
@@ -185,10 +185,10 @@
     <div class="flex-1 overflow-y-auto px-6 py-8">
       <div class="max-w-2xl">
         <h2 class="text-3xl font-bold mb-2" style="color: #011e41">
-          One Time Booking
+          Reserva Única
         </h2>
         <p class="text-gray-600 mb-8">
-          Get once-off help. Try a new worker. Cancel any time
+          Obtenha ajuda pontual. Experimente um novo trabalhador. Cancele a qualquer momento
         </p>
 
         <!-- Date/Time Banner -->
@@ -214,7 +214,7 @@
               </svg>
             </div>
             <div>
-              <div class="font-bold" style="color: #011e41">Tomorrow</div>
+              <div class="font-bold" style="color: #011e41">Amanhã</div>
               <div class="text-sm text-gray-600">
                 <span
                   class="bg-[#FDEA00] text-gray-900 px-2 py-1 rounded text-xs font-bold mr-2"
@@ -231,13 +231,13 @@
           <!-- Home Size -->
           <div>
             <h3 class="text-lg font-bold mb-4" style="color: #011e41">
-              Add details about your booking
+              Adicione detalhes sobre a sua reserva
             </h3>
             <label
               class="block text-sm font-medium mb-2"
               style="color: #4a5a70"
             >
-              How big is your home?
+              Qual é o tamanho da sua casa?
             </label>
             <select
               x-model="booking.details.homeSize"
@@ -245,13 +245,13 @@
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer"
             >
               <option value="small-1-2-bedrooms">
-                Small Home: 1-2 Bedrooms
+                Casa Pequena: 1-2 Quartos
               </option>
               <option value="medium-3-4-bedrooms" selected>
-                Medium Home: 3-4 Bedrooms
+                Casa Média: 3-4 Quartos
               </option>
               <option value="large-5-plus-bedrooms">
-                Large Home: 5+ Bedrooms
+                Casa Grande: 5+ Quartos
               </option>
             </select>
           </div>
@@ -259,7 +259,7 @@
           <!-- Extra Tasks -->
           <div>
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              Extra Tasks
+              Tarefas Extras
             </h4>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div
@@ -304,7 +304,7 @@
                   class="text-xs font-medium"
                   :class="booking.details.extraTasks.includes('inside-fridge') ? 'text-[#015e73]' : 'text-gray-700'"
                 >
-                  Inside Fridge
+                  Interior do Frigorífico
                 </div>
               </div>
 
@@ -350,7 +350,7 @@
                   class="text-xs font-medium"
                   :class="booking.details.extraTasks.includes('inside-oven') ? 'text-[#015e73]' : 'text-gray-700'"
                 >
-                  Inside Oven
+                  Interior do Forno
                 </div>
               </div>
 
@@ -396,7 +396,7 @@
                   class="text-xs font-medium"
                   :class="booking.details.extraTasks.includes('inside-cabinets') ? 'text-[#015e73]' : 'text-gray-700'"
                 >
-                  Inside Cabinets
+                  Interior dos Armários
                 </div>
               </div>
 
@@ -442,7 +442,7 @@
                   class="text-xs font-medium"
                   :class="booking.details.extraTasks.includes('interior-windows') ? 'text-[#015e73]' : 'text-gray-700'"
                 >
-                  Interior Windows
+                  Janelas Interiores
                 </div>
               </div>
 
@@ -488,7 +488,7 @@
                   class="text-xs font-medium"
                   :class="booking.details.extraTasks.includes('interior-walls') ? 'text-[#015e73]' : 'text-gray-700'"
                 >
-                  Interior Walls
+                  Paredes Interiores
                 </div>
               </div>
 
@@ -534,7 +534,7 @@
                   class="text-xs font-medium"
                   :class="booking.details.extraTasks.includes('water-plants') ? 'text-[#015e73]' : 'text-gray-700'"
                 >
-                  Water Plants
+                  Regar Plantas
                 </div>
               </div>
 
@@ -580,7 +580,7 @@
                   class="text-xs font-medium"
                   :class="booking.details.extraTasks.includes('ironing') ? 'text-[#015e73]' : 'text-gray-700'"
                 >
-                  Ironing
+                  Passar a Ferro
                 </div>
               </div>
 
@@ -626,7 +626,7 @@
                   class="text-xs font-medium"
                   :class="booking.details.extraTasks.includes('laundry') ? 'text-[#015e73]' : 'text-gray-700'"
                 >
-                  Laundry
+                  Lavandaria
                 </div>
               </div>
             </div>
@@ -635,7 +635,7 @@
           <!-- Duration -->
           <div>
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              Booking Duration
+              Duração da Reserva
             </h4>
             <div class="flex items-center space-x-4">
               <button
@@ -684,7 +684,7 @@
           <!-- Start Time -->
           <div>
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              Select start time:
+              Selecione a hora de início:
             </h4>
             <select
               x-model="booking.details.startTime"
@@ -700,12 +700,12 @@
           <!-- Special Instructions -->
           <div>
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              Add specific instructions
+              Adicione instruções específicas
             </h4>
             <textarea
               x-model="booking.details.notes"
               @input="window.bookingFlowComponent.saveBookingData()"
-              placeholder="Add your notes here"
+              placeholder="Adicione as suas notas aqui"
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent h-24 resize-none"
             ></textarea>
           </div>
@@ -716,13 +716,13 @@
               @click="findWorker()"
               class="flex-1 py-3 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
             >
-              Find a Worker
+              Encontrar um Trabalhador
             </button>
             <button
               @click="goToScreen(7)"
               class="flex-1 py-3 px-6 bg-white border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
             >
-              Back
+              Voltar
             </button>
           </div>
         </div>

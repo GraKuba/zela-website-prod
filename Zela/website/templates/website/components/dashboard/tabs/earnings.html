@@ -12,11 +12,11 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium text-gray-600">Available Balance</p>
+          <p class="text-sm font-medium text-gray-600">Saldo Disponível</p>
           <p class="text-2xl font-bold text-[#011e41] mt-1">
             AOA {{ wallet.available_balance|floatformat:0|default:"0" }}
           </p>
-          <p class="text-xs text-gray-500 mt-1">Ready to withdraw</p>
+          <p class="text-xs text-gray-500 mt-1">Pronto para retirar</p>
         </div>
         <div class="p-3 bg-green-100 rounded-full">
           <svg
@@ -41,11 +41,11 @@
         hx-target="#modal-container"
         hx-swap="innerHTML"
       >
-        Request Payout
+        Solicitar Pagamento
       </button>
       {% else %}
       <div class="mt-4 text-center">
-        <p class="text-xs text-gray-500">Complete jobs to earn money</p>
+        <p class="text-xs text-gray-500">Complete trabalhos para ganhar dinheiro</p>
       </div>
       {% endif %}
     </div>
@@ -54,11 +54,11 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium text-gray-600">Pending Payouts</p>
+          <p class="text-sm font-medium text-gray-600">Pagamentos Pendentes</p>
           <p class="text-2xl font-bold text-[#011e41] mt-1">
             AOA {{ pending_payouts|floatformat:0|default:"0" }}
           </p>
-          <p class="text-xs text-gray-500 mt-1">Processing</p>
+          <p class="text-xs text-gray-500 mt-1">Processando</p>
         </div>
         <div class="p-3 bg-yellow-100 rounded-full">
           <svg
@@ -82,11 +82,11 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium text-gray-600">This Week's Jobs</p>
+          <p class="text-sm font-medium text-gray-600">Trabalhos Desta Semana</p>
           <p class="text-2xl font-bold text-[#011e41] mt-1">
             {{ current_week_jobs|default:"0" }}
           </p>
-          <p class="text-xs text-gray-500 mt-1">Completed</p>
+          <p class="text-xs text-gray-500 mt-1">Concluídos</p>
         </div>
         <div class="p-3 bg-blue-100 rounded-full">
           <svg
@@ -110,7 +110,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium text-gray-600">This Week's Earnings</p>
+          <p class="text-sm font-medium text-gray-600">Ganhos Desta Semana</p>
           <p class="text-2xl font-bold text-[#011e41] mt-1">
             AOA {{ current_week_earnings|floatformat:0|default:"0" }}
           </p>
@@ -144,7 +144,7 @@
               >{{ earnings_growth|floatformat:1 }}%</span
             >
             {% else %}
-            <span class="text-xs text-gray-500">No change</span>
+            <span class="text-xs text-gray-500">Sem mudança</span>
             {% endif %}
           </div>
         </div>
@@ -179,15 +179,15 @@
     data-total-week-earnings="{{ total_week_earnings|default:0 }}"
   >
     <div class="flex items-center justify-between mb-6">
-      <h3 class="text-lg font-semibold text-[#011e41]">Weekly Performance</h3>
+      <h3 class="text-lg font-semibold text-[#011e41]">Desempenho Semanal</h3>
       <div class="flex items-center space-x-4">
         <div class="flex items-center">
           <div class="w-3 h-3 bg-[#035d73] rounded-full mr-2"></div>
-          <span class="text-sm text-gray-600">Earnings</span>
+          <span class="text-sm text-gray-600">Ganhos</span>
         </div>
         <div class="flex items-center">
           <div class="w-3 h-3 bg-[#fdea00] rounded-full mr-2"></div>
-          <span class="text-sm text-gray-600">Jobs</span>
+          <span class="text-sm text-gray-600">Trabalhos</span>
         </div>
       </div>
     </div>
@@ -199,13 +199,13 @@
         </div>
         <div class="mt-4 grid grid-cols-2 gap-4">
           <div class="text-center">
-            <p class="text-sm text-gray-600">Average per Job</p>
+            <p class="text-sm text-gray-600">Média por Trabalho</p>
             <p class="text-lg font-semibold text-[#011e41]">
               AOA {{ avg_per_job|floatformat:0|default:"0" }}
             </p>
           </div>
           <div class="text-center">
-            <p class="text-sm text-gray-600">Total This Week</p>
+            <p class="text-sm text-gray-600">Total Desta Semana</p>
             <p class="text-lg font-semibold text-[#011e41]">
               AOA {{ total_week_earnings|floatformat:0|default:"0" }}
             </p>
@@ -229,8 +229,8 @@
             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
           ></path>
         </svg>
-        <p class="text-sm font-medium">No earnings data yet</p>
-        <p class="text-xs mt-1">Complete jobs to see your performance</p>
+        <p class="text-sm font-medium">Sem dados de ganhos ainda</p>
+        <p class="text-xs mt-1">Complete trabalhos para ver seu desempenho</p>
       </div>
     </template>
   </div>
@@ -240,12 +240,12 @@
     <div class="p-6 border-b border-gray-200">
       <div class="flex items-center justify-between">
         <h3 class="text-lg font-semibold text-[#011e41]">
-          Recent Transactions
+          Transações Recentes
         </h3>
         <a
           href="/dashboard/transactions/"
           class="text-sm text-[#035d73] hover:underline"
-          >View All</a
+          >Ver Tudo</a
         >
       </div>
     </div>
@@ -337,10 +337,10 @@
             ></path>
           </svg>
           <p class="text-sm font-medium text-gray-900 mb-1">
-            No transactions yet
+            Sem transações ainda
           </p>
           <p class="text-xs text-gray-500">
-            Your earnings and payouts will appear here
+            Seus ganhos e pagamentos aparecerão aqui
           </p>
         </div>
       </template>
@@ -404,7 +404,7 @@
               labels: this.earningsData.chartLabels,
               datasets: [
                 {
-                  label: "Daily Earnings",
+                  label: "Ganhos Diários",
                   data: this.earningsData.dailyEarnings,
                   borderColor: "#035d73",
                   backgroundColor: "rgba(3, 93, 115, 0.1)",

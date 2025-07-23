@@ -20,7 +20,7 @@
               1
             </div>
             <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Details
+              Detalhes
             </div>
           </div>
           <div class="flex items-center">
@@ -29,7 +29,7 @@
             >
               2
             </div>
-            <div class="ml-2 text-sm text-gray-600">Worker</div>
+            <div class="ml-2 text-sm text-gray-600">Trabalhador</div>
           </div>
           <div class="flex items-center">
             <div
@@ -37,7 +37,7 @@
             >
               3
             </div>
-            <div class="ml-2 text-sm text-gray-600">Payment</div>
+            <div class="ml-2 text-sm text-gray-600">Pagamento</div>
           </div>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2">
@@ -68,7 +68,7 @@
       <!-- Booking Details -->
       <div class="bg-white border border-gray-200 rounded-2xl p-6">
         <h3 class="text-lg font-bold mb-4" style="color: #011e41">
-          Booking Details
+          Detalhes da Reserva
         </h3>
 
         <!-- Pricing Display -->
@@ -79,7 +79,7 @@
                 class="text-2xl font-bold"
                 data-sessions
               >4</div>
-              <div class="text-sm text-gray-300">sessions</div>
+              <div class="text-sm text-gray-300">sessões</div>
             </div>
             <div class="flex flex-col text-right">
               <div
@@ -93,16 +93,16 @@
             <div
               data-duration
             >5.5 hrs each</div>
-            <div>Best Value</div>
+            <div>Melhor Valor</div>
           </div>
         </div>
 
         <!-- Savings Badge -->
         <div class="mt-4 bg-[#FDEA00] text-gray-900 rounded-lg p-3 text-center">
           <div class="font-bold text-sm">
-            <span x-show="booking.repeat.numberOfSessions >= 8">Save 25%</span>
-            <span x-show="booking.repeat.numberOfSessions >= 4 && booking.repeat.numberOfSessions < 8">Save 15%</span>
-            <span x-show="booking.repeat.numberOfSessions < 4">Book more to save!</span>
+            <span x-show="booking.repeat.numberOfSessions >= 8">Poupe 25%</span>
+            <span x-show="booking.repeat.numberOfSessions >= 4 && booking.repeat.numberOfSessions < 8">Poupe 15%</span>
+            <span x-show="booking.repeat.numberOfSessions < 4">Reserve mais para poupar!</span>
           </div>
         </div>
       </div>
@@ -112,7 +112,7 @@
         <!-- Location -->
         <div class="flex items-center justify-between mb-4">
           <div>
-            <div class="text-sm text-gray-600 mb-1">Where:</div>
+            <div class="text-sm text-gray-600 mb-1">Onde:</div>
             <div class="text-sm font-medium" style="color: #011e41">
               1 Osborne Rd, Mowbray, Cape To...
             </div>
@@ -137,9 +137,9 @@
         <!-- Service Type -->
         <div class="flex items-center justify-between">
           <div>
-            <div class="text-sm text-gray-600 mb-1">What:</div>
+            <div class="text-sm text-gray-600 mb-1">O quê:</div>
             <div class="text-sm font-medium" style="color: #011e41">
-              Indoor Cleaning
+              Limpeza Interior
             </div>
           </div>
           <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
@@ -168,13 +168,13 @@
           <div class="text-2xl">🔄</div>
         </div>
         <div class="text-sm font-bold mb-2" style="color: #011e41">
-          Repeat Booking Benefits
+          Benefícios da Reserva Recorrente
         </div>
         <div class="text-xs text-gray-600 space-y-1">
-          <div>• Consistent service quality</div>
-          <div>• Volume discounts</div>
-          <div>• Priority booking</div>
-          <div>• Same trusted worker</div>
+          <div>• Qualidade de serviço consistente</div>
+          <div>• Descontos por volume</div>
+          <div>• Reserva prioritária</div>
+          <div>• Mesmo trabalhador de confiança</div>
         </div>
       </div>
     </div>
@@ -183,10 +183,10 @@
     <div class="flex-1 overflow-y-auto px-6 py-8">
       <div class="max-w-2xl">
         <h2 class="text-3xl font-bold mb-2" style="color: #011e41">
-          Repeat Booking
+          Reserva Recorrente
         </h2>
         <p class="text-gray-600 mb-8">
-          Save money with regular service. Set your schedule and enjoy consistency.
+          Poupe dinheiro com serviço regular. Defina o seu horário e desfrute de consistência.
         </p>
 
         <!-- Form Fields -->
@@ -194,7 +194,7 @@
           <!-- Repeat Frequency -->
           <div>
             <h3 class="text-lg font-bold mb-4" style="color: #011e41">
-              How often do you need service?
+              Com que frequência precisa do serviço?
             </h3>
             <div class="grid grid-cols-2 gap-4">
               <div
@@ -202,8 +202,8 @@
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="frequency-weekly"
               >
-                <div class="text-lg font-bold mb-2" style="color: #011e41">Weekly</div>
-                <div class="text-sm text-gray-600">Every week</div>
+                <div class="text-lg font-bold mb-2" style="color: #011e41">Semanal</div>
+                <div class="text-sm text-gray-600">Todas as semanas</div>
                 <div class="mt-2 hidden" id="frequency-weekly-indicator">
                   <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
                 </div>
@@ -213,8 +213,8 @@
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="frequency-bi-weekly"
               >
-                <div class="text-lg font-bold mb-2" style="color: #011e41">Bi-weekly</div>
-                <div class="text-sm text-gray-600">Every 2 weeks</div>
+                <div class="text-lg font-bold mb-2" style="color: #011e41">Quinzenal</div>
+                <div class="text-sm text-gray-600">A cada 2 semanas</div>
                 <div class="mt-2 hidden" id="frequency-bi-weekly-indicator">
                   <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
                 </div>
@@ -224,8 +224,8 @@
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="frequency-monthly"
               >
-                <div class="text-lg font-bold mb-2" style="color: #011e41">Monthly</div>
-                <div class="text-sm text-gray-600">Every month</div>
+                <div class="text-lg font-bold mb-2" style="color: #011e41">Mensal</div>
+                <div class="text-sm text-gray-600">Todos os meses</div>
                 <div class="mt-2 hidden" id="frequency-monthly-indicator">
                   <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
                 </div>
@@ -235,8 +235,8 @@
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="frequency-custom"
               >
-                <div class="text-lg font-bold mb-2" style="color: #011e41">Custom</div>
-                <div class="text-sm text-gray-600">Set your own</div>
+                <div class="text-lg font-bold mb-2" style="color: #011e41">Personalizado</div>
+                <div class="text-sm text-gray-600">Defina o seu próprio</div>
                 <div class="mt-2 hidden" id="frequency-custom-indicator">
                   <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
                 </div>
@@ -247,7 +247,7 @@
           <!-- Days of Week (for weekly/bi-weekly) -->
           <div data-days-section style="display: none;">
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              Which days?
+              Quais dias?
             </h4>
             <div class="grid grid-cols-7 gap-2">
               <div
@@ -255,54 +255,54 @@
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="day-monday"
               >
-                <div class="text-sm font-medium">Mon</div>
+                <div class="text-sm font-medium">Seg</div>
               </div>
               <div
                 onclick="toggleDayOfWeek('tuesday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="day-tuesday"
               >
-                <div class="text-sm font-medium">Tue</div>
+                <div class="text-sm font-medium">Ter</div>
               </div>
               <div
                 onclick="toggleDayOfWeek('wednesday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="day-wednesday"
               >
-                <div class="text-sm font-medium">Wed</div>
+                <div class="text-sm font-medium">Qua</div>
               </div>
               <div
                 onclick="toggleDayOfWeek('thursday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="day-thursday"
               >
-                <div class="text-sm font-medium">Thu</div>
+                <div class="text-sm font-medium">Qui</div>
               </div>
               <div
                 onclick="toggleDayOfWeek('friday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="day-friday"
               >
-                <div class="text-sm font-medium">Fri</div>
+                <div class="text-sm font-medium">Sex</div>
               </div>
               <div
                 onclick="toggleDayOfWeek('saturday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="day-saturday"
               >
-                <div class="text-sm font-medium">Sat</div>
+                <div class="text-sm font-medium">Sáb</div>
               </div>
               <div
                 onclick="toggleDayOfWeek('sunday')"
                 class="bg-white border-2 border-gray-200 rounded-lg p-3 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="day-sunday"
               >
-                <div class="text-sm font-medium">Sun</div>
+                <div class="text-sm font-medium">Dom</div>
               </div>
             </div>
             <div class="mt-2 text-sm text-gray-600 text-center" id="days-counter">
               <span class="text-gray-500">
-                Select the days you want service
+                Selecione os dias que deseja o serviço
               </span>
             </div>
           </div>
@@ -310,7 +310,7 @@
           <!-- Number of Sessions -->
           <div>
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              How many sessions?
+              Quantas sessões?
             </h4>
             <div class="flex items-center space-x-4">
               <button
@@ -363,7 +363,7 @@
             </div>
             <div class="mt-2 text-sm text-gray-600 text-center" id="sessions-savings">
               <span class="text-green-600 font-medium">
-                💰 Save 15% on 4+ sessions!
+                💰 Poupe 15% em 4+ sessões!
               </span>
             </div>
           </div>
@@ -371,7 +371,7 @@
           <!-- Start Date -->
           <div>
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              When do you want to start?
+              Quando deseja começar?
             </h4>
             <input
               type="date"
@@ -384,7 +384,7 @@
           <!-- Home Size -->
           <div>
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              How big is your home?
+              Qual é o tamanho da sua casa?
             </h4>
             <select
               id="home-size-select"
@@ -392,13 +392,13 @@
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer"
             >
               <option value="small-1-2-bedrooms">
-                Small Home: 1-2 Bedrooms
+                Casa Pequena: 1-2 Quartos
               </option>
               <option value="medium-3-4-bedrooms" selected>
-                Medium Home: 3-4 Bedrooms
+                Casa Média: 3-4 Quartos
               </option>
               <option value="large-5-plus-bedrooms">
-                Large Home: 5+ Bedrooms
+                Casa Grande: 5+ Quartos
               </option>
             </select>
           </div>
@@ -406,7 +406,7 @@
           <!-- Duration -->
           <div>
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              Session Duration
+              Duração da Sessão
             </h4>
             <div class="flex items-center space-x-4">
               <button
@@ -457,7 +457,7 @@
           <!-- Start Time -->
           <div>
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              Preferred start time:
+              Hora de início preferida:
             </h4>
             <select
               id="start-time-select"
@@ -485,11 +485,11 @@
           <!-- Special Instructions -->
           <div>
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              Special instructions for your worker
+              Instruções especiais para o seu trabalhador
             </h4>
             <textarea
               id="special-instructions"
-              placeholder="Add any special instructions or preferences for your repeat service..."
+              placeholder="Adicione quaisquer instruções especiais ou preferências para o seu serviço recorrente..."
               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent h-24 resize-none"
             ></textarea>
           </div>
@@ -500,13 +500,13 @@
               onclick="findWorker()"
               class="flex-1 py-3 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
             >
-              Find a Worker
+              Encontrar um Trabalhador
             </button>
             <button
               onclick="goToScreen(7)"
               class="flex-1 py-3 px-6 bg-white border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
             >
-              Back
+              Voltar
             </button>
           </div>
         </div>

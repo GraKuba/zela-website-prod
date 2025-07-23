@@ -11,36 +11,36 @@
         image: 'beatriz.webp',
         recommend: 98,
         jobsCompleted: 423,
-        experience: ['Hospitality'],
+        experience: ['Hospitalidade'],
         availability: ['mon', 'tue', 'wed', 'thu', 'sat'],
-        about: 'I live in Landsdowne, and grew up in Mutare, Zimbabwe. I have been doing domestic work for 3 years. My previous employers have described me as loyal, honest and hardworking. In my spare time, I enjoy watching TV and going to church. Apart from English, I also speak Xhosa and Zulu.'
+        about: 'Vivo em Landsdowne e cresci em Mutare, Zimbabwe. Faço trabalho doméstico há 3 anos. Meus empregadores anteriores me descreveram como leal, honesta e trabalhadora. No meu tempo livre, gosto de assistir TV e ir à igreja. Além de Inglês, também falo Xhosa e Zulu.'
       },
       'annah-havo': {
         name: 'Annah Havo',
         image: 'carla.webp',
         recommend: 99,
         jobsCompleted: 200,
-        experience: ['Hospitality', 'Childcare'],
+        experience: ['Hospitalidade', 'Cuidados Infantis'],
         availability: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
-        about: 'I am a dedicated cleaner from Khayelitsha with 2 years of experience. I take pride in my work and always ensure every corner is spotless. I speak English, Xhosa, and Zulu. In my free time, I enjoy reading and spending time with my family.'
+        about: 'Sou uma empregada doméstica dedicada de Khayelitsha com 2 anos de experiência. Tenho orgulho do meu trabalho e sempre garanto que cada canto esteja impecável. Falo Inglês, Xhosa e Zulu. No meu tempo livre, gosto de ler e passar tempo com minha família.'
       },
       'epiphaniah-matarirano': {
         name: 'Epiphaniah Matarirano',
         image: 'isabella.webp',
         recommend: 97,
         jobsCompleted: 115,
-        experience: ['Hospitality'],
+        experience: ['Hospitalidade'],
         availability: ['tue', 'wed', 'thu', 'fri', 'sat'],
-        about: 'I am from Harare, Zimbabwe and have been working as a domestic helper for 1.5 years. I am known for my attention to detail and reliability. I speak English and Shona. I enjoy cooking traditional dishes and listening to music in my spare time.'
+        about: 'Sou de Harare, Zimbabwe e trabalho como empregada doméstica há 1,5 anos. Sou conhecida pela minha atenção aos detalhes e confiabilidade. Falo Inglês e Shona. Gosto de cozinhar pratos tradicionais e ouvir música no meu tempo livre.'
       },
       'margaret-buleya': {
         name: 'Margaret Buleya',
         image: 'juliana.webp',
         recommend: 95,
         jobsCompleted: 66,
-        experience: ['Hospitality'],
+        experience: ['Hospitalidade'],
         availability: ['mon', 'wed', 'fri', 'sat', 'sun'],
-        about: 'I am a hardworking cleaner from Mitchells Plain with 1 year of experience. I am passionate about creating clean and comfortable spaces for families. I speak English and Afrikaans. I love gardening and spending time outdoors when I am not working.'
+        about: 'Sou uma empregada doméstica trabalhadora de Mitchells Plain com 1 ano de experiência. Sou apaixonada por criar espaços limpos e confortáveis para as famílias. Falo Inglês e Afrikaans. Adoro jardinagem e passar tempo ao ar livre quando não estou trabalhando.'
       }
     }
   }"
@@ -77,7 +77,7 @@
       class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between"
     >
       <h2 class="text-2xl font-bold" style="color: #011e41">
-        Worker Profile
+        Perfil do Trabalhador
       </h2>
       <button
         @click="isOpen = false"
@@ -126,7 +126,7 @@
             <!-- Recommend -->
             <div class="text-center">
               <div class="text-lg font-bold mb-2" style="color: #011e41">
-                Recommend
+                Recomendam
               </div>
               <div class="flex items-center justify-center">
                 <svg
@@ -147,7 +147,7 @@
             <!-- Jobs Completed -->
             <div class="text-center">
               <div class="text-lg font-bold mb-2" style="color: #011e41">
-                Jobs Completed
+                Trabalhos Concluídos
               </div>
               <div
                 class="text-2xl font-bold"
@@ -160,7 +160,7 @@
           <!-- Experience -->
           <div class="mb-8">
             <h4 class="text-xl font-bold mb-4" style="color: #011e41">
-              Experience
+              Experiência
             </h4>
             <div class="space-y-2">
               <template
@@ -190,7 +190,7 @@
           <!-- Availability -->
           <div class="mb-8">
             <h4 class="text-xl font-bold mb-4" style="color: #011e41">
-              Availability
+              Disponibilidade
             </h4>
             <div class="flex justify-center space-x-4">
               <template
@@ -217,7 +217,7 @@
           <!-- About Me -->
           <div class="mb-8">
             <h4 class="text-xl font-bold mb-4" style="color: #011e41">
-              About Me
+              Sobre Mim
             </h4>
             <p
               class="text-gray-600 leading-relaxed"
@@ -231,13 +231,13 @@
               @click="$dispatch('choose-worker', { workerId: selectedWorker }); isOpen = false"
               class="flex-1 bg-[#015e73] text-white font-bold py-4 px-6 rounded-2xl hover:bg-[#014a5a] transition-colors"
             >
-              Choose me
+              Escolher-me
             </button>
             <button
               @click="isOpen = false"
               class="flex-1 bg-white border-2 border-gray-300 text-gray-700 font-bold py-4 px-6 rounded-2xl hover:bg-gray-50 transition-colors"
             >
-              Close
+              Fechar
             </button>
           </div>
         </div>

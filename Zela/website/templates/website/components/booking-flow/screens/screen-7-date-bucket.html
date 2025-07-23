@@ -19,7 +19,7 @@
               1
             </div>
             <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Details
+              Detalhes
             </div>
           </div>
           <div class="flex items-center">
@@ -28,7 +28,7 @@
             >
               2
             </div>
-            <div class="ml-2 text-sm text-gray-600">Worker</div>
+            <div class="ml-2 text-sm text-gray-600">Trabalhador</div>
           </div>
           <div class="flex items-center">
             <div
@@ -36,7 +36,7 @@
             >
               3
             </div>
-            <div class="ml-2 text-sm text-gray-600">Payment</div>
+            <div class="ml-2 text-sm text-gray-600">Pagamento</div>
           </div>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2">
@@ -67,7 +67,7 @@
       <!-- Booking Summary -->
       <div class="bg-white border border-gray-200 rounded-2xl p-6">
         <h3 class="text-lg font-bold mb-4" style="color: #011e41">
-          Booking Details
+          Detalhes da Reserva
         </h3>
         <!-- Pricing Display -->
         <div class="bg-gray-900 text-white rounded-2xl p-4">
@@ -82,8 +82,8 @@
             ></div>
           </div>
           <div class="flex justify-between text-sm text-gray-300">
-            <div>Est. hours</div>
-            <div>Est. Price</div>
+            <div>Horas Est.</div>
+            <div>Preço Est.</div>
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@
         <!-- Location -->
         <div class="flex items-center justify-between mb-4">
           <div>
-            <div class="text-sm text-gray-600 mb-1">Where:</div>
+            <div class="text-sm text-gray-600 mb-1">Onde:</div>
             <div class="text-sm font-medium" style="color: #011e41" x-text="booking.location.streetAddress.substring(0, 30) + (booking.location.streetAddress.length > 30 ? '...' : '')">
             </div>
           </div>
@@ -121,12 +121,12 @@
         <!-- Service Type -->
         <div class="flex items-center justify-between">
           <div>
-            <div class="text-sm text-gray-600 mb-1">What:</div>
+            <div class="text-sm text-gray-600 mb-1">O quê:</div>
             <div class="text-sm font-medium" style="color: #011e41" x-text="serviceInfo[booking.serviceType]?.name || 'Indoor Cleaning'">
             </div>
           </div>
           <button 
-            @click="alert('Service type cannot be changed at this stage. Please start a new booking.')"
+            @click="alert('O tipo de serviço não pode ser alterado nesta fase. Por favor, inicie uma nova reserva.')"
             class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
             title="Service type cannot be changed"
           >
@@ -163,17 +163,17 @@
           </svg>
         </div>
         <div class="text-lg font-bold mb-2" style="color: #011e41">
-          Top-to-bottom clean
+          Limpeza completa
         </div>
         <div class="text-sm text-gray-600 mb-4 leading-relaxed">
-          Indoor Cleaning includes a clean of all common areas in your home,
-          including your bedrooms, bathrooms, living room(s) and kitchen.
+          A Limpeza Interior inclui a limpeza de todas as áreas comuns da sua casa,
+          incluindo quartos, casas de banho, sala(s) de estar e cozinha.
         </div>
         <button
           @click="showServiceScope = true"
           class="text-[#015e73] font-medium text-sm hover:text-[#014a5a] cursor-pointer"
         >
-          Tell Me More
+          Saiba Mais
         </button>
       </div>
     </div>
@@ -182,9 +182,9 @@
     <div class="flex-1 overflow-y-auto px-6 py-8">
       <div class="max-w-2xl">
         <h2 class="text-3xl font-bold mb-2" style="color: #011e41">
-          How often do you need help?
+          Com que frequência precisa de ajuda?
         </h2>
-        <p class="text-gray-600 mb-8">How often do you need the service?</p>
+        <p class="text-gray-600 mb-8">Com que frequência precisa do serviço?</p>
 
         <!-- Frequency Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
@@ -214,10 +214,10 @@
                   />
                 </svg>
               </div>
-              <h3 class="text-lg font-bold" style="color: #011e41">One Time</h3>
+              <h3 class="text-lg font-bold" style="color: #011e41">Uma Vez</h3>
             </div>
             <p class="text-gray-600">
-              For once-off services that will not repeat.
+              Para serviços únicos que não se repetirão.
             </p>
           </div>
 
@@ -230,7 +230,7 @@
             <div
               class="absolute -top-2 -right-2 bg-[#FDEA00] text-gray-900 text-xs font-bold px-3 py-1 rounded-full"
             >
-              Best Value
+              Melhor Valor
             </div>
             <div class="flex items-center mb-4">
               <div
@@ -266,10 +266,10 @@
                   />
                 </svg>
               </div>
-              <h3 class="text-lg font-bold" style="color: #011e41">Repeat</h3>
+              <h3 class="text-lg font-bold" style="color: #011e41">Repetir</h3>
             </div>
             <p class="text-gray-600">
-              For repeat services every few days / weeks.
+              Para serviços repetidos a cada poucos dias / semanas.
             </p>
           </div>
         </div>
@@ -277,7 +277,7 @@
         <!-- Date Selection -->
         <div x-show="booking.frequency">
           <h3 class="text-2xl font-bold mb-4" style="color: #011e41">
-            When do you need help?
+            Quando precisa de ajuda?
           </h3>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -296,9 +296,9 @@
 
               <div class="text-center">
                 <div class="text-lg font-bold mb-2" style="color: #011e41">
-                  Tomorrow
+                  Amanhã
                 </div>
-                <div class="text-sm text-gray-600">Get help tomorrow</div>
+                <div class="text-sm text-gray-600">Obter ajuda amanhã</div>
               </div>
             </div>
 
@@ -310,9 +310,9 @@
             >
               <div class="text-center">
                 <div class="text-lg font-bold mb-2" style="color: #011e41">
-                  Later
+                  Mais Tarde
                 </div>
-                <div class="text-sm text-gray-600">Get help later</div>
+                <div class="text-sm text-gray-600">Obter ajuda mais tarde</div>
               </div>
             </div>
 
@@ -321,8 +321,8 @@
               class="bg-gray-100 border-2 border-gray-200 rounded-2xl p-6 cursor-not-allowed opacity-50"
             >
               <div class="text-center">
-                <div class="text-lg font-bold mb-2 text-gray-500">Today</div>
-                <div class="text-sm text-gray-500">Fully Booked</div>
+                <div class="text-lg font-bold mb-2 text-gray-500">Hoje</div>
+                <div class="text-sm text-gray-500">Totalmente Reservado</div>
               </div>
             </div>
           </div>

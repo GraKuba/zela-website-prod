@@ -11,9 +11,9 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-2xl font-bold" style="color: #011e41">My Bookings</h2>
+        <h2 class="text-2xl font-bold" style="color: #011e41">Minhas Reservas</h2>
         <p class="text-gray-600 mt-1">
-          Manage and track all your cleaning services
+          Gerencie e acompanhe todos os seus serviços de limpeza
         </p>
       </div>
       <button
@@ -21,7 +21,7 @@
         class="px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
         style="background-color: #fdea00; color: #011e41"
       >
-        Book New Service
+        Reservar Novo Serviço
       </button>
     </div>
   </div>
@@ -37,7 +37,7 @@
         :class="bookingSubTab === 'upcoming' ? 'text-white border-b-2' : 'text-gray-500 hover:text-gray-700'"
         :style="bookingSubTab === 'upcoming' ? 'background-color: #035d73; border-color: #035d73' : ''"
       >
-        Upcoming
+        Próximas
         <span
           class="ml-2 text-xs font-medium px-2 py-1 rounded-full"
           :class="bookingSubTab === 'upcoming' ? 'bg-white' : 'bg-gray-100'"
@@ -50,7 +50,7 @@
         :class="bookingSubTab === 'recurring' ? 'text-white border-b-2' : 'text-gray-500 hover:text-gray-700'"
         :style="bookingSubTab === 'recurring' ? 'background-color: #035d73; border-color: #035d73' : ''"
       >
-        Recurring
+        Recorrentes
         <span
           class="ml-2 bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded-full"
           >{{ recurring_bookings_count }}</span
@@ -62,7 +62,7 @@
         :class="bookingSubTab === 'completed' ? 'text-white border-b-2' : 'text-gray-500 hover:text-gray-700'"
         :style="bookingSubTab === 'completed' ? 'background-color: #035d73; border-color: #035d73' : ''"
       >
-        Completed
+        Concluídas
         <span
           class="ml-2 text-xs font-medium px-2 py-1 rounded-full"
           style="background-color: #fdea00; color: #035d73"
@@ -74,7 +74,7 @@
         :class="bookingSubTab === 'canceled' ? 'text-white border-b-2' : 'text-gray-500 hover:text-gray-700'"
         :style="bookingSubTab === 'canceled' ? 'background-color: #035d73; border-color: #035d73' : ''"
       >
-        Canceled
+        Canceladas
         <span
           class="ml-2 bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded-full"
           >{{ cancelled_bookings_count }}</span
@@ -122,7 +122,7 @@
                         style="background-color: #035d73; color: white"
                       {% endif %}
                     >
-                      {% if booking.status == 'pending_confirmation' %}Pending Confirmation{% elif booking.status == 'pending' %}Pending{% elif booking.status == 'accepted' %}Confirmed{% else %}In Progress{% endif %}
+                      {% if booking.status == 'pending_confirmation' %}Confirmação Pendente{% elif booking.status == 'pending' %}Pendente{% elif booking.status == 'accepted' %}Confirmada{% else %}Em Progresso{% endif %}
                     </span>
                   </div>
                   {% if booking.provider %}
@@ -133,7 +133,7 @@
                       {% endif %}
                     </p>
                   {% else %}
-                    <p class="text-sm text-gray-600 mt-1">Provider to be assigned</p>
+                    <p class="text-sm text-gray-600 mt-1">Prestador a ser atribuído</p>
                   {% endif %}
                   <div class="flex items-center text-sm text-gray-500 mt-2">
                     <svg
@@ -184,14 +184,14 @@
                   <button
                     class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors cursor-pointer"
                   >
-                    Reschedule
+                    Remarcar
                   </button>
                   {% endif %}
                   <button
                     class="px-3 py-1 text-white rounded-lg text-sm hover:opacity-90 transition-colors cursor-pointer"
                     style="background-color: #035d73"
                   >
-                    Contact
+                    Contactar
                   </button>
                 </div>
               </div>
@@ -204,15 +204,15 @@
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">No upcoming bookings</h3>
-            <p class="mt-1 text-sm text-gray-500">Start by booking your first service.</p>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">Sem reservas próximas</h3>
+            <p class="mt-1 text-sm text-gray-500">Comece reservando o seu primeiro serviço.</p>
             <div class="mt-6">
               <button
                 @click="window.location.href = '/book/'"
                 class="inline-flex items-center px-4 py-2 rounded-full font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
                 style="background-color: #fdea00; color: #011e41"
               >
-                Book a Service
+                Reservar um Serviço
               </button>
             </div>
           </div>
@@ -238,8 +238,8 @@
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">No recurring bookings</h3>
-            <p class="mt-1 text-sm text-gray-500">Set up recurring services for regular cleaning.</p>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">Sem reservas recorrentes</h3>
+            <p class="mt-1 text-sm text-gray-500">Configure serviços recorrentes para limpeza regular.</p>
           </div>
         {% endif %}
       </div>
@@ -276,7 +276,7 @@
                     <span
                       class="px-2 py-1 text-xs font-medium rounded-full"
                       style="background-color: #fdea00; color: #035d73"
-                    >Completed</span>
+                    >Concluída</span>
                   </div>
                   {% if booking.provider %}
                     <p class="text-sm text-gray-600 mt-1">
@@ -334,14 +334,14 @@
                   <button
                     class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors cursor-pointer"
                   >
-                    Book Again
+                    Reservar Novamente
                   </button>
                   {% if booking.can_be_rated %}
                   <button
                     class="px-3 py-1 text-white rounded-lg text-sm hover:opacity-90 transition-colors cursor-pointer"
                     style="background-color: #035d73"
                   >
-                    Rate Service
+                    Avaliar Serviço
                   </button>
                   {% endif %}
                 </div>
@@ -355,8 +355,8 @@
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">No completed bookings</h3>
-            <p class="mt-1 text-sm text-gray-500">Your completed services will appear here.</p>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">Sem reservas concluídas</h3>
+            <p class="mt-1 text-sm text-gray-500">Os seus serviços concluídos aparecerão aqui.</p>
           </div>
         {% endif %}
       </div>
@@ -392,7 +392,7 @@
                     <h3 class="font-semibold text-gray-900">{{ booking.service_task.name }}</h3>
                     <span
                       class="px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full"
-                    >Cancelled</span>
+                    >Cancelada</span>
                   </div>
                   {% if booking.provider %}
                     <p class="text-sm text-gray-600 mt-1">
@@ -454,7 +454,7 @@
                         d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
-                    <span>Cancelled on {{ booking.updated_at|date:"M d, Y" }}</span>
+                    <span>Cancelada em {{ booking.updated_at|date:"d M, Y" }}</span>
                   </div>
                 </div>
               </div>
@@ -462,12 +462,12 @@
                 <div class="text-lg font-semibold text-gray-500 line-through">
                   Kz {{ booking.total_price|floatformat:0 }}
                 </div>
-                <div class="text-sm mt-1" style="color: #035d73">Refunded</div>
+                <div class="text-sm mt-1" style="color: #035d73">Reembolsado</div>
                 <div class="flex space-x-2 mt-3">
                   <button
                     class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors cursor-pointer"
                   >
-                    Book Again
+                    Reservar Novamente
                   </button>
                 </div>
               </div>
@@ -480,8 +480,8 @@
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">No cancelled bookings</h3>
-            <p class="mt-1 text-sm text-gray-500">Your cancelled services will appear here.</p>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">Sem reservas canceladas</h3>
+            <p class="mt-1 text-sm text-gray-500">Os seus serviços cancelados aparecerão aqui.</p>
           </div>
         {% endif %}
       </div>

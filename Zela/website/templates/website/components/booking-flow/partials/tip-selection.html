@@ -23,9 +23,9 @@
         />
       </div>
       <div>
-        <div class="text-lg text-gray-300 mb-1">Show your appreciation for</div>
-        <div class="text-2xl font-bold" x-text="booking.selectedWorkerName || 'Your Worker'"></div>
-        <div class="text-sm text-gray-300 mt-1">Tips go 100% to the worker</div>
+        <div class="text-lg text-gray-300 mb-1">Mostre o seu apreço por</div>
+        <div class="text-2xl font-bold" x-text="booking.selectedWorkerName || 'Seu Trabalhador'"></div>
+        <div class="text-sm text-gray-300 mt-1">As gorjetas vão 100% para o trabalhador</div>
       </div>
     </div>
   </div>
@@ -33,7 +33,7 @@
   <!-- Tip Amount Selection -->
   <div class="mb-6">
     <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-      Select tip amount
+      Selecione o valor da gorjeta
     </h4>
     
     <!-- Tip Options Grid -->
@@ -46,7 +46,7 @@
       >
         <span class="tip-emoji">🤷</span>
         <div class="tip-amount">R0</div>
-        <div class="tip-label" :class="booking.tip.selectedOption === 'no-tip' ? 'text-white/80' : 'text-gray-500'">No tip</div>
+        <div class="tip-label" :class="booking.tip.selectedOption === 'no-tip' ? 'text-white/80' : 'text-gray-500'">Sem gorjeta</div>
       </button>
 
       <!-- Small Tip -->
@@ -57,7 +57,7 @@
       >
         <span class="tip-emoji">😊</span>
         <div class="tip-amount">R25</div>
-        <div class="tip-label" :class="booking.tip.selectedOption === 'small' ? 'text-white/80' : 'text-gray-500'">Nice work</div>
+        <div class="tip-label" :class="booking.tip.selectedOption === 'small' ? 'text-white/80' : 'text-gray-500'">Bom trabalho</div>
       </button>
 
       <!-- Medium Tip -->
@@ -68,7 +68,7 @@
       >
         <span class="tip-emoji">😃</span>
         <div class="tip-amount">R50</div>
-        <div class="tip-label" :class="booking.tip.selectedOption === 'medium' ? 'text-white/80' : 'text-gray-500'">Great job</div>
+        <div class="tip-label" :class="booking.tip.selectedOption === 'medium' ? 'text-white/80' : 'text-gray-500'">Ótimo trabalho</div>
       </button>
 
       <!-- Large Tip -->
@@ -79,7 +79,7 @@
       >
         <span class="tip-emoji">🤩</span>
         <div class="tip-amount">R75</div>
-        <div class="tip-label" :class="booking.tip.selectedOption === 'large' ? 'text-white/80' : 'text-gray-500'">Excellent!</div>
+        <div class="tip-label" :class="booking.tip.selectedOption === 'large' ? 'text-white/80' : 'text-gray-500'">Excelente!</div>
       </button>
 
       <!-- Generous Tip -->
@@ -90,7 +90,7 @@
       >
         <span class="tip-emoji">💖</span>
         <div class="tip-amount">R100</div>
-        <div class="tip-label" :class="booking.tip.selectedOption === 'generous' ? 'text-white/80' : 'text-gray-500'">Amazing!</div>
+        <div class="tip-label" :class="booking.tip.selectedOption === 'generous' ? 'text-white/80' : 'text-gray-500'">Incrível!</div>
       </button>
 
       <!-- Custom Amount -->
@@ -101,9 +101,9 @@
           :class="booking.tip.selectedOption === 'custom' ? 'selected border-[#015e73] bg-[#015e73] text-white' : 'border-gray-200 hover:border-gray-300 bg-white'"
         >
           <span class="tip-emoji">✏️</span>
-          <div class="tip-amount" x-show="booking.tip.selectedOption !== 'custom'">Custom</div>
+          <div class="tip-amount" x-show="booking.tip.selectedOption !== 'custom'">Personalizado</div>
           <div class="tip-amount" x-show="booking.tip.selectedOption === 'custom'" x-text="'R' + booking.tip.amount"></div>
-          <div class="tip-label" :class="booking.tip.selectedOption === 'custom' ? 'text-white/80' : 'text-gray-500'">Your choice</div>
+          <div class="tip-label" :class="booking.tip.selectedOption === 'custom' ? 'text-white/80' : 'text-gray-500'">Sua escolha</div>
         </button>
       </div>
     </div>
@@ -117,7 +117,7 @@
             type="number"
             x-model="booking.tip.amount"
             @input="if($event.target.value) { selectTip('custom', parseInt($event.target.value)) }"
-            placeholder="Enter amount"
+            placeholder="Digite o valor"
             class="custom-tip-input w-full pl-8 pr-4 py-3 rounded-lg focus:outline-none"
             min="0"
             step="5"
@@ -127,7 +127,7 @@
           @click="showCustomTipInput = false"
           class="px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
         >
-          Done
+          Concluído
         </button>
       </div>
     </div>
@@ -136,11 +136,11 @@
     <div class="tip-impact" x-show="booking.tip.amount > 0">
       <span class="tip-impact-icon">💚</span>
       <span class="tip-impact-text">
-        <span x-show="booking.tip.amount >= 100">Wow! Your generosity will make someone's day!</span>
-        <span x-show="booking.tip.amount >= 75 && booking.tip.amount < 100">Your kindness makes a real difference!</span>
-        <span x-show="booking.tip.amount >= 50 && booking.tip.amount < 75">Thank you for appreciating great service!</span>
-        <span x-show="booking.tip.amount >= 25 && booking.tip.amount < 50">Every tip helps support our hardworking team!</span>
-        <span x-show="booking.tip.amount > 0 && booking.tip.amount < 25">Thank you for showing your appreciation!</span>
+        <span x-show="booking.tip.amount >= 100">Uau! Sua generosidade fará o dia de alguém!</span>
+        <span x-show="booking.tip.amount >= 75 && booking.tip.amount < 100">Sua gentileza faz uma diferença real!</span>
+        <span x-show="booking.tip.amount >= 50 && booking.tip.amount < 75">Obrigado por apreciar um ótimo serviço!</span>
+        <span x-show="booking.tip.amount >= 25 && booking.tip.amount < 50">Cada gorjeta ajuda a apoiar nossa equipe trabalhadora!</span>
+        <span x-show="booking.tip.amount > 0 && booking.tip.amount < 25">Obrigado por mostrar seu apreço!</span>
       </span>
     </div>
   </div>
@@ -152,11 +152,11 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
       <div class="text-gray-600">
-        <p class="font-medium text-gray-800 mb-1">Why tip?</p>
+        <p class="font-medium text-gray-800 mb-1">Por que dar gorjeta?</p>
         <ul class="space-y-1">
-          <li>• Tips are paid directly to your worker</li>
-          <li>• Show appreciation for excellent service</li>
-          <li>• Help support local service providers</li>
+          <li>• As gorjetas são pagas diretamente ao seu trabalhador</li>
+          <li>• Mostre apreço por um excelente serviço</li>
+          <li>• Ajude a apoiar os prestadores de serviços locais</li>
         </ul>
       </div>
     </div>

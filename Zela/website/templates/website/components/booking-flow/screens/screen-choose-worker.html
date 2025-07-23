@@ -20,7 +20,7 @@
               1
             </div>
             <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Details
+              Detalhes
             </div>
           </div>
           <div class="flex items-center">
@@ -30,7 +30,7 @@
               2
             </div>
             <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Worker
+              Trabalhador
             </div>
           </div>
           <div class="flex items-center">
@@ -39,7 +39,7 @@
             >
               3
             </div>
-            <div class="ml-2 text-sm text-gray-600">Payment</div>
+            <div class="ml-2 text-sm text-gray-600">Pagamento</div>
           </div>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2">
@@ -70,7 +70,7 @@
       <!-- Booking Details -->
       <div class="bg-white border border-gray-200 rounded-2xl p-6">
         <h3 class="text-lg font-bold mb-4" style="color: #011e41">
-          Booking Details
+          Detalhes da Reserva
         </h3>
 
         <!-- Pricing Display -->
@@ -85,8 +85,8 @@
             </div>
           </div>
           <div class="flex justify-between text-sm text-gray-300">
-            <div>Total. hours</div>
-            <div>Booking Price</div>
+            <div>Total de horas</div>
+            <div>Preço da Reserva</div>
           </div>
         </div>
       </div>
@@ -96,7 +96,7 @@
         <!-- Location -->
         <div class="flex items-center justify-between mb-4">
           <div>
-            <div class="text-sm text-gray-600 mb-1">Where:</div>
+            <div class="text-sm text-gray-600 mb-1">Onde:</div>
             <div class="text-sm font-medium" style="color: #011e41" x-text="booking.location.streetAddress.substring(0, 30) + (booking.location.streetAddress.length > 30 ? '...' : '')">
             </div>
           </div>
@@ -124,12 +124,12 @@
         <!-- Service Type -->
         <div class="flex items-center justify-between mb-4">
           <div>
-            <div class="text-sm text-gray-600 mb-1">What:</div>
+            <div class="text-sm text-gray-600 mb-1">O quê:</div>
             <div class="text-sm font-medium" style="color: #011e41" x-text="serviceInfo[booking.serviceType]?.name || 'Indoor Cleaning'">
             </div>
           </div>
           <button 
-            @click="alert('Service type cannot be changed at this stage. Please start a new booking.')"
+            @click="alert('O tipo de serviço não pode ser alterado nesta fase. Por favor, inicie uma nova reserva.')"
             class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
             title="Service type cannot be changed"
           >
@@ -152,9 +152,9 @@
         <!-- When -->
         <div class="flex items-center justify-between">
           <div>
-            <div class="text-sm text-gray-600 mb-1">When:</div>
+            <div class="text-sm text-gray-600 mb-1">Quando:</div>
             <div class="text-sm font-medium" style="color: #011e41">
-              <span x-text="booking.dateBucket === 'tomorrow' ? 'Tomorrow' : new Date(booking.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })"></span>
+              <span x-text="booking.dateBucket === 'tomorrow' ? 'Amanhã' : new Date(booking.date).toLocaleDateString('pt-PT', { weekday: 'short', month: 'short', day: 'numeric' })"></span>
               @ <span x-text="booking.details.startTime || '07:00'"></span>
             </div>
           </div>
@@ -196,7 +196,7 @@
           </svg>
         </div>
         <div class="text-lg font-bold mb-2" style="color: #011e41">
-          Choose for me
+          Escolha por mim
         </div>
         <div class="flex items-center justify-center mb-2">
           <svg
@@ -209,19 +209,19 @@
             />
           </svg>
           <span class="text-sm font-medium" style="color: #011e41"
-            >97% Recommend</span
+            >97% Recomendam</span
           >
         </div>
-        <div class="text-sm text-gray-600 mb-4">2+ Years Experience</div>
+        <div class="text-sm text-gray-600 mb-4">2+ Anos de Experiência</div>
         <div class="text-sm text-gray-600 mb-6 leading-relaxed">
-          Our team will find a worker that can help you. Keep an eye on your
-          inbox. We'll send you your match soon.
+          A nossa equipa encontrará um trabalhador que possa ajudá-lo. Fique atento à sua
+          caixa de entrada. Enviaremos a sua correspondência em breve.
         </div>
         <button
           @click="chooseForMe()"
           class="w-full bg-[#015e73] text-white font-bold py-3 px-4 rounded-2xl hover:bg-[#014a5a] transition-colors cursor-pointer"
         >
-          Let Zela Choose For Me
+          Deixar a Zela Escolher Por Mim
         </button>
       </div>
     </div>
@@ -230,7 +230,7 @@
     <div class="flex-1 overflow-y-auto px-6 py-8">
       <div class="max-w-2xl">
         <h2 class="text-3xl font-bold mb-8 text-center" style="color: #011e41">
-          Choose your worker
+          Escolha o seu trabalhador
         </h2>
 
         <!-- Worker Cards Container - Will be populated dynamically -->
@@ -243,7 +243,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
               </svg>
             </div>
-            <p>Loading available workers...</p>
+            <p>A carregar trabalhadores disponíveis...</p>
           </div>
         </div>
       </div>

@@ -21,8 +21,8 @@
     <div class="p-6 border-b border-gray-100">
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h3 class="text-xl font-semibold text-gray-900">My Locations</h3>
-          <p class="text-sm text-gray-600 mt-1">Manage your delivery addresses and locations</p>
+          <h3 class="text-xl font-semibold text-gray-900">Meus Endereços</h3>
+          <p class="text-sm text-gray-600 mt-1">Gerencie seus endereços e locais de entrega</p>
         </div>
         <button
           @click="showAddLocation = true"
@@ -31,7 +31,7 @@
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
           </svg>
-          Add New Location
+          Adicionar Novo Endereço
         </button>
       </div>
 
@@ -42,7 +42,7 @@
           <input
             type="text"
             x-model="searchQuery"
-            placeholder="Search locations..."
+            placeholder="Pesquisar endereços..."
             class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm"
           >
           <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,7 +69,7 @@
                   <svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                   </svg>
-                  Main
+                  Principal
                 </span>
               </div>
               {% endif %}
@@ -114,7 +114,7 @@
                       <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                       </svg>
-                      Set Main
+                      Definir Principal
                     </button>
                   {% endif %}
                   
@@ -137,7 +137,7 @@
                     hx-target="#addresses-tab"
                     hx-swap="innerHTML"
                     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                    hx-confirm="Are you sure you want to delete '{{ location.name }}'? This action cannot be undone."
+                    hx-confirm="Tem certeza de que deseja excluir '{{ location.name }}'? Esta ação não pode ser desfeita."
                     class="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                     title="Delete location"
                   >
@@ -160,7 +160,7 @@
           <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
-          <p class="text-gray-600">No locations found matching your search.</p>
+          <p class="text-gray-600">Nenhum endereço encontrado correspondente à sua pesquisa.</p>
         </div>
       {% else %}
         <!-- Empty State -->
@@ -171,8 +171,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-2">No locations saved yet</h3>
-          <p class="text-gray-600 mb-6 max-w-sm mx-auto">Add your home, office, or other frequently used addresses to speed up your bookings.</p>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">Nenhum endereço salvo ainda</h3>
+          <p class="text-gray-600 mb-6 max-w-sm mx-auto">Adicione sua casa, escritório ou outros endereços frequentemente usados para agilizar suas reservas.</p>
           <button
             @click="showAddLocation = true"
             class="inline-flex items-center px-6 py-3 bg-[#015e73] text-white font-medium rounded-lg hover:bg-[#014a5a] focus:ring-4 focus:ring-[#015e73]/20 transition-all duration-200 shadow-sm cursor-pointer"
@@ -180,7 +180,7 @@
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
             </svg>
-            Add Your First Location
+            Adicionar Seu Primeiro Endereço
           </button>
         </div>
       {% endif %}
@@ -230,7 +230,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
               </div>
-              <h3 class="text-lg font-semibold text-white">Add New Location</h3>
+              <h3 class="text-lg font-semibold text-white">Adicionar Novo Endereço</h3>
             </div>
             <button 
               @click="showAddLocation = false" 
@@ -257,7 +257,7 @@
           <!-- Location Name -->
           <div class="mb-4">
             <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-              Location Name <span class="text-red-500">*</span>
+              Nome do Local <span class="text-red-500">*</span>
             </label>
             <div class="relative">
               <select
@@ -266,17 +266,17 @@
                 class="w-full px-4 py-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent appearance-none cursor-pointer"
                 @change="if ($event.target.value === 'custom') { $event.target.style.display='none'; $refs.customName.style.display='block'; $refs.customName.focus(); $refs.customName.required = true; } else { $refs.nameHidden.value = $event.target.value; }"
               >
-                <option value="">Select a location type</option>
-                <option value="Home">🏠 Home</option>
-                <option value="Office">🏢 Office</option>
-                <option value="Parents">👨‍👩‍👧 Parents</option>
-                <option value="Partner">💑 Partner</option>
-                <option value="custom">✏️ Custom...</option>
+                <option value="">Selecione um tipo de local</option>
+                <option value="Home">🏠 Casa</option>
+                <option value="Office">🏢 Escritório</option>
+                <option value="Parents">👨‍👩‍👧 Pais</option>
+                <option value="Partner">💑 Parceiro(a)</option>
+                <option value="custom">✏️ Personalizado...</option>
               </select>
               <input
                 type="text"
                 x-ref="customName"
-                placeholder="Enter custom name"
+                placeholder="Digite o nome personalizado"
                 style="display: none;"
                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent"
                 @input="$refs.nameHidden.value = $event.target.value"
@@ -292,27 +292,27 @@
           <div class="space-y-4">
             <div>
               <label for="address_line_1" class="block text-sm font-medium text-gray-700 mb-2">
-                Street Address <span class="text-red-500">*</span>
+                Endereço <span class="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 name="address_line_1"
                 id="address_line_1"
                 required
-                placeholder="123 Main Street"
+                placeholder="Rua Principal, 123"
                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent"
               >
             </div>
 
             <div>
               <label for="address_line_2" class="block text-sm font-medium text-gray-700 mb-2">
-                Apartment, Suite, etc. <span class="text-gray-400 text-xs">(optional)</span>
+                Apartamento, Suíte, etc. <span class="text-gray-400 text-xs">(opcional)</span>
               </label>
               <input
                 type="text"
                 name="address_line_2"
                 id="address_line_2"
-                placeholder="Apt 4B"
+                placeholder="Apto 4B"
                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent"
               >
             </div>
@@ -320,7 +320,7 @@
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
-                  City <span class="text-red-500">*</span>
+                  Cidade <span class="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -334,7 +334,7 @@
 
               <div>
                 <label for="province" class="block text-sm font-medium text-gray-700 mb-2">
-                  Province <span class="text-red-500">*</span>
+                  Província <span class="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -350,7 +350,7 @@
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label for="postal_code" class="block text-sm font-medium text-gray-700 mb-2">
-                  Postal Code <span class="text-gray-400 text-xs">(optional)</span>
+                  Código Postal <span class="text-gray-400 text-xs">(opcional)</span>
                 </label>
                 <input
                   type="text"
@@ -363,7 +363,7 @@
 
               <div>
                 <label for="country" class="block text-sm font-medium text-gray-700 mb-2">
-                  Country <span class="text-red-500">*</span>
+                  País <span class="text-red-500">*</span>
                 </label>
                 <select
                   name="country"
@@ -372,10 +372,10 @@
                   class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer"
                 >
                   <option value="AO" selected>🇦🇴 Angola</option>
-                  <option value="BR">🇧🇷 Brazil</option>
+                  <option value="BR">🇧🇷 Brasil</option>
                   <option value="PT">🇵🇹 Portugal</option>
-                  <option value="US">🇺🇸 United States</option>
-                  <option value="GB">🇬🇧 United Kingdom</option>
+                  <option value="US">🇺🇸 Estados Unidos</option>
+                  <option value="GB">🇬🇧 Reino Unido</option>
                 </select>
               </div>
             </div>
@@ -390,8 +390,8 @@
                   class="mt-1 h-4 w-4 text-[#015e73] focus:ring-[#015e73] border-gray-300 rounded"
                 >
                 <div class="ml-3">
-                  <span class="block text-sm font-medium text-gray-900">Set as main location</span>
-                  <span class="block text-xs text-gray-600 mt-0.5">This will be your default delivery address</span>
+                  <span class="block text-sm font-medium text-gray-900">Definir como endereço principal</span>
+                  <span class="block text-xs text-gray-600 mt-0.5">Este será seu endereço de entrega padrão</span>
                 </div>
               </label>
             </div>
@@ -403,14 +403,14 @@
               type="submit"
               class="flex-1 bg-[#015e73] text-white py-2.5 px-4 rounded-lg hover:bg-[#014a5a] focus:ring-4 focus:ring-[#015e73]/20 transition-all duration-200 font-medium shadow-sm cursor-pointer"
             >
-              Save Location
+              Salvar Endereço
             </button>
             <button
               type="button"
               @click="showAddLocation = false"
               class="flex-1 bg-gray-100 text-gray-700 py-2.5 px-4 rounded-lg hover:bg-gray-200 transition-colors font-medium cursor-pointer"
             >
-              Cancel
+              Cancelar
             </button>
           </div>
         </form>

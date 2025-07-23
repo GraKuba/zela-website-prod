@@ -16,67 +16,67 @@
     trainingVideos: [
       {
         id: 'basic-cleaning',
-        title: 'Basic Cleaning Techniques',
+        title: 'Técnicas Básicas de Limpeza',
         duration: '8:32',
         category: 'fundamentals',
         completed: true,
-        description: 'Learn essential cleaning methods for all surfaces'
+        description: 'Aprenda métodos essenciais de limpeza para todas as superfícies'
       },
       {
         id: 'deep-clean-bathroom',
-        title: 'Deep Cleaning Bathrooms',
+        title: 'Limpeza Profunda de Banheiros',
         duration: '12:45',
         category: 'specialized',
         completed: true,
-        description: 'Advanced bathroom cleaning and sanitization'
+        description: 'Limpeza e sanitização avançada de banheiros'
       },
       {
         id: 'kitchen-safety',
-        title: 'Kitchen Cleaning & Food Safety',
+        title: 'Limpeza de Cozinha e Segurança Alimentar',
         duration: '15:20',
         category: 'safety',
         completed: false,
-        description: 'Safe cleaning practices around food areas'
+        description: 'Práticas seguras de limpeza em áreas de alimentos'
       },
       {
         id: 'time-management',
-        title: 'Efficient Time Management',
+        title: 'Gestão Eficiente do Tempo',
         duration: '6:15',
         category: 'productivity',
         completed: false,
-        description: 'Optimize your cleaning workflow'
+        description: 'Otimize seu fluxo de trabalho de limpeza'
       }
     ],
     checklists: [
       {
         id: 'standard-clean',
-        title: 'Standard Home Clean',
+        title: 'Limpeza Padrão de Casa',
         tasks: [
-          'Vacuum all carpeted areas',
-          'Mop hard floors',
-          'Dust all surfaces',
-          'Clean bathrooms (toilet, sink, shower)',
-          'Make beds and tidy bedrooms',
-          'Clean kitchen surfaces and appliances',
-          'Empty trash bins',
-          'Quick vacuum of furniture'
+          'Aspirar todas as áreas com carpete',
+          'Esfregar pisos duros',
+          'Tirar pó de todas as superfícies',
+          'Limpar banheiros (vaso sanitário, pia, chuveiro)',
+          'Arrumar camas e organizar quartos',
+          'Limpar superfícies e eletrodomésticos da cozinha',
+          'Esvaziar lixeiras',
+          'Aspiração rápida de móveis'
         ],
-        estimatedTime: '2-3 hours'
+        estimatedTime: '2-3 horas'
       },
       {
         id: 'deep-clean',
-        title: 'Deep Clean Checklist',
+        title: 'Lista de Limpeza Profunda',
         tasks: [
-          'All standard clean tasks',
-          'Clean inside appliances (oven, microwave, fridge)',
-          'Scrub bathroom tiles and grout',
-          'Dust ceiling fans and light fixtures',
-          'Clean baseboards and window sills',
-          'Organize closets and drawers',
-          'Wash windows (interior)',
-          'Deep vacuum furniture cushions'
+          'Todas as tarefas de limpeza padrão',
+          'Limpar interior de eletrodomésticos (forno, microondas, geladeira)',
+          'Esfregar azulejos e rejuntes do banheiro',
+          'Tirar pó de ventiladores de teto e luminárias',
+          'Limpar rodapés e peitoris de janelas',
+          'Organizar armários e gavetas',
+          'Lavar janelas (interior)',
+          'Aspiração profunda de almofadas de móveis'
         ],
-        estimatedTime: '4-6 hours'
+        estimatedTime: '4-6 horas'
       }
     ],
     safetyGuidelines: [
@@ -101,13 +101,13 @@
         ]
       },
       {
-        category: 'Client Property',
+        category: 'Propriedade do Cliente',
         guidelines: [
-          'Handle fragile items with extra care',
-          'Report any damage immediately',
-          'Use furniture protectors when moving items',
-          'Ask before using client's equipment',
-          'Respect client privacy and belongings'
+          'Manuseie itens frágeis com cuidado extra',
+          'Relate qualquer dano imediatamente',
+          'Use protetores de móveis ao mover itens',
+          'Pergunte antes de usar equipamentos do cliente',
+          'Respeite a privacidade e pertences do cliente'
         ]
       }
     ]
@@ -115,7 +115,7 @@
 >
   <!-- Training Progress Overview -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h3 class="text-lg font-semibold mb-6" style="color: #011e41">Training Progress</h3>
+    <h3 class="text-lg font-semibold mb-6" style="color: #011e41">Progresso do Treinamento</h3>
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Video Training Progress -->
@@ -128,19 +128,19 @@
               </svg>
             </div>
             <div>
-              <h4 class="font-semibold text-lg text-gray-800">Video Training</h4>
-              <p class="text-sm text-gray-600">Complete all videos to unlock bonus</p>
+              <h4 class="font-semibold text-lg text-gray-800">Treinamento em Vídeo</h4>
+              <p class="text-sm text-gray-600">Complete todos os vídeos para desbloquear bônus</p>
             </div>
           </div>
           <div class="text-right">
             <div class="text-2xl font-bold text-gray-800" x-text="trainingProgress.videosWatched"></div>
-            <div class="text-sm text-gray-600">of <span x-text="trainingProgress.totalVideos"></span> videos</div>
+            <div class="text-sm text-gray-600">de <span x-text="trainingProgress.totalVideos"></span> vídeos</div>
           </div>
         </div>
         
         <div class="mb-4">
           <div class="flex justify-between text-sm mb-2">
-            <span class="font-medium text-gray-700">Progress</span>
+            <span class="font-medium text-gray-700">Progresso</span>
             <span class="font-medium text-gray-700" x-text="Math.round(trainingProgress.videosWatched / trainingProgress.totalVideos * 100) + '%'"></span>
           </div>
           <div class="w-full bg-gray-200 rounded-full h-2">
@@ -152,7 +152,7 @@
         </div>
         
         <div class="text-sm text-gray-600">
-          <span x-text="trainingProgress.totalVideos - trainingProgress.videosWatched"></span> videos remaining
+          <span x-text="trainingProgress.totalVideos - trainingProgress.videosWatched"></span> vídeos restantes
         </div>
       </div>
       
@@ -178,7 +178,7 @@
         
         <div class="mb-4">
           <div class="flex justify-between text-sm mb-2">
-            <span class="font-medium text-gray-700">Progress</span>
+            <span class="font-medium text-gray-700">Progresso</span>
             <span class="font-medium text-gray-700" x-text="Math.round(trainingProgress.certificationsEarned / trainingProgress.totalCertifications * 100) + '%'"></span>
           </div>
           <div class="w-full bg-gray-200 rounded-full h-2">

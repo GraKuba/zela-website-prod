@@ -11,7 +11,7 @@
 >
   <!-- Job Queue Header -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">Job Queue Management</h3>
+    <h3 class="text-lg font-semibold mb-4" style="color: #011e41">Gerenciamento de Fila de Trabalhos</h3>
     
     <!-- Job Status Tabs -->
     <div class="flex space-x-1 bg-gray-100 p-1 rounded-lg">
@@ -21,7 +21,7 @@
         :class="activeJobSection === 'upcoming' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'"
         :style="activeJobSection === 'upcoming' ? 'color: #035d73; cursor: pointer' : 'cursor: pointer'"
       >
-        Upcoming
+        Próximos
         <span class="ml-1 text-xs px-2 py-1 rounded-full" :style="activeJobSection === 'upcoming' ? 'background-color: #e6f7ff; color: #035d73' : 'background-color: #f3f4f6; color: #6b7280'">{{ upcoming_jobs_count }}</span>
       </button>
       <button
@@ -30,7 +30,7 @@
         :class="activeJobSection === 'inProgress' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'"
         :style="activeJobSection === 'inProgress' ? 'color: #035d73; cursor: pointer' : 'cursor: pointer'"
       >
-        In Progress
+        Em Progresso
         <span class="ml-1 text-xs px-2 py-1 rounded-full" :style="activeJobSection === 'inProgress' ? 'background-color: #e6f7ff; color: #035d73' : 'background-color: #f3f4f6; color: #6b7280'">{{ in_progress_jobs_count }}</span>
       </button>
       <button
@@ -39,7 +39,7 @@
         :class="activeJobSection === 'completed' ? 'bg-white shadow-sm' : 'text-gray-500 hover:text-gray-700'"
         :style="activeJobSection === 'completed' ? 'color: #035d73; cursor: pointer' : 'cursor: pointer'"
       >
-        Completed
+        Concluídos
         <span class="ml-1 text-xs px-2 py-1 rounded-full" :style="activeJobSection === 'completed' ? 'background-color: #fff7e6; color: #f59e0b' : 'background-color: #f3f4f6; color: #6b7280'">{{ completed_jobs_count }}</span>
       </button>
     </div>
@@ -104,16 +104,16 @@
         <!-- Job Actions -->
         <div class="flex flex-wrap gap-2 pt-4 border-t border-gray-200">
           <button class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
-            Start Job
+            Iniciar Trabalho
           </button>
           <button class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" style="background-color: #fdea00; color: #000; cursor: pointer" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
-            Get Directions
+            Obter Direções
           </button>
           <button class="px-4 py-2 bg-white border rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors" style="color: #035d73; border-color: #035d73; cursor: pointer">
-            Contact Client
+            Contactar Cliente
           </button>
           <button class="px-4 py-2 bg-white text-red-600 border border-red-300 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors" style="cursor: pointer">
-            Report Issue
+            Reportar Problema
           </button>
         </div>
       </div>
@@ -122,8 +122,8 @@
         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
         </svg>
-        <h3 class="mt-2 text-sm font-medium text-gray-900">No upcoming jobs</h3>
-        <p class="mt-1 text-sm text-gray-500">Check your availability settings to receive more bookings.</p>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Sem trabalhos próximos</h3>
+        <p class="mt-1 text-sm text-gray-500">Verifique suas configurações de disponibilidade para receber mais reservas.</p>
       </div>
     {% endfor %}
   </div>
@@ -140,9 +140,9 @@
                 <svg class="w-3 h-3 mr-1 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                 </svg>
-                In Progress
+                Em Progresso
               </span>
-              <span class="ml-2 text-sm text-gray-500">Started at {{ job.updated_at|date:"H:i" }}</span>
+              <span class="ml-2 text-sm text-gray-500">Iniciado às {{ job.updated_at|date:"H:i" }}</span>
             </div>
             <div class="space-y-2 text-sm text-gray-600">
               <div class="flex items-center">
@@ -174,16 +174,16 @@
         <!-- In Progress Actions -->
         <div class="flex flex-wrap gap-2 pt-4 border-t border-gray-200">
           <button class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
-            Mark Complete
+            Marcar como Concluído
           </button>
           <button class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" style="background-color: #fdea00; color: #000; cursor: pointer" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
-            Add Photos
+            Adicionar Fotos
           </button>
           <button class="px-4 py-2 bg-white border rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors" style="color: #035d73; border-color: #035d73; cursor: pointer">
-            Update Status
+            Atualizar Status
           </button>
           <button class="px-4 py-2 bg-white text-red-600 border border-red-300 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors" style="cursor: pointer">
-            Report Issue
+            Reportar Problema
           </button>
         </div>
       </div>
@@ -192,8 +192,8 @@
         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
         </svg>
-        <h3 class="mt-2 text-sm font-medium text-gray-900">No jobs in progress</h3>
-        <p class="mt-1 text-sm text-gray-500">Your active jobs will appear here.</p>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Sem trabalhos em progresso</h3>
+        <p class="mt-1 text-sm text-gray-500">Seus trabalhos ativos aparecerão aqui.</p>
       </div>
     {% endfor %}
   </div>
@@ -210,7 +210,7 @@
                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
                 </svg>
-                Completed
+                Concluído
               </span>
               {% if job.rating %}
               <div class="ml-2 flex items-center">
@@ -233,7 +233,7 @@
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <span>{{ job.start_at|date:"Y-m-d" }} • Completed at {{ job.updated_at|date:"H:i" }}</span>
+                <span>{{ job.start_at|date:"d/m/Y" }} • Concluído às {{ job.updated_at|date:"H:i" }}</span>
               </div>
               <div class="flex items-center">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -252,13 +252,13 @@
         <!-- Completed Actions -->
         <div class="flex flex-wrap gap-2 pt-4 border-t border-gray-200">
           <button class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" style="background-color: #035d73; cursor: pointer" onmouseover="this.style.backgroundColor='#024954'" onmouseout="this.style.backgroundColor='#035d73'">
-            View Details
+            Ver Detalhes
           </button>
           <button class="px-4 py-2 bg-white border rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors" style="color: #035d73; border-color: #035d73; cursor: pointer">
-            Download Receipt
+            Baixar Recibo
           </button>
           <button class="px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors" style="background-color: #fdea00; color: #000; cursor: pointer" onmouseover="this.style.backgroundColor='#fcd34d'" onmouseout="this.style.backgroundColor='#fdea00'">
-            Rebook Client
+            Reagendar Cliente
           </button>
         </div>
       </div>
@@ -267,8 +267,8 @@
         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <h3 class="mt-2 text-sm font-medium text-gray-900">No completed jobs</h3>
-        <p class="mt-1 text-sm text-gray-500">Your completed jobs will appear here.</p>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">Sem trabalhos concluídos</h3>
+        <p class="mt-1 text-sm text-gray-500">Seus trabalhos concluídos aparecerão aqui.</p>
       </div>
     {% endfor %}
   </div>

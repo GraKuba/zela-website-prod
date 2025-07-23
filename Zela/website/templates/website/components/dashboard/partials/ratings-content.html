@@ -36,14 +36,14 @@
       />
     </svg>
     <h3 class="text-lg font-semibold mb-2" style="color: #011e41">
-      No Ratings Yet
+      Ainda Sem Avaliações
     </h3>
     <p class="text-gray-600 mb-6">
-      You haven't received any ratings yet. Keep providing excellent service!
+      Ainda não recebeu nenhuma avaliação. Continue a fornecer um excelente serviço!
     </p>
     <div class="bg-gray-50 rounded-lg p-6 max-w-md mx-auto text-left">
       <h4 class="font-medium mb-3" style="color: #035d73">
-        Tips to Get More Reviews:
+        Dicas para Obter Mais Avaliações:
       </h4>
       <ul class="text-sm text-gray-600 space-y-2">
         <li class="flex items-start">
@@ -59,7 +59,7 @@
               clip-rule="evenodd"
             />
           </svg>
-          <span>Provide exceptional service every time</span>
+          <span>Forneça um serviço excepcional sempre</span>
         </li>
         <li class="flex items-start">
           <svg
@@ -74,7 +74,7 @@
               clip-rule="evenodd"
             />
           </svg>
-          <span>Communicate clearly with customers</span>
+          <span>Comunique-se claramente com os clientes</span>
         </li>
         <li class="flex items-start">
           <svg
@@ -89,7 +89,7 @@
               clip-rule="evenodd"
             />
           </svg>
-          <span>Follow up after service completion</span>
+          <span>Faça o acompanhamento após a conclusão do serviço</span>
         </li>
         <li class="flex items-start">
           <svg
@@ -104,7 +104,7 @@
               clip-rule="evenodd"
             />
           </svg>
-          <span>Politely ask satisfied customers to leave a review</span>
+          <span>Peça educadamente aos clientes satisfeitos para deixarem uma avaliação</span>
         </li>
       </ul>
     </div>
@@ -114,7 +114,7 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-semibold" style="color: #011e41">
-        Rating Overview
+        Visão Geral das Avaliações
       </h3>
       <div class="flex items-center space-x-2">
         <span class="text-2xl font-bold" style="color: #035d73"
@@ -139,7 +139,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Rating Distribution -->
       <div>
-        <h4 class="font-medium text-gray-900 mb-4">Rating Distribution</h4>
+        <h4 class="font-medium text-gray-900 mb-4">Distribuição das Avaliações</h4>
         <div class="space-y-2">
           {% for stars, data in rating_breakdown.items %}
           <div class="flex items-center">
@@ -170,7 +170,7 @@
           {% endfor %}
         </div>
         <div class="mt-4 text-sm text-gray-500">
-          Based on {{ total_reviews }} review{{ total_reviews|pluralize }}
+          Baseado em {{ total_reviews }} avaliação{{ total_reviews|pluralize:",ões" }}
         </div>
       </div>
 
@@ -180,25 +180,25 @@
           <div class="text-2xl font-bold" style="color: #035d73">
             {{ positive_reviews_percentage }}%
           </div>
-          <div class="text-sm text-gray-600">Positive Reviews</div>
+          <div class="text-sm text-gray-600">Avaliações Positivas</div>
         </div>
         <div class="bg-gray-50 rounded-lg p-4 text-center">
           <div class="text-2xl font-bold" style="color: #035d73">
             {{ reviews_this_month }}
           </div>
-          <div class="text-sm text-gray-600">Reviews This Month</div>
+          <div class="text-sm text-gray-600">Avaliações Este Mês</div>
         </div>
         <div class="bg-gray-50 rounded-lg p-4 text-center">
           <div class="text-2xl font-bold" style="color: #035d73">
             {{ total_with_comments }}
           </div>
-          <div class="text-sm text-gray-600">With Comments</div>
+          <div class="text-sm text-gray-600">Com Comentários</div>
         </div>
         <div class="bg-gray-50 rounded-lg p-4 text-center">
           <div class="text-2xl font-bold" style="color: #035d73">
             {{ provider_profile.display_rating }}
           </div>
-          <div class="text-sm text-gray-600">Profile Display</div>
+          <div class="text-sm text-gray-600">Exibição no Perfil</div>
         </div>
       </div>
     </div>
@@ -208,7 +208,7 @@
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-lg font-semibold" style="color: #011e41">
-        Customer Reviews
+        Avaliações dos Clientes
       </h3>
     </div>
 
@@ -256,7 +256,7 @@
         </div>
         {% else %}
         <div class="mb-4">
-          <p class="text-gray-500 italic">No comment provided</p>
+          <p class="text-gray-500 italic">Sem comentário</p>
         </div>
         {% endif %}
 
@@ -267,11 +267,11 @@
               class="text-sm text-gray-500 hover:text-gray-700"
               style="cursor: pointer"
             >
-              Report Review
+              Reportar Avaliação
             </button>
           </div>
           <div class="text-sm text-gray-500">
-            Booking #{{ rating.booking.pk }}
+            Reserva #{{ rating.booking.pk }}
           </div>
         </div>
       </div>
@@ -287,7 +287,7 @@
         onmouseover="this.style.backgroundColor='#fcd34d'"
         onmouseout="this.style.backgroundColor='#fdea00'"
       >
-        Load More Reviews
+        Carregar Mais Avaliações
       </button>
     </div>
     {% endif %}
@@ -296,31 +296,31 @@
   <!-- Review Response Guidelines -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
     <h3 class="text-lg font-semibold mb-4" style="color: #011e41">
-      Tips for Success
+      Dicas para o Sucesso
     </h3>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="rounded-lg p-4" style="background-color: #e6f7ff">
         <h4 class="font-medium mb-2" style="color: #035d73">
-          Keep Your Rating High
+          Mantenha Sua Classificação Alta
         </h4>
         <ul class="text-sm space-y-1" style="color: #024954">
-          <li>• Arrive on time for all appointments</li>
-          <li>• Communicate clearly with customers</li>
-          <li>• Deliver quality service consistently</li>
-          <li>• Be professional and courteous</li>
+          <li>• Chegue a tempo para todos os compromissos</li>
+          <li>• Comunique-se claramente com os clientes</li>
+          <li>• Entregue serviço de qualidade consistentemente</li>
+          <li>• Seja profissional e cortês</li>
         </ul>
       </div>
 
       <div class="rounded-lg p-4" style="background-color: #fff7e6">
         <h4 class="font-medium mb-2" style="color: #f59e0b">
-          Handle Feedback Well
+          Lide Bem com o Feedback
         </h4>
         <ul class="text-sm space-y-1" style="color: #92400e">
-          <li>• Learn from constructive criticism</li>
-          <li>• Don't take negative reviews personally</li>
-          <li>• Focus on continuous improvement</li>
-          <li>• Contact support for unfair reviews</li>
+          <li>• Aprenda com as críticas construtivas</li>
+          <li>• Não leve as avaliações negativas para o lado pessoal</li>
+          <li>• Foque na melhoria contínua</li>
+          <li>• Contacte o suporte para avaliações injustas</li>
         </ul>
       </div>
     </div>
@@ -343,11 +343,11 @@
         </svg>
         <div class="text-sm">
           <div class="font-medium" style="color: #035d73">
-            Your Rating Matters
+            Sua Classificação É Importante
           </div>
           <div class="text-gray-600 mt-1">
-            Customers use ratings to choose service providers. Maintaining a
-            high rating helps you get more bookings and earn more.
+            Os clientes usam as classificações para escolher prestadores de serviço. Manter uma
+            classificação alta ajuda a obter mais reservas e ganhar mais.
           </div>
         </div>
       </div>

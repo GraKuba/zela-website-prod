@@ -20,7 +20,7 @@
               1
             </div>
             <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Details
+              Detalhes
             </div>
           </div>
           <div class="flex items-center">
@@ -30,7 +30,7 @@
               2
             </div>
             <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Worker
+              Trabalhador
             </div>
           </div>
           <div class="flex items-center">
@@ -39,7 +39,7 @@
             >
               3
             </div>
-            <div class="ml-2 text-sm text-gray-600">Payment</div>
+            <div class="ml-2 text-sm text-gray-600">Pagamento</div>
           </div>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2">
@@ -70,7 +70,7 @@
       <!-- Booking Details -->
       <div class="bg-white border border-gray-200 rounded-2xl p-6">
         <h3 class="text-lg font-bold mb-4" style="color: #011e41">
-          Booking Details
+          Detalhes da Reserva
         </h3>
 
         <!-- Pricing Display -->
@@ -86,8 +86,8 @@
             </div>
           </div>
           <div class="flex justify-between text-sm text-gray-300">
-            <div>Total hours</div>
-            <div>Booking Price</div>
+            <div>Total de horas</div>
+            <div>Preço da Reserva</div>
           </div>
         </div>
       </div>
@@ -97,12 +97,12 @@
         <!-- Location -->
         <div class="flex items-center justify-between mb-4">
           <div>
-            <div class="text-sm text-gray-600 mb-1">Where:</div>
+            <div class="text-sm text-gray-600 mb-1">Onde:</div>
             <div class="text-sm font-medium" style="color: #011e41" id="location-display">
               <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking.location.streetAddress" 
                     x-text="window.bookingFlowComponent.booking.location.streetAddress.substring(0, 30) + '...'"></span>
               <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking.location.streetAddress">
-                Select a location
+                Selecione uma localização
               </span>
             </div>
           </div>
@@ -126,10 +126,10 @@
         <!-- Service Type -->
         <div class="flex items-center justify-between mb-4">
           <div>
-            <div class="text-sm text-gray-600 mb-1">What:</div>
+            <div class="text-sm text-gray-600 mb-1">O quê:</div>
             <div class="text-sm font-medium" style="color: #011e41">
               <span x-show="window.bookingFlowComponent" x-text="window.bookingFlowComponent.serviceInfo[window.bookingFlowComponent.booking.serviceType]?.name || 'Indoor Cleaning'"></span>
-              <span x-show="!window.bookingFlowComponent">Indoor Cleaning</span>
+              <span x-show="!window.bookingFlowComponent">Limpeza Interior</span>
             </div>
           </div>
           <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
@@ -152,7 +152,7 @@
         <!-- When -->
         <div class="flex items-center justify-between">
           <div>
-            <div class="text-sm text-gray-600 mb-1">When:</div>
+            <div class="text-sm text-gray-600 mb-1">Quando:</div>
             <div class="text-sm font-medium" style="color: #011e41" id="date-display">
               <!-- Will be updated by JavaScript -->
             </div>
@@ -200,10 +200,10 @@
             />
           </svg>
           <span class="text-sm font-medium" style="color: #011e41"
-            >98% Recommend</span
+            >98% Recomendam</span
           >
         </div>
-        <div class="text-sm text-gray-600">423 Jobs Completed</div>
+        <div class="text-sm text-gray-600">423 Trabalhos Concluídos</div>
       </div>
     </div>
 
@@ -216,13 +216,13 @@
         <!-- Price Breakdown -->
         <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-8">
           <h3 class="text-2xl font-bold mb-6" style="color: #011e41">
-            Price Breakdown
+            Discriminação do Preço
           </h3>
 
           <!-- Booking Cost -->
           <div class="mb-6">
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
-              Booking Cost
+              Custo da Reserva
             </h4>
             <div class="flex justify-between items-center">
               <div>
@@ -244,7 +244,7 @@
             <div class="flex justify-between items-center mb-4">
               <div class="flex items-center">
                 <span class="text-lg font-bold" style="color: #011e41"
-                  >Other Costs</span
+                  >Outros Custos</span
                 >
                 <button class="ml-2 text-gray-400 hover:text-gray-600">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -261,7 +261,7 @@
             <div class="flex justify-between items-center mb-3">
               <div class="flex items-center">
                 <span class="text-base" style="color: #011e41"
-                  >Booking Cover</span
+                  >Cobertura da Reserva</span
                 >
                 <button class="ml-2 text-gray-400 hover:text-gray-600">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -295,7 +295,7 @@
                       id="bookingCoverLabel"
                       class="ml-2 text-sm font-medium text-white bg-[#015e73] px-2 py-1 rounded"
                     >
-                      Yes
+                      Sim
                     </span>
                   </label>
                 </div>
@@ -307,7 +307,7 @@
 
             <!-- Service Fee -->
             <div class="flex justify-between items-center">
-              <span class="text-base" style="color: #011e41">Service Fee</span>
+              <span class="text-base" style="color: #011e41">Taxa de Serviço</span>
               <div class="text-base font-medium" style="color: #011e41">
                 R39
               </div>
@@ -318,7 +318,7 @@
           <div class="border-t border-gray-200 pt-4 mb-6">
             <div class="flex justify-between items-center">
               <span class="text-lg font-bold" style="color: #011e41"
-                >Booking Total</span
+                >Total da Reserva</span
               >
               <div class="text-lg font-bold" style="color: #011e41">R400</div>
             </div>
@@ -327,7 +327,7 @@
           <!-- SweepCred Wallet -->
           <div class="flex justify-between items-center mb-6">
             <span class="text-lg font-bold" style="color: #011e41"
-              >Use SweepCred Wallet</span
+              >Usar Carteira SweepCred</span
             >
             <div class="relative">
               <input
@@ -353,7 +353,7 @@
                   id="sweepCredLabel"
                   class="ml-2 text-sm font-medium text-white px-2 py-1 rounded bg-orange-300"
                 >
-                  No
+                  Não
                 </span>
               </label>
             </div>
@@ -364,7 +364,7 @@
             <div class="flex justify-between items-center">
               <div class="flex items-center">
                 <span class="text-xl font-bold" style="color: #011e41"
-                  >TOTAL DUE</span
+                  >TOTAL A PAGAR</span
                 >
                 <button class="ml-2 text-gray-400 hover:text-gray-600">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -385,13 +385,13 @@
             onclick="console.log('Proceed to Payment clicked'); proceedToPayment();"
             class="flex-1 bg-[#015e73] text-white font-bold py-4 px-6 rounded-2xl hover:bg-[#014a5a] transition-colors"
           >
-            Proceed to Payment Method
+            Prosseguir para Método de Pagamento
           </button>
           <button
             onclick="console.log('Back clicked'); goBack();"
             class="flex-1 bg-white border-2 border-gray-300 text-gray-700 font-bold py-4 px-6 rounded-2xl hover:bg-gray-50 transition-colors"
           >
-            Back
+            Voltar
           </button>
         </div>
       </div>
@@ -438,7 +438,7 @@
 
   function showCustomTip() {
     // Handle custom tip input
-    const customAmount = prompt("Enter custom tip amount (R):");
+    const customAmount = prompt("Digite o valor da gorjeta personalizada (R):");
     if (customAmount && !isNaN(customAmount)) {
       const amount = parseInt(customAmount);
       selectTip(amount);
@@ -463,7 +463,7 @@
         "w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform translate-x-6";
       label.className =
         "ml-2 text-sm font-medium text-white bg-[#015e73] px-2 py-1 rounded";
-      label.textContent = "Yes";
+      label.textContent = "Sim";
     } else {
       toggle.className =
         "w-12 h-6 bg-gray-300 rounded-full relative transition-colors";
@@ -471,7 +471,7 @@
         "w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform translate-x-0.5";
       label.className =
         "ml-2 text-sm font-medium text-white bg-gray-300 px-2 py-1 rounded";
-      label.textContent = "No";
+      label.textContent = "Não";
     }
   }
 
@@ -487,7 +487,7 @@
         "w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform translate-x-6";
       label.className =
         "ml-2 text-sm font-medium text-white px-2 py-1 rounded bg-[#015e73]";
-      label.textContent = "Yes";
+      label.textContent = "Sim";
     } else {
       toggle.className =
         "w-12 h-6 rounded-full relative transition-colors bg-orange-300";
@@ -495,7 +495,7 @@
         "w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform translate-x-0.5";
       label.className =
         "ml-2 text-sm font-medium text-white px-2 py-1 rounded bg-orange-300";
-      label.textContent = "No";
+      label.textContent = "Não";
     }
   }
   
