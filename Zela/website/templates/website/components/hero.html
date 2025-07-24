@@ -107,9 +107,28 @@
         href="{% url 'website:register' %}"
         class="bg-[#015f73] text-[#FDEA00] px-6 py-2 rounded-full font-semibold hover:bg-[#014a5a] transition-colors shadow-lg w-fit my-8 cursor-pointer inline-block"
       >
-        Agende Agora
+        Agende já
       </a>
       {% endif %}
+    </div>
+    
+    <!-- Referral Section -->
+    <div class="mt-6 relative z-10">
+      <div class="flex items-center gap-3 justify-center lg:justify-start">
+        <img
+          src="{% static 'carla.webp' %}"
+          alt="Cliente Carla"
+          class="w-8 h-8 rounded-full object-cover"
+        />
+        <div>
+          <div class="text-xs font-bold text-[#011E41] uppercase tracking-wider">
+            REFIRA E GANHE CRÉDITO
+          </div>
+          <p class="text-xs text-[#4A5A70]">
+            Partilhe-nos para ganhar descontos.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
