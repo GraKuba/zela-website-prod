@@ -181,9 +181,7 @@ def process_payment(request):
             'indoor-cleaning': 'Indoor Cleaning',
             'outdoor-services': 'Outdoor Services',
             'office-cleaning': 'Office Cleaning',
-            'moms-helper': "Mom's Helper",
             'moving-cleaning': 'Moving Cleaning',
-            'elder-care': 'Elder Care',
             'express-cleaning': 'Express Cleaning',
             'laundry-ironing': 'Laundry & Ironing'
         }

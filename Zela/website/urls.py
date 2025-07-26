@@ -1,7 +1,7 @@
 from django.urls import path, include
 from . import views
 from .views.public import HomeView, ContactFormView
-from .views.services import ServiceCatalogueView, ServiceDetailPartial, ServiceTaskDetailPartial, ServiceListView
+from .views.services import ServiceCatalogueView, ServiceDetailPartial, ServiceTaskDetailPartial, ServiceListView, ServicesPreviewView
 from .views.blog import BlogIndexView, BlogPostView
 from .views.help_center import HelpCenterView, HelpCenterSearch, HelpArticleView
 from .views.auth import RegisterWizardView, SignInView, SignOutView
@@ -14,6 +14,7 @@ from .views.dashboard import (
 )
 from .views.providers import ProviderLandingView, ProviderApplicationWizard, ApplyWorkerView
 from .views.booking import booking_flow, booking_screen, save_booking_data, get_booking_data, process_payment, get_available_workers, get_user_addresses
+from .views.pricing_api import calculate_booking_price, get_pricing_config
 from .views.api import get_payment_methods
 
 app_name = 'website'
@@ -24,6 +25,7 @@ urlpatterns = [
     path('about/', views.AboutView.as_view(), name='about'),
     path('services/', ServiceCatalogueView.as_view(), name='services'),
     path('services-list/', ServiceListView.as_view(), name='services-list'),
+    path('services-preview/', ServicesPreviewView.as_view(), name='services-preview'),
     path('service-detail/<slug:slug>/', ServiceDetailPartial.as_view(), name='service-detail'),
     path('service-task/<int:pk>/', ServiceTaskDetailPartial.as_view(), name='service-task-detail'),
     path('pricing/', views.PricingView.as_view(), name='pricing'),
@@ -81,6 +83,8 @@ urlpatterns = [
     
     # API endpoints
     path('api/payment-methods/', get_payment_methods, name='api-payment-methods'),
+    path('api/pricing/calculate/', calculate_booking_price, name='api-calculate-pricing'),
+    path('api/pricing/config/', get_pricing_config, name='api-pricing-config'),
     
     # Legal / Static pages (using CMS)
     path('privacy-policy/', views.FlatPageView.as_view(), {'slug': 'privacy-policy'}, name='privacy-policy'),

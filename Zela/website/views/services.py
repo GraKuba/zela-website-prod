@@ -164,3 +164,27 @@ class ServiceListView(ListView):
         })
         
         return context
+
+
+class ServicesPreviewView(ListView):
+    """Services preview page showing all service categories as cards."""
+    
+    model = ServiceCategory
+    template_name = 'website/components/page-services-preview/services-preview.html'
+    context_object_name = 'service_categories'
+    
+    def get_queryset(self):
+        """Return active service categories ordered by priority."""
+        # Return empty queryset since we're using static services in template
+        return ServiceCategory.objects.none()
+    
+    def get_context_data(self, **kwargs) -> Dict[str, Any]:
+        """Add context data for the services preview page."""
+        context = super().get_context_data(**kwargs)
+        
+        context.update({
+            'title': 'Escolha o Seu Serviço - Zela',
+            'meta_description': 'Selecione o serviço doméstico que precisa. Limpeza, reparações, jardinagem e mais. Profissionais verificados em Angola.',
+        })
+        
+        return context

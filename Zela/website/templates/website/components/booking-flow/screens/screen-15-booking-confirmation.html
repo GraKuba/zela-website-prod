@@ -161,7 +161,7 @@
       
       // Update total paid (including tip)
       const totalWithTip = booking.pricing.total + booking.tip.amount;
-      document.getElementById('total-paid').textContent = `R${totalWithTip.toFixed(2)}`;
+      document.getElementById('total-paid').textContent = `AOA ${totalWithTip.toLocaleString('pt-AO', {minimumFractionDigits: 0, maximumFractionDigits: 0})}`;
     } else {
       // Fallback if component not available
       setTimeout(updateBookingSummary, 100);

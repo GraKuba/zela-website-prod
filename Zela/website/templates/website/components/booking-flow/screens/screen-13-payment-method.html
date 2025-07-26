@@ -220,13 +220,12 @@
           <!-- EFT -->
           <div
             id="payment-eft"
-            onclick="selectPaymentMethod('eft')"
-            class="bg-white border-2 border-gray-200 hover:border-[#015e73] rounded-2xl p-6 cursor-pointer transition-colors duration-200"
+            class="bg-white border-2 border-gray-200 rounded-2xl p-6 cursor-not-allowed opacity-60 transition-colors duration-200 relative"
           >
             <div class="flex items-center">
               <div
                 id="radio-eft"
-                class="w-6 h-6 rounded-full border-2 border-gray-300 mr-4 flex items-center justify-center"
+                class="w-6 h-6 rounded-full border-2 border-gray-200 mr-4 flex items-center justify-center bg-gray-50"
               >
                 <div
                   id="radio-dot-eft"
@@ -249,6 +248,7 @@
                   />
                 </svg>
                 <span class="font-medium" style="color: #011e41">Transferência Bancária</span>
+                <span class="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">Em breve</span>
               </div>
             </div>
           </div>
@@ -256,13 +256,12 @@
           <!-- SnapScan -->
           <div
             id="payment-snapscan"
-            onclick="selectPaymentMethod('snapscan')"
-            class="bg-white border-2 border-gray-200 hover:border-[#015e73] rounded-2xl p-6 cursor-pointer transition-colors duration-200"
+            class="bg-white border-2 border-gray-200 rounded-2xl p-6 cursor-not-allowed opacity-60 transition-colors duration-200 relative"
           >
             <div class="flex items-center">
               <div
                 id="radio-snapscan"
-                class="w-6 h-6 rounded-full border-2 border-gray-300 mr-4 flex items-center justify-center"
+                class="w-6 h-6 rounded-full border-2 border-gray-200 mr-4 flex items-center justify-center bg-gray-50"
               >
                 <div
                   id="radio-dot-snapscan"
@@ -285,6 +284,7 @@
                   />
                 </svg>
                 <span class="font-medium" style="color: #011e41">SnapScan</span>
+                <span class="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">Em breve</span>
               </div>
             </div>
           </div>
@@ -359,6 +359,11 @@
   let selectedPaymentMethod = null;
 
   function selectPaymentMethod(method) {
+    // Prevent selection of coming soon methods
+    if (method === 'eft' || method === 'snapscan') {
+      return;
+    }
+    
     // Clear all previous selections
     ["credit-card", "eft", "snapscan"].forEach((methodId) => {
       const element = document.getElementById(`payment-${methodId}`);

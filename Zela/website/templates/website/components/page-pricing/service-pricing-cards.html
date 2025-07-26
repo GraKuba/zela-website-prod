@@ -39,8 +39,8 @@
         </div>
 
         <div class="mb-6">
-          <div class="text-4xl font-bold text-gray-900 mb-1">$120</div>
-          <p class="text-sm text-gray-600">por sessão</p>
+          <div class="text-4xl font-bold text-gray-900 mb-1">AOA {{ pricing.hourly_clean_base|floatformat:0 }}</div>
+          <p class="text-sm text-gray-600">por hora</p>
         </div>
 
         <div class="space-y-3 flex-1 mb-6">
@@ -125,8 +125,8 @@
         </div>
 
         <div class="mb-6">
-          <div class="text-4xl font-bold text-gray-900 mb-1">$0.20</div>
-          <p class="text-sm text-gray-600">por m² (mín. 1.000 m²)</p>
+          <div class="text-4xl font-bold text-gray-900 mb-1">AOA {{ pricing.outdoor_min_price|floatformat:0 }}</div>
+          <p class="text-sm text-gray-600">preço mínimo</p>
         </div>
 
         <div class="space-y-3 flex-1 mb-6">
@@ -209,8 +209,8 @@
         </div>
 
         <div class="mb-6">
-          <div class="text-4xl font-bold text-gray-900 mb-1">$140</div>
-          <p class="text-sm text-gray-600">por visita</p>
+          <div class="text-4xl font-bold text-gray-900 mb-1">AOA {{ pricing.hourly_clean_base|floatformat:0 }}</div>
+          <p class="text-sm text-gray-600">por hora</p>
         </div>
 
         <div class="space-y-3 flex-1 mb-6">
@@ -295,7 +295,7 @@
         </div>
 
         <div class="mb-6">
-          <div class="text-4xl font-bold text-gray-900 mb-1">$180</div>
+          <div class="text-4xl font-bold text-gray-900 mb-1">AOA {{ pricing.hourly_clean_base|add:pricing.specialty_task_price|floatformat:0 }}</div>
           <p class="text-sm text-gray-600">por sessão</p>
         </div>
 

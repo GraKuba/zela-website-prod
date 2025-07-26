@@ -77,12 +77,12 @@
         <div class="bg-gray-900 text-white rounded-2xl p-4">
           <div class="flex justify-between items-center mb-2">
             <div class="text-2xl font-bold">
-              <span x-show="window.bookingFlowComponent" x-text="window.bookingFlowComponent.booking.details.duration"></span>
-              <span x-show="!window.bookingFlowComponent">5.5</span>
+              <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking" x-text="window.bookingFlowComponent?.booking?.details?.duration || '5.5'"></span>
+              <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking">5.5</span>
             </div>
             <div class="text-2xl font-bold">
-              <span x-show="window.bookingFlowComponent" x-text="window.bookingFlowComponent.formatCurrency(window.bookingFlowComponent.booking.pricing.bookingCost)"></span>
-              <span x-show="!window.bookingFlowComponent">R710</span>
+              <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking" x-text="window.bookingFlowComponent?.formatCurrency ? window.bookingFlowComponent.formatCurrency(window.bookingFlowComponent.booking?.pricing?.bookingCost || 710) : 'R710'"></span>
+              <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking">R710</span>
             </div>
           </div>
           <div class="flex justify-between text-sm text-gray-300">
@@ -99,14 +99,14 @@
           <div>
             <div class="text-sm text-gray-600 mb-1">Onde:</div>
             <div class="text-sm font-medium" style="color: #011e41" id="location-display">
-              <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking.location.streetAddress" 
-                    x-text="window.bookingFlowComponent.booking.location.streetAddress.substring(0, 30) + '...'"></span>
+              <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking && window.bookingFlowComponent.booking.location.streetAddress" 
+                    x-text="window.bookingFlowComponent?.booking?.location?.streetAddress ? window.bookingFlowComponent.booking.location.streetAddress.substring(0, 30) + '...' : 'Selecione uma localização'"></span>
               <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking.location.streetAddress">
                 Selecione uma localização
               </span>
             </div>
           </div>
-          <button class="text-gray-400 hover:text-gray-600 cursor-pointer" onclick="window.bookingFlowComponent.goToScreen(1)">
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer" onclick="window.bookingFlowComponent && window.bookingFlowComponent.goToScreen(1)">
             <svg
               class="w-4 h-4"
               fill="none"
@@ -128,8 +128,8 @@
           <div>
             <div class="text-sm text-gray-600 mb-1">O quê:</div>
             <div class="text-sm font-medium" style="color: #011e41">
-              <span x-show="window.bookingFlowComponent" x-text="window.bookingFlowComponent.serviceInfo[window.bookingFlowComponent.booking.serviceType]?.name || 'Indoor Cleaning'"></span>
-              <span x-show="!window.bookingFlowComponent">Limpeza Interior</span>
+              <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking" x-text="window.bookingFlowComponent?.serviceInfo?.[window.bookingFlowComponent?.booking?.serviceType]?.name || 'Limpeza Interior'"></span>
+              <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking">Limpeza Interior</span>
             </div>
           </div>
           <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
@@ -157,7 +157,7 @@
               <!-- Will be updated by JavaScript -->
             </div>
           </div>
-          <button class="text-gray-400 hover:text-gray-600 cursor-pointer" onclick="window.bookingFlowComponent.goToScreen(7)">
+          <button class="text-gray-400 hover:text-gray-600 cursor-pointer" onclick="window.bookingFlowComponent && window.bookingFlowComponent.goToScreen(7)">
             <svg
               class="w-4 h-4"
               fill="none"
@@ -228,13 +228,13 @@
               <div>
                 <div class="font-medium" style="color: #011e41" id="booking-day">Mon</div>
                 <div class="text-sm text-gray-600" id="booking-hours-time">
-                  <span x-show="window.bookingFlowComponent" x-text="`${window.bookingFlowComponent.booking.details.duration} hrs @ ${window.bookingFlowComponent.booking.details.startTime || '07:00'}`"></span>
-                  <span x-show="!window.bookingFlowComponent">5.5 hrs @ 07:00</span>
+                  <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking" x-text="`${window.bookingFlowComponent?.booking?.details?.duration || '5.5'} hrs @ ${window.bookingFlowComponent?.booking?.details?.startTime || '07:00'}`"></span>
+                  <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking">5.5 hrs @ 07:00</span>
                 </div>
               </div>
               <div class="text-lg font-bold" style="color: #011e41" id="booking-cost">
-                <span x-show="window.bookingFlowComponent" x-text="window.bookingFlowComponent.formatCurrency(window.bookingFlowComponent.booking.pricing.bookingCost)"></span>
-                <span x-show="!window.bookingFlowComponent">R710</span>
+                <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking" x-text="window.bookingFlowComponent?.formatCurrency ? window.bookingFlowComponent.formatCurrency(window.bookingFlowComponent.booking?.pricing?.bookingCost || 710) : 'R710'"></span>
+                <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking">R710</span>
               </div>
             </div>
           </div>

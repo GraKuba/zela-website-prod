@@ -400,9 +400,9 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
                         provider_profile.save(update_fields=['service_areas'])
                     
                     # Pass data for availability and service area tabs
-                    provider_context['working_hours'] = json.dumps(provider_profile.working_hours)
-                    provider_context['service_areas'] = json.dumps(provider_profile.service_areas)
-                    provider_context['time_off_requests'] = json.dumps([])  # Empty for now, can be implemented later
+                    provider_context['working_hours'] = provider_profile.working_hours
+                    provider_context['service_areas'] = provider_profile.service_areas
+                    provider_context['time_off_requests'] = []  # Empty for now, can be implemented later
                     
                     # Calculate statistics for service areas
                     active_areas = [area for area in provider_profile.service_areas if area.get('enabled', False)]
@@ -481,9 +481,9 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
                 except Exception as e:
                     # Fallback for when database columns don't exist yet
                     print(f"Warning: Provider profile fields not available: {e}")
-                    provider_context['working_hours'] = json.dumps(provider_profile.get_default_working_hours())
-                    provider_context['service_areas'] = json.dumps(provider_profile.get_default_service_areas())
-                    provider_context['time_off_requests'] = json.dumps([])
+                    provider_context['working_hours'] = provider_profile.get_default_working_hours()
+                    provider_context['service_areas'] = provider_profile.get_default_service_areas()
+                    provider_context['time_off_requests'] = []
                     provider_context['active_areas_count'] = 4
                     provider_context['avg_surcharge'] = 7.5
                     provider_context['recent_distance_requests'] = []

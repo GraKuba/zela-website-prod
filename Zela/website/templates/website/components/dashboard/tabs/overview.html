@@ -11,20 +11,22 @@
     class="bg-gradient-to-r rounded-xl shadow-sm border p-6"
     style="background: linear-gradient(135deg, #fdea00 0%, #fff000 100%)"
   >
-    <div class="flex items-center justify-between">
-      <div>
-        <h3 class="text-lg font-semibold" style="color: #011e41">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div class="flex-1">
+        <h3 class="text-lg sm:text-xl font-semibold" style="color: #011e41">
           🎉 Oferta de Boas-Vindas!
         </h3>
-        <p class="text-sm mt-1" style="color: #011e41">
+        <p class="text-sm sm:text-base mt-2" style="color: #011e41">
           Receba um serviço de limpeza gratuito na sua primeira reserva com a ZELA.
           Oferta válida por tempo limitado — experimente a diferença sem custos!
-          <span class="font-semibold">Código: BEMVINDO2025</span>
+        </p>
+        <p class="mt-2">
+          <span class="inline-block bg-white/80 backdrop-blur-sm px-3 py-1 rounded-md font-semibold text-sm sm:text-base" style="color: #011e41">Código: BEMVINDO2025</span>
         </p>
       </div>
       <a
         href="/book/?service=indoor-cleaning"
-        class="px-6 py-3 bg-white rounded-lg font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+        class="w-full sm:w-auto text-center px-6 py-3 bg-white rounded-lg font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
         style="color: #011e41"
       >
         Reservar Agora
@@ -129,34 +131,6 @@
         >
       </a>
 
-      <!-- Mom's Helper -->
-      <a
-        href="/book/?service=moms-helper"
-        class="flex flex-col items-center p-4 rounded-lg hover:bg-[#e6f6fa] transition-colors cursor-pointer group flex-1"
-        aria-label="Reservar Ajudante de Mãe"
-      >
-        <div
-          class="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 transition-colors group-hover:bg-[#e6f6fa]"
-        >
-          <svg
-            class="w-8 h-8 text-gray-600 transition-colors group-hover:text-[#015e73]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-            />
-          </svg>
-        </div>
-        <span class="text-sm text-center text-gray-700 font-medium"
-          >Ajudante de Mãe</span
-        >
-      </a>
-
       <!-- Moving Cleaning -->
       <a
         href="/book/?service=moving-cleaning"
@@ -182,34 +156,6 @@
         </div>
         <span class="text-sm text-center text-gray-700 font-medium"
           >Limpeza de Mudança</span
-        >
-      </a>
-
-      <!-- Elder Care -->
-      <a
-        href="/book/?service=elder-care"
-        class="flex flex-col items-center p-4 rounded-lg hover:bg-[#e6f6fa] transition-colors cursor-pointer group flex-1"
-        aria-label="Reservar Cuidado de Idosos"
-      >
-        <div
-          class="w-16 h-16 bg-gray-100 rounded-xl flex items-center justify-center mb-3 transition-colors group-hover:bg-[#e6f6fa]"
-        >
-          <svg
-            class="w-8 h-8 text-gray-600 transition-colors group-hover:text-[#015e73]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
-        </div>
-        <span class="text-sm text-center text-gray-700 font-medium"
-          >Cuidado de Idosos</span
         >
       </a>
 

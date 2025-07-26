@@ -45,21 +45,21 @@
   {% include "website/components/booking-flow/screens/modal-worker-profile.html" %}
 
   <!-- Hidden screen templates -->
-  <div id="choose-worker-screen" style="display: none">
+  <template id="choose-worker-screen">
     {% include "website/components/booking-flow/screens/screen-choose-worker.html" %}
-  </div>
+  </template>
 
-  <div id="individual-worker-screen" style="display: none">
+  <template id="individual-worker-screen">
     {% include "website/components/booking-flow/screens/screen-individual-worker.html" %}
-  </div>
+  </template>
 
-  <div id="repeat-booking-screen" style="display: none">
+  <template id="repeat-booking-screen">
     {% include "website/components/booking-flow/screens/screen-repeat-booking.html" %}
-  </div>
+  </template>
 
-  <div id="confirmation-screen" style="display: none">
+  <template id="confirmation-screen">
     {% include "website/components/booking-flow/screens/screen-15-booking-confirmation.html" %}
-  </div>
+  </template>
 </div>
 
 <script>
@@ -82,6 +82,9 @@
       searchTimeout: null,
       availableWorkers: [],
       savedAddresses: [],
+      
+      // Pricing configuration
+      pricingConfig: null,
 
       // Booking state
       booking: {
@@ -91,6 +94,7 @@
           streetAddress: "",
           coordinates: null,
           fullAddress: "",
+          area: "Luanda Centro", // Default area
         },
         frequency: null, // 'one-time' or 'repeat'
         dateBucket: null, // 'tomorrow' or 'later'
@@ -167,7 +171,7 @@
               "Tirar o pó e limpar rodapés",
               "Dobrar ou pendurar roupas no quarto",
             ],
-            CASAS DE BANHO: [
+            "CASAS DE BANHO": [
               "Limpeza do chuveiro, banheira e pias",
               "Limpeza da sanita",
               "Limpar bancadas e torneiras",
@@ -203,35 +207,11 @@
             "Concluído!",
           ],
         },
-        "moms-helper": {
-          name: "Assistente de Mãe",
-          description:
-            "Obtenha ajuda com cuidados infantis, preparação de refeições, limpeza leve e outras tarefas domésticas.",
-          icon: "👶",
-          howItWorks: [
-            "Diga-nos onde precisa de ajuda.",
-            "Configure os requisitos da sua reserva.",
-            "Escolha o seu trabalhador.",
-            "Concluído!",
-          ],
-        },
         "moving-cleaning": {
           name: "Limpeza de Mudança",
           description:
             "Serviços de limpeza profunda para mudanças de entrada e saída para garantir que o seu espaço esteja impecável.",
           icon: "📦",
-          howItWorks: [
-            "Diga-nos onde precisa de ajuda.",
-            "Configure os requisitos da sua reserva.",
-            "Escolha o seu trabalhador.",
-            "Concluído!",
-          ],
-        },
-        "elder-care": {
-          name: "Cuidados para Idosos",
-          description:
-            "Cuidados e assistência compassivos para familiares idosos, incluindo companhia e tarefas diárias.",
-          icon: "👵",
           howItWorks: [
             "Diga-nos onde precisa de ajuda.",
             "Configure os requisitos da sua reserva.",
@@ -330,6 +310,20 @@
         // Set default repeat booking start date
         this.booking.repeat.startDate = tomorrow.toISOString().split("T")[0];
 
+        // Load pricing configuration
+        try {
+          const pricingResponse = await fetch('/api/pricing/config/');
+          if (pricingResponse.ok) {
+            const pricingResult = await pricingResponse.json();
+            if (pricingResult.status === 'success') {
+              this.pricingConfig = pricingResult.config;
+              console.log('Pricing config loaded:', this.pricingConfig);
+            }
+          }
+        } catch (error) {
+          console.error('Error loading pricing config:', error);
+        }
+        
         // Load saved booking data from session
         try {
           const response = await fetch('/booking-flow/get-data/');
@@ -359,15 +353,24 @@
         // Handle special screens
         if (screenNumber === "choose-worker") {
           // Show choose worker screen
-          document.getElementById("booking-screen").innerHTML =
-            document.getElementById("choose-worker-screen").innerHTML;
+          const template = document.getElementById("choose-worker-screen");
+          document.getElementById("booking-screen").innerHTML = template.content.cloneNode(true).querySelector('div').outerHTML;
           return;
         }
 
         if (screenNumber === "individual-worker") {
-          // Show individual worker screen
-          document.getElementById("booking-screen").innerHTML =
-            document.getElementById("individual-worker-screen").innerHTML;
+          // Navigate to individual worker screen
+          // Use HTMX if available, otherwise use direct replacement
+          if (typeof htmx !== 'undefined') {
+            htmx.ajax("GET", `/booking-flow/screen/individual-worker/`, {
+              target: "#booking-screen",
+              swap: "innerHTML",
+            });
+          } else {
+            // Fallback to direct replacement
+            const template = document.getElementById("individual-worker-screen");
+            document.getElementById("booking-screen").innerHTML = template.content.cloneNode(true).querySelector('div').outerHTML;
+          }
           return;
         }
 
@@ -377,7 +380,8 @@
           
           // Show repeat booking screen
           const bookingScreen = document.getElementById("booking-screen");
-          const repeatBookingContent = document.getElementById("repeat-booking-screen").innerHTML;
+          const template = document.getElementById("repeat-booking-screen");
+          const repeatBookingContent = template.content.cloneNode(true).querySelector('div').outerHTML;
           
           // Replace content
           bookingScreen.innerHTML = repeatBookingContent;
@@ -404,8 +408,8 @@
 
         if (screenNumber === 15) {
           // Show confirmation screen
-          document.getElementById("booking-screen").innerHTML =
-            document.getElementById("confirmation-screen").innerHTML;
+          const template = document.getElementById("confirmation-screen");
+          document.getElementById("booking-screen").innerHTML = template.content.cloneNode(true).querySelector('div').outerHTML;
           return;
         }
 
@@ -533,31 +537,81 @@
         this.saveBookingData();
       },
 
-      calculatePricing() {
-        // Enhanced pricing calculation based on duration, home size, and extra tasks
-        const baseRate = 129; // per hour
-        let baseCost = this.booking.details.duration * baseRate;
+      async calculatePricing() {
+        try {
+          // Prepare data for API call
+          const pricingData = {
+            service_type: this.booking.serviceType,
+            duration: this.booking.details.duration,
+            home_size: this.booking.details.homeSize,
+            extra_tasks: this.booking.details.extraTasks,
+            location: {
+              area: this.booking.location.area || 'Luanda Centro',
+              latitude: this.booking.location.coordinates?.lat,
+              longitude: this.booking.location.coordinates?.lng
+            },
+            date: this.booking.date,
+            time: this.booking.details.startTime
+          };
 
+          // Call pricing API
+          const response = await fetch('/api/pricing/calculate/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(pricingData),
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            if (result.status === 'success') {
+              // Update pricing from API response
+              this.booking.pricing.bookingCost = result.pricing.subtotal;
+              this.booking.pricing.total = result.pricing.total;
+              this.booking.pricing.breakdown = result.pricing.breakdown;
+              
+              // Update other costs
+              this.booking.pricing.otherCosts.bookingCover = result.pricing.booking_fee;
+              this.booking.pricing.otherCosts.serviceFee = 0; // Included in total
+              
+              console.log('Pricing updated:', result.pricing);
+            }
+          } else {
+            // Fallback to local calculation if API fails
+            this.calculatePricingFallback();
+          }
+        } catch (error) {
+          console.error('Error calculating pricing:', error);
+          // Fallback to local calculation
+          this.calculatePricingFallback();
+        }
+      },
+      
+      calculatePricingFallback() {
+        // Fallback pricing calculation (uses AOA rates)
+        const baseRate = 4900; // AOA per hour (from PricingConfig)
+        let baseCost = this.booking.details.duration * baseRate;
+        
         // Adjust for home size
         const homeSize = this.booking.details.homeSize;
         let sizeMultiplier = 1;
         if (homeSize === "small-1-2-bedrooms") {
           sizeMultiplier = 0.8;
         } else if (homeSize === "large-5-plus-bedrooms") {
-          sizeMultiplier = 1.2;
+          sizeMultiplier = 1.3;
         }
-
-        // Add extra tasks cost
-        const extraTasksCost = this.booking.details.extraTasks.length * 25;
-
+        
+        // Add extra tasks cost (3000 AOA per task)
+        const extraTasksCost = this.booking.details.extraTasks.length * 3000;
+        
         // Calculate final cost
         baseCost = baseCost * sizeMultiplier + extraTasksCost;
-
+        
         this.booking.pricing.bookingCost = Math.round(baseCost);
-        this.booking.pricing.total =
-          this.booking.pricing.bookingCost +
-          this.booking.pricing.otherCosts.bookingCover +
-          this.booking.pricing.otherCosts.serviceFee;
+        this.booking.pricing.otherCosts.bookingCover = 500; // Booking fee
+        this.booking.pricing.otherCosts.serviceFee = 0;
+        this.booking.pricing.total = this.booking.pricing.bookingCost + 500;
       },
 
       findWorker() {
@@ -573,8 +627,8 @@
       goToChooseWorker() {
         // Navigate directly to choose worker screen
         this.goToScreen("choose-worker");
-        // Load workers after navigation
-        setTimeout(() => this.loadAvailableWorkers(), 100);
+        // Load workers after navigation - increased timeout for DOM to be ready
+        setTimeout(() => this.loadAvailableWorkers(), 300);
       },
 
       chooseWorker(workerId) {
@@ -873,6 +927,10 @@
               this.booking.location.streetAddress = streetAddress.trim();
               this.booking.location.fullAddress = data.display_name;
               
+              // Detect area from address components
+              const area = this.detectServiceArea(address);
+              this.booking.location.area = area;
+              
               // Show popup with address
               this.mapMarker.bindPopup(`📍 ${streetAddress}`).openPopup();
             } else {
@@ -949,7 +1007,7 @@
       
       // Helper methods
       formatCurrency(amount) {
-        return `R${amount}`;
+        return `AOA ${amount.toLocaleString('pt-AO')}`;
       },
 
       getHomeSizeLabel(sizeId) {
@@ -960,6 +1018,48 @@
       getExtraTaskLabel(taskId) {
         const task = this.extraTasksOptions.find((opt) => opt.id === taskId);
         return task ? task.label : taskId;
+      },
+      
+      detectServiceArea(addressComponents) {
+        // Map of neighborhoods/suburbs to service areas
+        const areaMapping = {
+          'Ingombota': 'Ingombota',
+          'Maianga': 'Maianga',
+          'Maculusso': 'Luanda Centro',
+          'Kinaxixi': 'Luanda Centro',
+          'Ilha de Luanda': 'Luanda Centro',
+          'Ilha do Cabo': 'Luanda Centro',
+          'Rangel': 'Rangel',
+          'Cazenga': 'Cazenga',
+          'Viana': 'Viana',
+          'Talatona': 'Rangel',
+          'Benfica': 'Rangel',
+          'Camama': 'Viana',
+          'Zango': 'Viana'
+        };
+        
+        // Check suburb/neighbourhood first
+        const suburb = addressComponents.suburb || addressComponents.neighbourhood;
+        if (suburb) {
+          for (const [key, value] of Object.entries(areaMapping)) {
+            if (suburb.toLowerCase().includes(key.toLowerCase())) {
+              return value;
+            }
+          }
+        }
+        
+        // Check city_district
+        const district = addressComponents.city_district;
+        if (district) {
+          for (const [key, value] of Object.entries(areaMapping)) {
+            if (district.toLowerCase().includes(key.toLowerCase())) {
+              return value;
+            }
+          }
+        }
+        
+        // Default to Luanda Centro if we can't determine
+        return 'Luanda Centro';
       },
 
       // Tip handling methods
@@ -1010,22 +1110,49 @@
         setTimeout(() => {
           // Be very specific - find the main booking screen
           const bookingScreen = document.querySelector('#booking-screen');
-          if (!bookingScreen) return;
+          if (!bookingScreen) {
+            console.error('Booking screen not found');
+            return;
+          }
           
-          // Find all elements with space-y-6 class
-          const allContainers = bookingScreen.querySelectorAll('.space-y-6');
-          
-          // Find the right container - it should be in a div that has "Choose your worker" as a sibling
+          // Try multiple strategies to find the worker container
           let targetContainer = null;
-          allContainers.forEach(container => {
-            const parent = container.parentElement;
-            if (parent && parent.querySelector('h2')?.textContent?.includes('Choose your worker')) {
-              targetContainer = container;
+          
+          // Strategy 1: Look for h2 with "Escolha o seu trabalhador"
+          const h2Element = Array.from(bookingScreen.querySelectorAll('h2')).find(h2 => 
+            h2.textContent?.includes('Escolha o seu trabalhador')
+          );
+          
+          if (h2Element) {
+            // Find the nearest .space-y-6 container after the h2
+            let sibling = h2Element.nextElementSibling;
+            while (sibling) {
+              if (sibling.classList.contains('space-y-6')) {
+                targetContainer = sibling;
+                break;
+              }
+              // Check children of sibling
+              const childContainer = sibling.querySelector('.space-y-6');
+              if (childContainer) {
+                targetContainer = childContainer;
+                break;
+              }
+              sibling = sibling.nextElementSibling;
             }
-          });
+          }
+          
+          // Strategy 2: If not found, look for any empty .space-y-6 container
+          if (!targetContainer) {
+            const containers = bookingScreen.querySelectorAll('.space-y-6');
+            targetContainer = Array.from(containers).find(container => 
+              container.innerHTML.includes('A carregar trabalhadores disponíveis') ||
+              container.children.length === 0 ||
+              (container.children.length === 1 && container.querySelector('.text-center'))
+            );
+          }
           
           if (!targetContainer) {
-            console.error('Could not find worker container');
+            console.error('Could not find worker container after trying multiple strategies');
             return;
           }
           
