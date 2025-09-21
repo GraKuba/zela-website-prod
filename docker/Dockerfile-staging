@@ -1,10 +1,10 @@
-# Use Python 3.11 slim image
+# Dockerfile for Render staging deployment
 FROM python:3.11-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODULE=Zela.settings.production
+    DJANGO_SETTINGS_MODULE=Zela.settings.staging
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -21,11 +21,11 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 WORKDIR /app
 
 # Copy requirements and install Python dependencies
-COPY requirements.txt .
+COPY Zela/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project files
-COPY . .
+COPY Zela/ .
 
 # Install Node.js dependencies and build Tailwind
 RUN if [ -f "theme/static_src/package.json" ]; then \
@@ -40,8 +40,17 @@ RUN python manage.py tailwind build
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
+# Create a non-root user for security
+RUN useradd --create-home --shell /bin/bash app \
+    && chown -R app:app /app
+USER app
+
 # Expose port
 EXPOSE 8000
 
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8000/health/ || exit 1
+
 # Run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "Zela.wsgi:application"] 
+CMD ["sh", "-c", "../scripts/build-staging.sh && gunicorn --bind 0.0.0.0:8000 --workers 2 --timeout 120 Zela.wsgi:application"]

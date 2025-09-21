@@ -1,0 +1,278 @@
+{% load static %}
+
+<!-- Screen 2: Property Typology Selection (for services that need it) -->
+<div class="min-h-screen bg-white flex flex-col">
+  <!-- Sticky Header with Progress -->
+  <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
+        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="flex-1 max-w-md mx-auto">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              1
+            </div>
+            <div class="ml-2 text-sm font-medium" style="color: #011e41">
+              Detalhes
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              2
+            </div>
+            <div class="ml-2 text-sm text-gray-600">Trabalhador</div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              3
+            </div>
+            <div class="ml-2 text-sm text-gray-600">Pagamento</div>
+          </div>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div
+            class="bg-[#015e73] h-2 rounded-full"
+            style="width: 20%"
+          ></div>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div
+          @click="window.location.href = '/dashboard/'"
+          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
+        >
+          JG
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 max-w-4xl mx-auto w-full px-6 py-8">
+    <h2 class="text-3xl font-bold mb-2" style="color: #011e41">
+      Qual é o tamanho da sua propriedade?
+    </h2>
+    <p class="text-gray-600 mb-8">
+      Isto ajuda-nos a calcular o preço correto e atribuir o tempo adequado para o serviço.
+    </p>
+
+    <!-- Property Typology Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- T1 -->
+      <div
+        @click="selectPropertyTypology('T1')"
+        class="bg-white border-2 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-all duration-200"
+        :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.propertyTypology === 'T1' }"
+      >
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex-1">
+            <h3 class="text-xl font-bold mb-2" style="color: #011e41">T1</h3>
+            <p class="text-gray-600 mb-3">1 Quarto</p>
+            <ul class="text-sm text-gray-500 space-y-1">
+              <li>• 1 Quarto</li>
+              <li>• 1 Casa de banho</li>
+              <li>• Sala de estar</li>
+              <li>• Cozinha</li>
+              <li>• ~40-60 m²</li>
+            </ul>
+          </div>
+          <div class="ml-4">
+            <div
+              class="w-6 h-6 rounded-full border-2 flex items-center justify-center"
+              :class="booking.propertyTypology === 'T1' ? 'bg-[#015e73] border-[#015e73]' : 'border-gray-300'"
+            >
+              <svg
+                x-show="booking.propertyTypology === 'T1'"
+                class="w-3 h-3 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="pt-3 border-t border-gray-200" x-show="currentService.pricing_model === 'typology'">
+          <div class="text-sm text-gray-500">Preço estimado:</div>
+          <div class="text-lg font-bold" style="color: #015e73" x-text="formatCurrency(getPriceForTypology('T1'))"></div>
+        </div>
+      </div>
+
+      <!-- T2 -->
+      <div
+        @click="selectPropertyTypology('T2')"
+        class="bg-white border-2 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-all duration-200"
+        :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.propertyTypology === 'T2' }"
+      >
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex-1">
+            <h3 class="text-xl font-bold mb-2" style="color: #011e41">T2</h3>
+            <p class="text-gray-600 mb-3">2 Quartos</p>
+            <ul class="text-sm text-gray-500 space-y-1">
+              <li>• 2 Quartos</li>
+              <li>• 1-2 Casas de banho</li>
+              <li>• Sala de estar</li>
+              <li>• Cozinha</li>
+              <li>• ~60-90 m²</li>
+            </ul>
+          </div>
+          <div class="ml-4">
+            <div
+              class="w-6 h-6 rounded-full border-2 flex items-center justify-center"
+              :class="booking.propertyTypology === 'T2' ? 'bg-[#015e73] border-[#015e73]' : 'border-gray-300'"
+            >
+              <svg
+                x-show="booking.propertyTypology === 'T2'"
+                class="w-3 h-3 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="pt-3 border-t border-gray-200" x-show="currentService.pricing_model === 'typology'">
+          <div class="text-sm text-gray-500">Preço estimado:</div>
+          <div class="text-lg font-bold" style="color: #015e73" x-text="formatCurrency(getPriceForTypology('T2'))"></div>
+        </div>
+      </div>
+
+      <!-- T3 -->
+      <div
+        @click="selectPropertyTypology('T3')"
+        class="bg-white border-2 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-all duration-200"
+        :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.propertyTypology === 'T3' }"
+      >
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex-1">
+            <h3 class="text-xl font-bold mb-2" style="color: #011e41">T3</h3>
+            <p class="text-gray-600 mb-3">3 Quartos</p>
+            <ul class="text-sm text-gray-500 space-y-1">
+              <li>• 3 Quartos</li>
+              <li>• 2 Casas de banho</li>
+              <li>• Sala de estar</li>
+              <li>• Cozinha</li>
+              <li>• ~90-120 m²</li>
+            </ul>
+          </div>
+          <div class="ml-4">
+            <div
+              class="w-6 h-6 rounded-full border-2 flex items-center justify-center"
+              :class="booking.propertyTypology === 'T3' ? 'bg-[#015e73] border-[#015e73]' : 'border-gray-300'"
+            >
+              <svg
+                x-show="booking.propertyTypology === 'T3'"
+                class="w-3 h-3 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="pt-3 border-t border-gray-200" x-show="currentService.pricing_model === 'typology'">
+          <div class="text-sm text-gray-500">Preço estimado:</div>
+          <div class="text-lg font-bold" style="color: #015e73" x-text="formatCurrency(getPriceForTypology('T3'))"></div>
+        </div>
+      </div>
+
+      <!-- T4+ -->
+      <div
+        @click="selectPropertyTypology('T4+')"
+        class="bg-white border-2 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-all duration-200"
+        :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.propertyTypology === 'T4+' }"
+      >
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex-1">
+            <h3 class="text-xl font-bold mb-2" style="color: #011e41">T4+</h3>
+            <p class="text-gray-600 mb-3">4+ Quartos</p>
+            <ul class="text-sm text-gray-500 space-y-1">
+              <li>• 4 ou mais Quartos</li>
+              <li>• 3+ Casas de banho</li>
+              <li>• Múltiplas salas</li>
+              <li>• Cozinha grande</li>
+              <li>• 120+ m²</li>
+            </ul>
+          </div>
+          <div class="ml-4">
+            <div
+              class="w-6 h-6 rounded-full border-2 flex items-center justify-center"
+              :class="booking.propertyTypology === 'T4+' ? 'bg-[#015e73] border-[#015e73]' : 'border-gray-300'"
+            >
+              <svg
+                x-show="booking.propertyTypology === 'T4+'"
+                class="w-3 h-3 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="pt-3 border-t border-gray-200" x-show="currentService.pricing_model === 'typology'">
+          <div class="text-sm text-gray-500">Preço estimado:</div>
+          <div class="text-lg font-bold" style="color: #015e73" x-text="formatCurrency(getPriceForTypology('T4+'))"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Continue Button -->
+    <div x-show="booking.propertyTypology" class="mt-8">
+      <button
+        @click="proceedFromPropertyTypology()"
+        class="w-full py-4 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 shadow-lg"
+      >
+        Continuar
+      </button>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-4 text-center">
+      <button
+        @click="goToScreen(1)"
+        class="text-gray-500 hover:text-gray-700 font-medium"
+      >
+        ← Voltar
+      </button>
+    </div>
+  </div>
+</div>

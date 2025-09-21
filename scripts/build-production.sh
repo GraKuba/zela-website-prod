@@ -5,6 +5,9 @@ set -o errexit  # Exit on error
 
 echo "🚀 Starting Zela production build process..."
 
+# Change to Django project directory
+cd Zela
+
 # Install Python dependencies
 echo "📦 Installing Python dependencies..."
 pip install -r requirements.txt

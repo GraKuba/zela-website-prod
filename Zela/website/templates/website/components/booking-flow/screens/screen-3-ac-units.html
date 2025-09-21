@@ -1,0 +1,188 @@
+{% load static %}
+
+<!-- Screen 3: AC Unit Configuration -->
+<div class="min-h-screen bg-white flex flex-col">
+  <!-- Sticky Header with Progress -->
+  <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
+        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="flex-1 max-w-md mx-auto">
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              1
+            </div>
+            <div class="ml-2 text-sm font-medium" style="color: #011e41">
+              Detalhes
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              2
+            </div>
+            <div class="ml-2 text-sm text-gray-600">Trabalhador</div>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
+            >
+              3
+            </div>
+            <div class="ml-2 text-sm text-gray-600">Pagamento</div>
+          </div>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div
+            class="bg-[#015e73] h-2 rounded-full"
+            style="width: 25%"
+          ></div>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div
+          @click="window.location.href = '/dashboard/'"
+          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
+        >
+          JG
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 max-w-4xl mx-auto w-full px-6 py-8">
+    <h2 class="text-3xl font-bold mb-2" style="color: #011e41">
+      Quantas unidades de ar condicionado precisa de reparar?
+    </h2>
+    <p class="text-gray-600 mb-8">
+      Oferecemos descontos por volume para múltiplas unidades.
+    </p>
+
+    <!-- Unit Count Selector -->
+    <div class="bg-white border-2 border-gray-200 rounded-2xl p-8 mb-8">
+      <div class="flex items-center justify-center mb-6">
+        <button
+          @click="decrementUnitCount()"
+          class="w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+          :disabled="booking.unitCount <= 1"
+          :class="{ 'opacity-50 cursor-not-allowed': booking.unitCount <= 1 }"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+          </svg>
+        </button>
+        
+        <div class="mx-8 text-center">
+          <div class="text-5xl font-bold mb-2" style="color: #011e41" x-text="booking.unitCount || 1"></div>
+          <div class="text-sm text-gray-600">
+            <span x-text="booking.unitCount === 1 ? 'Unidade' : 'Unidades'"></span>
+          </div>
+        </div>
+        
+        <button
+          @click="incrementUnitCount()"
+          class="w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Pricing Breakdown -->
+      <div class="border-t border-gray-200 pt-6">
+        <h3 class="font-bold mb-4" style="color: #011e41">Detalhes do Preço:</h3>
+        
+        <div class="space-y-3">
+          <!-- Base Price -->
+          <div class="flex justify-between items-center">
+            <span class="text-gray-600">Preço base por unidade:</span>
+            <span class="font-medium" x-text="formatCurrency(16000)"></span>
+          </div>
+
+          <!-- Discount -->
+          <div class="flex justify-between items-center" x-show="getACDiscount() > 0">
+            <span class="text-gray-600">
+              Desconto por volume (<span x-text="getACDiscount()"></span>%):
+            </span>
+            <span class="font-medium text-green-600">
+              -<span x-text="formatCurrency(getACDiscountAmount())"></span>
+            </span>
+          </div>
+
+          <!-- Total -->
+          <div class="flex justify-between items-center pt-3 border-t border-gray-200">
+            <span class="font-bold" style="color: #011e41">Total:</span>
+            <span class="text-2xl font-bold" style="color: #015e73" x-text="formatCurrency(getACTotalPrice())"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discount Information -->
+    <div class="bg-[#015e73]/10 border border-[#015e73] rounded-2xl p-6 mb-8">
+      <h3 class="font-bold mb-3" style="color: #011e41">💰 Poupe com descontos por volume:</h3>
+      <div class="grid grid-cols-2 gap-3 text-sm">
+        <div class="flex items-center">
+          <span class="w-20 text-gray-600">1 unidade:</span>
+          <span class="font-medium">Preço total</span>
+        </div>
+        <div class="flex items-center">
+          <span class="w-20 text-gray-600">2-3 unidades:</span>
+          <span class="font-medium text-green-600">10% desconto cada</span>
+        </div>
+        <div class="flex items-center">
+          <span class="w-20 text-gray-600">4-5 unidades:</span>
+          <span class="font-medium text-green-600">15% desconto cada</span>
+        </div>
+        <div class="flex items-center">
+          <span class="w-20 text-gray-600">6+ unidades:</span>
+          <span class="font-medium text-green-600">20% desconto cada</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service Notes -->
+    <div class="mb-8">
+      <label class="block text-sm font-medium mb-2" style="color: #4a5a70">
+        Informações adicionais (opcional)
+      </label>
+      <textarea
+        x-model="booking.acServiceNotes"
+        placeholder="Ex: Marcas das unidades, problemas específicos, localização das unidades..."
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent resize-none"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <!-- Continue Button -->
+    <div>
+      <button
+        @click="proceedFromACConfiguration()"
+        class="w-full py-4 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 shadow-lg"
+      >
+        Continuar - <span x-text="formatCurrency(getACTotalPrice())"></span>
+      </button>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-4 text-center">
+      <button
+        @click="goToScreen(1)"
+        class="text-gray-500 hover:text-gray-700 font-medium"
+      >
+        ← Voltar
+      </button>
+    </div>
+  </div>
+</div>

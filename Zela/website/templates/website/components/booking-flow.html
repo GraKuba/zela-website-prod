@@ -1102,6 +1102,11 @@
             const data = await response.json();
             if (data.status === 'success') {
               this.availableWorkers = data.workers;
+              // Store workers globally for modal access
+              window.availableWorkersData = {};
+              data.workers.forEach(worker => {
+                window.availableWorkersData[worker.id] = worker;
+              });
               this.displayWorkers();
             }
           }
@@ -1167,7 +1172,7 @@
           if (this.availableWorkers.length === 0) {
             targetContainer.innerHTML = `
               <div class="text-center py-8 text-gray-500">
-                <p>No workers available at this time.</p>
+                <p>Nenhum trabalhador disponível neste momento.</p>
               </div>
             `;
             return;
@@ -1216,11 +1221,11 @@
                   />
                 </svg>
                 <span class="text-sm font-medium" style="color: #011e41">
-                  ${worker.recommend_rate}% Recommend
+                  ${worker.recommend_rate}% Recomendam
                 </span>
               </div>
               <div class="text-sm text-gray-600 mb-4">
-                <span class="font-bold">${worker.jobs_completed}</span> Jobs Completed
+                <span class="font-bold">${worker.jobs_completed}</span> Trabalhos Concluídos
               </div>
 
               <!-- Action Buttons -->
@@ -1229,13 +1234,13 @@
                   @click="viewWorkerProfile(${worker.id})"
                   class="flex-1 bg-white border border-[#015e73] text-[#015e73] font-medium py-2 px-4 rounded-xl hover:bg-[#015e73]/5 transition-colors cursor-pointer"
                 >
-                  View profile
+                  Ver perfil
                 </button>
                 <button
                   @click="chooseWorker(${worker.id})"
                   class="flex-1 bg-[#015e73] text-white font-medium py-2 px-4 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
                 >
-                  Choose me
+                  Escolher-me
                 </button>
               </div>
             </div>

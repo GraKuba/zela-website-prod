@@ -3,6 +3,9 @@
 
 set -o errexit  # Exit on error
 
+# Change to Django project directory
+cd Zela
+
 # Install Python dependencies
 pip install -r requirements.txt
 

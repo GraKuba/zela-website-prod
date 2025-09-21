@@ -5,22 +5,97 @@ from django.views.decorators.http import require_http_methods
 import json
 from django.contrib.auth.decorators import login_required
 
+from services.models import ServiceCategory, ServiceTask
+from workers.models import PropertyTypology, ServicePackage
+
 
 def booking_flow(request):
-    """Main booking flow view."""
-    service_type = request.GET.get('service', 'indoor-cleaning')
+    """Main booking flow view with new model support."""
+    service_slug = request.GET.get('service', 'house-cleaning')
+    
+    # Get service category from database
+    try:
+        service_category = ServiceCategory.objects.get(slug=service_slug, is_active=True)
+        service_tasks = service_category.tasks.filter(is_active=True).order_by('order')
+        
+        # Prepare service data for frontend
+        service_data = {
+            'id': service_category.id,
+            'name': service_category.name,
+            'slug': service_category.slug,
+            'icon': service_category.icon,
+            'description': service_category.description,
+            'worker_model_type': service_category.worker_model_type,
+            'pricing_model': service_category.pricing_model,
+            'booking_requirements': service_category.booking_requirements,
+            'tasks': []
+        }
+        
+        for task in service_tasks:
+            task_data = {
+                'id': task.id,
+                'name': task.name,
+                'description': task.description,
+                'base_price': task.price,
+                'pricing_model': task.get_pricing_model(),
+                'pricing_config': task.pricing_config,
+                'duration_hours': float(task.duration_hours),
+                'is_addon': task.is_addon,
+            }
+            service_data['tasks'].append(task_data)
+            
+    except ServiceCategory.DoesNotExist:
+        # Fallback to default service
+        service_data = {
+            'id': 0,
+            'name': 'House Cleaning',
+            'slug': 'house-cleaning',
+            'description': 'Professional house cleaning service',
+            'pricing_model': 'fixed',
+            'tasks': []
+        }
+    
+    # Get property typologies
+    property_typologies = PropertyTypology.objects.all().order_by('name')
+    typologies_data = []
+    for typology in property_typologies:
+        typologies_data.append({
+            'name': typology.name,
+            'display_name': typology.get_name_display(),
+            'description': typology.description,
+            'typical_sqm': typology.typical_sqm
+        })
+    
+    # Check for user's packages if authenticated
+    user_packages = []
+    if request.user.is_authenticated:
+        packages = ServicePackage.objects.filter(
+            customer=request.user,
+            status='active'
+        )
+        for package in packages:
+            if package.is_active:
+                user_packages.append({
+                    'id': package.id,
+                    'name': package.package_name,
+                    'type': package.package_type,
+                    'remaining_credits': package.remaining_credits,
+                    'total_credits': package.total_credits
+                })
     
     # Get booking data from session if exists
     booking_data = request.session.get('booking_data', {})
     
-    # Update booking data with service type from URL
-    if 'serviceType' not in booking_data or booking_data.get('serviceType') != service_type:
-        booking_data['serviceType'] = service_type
-        request.session['booking_data'] = booking_data
+    # Update booking data with service info
+    booking_data['serviceCategory'] = service_data['id']
+    booking_data['serviceCategoryData'] = service_data
+    request.session['booking_data'] = booking_data
     
     context = {
-        'service_type': service_type,
-        'booking_data': json.dumps(booking_data),  # Pass as JSON for JavaScript
+        'service_data': json.dumps(service_data),
+        'property_typologies': json.dumps(typologies_data),
+        'user_packages': json.dumps(user_packages),
+        'booking_data': json.dumps(booking_data),
     }
     return render(request, 'website/components/booking-flow.html', context)
 
@@ -30,14 +105,23 @@ def booking_screen(request, screen_number):
     
     screen_templates = {
         1: 'website/components/booking-flow/screens/screen-1-address-capture.html',
-        2: 'website/components/booking-flow/screens/screen-2-map-address.html', 
-        3: 'website/components/booking-flow/screens/screen-3-confirm-pin.html',
-        4: 'website/components/booking-flow/screens/screen-4-frequency.html',
+        2: 'website/components/booking-flow/screens/screen-2-property-typology.html',  # New screen for property selection
+        3: 'website/components/booking-flow/screens/screen-3-ac-units.html',  # AC unit configuration
+        4: 'website/components/booking-flow/screens/screen-4-electrician-config.html',  # Electrician configuration
+        5: 'website/components/booking-flow/screens/screen-5-pest-control-config.html',  # Pest control configuration  
+        6: 'website/components/booking-flow/screens/screen-6-dog-trainer-packages.html',  # Dog trainer packages
         7: 'website/components/booking-flow/screens/screen-7-date-bucket.html',
         8: 'website/components/booking-flow/screens/screen-8-booking-details.html',
+        9: 'website/components/booking-flow/screens/screen-9-worker-selection.html',  # Updated worker selection
+        10: 'website/components/booking-flow/screens/screen-10-matchmaking.html',  # Worker matchmaking
+        11: 'website/components/booking-flow/screens/screen-11-schedule-sessions.html',  # For package-based services
         12: 'website/components/booking-flow/screens/screen-12-cost-review.html',
         13: 'website/components/booking-flow/screens/screen-13-payment-method.html',
         14: 'website/components/booking-flow/screens/screen-14-select-card.html',
+        # Legacy screens for backward compatibility
+        21: 'website/components/booking-flow/screens/screen-2-map-address.html', 
+        22: 'website/components/booking-flow/screens/screen-3-confirm-pin.html',
+        23: 'website/components/booking-flow/screens/screen-4-frequency.html',
     }
     
     template = screen_templates.get(screen_number)

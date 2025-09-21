@@ -86,6 +86,9 @@ urlpatterns = [
     path('api/pricing/calculate/', calculate_booking_price, name='api-calculate-pricing'),
     path('api/pricing/config/', get_pricing_config, name='api-pricing-config'),
     
+    # New API endpoints for worker models
+    path('api/', include('website.api.urls', namespace='api')),
+    
     # Legal / Static pages (using CMS)
     path('privacy-policy/', views.FlatPageView.as_view(), {'slug': 'privacy-policy'}, name='privacy-policy'),
     path('terms-of-service/', views.FlatPageView.as_view(), {'slug': 'terms-of-service'}, name='terms-of-service'),

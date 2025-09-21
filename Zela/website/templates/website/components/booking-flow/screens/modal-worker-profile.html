@@ -4,47 +4,18 @@
 <div
   x-data="{ 
     isOpen: false, 
-    selectedWorker: null,
-    workers: {
-      'memory-mudede': {
-        name: 'Memory Mudede',
-        image: 'zela-workers-new-photos/vanuza-faustino-1.jpeg',
-        recommend: 98,
-        jobsCompleted: 423,
-        experience: ['Hospitalidade'],
-        availability: ['mon', 'tue', 'wed', 'thu', 'sat'],
-        about: 'Vivo em Landsdowne e cresci em Mutare, Zimbabwe. Faço trabalho doméstico há 3 anos. Meus empregadores anteriores me descreveram como leal, honesta e trabalhadora. No meu tempo livre, gosto de assistir TV e ir à igreja. Além de Inglês, também falo Xhosa e Zulu.'
-      },
-      'annah-havo': {
-        name: 'Annah Havo',
-        image: 'zela-workers-new-photos/antonia-cabala-2.jpeg',
-        recommend: 99,
-        jobsCompleted: 200,
-        experience: ['Hospitalidade', 'Cuidados Infantis'],
-        availability: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
-        about: 'Sou uma empregada doméstica dedicada de Khayelitsha com 2 anos de experiência. Tenho orgulho do meu trabalho e sempre garanto que cada canto esteja impecável. Falo Inglês, Xhosa e Zulu. No meu tempo livre, gosto de ler e passar tempo com minha família.'
-      },
-      'epiphaniah-matarirano': {
-        name: 'Epiphaniah Matarirano',
-        image: 'zela-workers-new-photos/marisa-gaspar-1.jpeg',
-        recommend: 97,
-        jobsCompleted: 115,
-        experience: ['Hospitalidade'],
-        availability: ['tue', 'wed', 'thu', 'fri', 'sat'],
-        about: 'Sou de Harare, Zimbabwe e trabalho como empregada doméstica há 1,5 anos. Sou conhecida pela minha atenção aos detalhes e confiabilidade. Falo Inglês e Shona. Gosto de cozinhar pratos tradicionais e ouvir música no meu tempo livre.'
-      },
-      'margaret-buleya': {
-        name: 'Margaret Buleya',
-        image: 'zela-workers-new-photos/madalena-rodrigues-2.jpeg',
-        recommend: 95,
-        jobsCompleted: 66,
-        experience: ['Hospitalidade'],
-        availability: ['mon', 'wed', 'fri', 'sat', 'sun'],
-        about: 'Sou uma empregada doméstica trabalhadora de Mitchells Plain com 1 ano de experiência. Sou apaixonada por criar espaços limpos e confortáveis para as famílias. Falo Inglês e Afrikaans. Adoro jardinagem e passar tempo ao ar livre quando não estou trabalhando.'
-      }
-    }
+    selectedWorkerId: null,
+    selectedWorker: null
   }"
-  @open-worker-profile.window="isOpen = true; selectedWorker = $event.detail.workerId"
+  @open-worker-profile.window="
+    isOpen = true; 
+    selectedWorkerId = $event.detail.workerId;
+    // Get worker data from global store
+    selectedWorker = window.availableWorkersData ? window.availableWorkersData[selectedWorkerId] : null;
+    if (!selectedWorker) {
+      console.error('Worker not found:', selectedWorkerId);
+    }
+  "
   @close-worker-profile.window="isOpen = false"
 >
   <!-- Semi-transparent overlay to dim the background content -->
@@ -101,7 +72,7 @@
 
     <!-- Content -->
     <div class="px-6 py-8 max-w-2xl mx-auto">
-      <template x-if="selectedWorker && workers[selectedWorker]">
+      <template x-if="selectedWorker">
         <div>
           <!-- Profile Picture and Name -->
           <div class="text-center mb-8">
@@ -109,15 +80,16 @@
               class="w-32 h-32 bg-gray-300 rounded-full mx-auto mb-4 overflow-hidden"
             >
               <img
-                :src="'/static/' + workers[selectedWorker].image"
-                :alt="workers[selectedWorker].name"
+                :src="selectedWorker.profile_picture || selectedWorker.avatar || '/static/generic-avatar.png'"
+                :alt="selectedWorker.name"
                 class="w-full h-full object-cover"
+                onerror="this.src='/static/generic-avatar.png'"
               />
             </div>
             <h3
               class="text-3xl font-bold"
               style="color: #011e41"
-              x-text="workers[selectedWorker].name"
+              x-text="selectedWorker.name"
             ></h3>
           </div>
 
@@ -135,11 +107,11 @@
                   viewBox="0 0 24 24"
                 >
                   <path
-                    d="M14,9H19.5L13.5,3.5L12,2L10.5,3.5L4.5,9H10V16H14V9M12,18A1,1 0 0,1 11,19A1,1 0 0,1 10,18A1,1 0 0,1 11,17A1,1 0 0,1 12,18Z"
+                    d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
                   />
                 </svg>
                 <span class="text-2xl font-bold" style="color: #011e41">
-                  <span x-text="workers[selectedWorker].recommend"></span>%
+                  <span x-text="selectedWorker.recommend_rate || Math.round(selectedWorker.rating * 20) || 95"></span>%
                 </span>
               </div>
             </div>
@@ -152,21 +124,57 @@
               <div
                 class="text-2xl font-bold"
                 style="color: #011e41"
-                x-text="workers[selectedWorker].jobsCompleted"
+                x-text="selectedWorker.jobs_completed || 0"
               ></div>
             </div>
           </div>
 
           <!-- Experience -->
-          <div class="mb-8">
+          <div class="mb-8" x-show="selectedWorker.years_experience">
             <h4 class="text-xl font-bold mb-4" style="color: #011e41">
               Experiência
             </h4>
-            <div class="space-y-2">
-              <template
-                x-for="exp in workers[selectedWorker].experience"
-                :key="exp"
+            <div class="flex items-center">
+              <svg
+                class="w-5 h-5 text-green-500 mr-3"
+                fill="currentColor"
+                viewBox="0 0 24 24"
               >
+                <path
+                  d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"
+                />
+              </svg>
+              <span
+                class="text-lg"
+                style="color: #011e41"
+              >
+                <span x-text="selectedWorker.years_experience"></span> anos de experiência
+              </span>
+            </div>
+          </div>
+
+          <!-- Languages -->
+          <div class="mb-8" x-show="selectedWorker.languages">
+            <h4 class="text-xl font-bold mb-4" style="color: #011e41">
+              Idiomas
+            </h4>
+            <div class="flex flex-wrap gap-2">
+              <template x-for="lang in (selectedWorker.languages || '').split(',')">
+                <span 
+                  class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                  x-text="lang.trim()"
+                ></span>
+              </template>
+            </div>
+          </div>
+
+          <!-- Services -->
+          <div class="mb-8" x-show="selectedWorker.services">
+            <h4 class="text-xl font-bold mb-4" style="color: #011e41">
+              Serviços
+            </h4>
+            <div class="space-y-2">
+              <template x-for="service in (Array.isArray(selectedWorker.services) ? selectedWorker.services : [])">
                 <div class="flex items-center">
                   <svg
                     class="w-5 h-5 text-green-500 mr-3"
@@ -180,58 +188,59 @@
                   <span
                     class="text-lg"
                     style="color: #011e41"
-                    x-text="exp"
+                    x-text="service"
                   ></span>
                 </div>
               </template>
             </div>
           </div>
 
-          <!-- Availability -->
-          <div class="mb-8">
-            <h4 class="text-xl font-bold mb-4" style="color: #011e41">
-              Disponibilidade
-            </h4>
-            <div class="flex justify-center space-x-4">
-              <template
-                x-for="(day, index) in ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']"
-                :key="day"
-              >
-                <div class="text-center">
-                  <div
-                    class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg mb-2"
-                    :class="workers[selectedWorker].availability.includes(day) ? 'bg-gray-900' : 'bg-gray-300'"
-                  >
-                    <span x-text="day.charAt(0).toUpperCase()"></span>
-                  </div>
-                  <div class="text-sm" style="color: #011e41">
-                    <span
-                      x-text="day.charAt(0).toUpperCase() + day.slice(1)"
-                    ></span>
-                  </div>
-                </div>
-              </template>
-            </div>
-          </div>
-
-          <!-- About Me -->
-          <div class="mb-8">
+          <!-- About Me/Bio -->
+          <div class="mb-8" x-show="selectedWorker.bio">
             <h4 class="text-xl font-bold mb-4" style="color: #011e41">
               Sobre Mim
             </h4>
             <p
               class="text-gray-600 leading-relaxed"
-              x-text="workers[selectedWorker].about"
+              x-text="selectedWorker.bio"
             ></p>
+          </div>
+
+          <!-- Emergency Service -->
+          <div class="mb-8" x-show="selectedWorker.accepts_emergency">
+            <div class="flex items-center p-4 bg-amber-50 rounded-lg">
+              <svg
+                class="w-5 h-5 text-amber-600 mr-3"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"
+                />
+              </svg>
+              <span class="text-amber-800 font-medium">
+                Aceita serviços de emergência
+              </span>
+            </div>
           </div>
 
           <!-- Action Buttons -->
           <div class="flex space-x-4">
             <button
-              @click="$dispatch('choose-worker', { workerId: selectedWorker }); isOpen = false"
+              @click="
+                // Close modal
+                isOpen = false;
+                // Trigger worker selection
+                if (window.bookingFlowComponent && window.bookingFlowComponent.chooseWorker) {
+                  window.bookingFlowComponent.chooseWorker(selectedWorkerId);
+                } else {
+                  // Fallback method
+                  window.dispatchEvent(new CustomEvent('choose-worker-from-modal', { detail: { workerId: selectedWorkerId }}));
+                }
+              "
               class="flex-1 bg-[#015e73] text-white font-bold py-4 px-6 rounded-2xl hover:bg-[#014a5a] transition-colors"
             >
-              Escolher-me
+              Escolher este trabalhador
             </button>
             <button
               @click="isOpen = false"
@@ -242,23 +251,23 @@
           </div>
         </div>
       </template>
+
+      <!-- Loading/Error state -->
+      <template x-if="!selectedWorker && isOpen">
+        <div class="text-center py-8">
+          <p class="text-gray-500">A carregar perfil do trabalhador...</p>
+        </div>
+      </template>
     </div>
   </div>
 </div>
 
-<!-- Script to trigger modal -->
+<!-- Script to handle worker selection from modal -->
 <script>
-  // Function to open worker profile modal
-  function viewWorkerProfile(workerId) {
-    window.dispatchEvent(
-      new CustomEvent("open-worker-profile", {
-        detail: { workerId: workerId },
-      })
-    );
-  }
-
-  // Function to choose worker from modal
-  document.addEventListener("choose-worker", function (e) {
-    chooseWorker(e.detail.workerId);
+  // Listen for worker selection from modal
+  document.addEventListener("choose-worker-from-modal", function (e) {
+    if (typeof chooseWorker === 'function') {
+      chooseWorker(e.detail.workerId);
+    }
   });
 </script>
