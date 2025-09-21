@@ -1,0 +1,113 @@
+name: Deploy to Staging (Render)
+
+on:
+  push:
+    branches: [staging]
+  pull_request:
+    branches: [staging]
+
+env:
+  PYTHON_VERSION: "3.11"
+  NODE_VERSION: "18"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_zela
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install Python dependencies
+        run: |
+          cd Zela
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Node.js dependencies
+        run: |
+          cd Zela/theme/static_src
+          npm install
+
+      - name: Set up environment variables
+        run: |
+          cd Zela
+          echo "SECRET_KEY=test-secret-key-for-ci" >> .env
+          echo "DEBUG=True" >> .env
+          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/test_zela" >> .env
+
+      - name: Build Tailwind CSS
+        run: |
+          cd Zela
+          python manage.py tailwind build
+
+      - name: Collect static files
+        run: |
+          cd Zela
+          python manage.py collectstatic --noinput
+
+      - name: Run migrations
+        run: |
+          cd Zela
+          python manage.py migrate
+
+      - name: Run Django tests
+        run: |
+          cd Zela
+          python manage.py test --verbosity=2
+
+      - name: Run Django checks
+        run: |
+          cd Zela
+          python manage.py check
+          python manage.py check --deploy
+
+      - name: Run security checks
+        run: |
+          cd Zela
+          python manage.py check --tag security
+
+  deploy-notification:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/staging' && github.event_name == 'push'
+
+    steps:
+      - name: Staging deployment notification
+        run: |
+          echo "🚀 Tests passed! Staging deployment will be triggered automatically by Render."
+          echo "🔗 Staging URL: https://zela-staging.onrender.com"
+          echo "⏱️  Deployment typically takes 3-5 minutes"
+          echo "📋 Manual QA can begin once deployment completes"

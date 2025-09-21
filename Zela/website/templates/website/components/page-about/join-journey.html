@@ -1,124 +1,238 @@
 {% load static %}
 
 <!-- Join Our Journey Section -->
-<section class="bg-[#FDEA00] py-16 md:py-24 px-4">
-  <div class="max-w-7xl mx-auto">
-    <div class="text-center mb-12 md:mb-16">
-      <h2
-        class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#015F73] leading-tight mb-6"
-      >
-        Junte-se à Nossa Jornada
-      </h2>
-      <p
-        class="text-lg md:text-xl text-[#015F73] max-w-4xl mx-auto leading-relaxed"
-      >
-        Seja para libertar o seu fim de semana, ganhar ao seu próprio ritmo, ou
-        moldar o futuro dos serviços a pedido em Angola, a Zela dá-lhe as
-        boas-vindas.
-      </p>
-    </div>
+<section class="bg-muted py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="mb-16">
+        <div class="mb-4">
+          <span
+            class="text-sm font-medium text-muted-foreground uppercase tracking-wider"
+          >
+            Faça Parte
+          </span>
+        </div>
+        <h2
+          class="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight"
+        >
+          Junte-se à Nossa Jornada
+        </h2>
+        <p
+          class="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
+        >
+          Seja para libertar o seu fim de semana, ganhar ao seu próprio ritmo,
+          ou moldar o futuro dos serviços em Angola
+        </p>
+      </div>
 
-    <div class="grid lg:grid-cols-2 gap-8 md:gap-12 items-start mb-16">
-      <div class="space-y-6 md:space-y-8">
-        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-lg">
-          <h3 class="text-2xl md:text-3xl font-bold text-[#015F73] mb-4">
-            Para Famílias
-          </h3>
-          <p class="text-[#4A5A70] leading-relaxed mb-6 text-lg">
-            Experimente a conveniência de serviços domésticos profissionais ao
-            alcance dos seus dedos. Reserve profissionais de confiança para
-            todas as suas necessidades domésticas.
-          </p>
+      <!-- Main Options Grid -->
+      <div class="grid md:grid-cols-2 gap-8 mb-16">
+        <!-- For Families -->
+        <div
+          class="bg-card rounded-3xl p-8 md:p-10 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-muted"
+        >
+          <div class="mb-8">
+            <div
+              class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <svg
+                class="w-8 h-8 text-primary-foreground"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m0 0v-1a1 1 0 011-1h2a1 1 0 011 1v1m0 0h3a1 1 0 001-1V10M9 21h6m-3-18l3 3"
+                ></path>
+              </svg>
+            </div>
+            <h3
+              class="text-2xl md:text-3xl font-bold text-card-foreground mb-4"
+            >
+              Para Famílias
+            </h3>
+            <p class="text-muted-foreground leading-relaxed text-lg mb-8">
+              Experimente a conveniência de serviços domésticos profissionais ao
+              alcance dos seus dedos. Reserve profissionais de confiança para
+              todas as suas necessidades domésticas.
+            </p>
+          </div>
+
+          <!-- Features -->
+          <div class="space-y-4 mb-8">
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-primary rounded-full"></div>
+              <span class="text-muted-foreground">Reserva em 60 segundos</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-primary rounded-full"></div>
+              <span class="text-muted-foreground"
+                >Profissionais verificados</span
+              >
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-primary rounded-full"></div>
+              <span class="text-muted-foreground">Pagamento seguro online</span>
+            </div>
+          </div>
+
           <div class="flex flex-col sm:flex-row gap-4">
             <a
-              href="#"
-              class="bg-[#015F73] text-[#FDEA00] px-8 py-3 rounded-full font-semibold hover:bg-[#022951] transition-colors shadow-lg text-center"
+              href="/pricing/"
+              class="bg-primary text-primary-foreground px-6 py-3 rounded-full font-semibold hover:bg-primary/90 transition-colors shadow-lg text-center flex-1"
             >
-              Reservar um Serviço
+              Reservar Serviço
             </a>
             <a
-              href="#"
-              class="bg-white text-[#015F73] px-8 py-3 rounded-full font-semibold hover:bg-gray-50 transition-colors border-2 border-[#015F73] text-center"
+              href="/services/"
+              class="border border-primary text-primary px-6 py-3 rounded-full font-semibold hover:bg-primary hover:text-primary-foreground transition-colors text-center flex-1"
+            >
+              Ver Serviços
+            </a>
+          </div>
+        </div>
+
+        <!-- For Professionals -->
+        <div
+          class="bg-card rounded-3xl p-8 md:p-10 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-muted"
+        >
+          <div class="mb-8">
+            <div
+              class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <svg
+                class="w-8 h-8 text-secondary-foreground"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6"
+                ></path>
+              </svg>
+            </div>
+            <h3
+              class="text-2xl md:text-3xl font-bold text-card-foreground mb-4"
+            >
+              Para Profissionais
+            </h3>
+            <p class="text-muted-foreground leading-relaxed text-lg mb-8">
+              Junte-se à nossa rede de profissionais verificados e construa um
+              rendimento estável com horários flexíveis e apoio profissional.
+            </p>
+          </div>
+
+          <!-- Features -->
+          <div class="space-y-4 mb-8">
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-secondary rounded-full"></div>
+              <span class="text-muted-foreground">Pagamentos semanais</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-secondary rounded-full"></div>
+              <span class="text-muted-foreground">Horários flexíveis</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-secondary rounded-full"></div>
+              <span class="text-muted-foreground">Formação incluída</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a
+              href="/apply-worker/"
+              class="bg-secondary text-secondary-foreground px-6 py-3 rounded-full font-semibold hover:bg-secondary/90 transition-colors shadow-lg text-center flex-1"
+            >
+              Candidatar-me
+            </a>
+            <a
+              href="/apply-worker/"
+              class="border border-secondary text-secondary px-6 py-3 rounded-full font-semibold hover:bg-secondary hover:text-secondary-foreground transition-colors text-center flex-1"
             >
               Saber Mais
             </a>
           </div>
         </div>
-
-        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-lg">
-          <h3 class="text-2xl md:text-3xl font-bold text-[#015F73] mb-4">
-            Para Profissionais
-          </h3>
-          <p class="text-[#4A5A70] leading-relaxed mb-6 text-lg">
-            Junte-se à nossa rede de profissionais verificados e construa um
-            rendimento estável com horários flexíveis e apoio profissional.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a
-              href="#"
-              class="bg-[#015F73] text-[#FDEA00] px-8 py-3 rounded-full font-semibold hover:bg-[#022951] transition-colors shadow-lg text-center"
-            >
-              Tornar-se Pro
-            </a>
-            <a
-              href="#"
-              class="bg-white text-[#015F73] px-8 py-3 rounded-full font-semibold hover:bg-gray-50 transition-colors border-2 border-[#015F73] text-center"
-            >
-              Ver Benefícios
-            </a>
-          </div>
-        </div>
       </div>
 
-      <div class="space-y-6 md:space-y-8">
-        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-lg">
-          <h3 class="text-2xl md:text-3xl font-bold text-[#015F73] mb-4">
-            Oportunidades de Carreira
-          </h3>
-          <p class="text-[#4A5A70] leading-relaxed mb-6 text-lg">
-            Molde o futuro dos serviços a pedido em Angola. Explore vagas
-            abertas e junte-se à nossa missão de revolucionar os serviços
-            domésticos.
-          </p>
-          <div class="space-y-4 mb-6">
-            <div class="flex items-center space-x-4">
-              <div
-                class="w-3 h-3 bg-[#015F73] rounded-full flex-shrink-0"
-              ></div>
-              <span class="text-[#4A5A70] text-lg">Engenharia de Software</span>
-            </div>
-            <div class="flex items-center space-x-4">
-              <div
-                class="w-3 h-3 bg-[#015F73] rounded-full flex-shrink-0"
-              ></div>
-              <span class="text-[#4A5A70] text-lg">Operações e Suporte</span>
-            </div>
-            <div class="flex items-center space-x-4">
-              <div
-                class="w-3 h-3 bg-[#015F73] rounded-full flex-shrink-0"
-              ></div>
-              <span class="text-[#4A5A70] text-lg"
-                >Formação e Desenvolvimento</span
+      <!-- Career Opportunities -->
+      <div
+        class="bg-background rounded-3xl p-8 md:p-10 shadow-lg border border-muted"
+      >
+        <div class="max-w-3xl mx-auto text-center">
+          <div class="mb-8">
+            <div
+              class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-6"
+            >
+              <svg
+                class="w-8 h-8 text-accent-foreground"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl md:text-3xl font-bold text-foreground mb-4">
+              Oportunidades de Carreira
+            </h3>
+            <p class="text-muted-foreground leading-relaxed text-lg mb-8">
+              Molde o futuro dos serviços a pedido em Angola. Junte-se à nossa
+              missão de revolucionar os serviços domésticos.
+            </p>
+          </div>
+
+          <!-- Open Positions -->
+          <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-muted rounded-2xl p-6 text-center">
+              <div class="text-2xl font-bold text-foreground mb-2">
+                Engenharia
+              </div>
+              <div class="text-sm text-muted-foreground">
+                Software • Mobile • DevOps
+              </div>
+            </div>
+            <div class="bg-muted rounded-2xl p-6 text-center">
+              <div class="text-2xl font-bold text-foreground mb-2">
+                Operações
+              </div>
+              <div class="text-sm text-muted-foreground">
+                Suporte • Logística • Qualidade
+              </div>
+            </div>
+            <div class="bg-muted rounded-2xl p-6 text-center">
+              <div class="text-2xl font-bold text-foreground mb-2">
+                Crescimento
+              </div>
+              <div class="text-sm text-muted-foreground">
+                Marketing • Vendas • Parcerias
+              </div>
             </div>
           </div>
-          <div>
+
+          <div
+            class="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          >
             <a
               href="mailto:talent@zela.co.ao"
-              class="bg-[#015F73] text-[#FDEA00] px-8 py-3 rounded-full font-semibold hover:bg-[#022951] transition-colors shadow-lg inline-block"
+              class="bg-accent text-accent-foreground px-8 py-3 rounded-full font-semibold hover:bg-accent/90 transition-colors shadow-lg"
             >
               Contacte-nos
             </a>
-          </div>
-        </div>
-
-        <!-- Contact Info -->
-        <div class="bg-[#015F73] rounded-3xl p-6 md:p-8 text-white">
-          <h4 class="text-xl md:text-2xl font-bold mb-6">Entre em Contacto</h4>
-          <div class="space-y-4">
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center gap-4 text-muted-foreground">
               <svg
-                class="w-6 h-6 text-[#FDEA00] flex-shrink-0"
+                class="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -130,40 +244,18 @@
                   d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 ></path>
               </svg>
-              <span class="text-lg">talent@zela.co.ao</span>
-            </div>
-            <div class="flex items-center space-x-4">
-              <svg
-                class="w-6 h-6 text-[#FDEA00] flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                ></path>
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                ></path>
-              </svg>
-              <span class="text-lg">Luanda, Angola</span>
+              <span>talent@zela.co.ao</span>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Tagline -->
-    <div class="text-center">
-      <p class="text-2xl md:text-3xl font-bold text-[#015F73] italic">
-        Zela · Atenção e cuidado para a sua casa.
-      </p>
+      <!-- Bottom Tagline -->
+      <div class="mt-16 pt-8 border-t border-muted">
+        <p class="text-lg md:text-xl font-semibold text-foreground italic">
+          Zela · Atenção e cuidado para a sua casa.
+        </p>
+      </div>
     </div>
   </div>
 </section>

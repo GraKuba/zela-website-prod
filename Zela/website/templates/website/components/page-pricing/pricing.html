@@ -1,6 +1,5 @@
-{% extends "website/layouts/base.html" %} {% load static %} {% block title%}Zela
-Pricing - Clear, Up-Front Pricing{% endblock %} {% block content %}
-<div class="min-h-screen bg-white">
+{% extends "website/layouts/base.html" %} {% load static %} {% block title %}Zela Pricing - Clear, Up-Front Pricing{% endblock %} {% block content %}
+<div class="min-h-screen bg-background">
   <!-- Navigation -->
   {% include "website/fragments/navbar.html" %}
 
@@ -20,11 +19,11 @@ Pricing - Clear, Up-Front Pricing{% endblock %} {% block content %}
   {% include "website/components/page-pricing/discounts-credits.html" %}
 
   <!-- FAQ Accordion -->
-  {% include "website/components/faq-accordion.html" %}
+  {% include "website/components/page-home/faq-accordion.html" %}
 
   <!-- Back-to-Booking Banner -->
   {% include "website/components/page-pricing/booking-banner.html" %}
 </div>
 
 <!-- Global Footer -->
-{% include "website/components/global-footer.html" %} {% endblock %}
+{% include "website/components/page-home/global-footer.html" %} {% endblock %}

@@ -1,0 +1,17 @@
+{% extends "website/layouts/base.html" %} 
+{% load static %} 
+{% block title %}Book a Service - Zela{% endblock %} 
+{% block content %}
+<div class="min-h-screen bg-gray-50" style="font-family: Arial, sans-serif">
+  {% include "website/components/booking-flow/booking-flow.html" %}
+</div>
+
+<!-- Alpine.js CDN (if not already included in base template) -->
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<!-- HTMX CDN (if not already included in base template) -->
+<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+
+<!-- Interactive elements styles -->
+<link rel="stylesheet" href="{% static 'website/css/booking-interactive.css' %}">
+{% endblock %}

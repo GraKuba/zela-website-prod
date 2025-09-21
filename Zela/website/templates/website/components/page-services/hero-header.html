@@ -1,25 +1,150 @@
 {% load static %}
 
-<!-- Hero Header -->
+<!-- Services Hero Header -->
 <section
-  class="relative bg-[#015e73] text-white"
-  style="font-family: Arial, sans-serif"
+  class="relative bg-gradient-to-br from-background via-background to-muted/30 py-8 md:py-10 lg:py-12 overflow-hidden"
 >
-  <div class="max-w-screen-xl mx-auto px-8 py-24">
+  <!-- Enhanced background decoration -->
+  <div class="absolute inset-0">
+    <!-- Main gradient overlay -->
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-primary/[0.02] via-transparent to-secondary/[0.03]"
+    ></div>
+
+    <!-- Radial gradients for depth -->
+    <div class="absolute top-0 left-0 w-full h-full">
+      <div
+        class="absolute -top-40 -right-40 w-96 h-96 bg-gradient-radial from-primary/[0.04] via-primary/[0.02] to-transparent rounded-full"
+      ></div>
+      <div
+        class="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-radial from-secondary/[0.06] via-secondary/[0.03] to-transparent rounded-full"
+      ></div>
+      <div
+        class="absolute top-1/3 right-1/4 w-48 h-48 bg-gradient-radial from-accent/[0.03] via-accent/[0.01] to-transparent rounded-full"
+      ></div>
+    </div>
+
+    <!-- Subtle cleaning-themed elements -->
+    <div class="absolute inset-0 overflow-hidden opacity-[0.02]">
+      <!-- Floating bubbles (cleaning theme) -->
+      <div
+        class="absolute top-20 left-1/4 w-3 h-3 bg-primary rounded-full animate-float-slow"
+      ></div>
+      <div
+        class="absolute top-32 right-1/3 w-2 h-2 bg-secondary rounded-full animate-float-slower"
+      ></div>
+      <div
+        class="absolute bottom-40 left-1/3 w-4 h-4 bg-accent rounded-full animate-float-slow"
+      ></div>
+      <div
+        class="absolute bottom-60 right-1/4 w-2.5 h-2.5 bg-primary rounded-full animate-float-slower"
+      ></div>
+      <div
+        class="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-secondary rounded-full animate-float-slow"
+      ></div>
+
+      <!-- Sparkle elements (cleanliness/shine theme) -->
+      <div
+        class="absolute top-24 right-1/5 w-1 h-1 bg-accent animate-sparkle"
+        style="
+          clip-path: polygon(
+            50% 0%,
+            61% 35%,
+            98% 35%,
+            68% 57%,
+            79% 91%,
+            50% 70%,
+            21% 91%,
+            32% 57%,
+            2% 35%,
+            39% 35%
+          );
+        "
+      ></div>
+      <div
+        class="absolute bottom-32 left-1/5 w-1.5 h-1.5 bg-primary animate-sparkle-delayed"
+        style="
+          clip-path: polygon(
+            50% 0%,
+            61% 35%,
+            98% 35%,
+            68% 57%,
+            79% 91%,
+            50% 70%,
+            21% 91%,
+            32% 57%,
+            2% 35%,
+            39% 35%
+          );
+        "
+      ></div>
+      <div
+        class="absolute top-1/3 left-2/3 w-1 h-1 bg-secondary animate-sparkle-slow"
+        style="
+          clip-path: polygon(
+            50% 0%,
+            61% 35%,
+            98% 35%,
+            68% 57%,
+            79% 91%,
+            50% 70%,
+            21% 91%,
+            32% 57%,
+            2% 35%,
+            39% 35%
+          );
+        "
+      ></div>
+    </div>
+
+    <!-- Subtle mesh pattern -->
+    <div
+      class="absolute inset-0 opacity-[0.008]"
+      style="
+        background-image: radial-gradient(
+          circle at 2px 2px,
+          currentColor 1px,
+          transparent 0
+        );
+        background-size: 40px 40px;
+      "
+    ></div>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
     <div class="max-w-4xl mx-auto text-center">
+      <!-- Trust badge -->
+      <div
+        class="inline-flex items-center gap-2 bg-secondary/15 text-secondary-foreground px-4 py-2 rounded-full text-sm font-medium mb-6 border border-secondary/20"
+      >
+        <svg
+          class="w-4 h-4 text-primary"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+        Serviços profissionais • Qualidade garantida • Reserva instantânea
+      </div>
+
+      <!-- Main headline -->
       <h1
-        class="text-5xl lg:text-6xl font-bold mb-6"
-        style="line-height: 1.1; color: #ffffff"
+        class="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-[0.9] mb-4 tracking-tight"
       >
-        Escolha o Serviço Perfeito
+        Escolha o Serviço
+        <span class="text-primary">Perfeito</span>
       </h1>
-      <p
-        class="text-xl lg:text-2xl mb-8 max-w-2xl mx-auto"
-        style="line-height: 1.6; color: #ffffff; opacity: 0.9"
-      >
-        De uma arrumação relâmpago a ajuda doméstica a tempo inteiro—a Zela tem
-        tudo coberto.
-      </p>
+
+      <!-- Accent line -->
+      <div
+        class="w-24 h-1 bg-gradient-to-r from-primary to-accent rounded-full mb-6 mx-auto"
+      ></div>
     </div>
   </div>
 </section>

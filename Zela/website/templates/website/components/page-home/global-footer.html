@@ -1,20 +1,20 @@
 {% load static %}
 <!-- Global Footer -->
-<footer class="bg-[#011E41] text-white" id="global-footer">
+<footer class="bg-foreground text-primary-foreground" id="global-footer">
   <div class="px-6 py-16 max-w-[1280px] mx-auto">
     <!-- Main Footer Content -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
       <!-- Column 1: Primary Navigation -->
       <div>
         <h4
-          class="text-[#FDEA00] font-semibold text-lg mb-6 uppercase tracking-wide"
+          class="text-secondary font-semibold text-lg mb-6 uppercase tracking-wide"
         >
           Navegação
         </h4>
         <nav class="space-y-3">
           <a
             href="/services"
-            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            class="block text-muted-foreground hover:text-primary-foreground transition-colors focus:outline-none focus:text-secondary"
             hx-get="/services"
             hx-target="body"
             hx-swap="outerHTML"
@@ -23,7 +23,7 @@
           </a>
           <a
             href="/about"
-            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            class="block text-muted-foreground hover:text-primary-foreground transition-colors focus:outline-none focus:text-secondary"
             hx-get="/about"
             hx-target="body"
             hx-swap="outerHTML"
@@ -32,7 +32,7 @@
           </a>
           <a
             href="/apply-worker"
-            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            class="block text-muted-foreground hover:text-primary-foreground transition-colors focus:outline-none focus:text-secondary"
             hx-get="/apply-worker"
             hx-target="body"
             hx-swap="outerHTML"
@@ -41,7 +41,7 @@
           </a>
           <a
             href="{% url 'website:blog' %}"
-            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            class="block text-muted-foreground hover:text-primary-foreground transition-colors focus:outline-none focus:text-secondary"
           >
             Blog
           </a>
@@ -51,14 +51,14 @@
       <!-- Column 2: Legal & Preferences -->
       <div>
         <h4
-          class="text-[#FDEA00] font-semibold text-lg mb-6 uppercase tracking-wide"
+          class="text-secondary font-semibold text-lg mb-6 uppercase tracking-wide"
         >
           Legal
         </h4>
         <nav class="space-y-3">
           <a
             href="/privacy-policy/"
-            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            class="block text-muted-foreground hover:text-primary-foreground transition-colors focus:outline-none focus:text-secondary"
             hx-get="/privacy-policy/"
             hx-target="body"
             hx-swap="outerHTML"
@@ -67,7 +67,7 @@
           </a>
           <a
             href="/terms-of-service/"
-            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            class="block text-muted-foreground hover:text-primary-foreground transition-colors focus:outline-none focus:text-secondary"
             hx-get="/terms-of-service/"
             hx-target="body"
             hx-swap="outerHTML"
@@ -76,7 +76,7 @@
           </a>
           <a
             href="/cookie-policy/"
-            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            class="block text-muted-foreground hover:text-primary-foreground transition-colors focus:outline-none focus:text-secondary"
             hx-get="/cookie-policy/"
             hx-target="body"
             hx-swap="outerHTML"
@@ -85,7 +85,7 @@
           </a>
           <a
             href="/accessibility-statement/"
-            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            class="block text-muted-foreground hover:text-primary-foreground transition-colors focus:outline-none focus:text-secondary"
             hx-get="/accessibility-statement/"
             hx-target="body"
             hx-swap="outerHTML"
@@ -94,7 +94,7 @@
           </a>
           <a
             href="/refund-policy/"
-            class="block text-gray-300 hover:text-white transition-colors focus:outline-none focus:text-[#FDEA00]"
+            class="block text-muted-foreground hover:text-primary-foreground transition-colors focus:outline-none focus:text-secondary"
             hx-get="/refund-policy/"
             hx-target="body"
             hx-swap="outerHTML"
@@ -113,11 +113,11 @@
       <!-- Column 3: Newsletter Sign-up -->
       <div>
         <h4
-          class="text-[#FDEA00] font-semibold text-lg mb-6 uppercase tracking-wide"
+          class="text-secondary font-semibold text-lg mb-6 uppercase tracking-wide"
         >
           Mantenha-se Atualizado
         </h4>
-        <p class="text-gray-300 mb-4 leading-relaxed">
+        <p class="text-muted-foreground mb-4 leading-relaxed">
           Receba dicas de limpeza e ofertas na sua caixa de entrada.
         </p>
 
@@ -144,8 +144,8 @@
                 x-model="email"
                 placeholder="Endereço de email"
                 required
-                :class="{'border-red-500': hasError, 'border-gray-600': !hasError}"
-                class="w-full px-4 py-2 bg-gray-800 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent"
+                :class="{'border-red-500': hasError, 'border-border': !hasError}"
+                class="w-full px-4 py-2 bg-muted border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent"
               />
               <p x-show="hasError" class="text-red-400 text-sm mt-1">
                 Por favor, introduza um email válido
@@ -154,31 +154,33 @@
             <button
               type="submit"
               :disabled="isSubmitting"
-              class="w-full bg-[#FDEA00] text-[#011E41] font-semibold py-2 px-4 rounded-lg hover:bg-yellow-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              class="w-full bg-secondary text-secondary-foreground font-semibold py-2 px-4 rounded-lg hover:bg-secondary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span x-show="!isSubmitting">Subscrever</span>
               <span x-show="isSubmitting">...</span>
             </button>
           </form>
 
-          <p class="text-xs text-gray-400">Respeitamos a sua privacidade.</p>
+          <p class="text-xs text-muted-foreground">
+            Respeitamos a sua privacidade.
+          </p>
         </div>
       </div>
     </div>
 
     <!-- Social Icons & Language Switcher -->
-    <div class="border-t border-gray-700 pt-8 mb-8">
+    <div class="border-t border-border pt-8 mb-8">
       <div class="flex flex-col md:flex-row justify-between items-center gap-6">
         <!-- Social Icons -->
         <div class="flex items-center gap-4">
-          <span class="text-gray-400 text-sm mr-2">Siga-nos:</span>
+          <span class="text-muted-foreground text-sm mr-2">Siga-nos:</span>
 
           <!-- Facebook -->
           <a
             href="https://facebook.com/zela"
             target="_blank"
             rel="noopener"
-            class="text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2 focus:ring-offset-[#011E41] rounded"
+            class="text-muted-foreground hover:text-primary-foreground hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-foreground rounded"
             aria-label="Siga-nos no Facebook"
           >
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -193,7 +195,7 @@
             href="https://instagram.com/zela"
             target="_blank"
             rel="noopener"
-            class="text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2 focus:ring-offset-[#011E41] rounded"
+            class="text-muted-foreground hover:text-primary-foreground hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-foreground rounded"
             aria-label="Siga-nos no Instagram"
           >
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -208,7 +210,7 @@
             href="https://linkedin.com/company/zela"
             target="_blank"
             rel="noopener"
-            class="text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2 focus:ring-offset-[#011E41] rounded"
+            class="text-muted-foreground hover:text-primary-foreground hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-foreground rounded"
             aria-label="Siga-nos no LinkedIn"
           >
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -223,7 +225,7 @@
             href="https://wa.me/244900000000"
             target="_blank"
             rel="noopener"
-            class="text-gray-400 hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2 focus:ring-offset-[#011E41] rounded"
+            class="text-muted-foreground hover:text-primary-foreground hover:scale-110 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-foreground rounded"
             aria-label="Contacte-nos no WhatsApp"
           >
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -236,19 +238,19 @@
 
         <!-- Language Switcher -->
         <div x-data="languageSwitcher()" class="flex items-center gap-2">
-          <span class="text-gray-400 text-sm mr-2">Idioma:</span>
+          <span class="text-muted-foreground text-sm mr-2">Idioma:</span>
           <button
             @click="setLanguage('pt')"
-            :class="{'text-[#FDEA00] font-semibold': currentLang === 'pt', 'text-gray-400 hover:text-white': currentLang !== 'pt'}"
-            class="px-2 py-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDEA00]"
+            :class="{'text-secondary font-semibold': currentLang === 'pt', 'text-muted-foreground hover:text-primary-foreground': currentLang !== 'pt'}"
+            class="px-2 py-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-secondary"
           >
             PT
           </button>
-          <span class="text-gray-600">|</span>
+          <span class="text-border">|</span>
           <button
             @click="setLanguage('en')"
-            :class="{'text-[#FDEA00] font-semibold': currentLang === 'en', 'text-gray-400 hover:text-white': currentLang !== 'en'}"
-            class="px-2 py-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDEA00]"
+            :class="{'text-secondary font-semibold': currentLang === 'en', 'text-muted-foreground hover:text-primary-foreground': currentLang !== 'en'}"
+            class="px-2 py-1 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-secondary"
           >
             EN
           </button>
@@ -257,8 +259,8 @@
     </div>
 
     <!-- Brand Tagline & Copyright -->
-    <div class="border-t border-gray-700 pt-6 text-center">
-      <p class="text-gray-400 text-sm">
+    <div class="border-t border-border pt-6 text-center">
+      <p class="text-muted-foreground text-sm">
         Zela © 2025 · Qualidade. Confiança. Conforto.
       </p>
     </div>

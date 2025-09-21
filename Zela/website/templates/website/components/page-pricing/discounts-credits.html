@@ -1,111 +1,130 @@
 {% load static %}
 
 <!-- Discounts & Credits Section -->
-<section class="bg-white py-16 md:py-24 px-4">
-  <div class="max-w-7xl mx-auto">
-    <div class="text-center mb-12">
-      <h2
-        class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#011E41] mb-6"
-      >
-        Poupe Mais com a Zela
-      </h2>
-      <p class="text-lg md:text-xl text-[#4A5A70] leading-relaxed">
-        Descubra formas de obter ainda melhor valor dos nossos serviços
-      </p>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-8 md:gap-12">
-      <!-- Recurring Clean Discount -->
-      <div
-        class="bg-gradient-to-br from-[#FDEA00] to-[#fff000] rounded-3xl p-8 md:p-10 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-      >
-        <div
-          class="w-16 h-16 bg-[#011E41] rounded-full flex items-center justify-center mx-auto mb-6"
-        >
-          <svg
-            class="w-8 h-8 text-[#FDEA00]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+<section class="bg-background py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="mb-16">
+        <div class="mb-4">
+          <span
+            class="text-sm font-medium text-muted-foreground uppercase tracking-wider"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-            ></path>
-          </svg>
+            Ofertas Especiais
+          </span>
         </div>
-        <h3 class="text-2xl md:text-3xl font-bold text-[#011E41] mb-4">
-          5% de Desconto
-        </h3>
-        <p class="text-[#011E41] font-semibold mb-2">Limpezas Recorrentes</p>
-        <p class="text-[#011E41] text-sm leading-relaxed">
-          Limpezas recorrentes semanais ou quinzenais recebem automaticamente 5%
-          de desconto em cada visita
+        <h2
+          class="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight"
+        >
+          Poupe Mais com a Zela
+        </h2>
+        <p
+          class="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
+        >
+          Descubra formas de obter ainda melhor valor dos nossos serviços
         </p>
       </div>
 
-      <!-- Newsletter Promo Codes -->
-      <div
-        class="bg-white rounded-3xl p-8 md:p-10 text-center shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-      >
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Recurring Clean Discount -->
         <div
-          class="w-16 h-16 bg-[#FDEA00] rounded-full flex items-center justify-center mx-auto mb-6"
+          class="bg-gradient-to-br from-secondary to-secondary/80 rounded-xl p-8 md:p-10 shadow-lg border border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
         >
-          <svg
-            class="w-8 h-8 text-[#011E41]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          <div
+            class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mb-6"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-            ></path>
-          </svg>
+            <svg
+              class="w-8 h-8 text-primary-foreground"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+              ></path>
+            </svg>
+          </div>
+          <h3
+            class="text-2xl md:text-3xl font-bold text-secondary-foreground mb-4"
+          >
+            5% de Desconto
+          </h3>
+          <p class="text-secondary-foreground font-semibold mb-3">
+            Limpezas Recorrentes
+          </p>
+          <p class="text-secondary-foreground/80 text-sm leading-relaxed">
+            Limpezas recorrentes semanais ou quinzenais recebem automaticamente
+            5% de desconto em cada visita
+          </p>
         </div>
-        <h3 class="text-2xl md:text-3xl font-bold text-[#011E41] mb-4">
-          Códigos Promocionais
-        </h3>
-        <p class="text-[#4A5A70] font-semibold mb-2">Exclusivo Newsletter</p>
-        <p class="text-[#4A5A70] text-sm leading-relaxed">
-          Obtenha códigos de desconto especiais e acesso antecipado a promoções
-          através da nossa newsletter
-        </p>
-      </div>
 
-      <!-- Referral Credits -->
-      <div
-        class="bg-white rounded-3xl p-8 md:p-10 text-center shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-      >
+        <!-- Newsletter Promo Codes -->
         <div
-          class="w-16 h-16 bg-[#FDEA00] rounded-full flex items-center justify-center mx-auto mb-6"
+          class="bg-card rounded-xl p-8 md:p-10 shadow-lg border border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
         >
-          <svg
-            class="w-8 h-8 text-[#011E41]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+          <div
+            class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-            ></path>
-          </svg>
+            <svg
+              class="w-8 h-8 text-secondary-foreground"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl md:text-3xl font-bold text-card-foreground mb-4">
+            Códigos Promocionais
+          </h3>
+          <p class="text-muted-foreground font-semibold mb-3">
+            Exclusivo Newsletter
+          </p>
+          <p class="text-muted-foreground text-sm leading-relaxed">
+            Obtenha códigos de desconto especiais e acesso antecipado a
+            promoções através da nossa newsletter
+          </p>
         </div>
-        <h3 class="text-2xl md:text-3xl font-bold text-[#011E41] mb-4">
-          4 900 AOA
-        </h3>
-        <p class="text-[#4A5A70] font-semibold mb-2">Crédito de Referência</p>
-        <p class="text-[#4A5A70] text-sm leading-relaxed">
-          Ganhe créditos na carteira quando um amigo completar a primeira
-          limpeza com a Zela
-        </p>
+
+        <!-- Referral Credits -->
+        <div
+          class="bg-card rounded-xl p-8 md:p-10 shadow-lg border border-border hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+        >
+          <div
+            class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6"
+          >
+            <svg
+              class="w-8 h-8 text-secondary-foreground"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl md:text-3xl font-bold text-card-foreground mb-4">
+            4 900 AOA
+          </h3>
+          <p class="text-muted-foreground font-semibold mb-3">
+            Crédito de Referência
+          </p>
+          <p class="text-muted-foreground text-sm leading-relaxed">
+            Ganhe créditos na carteira quando um amigo completar a primeira
+            limpeza com a Zela
+          </p>
+        </div>
       </div>
     </div>
   </div>

@@ -1,89 +1,114 @@
 {% load static %}
 
 <!-- Back-to-Booking Banner -->
-<section class="bg-[#011E41] py-16 md:py-20 px-4">
-  <div class="max-w-4xl mx-auto text-center">
-    <div class="mb-8">
-      <h2
-        class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight"
-      >
-        Pronto para uma casa impecável?
-      </h2>
-      <p
-        class="text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto"
-      >
-        Preços claros, profissionais verificados e satisfação garantida. Vamos
-        deixar a sua casa brilhante e limpa.
-      </p>
-    </div>
+<section class="bg-primary py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="mb-12">
+        <div class="mb-4">
+          <span
+            class="text-sm font-medium text-primary-foreground/60 uppercase tracking-wider"
+          >
+            Comece Hoje
+          </span>
+        </div>
+        <h2
+          class="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-6 leading-tight tracking-tight"
+        >
+          Pronto para uma casa impecável?
+        </h2>
+        <p
+          class="text-xl text-primary-foreground/80 leading-relaxed max-w-3xl mx-auto"
+        >
+          Preços claros, profissionais verificados e satisfação garantida. Vamos
+          deixar a sua casa brilhante e limpa.
+        </p>
+      </div>
 
-    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-      <button
-        class="bg-[#FDEA00] text-[#011E41] px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200"
-      >
-        Reservar Agora
-      </button>
-
-      <a
-        href="/contact"
-        class="text-[#FDEA00] hover:text-white transition-colors font-semibold text-lg underline"
-      >
-        Tem perguntas? Contacte-nos
-      </a>
-    </div>
-
-    <!-- Trust indicators -->
-    <div class="mt-12 pt-8 border-t border-gray-600">
       <div
-        class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 text-gray-300"
+        class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
       >
-        <div class="flex items-center">
-          <svg
-            class="w-5 h-5 text-[#FDEA00] mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-            ></path>
-          </svg>
-          <span class="text-sm">Garantia de Satisfação de 100%</span>
-        </div>
-        <div class="flex items-center">
-          <svg
-            class="w-5 h-5 text-[#FDEA00] mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-            ></path>
-          </svg>
-          <span class="text-sm">Pagamento Seguro Online</span>
-        </div>
-        <div class="flex items-center">
-          <svg
-            class="w-5 h-5 text-[#FDEA00] mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-          <span class="text-sm">Cancelamento Gratuito</span>
+        <button
+          class="bg-secondary text-secondary-foreground px-8 py-4 rounded-lg font-bold text-lg hover:bg-secondary/90 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200"
+        >
+          Reservar Agora
+        </button>
+
+        <a
+          href="/contact"
+          class="text-secondary hover:text-secondary/80 transition-colors font-semibold text-lg underline underline-offset-4"
+        >
+          Tem perguntas? Contacte-nos
+        </a>
+      </div>
+
+      <!-- Trust indicators -->
+      <div class="pt-8 border-t border-primary-foreground/20">
+        <div
+          class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 text-primary-foreground/70"
+        >
+          <div class="flex items-center">
+            <div
+              class="w-6 h-6 bg-secondary rounded-full flex items-center justify-center mr-3"
+            >
+              <svg
+                class="w-4 h-4 text-secondary-foreground"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2.5"
+                  d="M5 13l4 4L19 7"
+                ></path>
+              </svg>
+            </div>
+            <span class="text-sm font-medium"
+              >Garantia de Satisfação de 100%</span
+            >
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-6 h-6 bg-secondary rounded-full flex items-center justify-center mr-3"
+            >
+              <svg
+                class="w-4 h-4 text-secondary-foreground"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                ></path>
+              </svg>
+            </div>
+            <span class="text-sm font-medium">Pagamento Seguro Online</span>
+          </div>
+          <div class="flex items-center">
+            <div
+              class="w-6 h-6 bg-secondary rounded-full flex items-center justify-center mr-3"
+            >
+              <svg
+                class="w-4 h-4 text-secondary-foreground"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+            </div>
+            <span class="text-sm font-medium">Cancelamento Gratuito</span>
+          </div>
         </div>
       </div>
     </div>

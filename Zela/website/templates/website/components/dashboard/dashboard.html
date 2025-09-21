@@ -19,7 +19,7 @@
        user: {
          name: '{% if profile.first_name or profile.last_name %}{{ profile.first_name|default:"" }} {{ profile.last_name|default:"" }}{% elif user.first_name or user.last_name %}{{ user.first_name|default:"" }} {{ user.last_name|default:"" }}{% else %}{{ user.username }}{% endif %}'.trim(),
          email: '{{ user.email|escapejs }}',
-         avatar: '{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}{% static "juliana.webp" %}{% endif %}',
+         avatar: '{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}{% static "zela-workers-new-photos/madalena-rodrigues-1.jpeg" %}{% endif %}',
          is_provider: JSON.parse(document.getElementById('is-provider-data').textContent),
          provider_verified: false
        },
@@ -567,7 +567,7 @@
             class="h-10 w-10 rounded-full object-cover flex-shrink-0"
             :src="user.avatar"
             :alt="user.name"
-            @error="$event.target.src='{% static "juliana.webp" %}'"
+            @error="$event.target.src='{% static "zela-workers-new-photos/madalena-rodrigues-1.jpeg" %}'"
           />
           <div class="ml-3 flex-1 text-left min-w-0">
             <p class="text-sm font-semibold truncate" style="color: #011e41" x-text="user.name"></p>

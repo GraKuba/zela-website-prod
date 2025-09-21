@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 from services.models import ServiceTask
+from decimal import Decimal
 
 User = get_user_model()
 
@@ -33,6 +34,14 @@ class Booking(models.Model):
         related_name="jobs",
         help_text="Provider assigned to this booking"
     )
+    worker = models.ForeignKey(
+        'workers.Worker',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="bookings",
+        help_text="Worker assigned to this booking (new system)"
+    )
     service_task = models.ForeignKey(
         ServiceTask,
         on_delete=models.PROTECT,
@@ -44,12 +53,37 @@ class Booking(models.Model):
         blank=True,
         help_text="Additional services/add-ons"
     )
+    
+    # Property and unit information for pricing
+    property_typology = models.ForeignKey(
+        'workers.PropertyTypology',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        help_text="Property type for typology-based pricing"
+    )
+    unit_count = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text="Number of units (e.g., AC units)"
+    )
+    
+    # Time tracking
     start_at = models.DateTimeField(
         help_text="When the service should start"
     )
     end_at = models.DateTimeField(
         help_text="When the service should end"
     )
+    actual_hours = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Actual hours worked (for hourly services)"
+    )
+    
+    # Location
     address = models.CharField(
         max_length=255,
         help_text="Service address"
@@ -58,15 +92,54 @@ class Booking(models.Model):
         blank=True,
         help_text="Special instructions for the provider"
     )
+    
+    # Status
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
         default="pending",
         help_text="Current booking status"
     )
+    
+    # Package/credit tracking
+    package_used = models.ForeignKey(
+        'workers.ServicePackage',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="bookings",
+        help_text="Package used for this booking"
+    )
+    credits_consumed = models.PositiveIntegerField(
+        default=1,
+        help_text="Number of package credits consumed"
+    )
+    
+    # Payment information
     total_price = models.PositiveIntegerField(
         help_text="Total price in AOA including extras"
     )
+    amount_prepaid = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal('0.00'),
+        help_text="Amount paid at booking time"
+    )
+    amount_pending = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal('0.00'),
+        help_text="Amount pending after service"
+    )
+    final_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Final amount after service completion"
+    )
+    
+    # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

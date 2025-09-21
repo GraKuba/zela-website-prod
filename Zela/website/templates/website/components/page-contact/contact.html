@@ -1,5 +1,5 @@
 {% extends "website/layouts/base.html" %} {% load static %} {% block title%}Contact Zela - Get in Touch{% endblock %} {% block content %}
-<div class="min-h-screen bg-white mb-12 lg:mb-24">
+<div class="min-h-screen bg-background mb-12 lg:mb-24">
   <!-- Navigation -->
   {% include "website/fragments/navbar.html" %}
 
@@ -16,8 +16,8 @@
   {% include "website/components/page-contact/contact-options-grid.html" %}
 
   <!-- App Banner -->
-  {% include "website/components/app-banner.html" %}
+  {% include "website/components/page-home/app-banner.html" %}
 </div>
 
 <!-- Global Footer -->
-{% include "website/components/global-footer.html" %} {% endblock %}
+{% include "website/components/page-home/global-footer.html" %} {% endblock %}

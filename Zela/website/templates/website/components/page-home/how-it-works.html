@@ -1,7 +1,7 @@
 {% load static %}
 <!-- How It Works Section -->
 <section
-  class="py-24 bg-white max-w-[1280px] mx-auto relative z-10"
+  class="py-24 bg-background max-w-[1280px] mx-auto relative z-10"
   id="how-it-works"
 >
   <div class="max-w-7xl mx-auto px-6">
@@ -10,11 +10,13 @@
       <!-- Title Section -->
       <div class="w-full lg:w-2/5" data-aos="fade-right">
         <p
-          class="text-sm font-semibold text-[#FDEA00] uppercase tracking-wider mb-2 text-center"
+          class="text-sm font-semibold text-secondary uppercase tracking-wider mb-2 text-center"
         >
           COMO FUNCIONA
         </p>
-        <h2 class="text-6xl font-bold text-[#015f73] mb-6 leading-tight text-center">
+        <h2
+          class="text-6xl font-bold text-primary mb-6 leading-tight text-center"
+        >
           Obtenha um espaço mais limpo em quatro passos
         </h2>
       </div>
@@ -28,12 +30,14 @@
           data-aos-delay="100"
         >
           <div class="flex items-start gap-4 mb-4">
-            <span class="text-4xl font-bold text-[#011E41] opacity-30">01</span>
+            <span class="text-4xl font-bold text-foreground opacity-30"
+              >01</span
+            >
             <div>
-              <h3 class="text-2xl font-bold text-[#011E41] mb-2">
+              <h3 class="text-2xl font-bold text-foreground mb-2">
                 PARTILHE DETALHES
               </h3>
-              <p class="text-[#4A5A70] text-base leading-relaxed">
+              <p class="text-muted-foreground text-base leading-relaxed">
                 Preencha um formulário rápido com detalhes sobre o seu espaço,
                 horário e preferências.
               </p>
@@ -55,12 +59,14 @@
           data-aos-delay="150"
         >
           <div class="flex items-start gap-4 mb-4">
-            <span class="text-4xl font-bold text-[#011E41] opacity-30">02</span>
+            <span class="text-4xl font-bold text-foreground opacity-30"
+              >02</span
+            >
             <div>
-              <h3 class="text-2xl font-bold text-[#011E41] mb-2">
+              <h3 class="text-2xl font-bold text-foreground mb-2">
                 OBTENHA ORÇAMENTO
               </h3>
-              <p class="text-[#4A5A70] text-base leading-relaxed">
+              <p class="text-muted-foreground text-base leading-relaxed">
                 Enviaremos uma estimativa personalizada, sem taxas ocultas, sem
                 vendas agressivas.
               </p>
@@ -88,12 +94,14 @@
           data-aos-delay="200"
         >
           <div class="flex items-start gap-4 mb-4">
-            <span class="text-4xl font-bold text-[#011E41] opacity-30">03</span>
+            <span class="text-4xl font-bold text-foreground opacity-30"
+              >03</span
+            >
             <div>
-              <h3 class="text-2xl font-bold text-[#011E41] mb-2">
+              <h3 class="text-2xl font-bold text-foreground mb-2">
                 NÓS LIMPAMOS
               </h3>
-              <p class="text-[#4A5A70] text-base leading-relaxed">
+              <p class="text-muted-foreground text-base leading-relaxed">
                 A nossa equipa chega a horas, equipada e pronta para limpar a
                 fundo.
               </p>
@@ -115,12 +123,14 @@
           data-aos-delay="250"
         >
           <div class="flex items-start gap-4 mb-4">
-            <span class="text-4xl font-bold text-[#011E41] opacity-30">04</span>
+            <span class="text-4xl font-bold text-foreground opacity-30"
+              >04</span
+            >
             <div>
-              <h3 class="text-2xl font-bold text-[#011E41] mb-2">
+              <h3 class="text-2xl font-bold text-foreground mb-2">
                 VOCÊ RELAXA
               </h3>
-              <p class="text-[#4A5A70] text-base leading-relaxed">
+              <p class="text-muted-foreground text-base leading-relaxed">
                 Desfrute de uma casa ou espaço de trabalho impecável que parece,
                 sente e cheira verdadeiramente limpo.
               </p>
@@ -143,9 +153,18 @@
         data-aos-delay="300"
       >
         <div class="text-center lg:text-right">
-          <h4 class="text-xl font-bold text-[#011E41] mb-3">
-            PRONTO PARA COMEÇAR?
+          <h4 class="text-2xl font-bold text-foreground mb-2">
+            Pronto para Começar?
           </h4>
+          <p class="text-muted-foreground mb-6 max-w-xs mx-auto lg:mx-0">
+            Reserve o seu primeiro serviço em apenas alguns cliques
+          </p>
+          <a
+            href="/pricing/"
+            class="bg-secondary text-secondary-foreground px-6 py-2 rounded-full font-semibold hover:bg-secondary/90 transition-colors shadow-lg inline-block"
+          >
+            Ver Preços
+          </a>
         </div>
       </div>
     </div>

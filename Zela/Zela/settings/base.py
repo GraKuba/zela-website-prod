@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'notifications',
     'pricing',
     'website',
+    'workers',
 ]
 
 TAILWIND_APP_NAME = 'theme'

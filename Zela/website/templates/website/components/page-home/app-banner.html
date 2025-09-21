@@ -1,7 +1,7 @@
 {% load static %}
 <!-- Hero Banner Section -->
 <section
-  class="relative h-[50vh] min-h-[400px] bg-cover bg-center bg-no-repeat mx-auto max-w-[1280px] rounded-3xl overflow-hidden"
+  class="relative h-[50vh] min-h-[400px] bg-cover bg-center bg-no-repeat mx-auto max-w-[1280px] rounded-3xl overflow-hidden my-12 md:my-20 lg:my-24"
   style="background-image: url('{% static 'cta/cleaning_supplies.webp' %}')"
 >
   <!-- Content container -->
@@ -13,10 +13,9 @@
         <div class="mb-4 md:mb-6">
           <h1
             class="text-2xl md:text-4xl lg:text-5xl font-normal text-white leading-tight"
-            style="color: #ffffff; font-weight: 400; line-height: 1.1"
           >
             Limpeza que funciona à volta de
-            <span style="color: #fdea00">Si</span>
+            <span class="text-yellow-400">Si</span>
           </h1>
         </div>
 
@@ -27,8 +26,7 @@
           <!-- Left side - Subtext -->
           <div class="lg:col-span-7">
             <p
-              class="text-sm md:text-base leading-relaxed"
-              style="color: #f5f5f5; font-weight: 400; line-height: 1.6"
+              class="text-sm md:text-base text-white/90 font-normal leading-relaxed"
             >
               Os nossos limpezas especialistas tratam da confusão para que se
               possa concentrar no que importa.
@@ -39,26 +37,22 @@
           <div class="lg:col-span-5 lg:text-right mt-4 lg:mt-0">
             <div class="space-y-1 md:space-y-2">
               <div
-                class="font-semibold text-xs md:text-sm lg:text-base tracking-wide"
-                style="color: #ffffff; font-weight: 600"
+                class="text-white font-semibold text-xs md:text-sm lg:text-base tracking-wide"
               >
                 LIMPEZA DOMÉSTICA
               </div>
               <div
-                class="font-semibold text-xs md:text-sm lg:text-base tracking-wide"
-                style="color: #ffffff; font-weight: 600"
+                class="text-white font-semibold text-xs md:text-sm lg:text-base tracking-wide"
               >
                 LIMPEZA DE LOJA
               </div>
               <div
-                class="font-semibold text-xs md:text-sm lg:text-base tracking-wide"
-                style="color: #ffffff; font-weight: 600"
+                class="text-white font-semibold text-xs md:text-sm lg:text-base tracking-wide"
               >
                 LIMPEZA DE ESPAÇO DE TRABALHO
               </div>
               <div
-                class="font-semibold text-xs md:text-sm lg:text-base tracking-wide"
-                style="color: #ffffff; font-weight: 600"
+                class="text-white font-semibold text-xs md:text-sm lg:text-base tracking-wide"
               >
                 LIMPEZA DE MUDANÇA
               </div>
@@ -70,12 +64,7 @@
 
     <!-- Bottom CTA section -->
     <div
-      class="mx-3 md:mx-6 lg:mx-8 mb-3 shadow-lg"
-      style="
-        background-color: #fdea00;
-        border-radius: 1.5rem;
-        box-shadow: 0px 12px 24px rgba(253, 234, 0, 0.3);
-      "
+      class="mx-4 md:mx-6 lg:mx-8 mb-4 md:mb-6 bg-yellow-400 rounded-3xl shadow-lg"
     >
       <div class="mx-auto px-4 md:px-6 py-3 md:py-4">
         <div
@@ -84,8 +73,7 @@
           <!-- CTA text -->
           <div class="text-center sm:text-left flex-1">
             <h3
-              class="text-sm md:text-base lg:text-lg font-bold leading-tight"
-              style="color: #011e41; font-weight: 700; line-height: 1.2"
+              class="text-sm md:text-base lg:text-lg text-black font-bold leading-tight"
             >
               TEM UM ESPAÇO A PRECISAR<br class="hidden sm:block" />
               <span class="sm:hidden"> </span>DE UM REFRESH?
@@ -96,16 +84,7 @@
           <div class="flex-shrink-0">
             <a
               href="{% url 'website:register' %}"
-              class="px-4 md:px-6 py-2 md:py-3 font-semibold text-xs md:text-sm transition-all duration-200 flex items-center gap-2 cursor-pointer whitespace-nowrap"
-              style="
-                background-color: #011e41;
-                color: #fdea00;
-                border-radius: 100px;
-                font-weight: 600;
-                box-shadow: 0 4px 12px rgba(1, 30, 65, 0.3);
-              "
-              onmouseover="this.style.backgroundColor='#022951'"
-              onmouseout="this.style.backgroundColor='#011E41'"
+              class="px-4 md:px-6 py-2 md:py-3 bg-black text-yellow-400 rounded-full font-semibold text-xs md:text-sm shadow-lg transition-all duration-200 flex items-center gap-2 cursor-pointer whitespace-nowrap hover:bg-black/90"
               hx-get="{% url 'website:register' %}"
               hx-target="body"
               hx-swap="outerHTML"

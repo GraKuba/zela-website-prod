@@ -1,31 +1,31 @@
 {% extends "website/layouts/base.html" %} {% load static %} {% block content %}
-<div class="min-h-screen bg-white">
+<div class="min-h-screen bg-background">
   {% include "website/fragments/navbar.html" %}
 
   <!-- Hero Section with Provider Cards -->
-  {% include "website/components/hero.html" %}
+  {% include "website/components/page-home/hero.html" %}
 
   <!-- Social Proof Section -->
-  {% include "website/components/social-proof.html" %}
+  {% include "website/components/page-home/social-proof.html" %}
 
   <!-- How It Works Section -->
-  {% include "website/components/how-it-works.html" %}
+  {% include "website/components/page-home/how-it-works.html" %}
 
   <!-- Services Carousel Section -->
-  {% include "website/components/services-carousel.html" %}
+  {% include "website/components/page-home/services-carousel.html" %}
 
   <!-- Why Zela Section -->
-  {% include "website/components/why-zela.html" %}
+  {% include "website/components/page-home/why-zela.html" %}
 
   <!-- Provider Call-Out Section -->
-  {% include "website/components/provider-callout.html" %}
+  {% include "website/components/page-home/provider-callout.html" %}
 
   <!-- FAQ Accordion Section -->
-  {% include "website/components/faq-accordion.html" %}
+  {% include "website/components/page-home/faq-accordion.html" %}
 
   <!-- CTA Banner -->
-  {% include "website/components/app-banner.html" %}
+  {% include "website/components/page-home/app-banner.html" %}
 </div>
 
 <!-- Global Footer -->
-{% include "website/components/global-footer.html" %} {% endblock %}
+{% include "website/components/page-home/global-footer.html" %} {% endblock %}

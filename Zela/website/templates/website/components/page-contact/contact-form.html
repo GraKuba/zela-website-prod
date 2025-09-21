@@ -1,227 +1,244 @@
 {% load static %}
 
 <!-- Contact Form Section -->
-<section class="bg-[#F5F5F5] py-16 md:py-24 px-4">
-  <div class="max-w-4xl mx-auto">
-    <div class="bg-white rounded-3xl shadow-lg p-8 md:p-12">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold text-[#011E41] mb-4">
+<section class="bg-muted py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="mb-16">
+        <div class="mb-4">
+          <span
+            class="text-sm font-medium text-muted-foreground uppercase tracking-wider"
+          >
+            Fale Connosco
+          </span>
+        </div>
+        <h2
+          class="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight"
+        >
           Envie-nos uma Mensagem
         </h2>
-        <p class="text-lg text-[#4A5A70] leading-relaxed">
+        <p
+          class="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
+        >
           Preencha o formulário e responderemos num dia útil.
         </p>
       </div>
 
       <div
-        x-data="{ 
-                fullName: '',
-                email: '',
-                phone: '',
-                topic: '',
-                message: '',
-                errors: {},
-                isSubmitting: false,
-                
-                validateForm() {
-                    this.errors = {};
-                    
-                    if (!this.fullName.trim()) {
-                        this.errors.fullName = 'Nome completo é obrigatório';
-                    }
-                    
-                    if (!this.email.trim()) {
-                        this.errors.email = 'Email é obrigatório';
-                    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
-                        this.errors.email = 'Por favor, introduza um endereço de email válido';
-                    }
-                    
-                    if (!this.topic) {
-                        this.errors.topic = 'Por favor, selecione um tema';
-                    }
-                    
-                    if (!this.message.trim()) {
-                        this.errors.message = 'Mensagem é obrigatória';
-                    }
-                    
-                    return Object.keys(this.errors).length === 0;
-                },
-                
-                async submitForm() {
-                    if (!this.validateForm()) {
-                        return;
-                    }
-                    
-                    this.isSubmitting = true;
-                    
-                    try {
-                        // Simulate form submission
-                        await new Promise(resolve => setTimeout(resolve, 1000));
-                        
-                        // Reset form
-                        this.fullName = '';
-                        this.email = '';
-                        this.phone = '';
-                        this.topic = '';
-                        this.message = '';
-                        
-                    } catch (error) {
-                        console.error('Form submission error:', error);
-                    } finally {
-                        this.isSubmitting = false;
-                    }
-                }
-            }"
+        class="bg-card rounded-xl shadow-lg border border-border p-8 md:p-12"
       >
-        <!-- Form -->
-        <form @submit.prevent="submitForm()" class="space-y-6">
-          <!-- Full Name -->
-          <div>
-            <label
-              for="fullName"
-              class="block text-sm font-semibold text-[#011E41] mb-2"
-            >
-              Nome Completo *
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              x-model="fullName"
-              :class="{'border-red-500': errors.fullName, 'border-gray-300': !errors.fullName}"
-              class="w-full px-4 py-3 border rounded-lg text-[#011E41] placeholder-[#4A5A70] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors"
-              placeholder="Introduza o seu nome completo"
-            />
-            <p
-              x-show="errors.fullName"
-              class="text-red-500 text-sm mt-1"
-              x-text="errors.fullName"
-            ></p>
-          </div>
+        <div
+          x-data="{ 
+                  fullName: '',
+                  email: '',
+                  phone: '',
+                  topic: '',
+                  message: '',
+                  errors: {},
+                  isSubmitting: false,
+                  
+                  validateForm() {
+                      this.errors = {};
+                      
+                      if (!this.fullName.trim()) {
+                          this.errors.fullName = 'Nome completo é obrigatório';
+                      }
+                      
+                      if (!this.email.trim()) {
+                          this.errors.email = 'Email é obrigatório';
+                      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
+                          this.errors.email = 'Por favor, introduza um endereço de email válido';
+                      }
+                      
+                      if (!this.topic) {
+                          this.errors.topic = 'Por favor, selecione um tema';
+                      }
+                      
+                      if (!this.message.trim()) {
+                          this.errors.message = 'Mensagem é obrigatória';
+                      }
+                      
+                      return Object.keys(this.errors).length === 0;
+                  },
+                  
+                  async submitForm() {
+                      if (!this.validateForm()) {
+                          return;
+                      }
+                      
+                      this.isSubmitting = true;
+                      
+                      try {
+                          // Simulate form submission
+                          await new Promise(resolve => setTimeout(resolve, 1000));
+                          
+                          // Reset form
+                          this.fullName = '';
+                          this.email = '';
+                          this.phone = '';
+                          this.topic = '';
+                          this.message = '';
+                          
+                      } catch (error) {
+                          console.error('Form submission error:', error);
+                      } finally {
+                          this.isSubmitting = false;
+                      }
+                  }
+              }"
+        >
+          <!-- Form -->
+          <form @submit.prevent="submitForm()" class="space-y-6 text-left">
+            <!-- Full Name -->
+            <div>
+              <label
+                for="fullName"
+                class="block text-sm font-semibold text-card-foreground mb-2"
+              >
+                Nome Completo *
+              </label>
+              <input
+                type="text"
+                id="fullName"
+                x-model="fullName"
+                :class="{'border-destructive': errors.fullName, 'border-input': !errors.fullName}"
+                class="w-full px-4 py-3 border rounded-lg text-card-foreground placeholder-muted-foreground bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
+                placeholder="Introduza o seu nome completo"
+              />
+              <p
+                x-show="errors.fullName"
+                class="text-destructive text-sm mt-1"
+                x-text="errors.fullName"
+              ></p>
+            </div>
 
-          <!-- Email Address -->
-          <div>
-            <label
-              for="email"
-              class="block text-sm font-semibold text-[#011E41] mb-2"
-            >
-              Endereço de Email *
-            </label>
-            <input
-              type="email"
-              id="email"
-              x-model="email"
-              :class="{'border-red-500': errors.email, 'border-gray-300': !errors.email}"
-              class="w-full px-4 py-3 border rounded-lg text-[#011E41] placeholder-[#4A5A70] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors"
-              placeholder="Introduza o seu endereço de email"
-            />
-            <p
-              x-show="errors.email"
-              class="text-red-500 text-sm mt-1"
-              x-text="errors.email"
-            ></p>
-          </div>
+            <!-- Email Address -->
+            <div>
+              <label
+                for="email"
+                class="block text-sm font-semibold text-card-foreground mb-2"
+              >
+                Endereço de Email *
+              </label>
+              <input
+                type="email"
+                id="email"
+                x-model="email"
+                :class="{'border-destructive': errors.email, 'border-input': !errors.email}"
+                class="w-full px-4 py-3 border rounded-lg text-card-foreground placeholder-muted-foreground bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
+                placeholder="Introduza o seu endereço de email"
+              />
+              <p
+                x-show="errors.email"
+                class="text-destructive text-sm mt-1"
+                x-text="errors.email"
+              ></p>
+            </div>
 
-          <!-- Phone (optional) -->
-          <div>
-            <label
-              for="phone"
-              class="block text-sm font-semibold text-[#011E41] mb-2"
-            >
-              Telefone (opcional)
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              x-model="phone"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg text-[#011E41] placeholder-[#4A5A70] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors"
-              placeholder="Introduza o seu número de telefone"
-            />
-          </div>
+            <!-- Phone (optional) -->
+            <div>
+              <label
+                for="phone"
+                class="block text-sm font-semibold text-card-foreground mb-2"
+              >
+                Telefone (opcional)
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                x-model="phone"
+                class="w-full px-4 py-3 border border-input rounded-lg text-card-foreground placeholder-muted-foreground bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
+                placeholder="Introduza o seu número de telefone"
+              />
+            </div>
 
-          <!-- Topic -->
-          <div>
-            <label
-              for="topic"
-              class="block text-sm font-semibold text-[#011E41] mb-2"
-            >
-              Tema *
-            </label>
-            <select
-              id="topic"
-              x-model="topic"
-              :class="{'border-red-500': errors.topic, 'border-gray-300': !errors.topic}"
-              class="w-full px-4 py-3 border rounded-lg text-[#011E41] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors"
-            >
-              <option value="" disabled>Selecione um tema</option>
-              <option value="Booking Issue">Problema com Reserva</option>
-              <option value="General Question">Pergunta Geral</option>
-              <option value="Provider Inquiry">Consulta sobre Prestador</option>
-              <option value="Media/Press">Media/Imprensa</option>
-            </select>
-            <p
-              x-show="errors.topic"
-              class="text-red-500 text-sm mt-1"
-              x-text="errors.topic"
-            ></p>
-          </div>
+            <!-- Topic -->
+            <div>
+              <label
+                for="topic"
+                class="block text-sm font-semibold text-card-foreground mb-2"
+              >
+                Tema *
+              </label>
+              <select
+                id="topic"
+                x-model="topic"
+                :class="{'border-destructive': errors.topic, 'border-input': !errors.topic}"
+                class="w-full px-4 py-3 border rounded-lg text-card-foreground bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-colors"
+              >
+                <option value="" disabled>Selecione um tema</option>
+                <option value="Booking Issue">Problema com Reserva</option>
+                <option value="General Question">Pergunta Geral</option>
+                <option value="Provider Inquiry">
+                  Consulta sobre Prestador
+                </option>
+                <option value="Media/Press">Media/Imprensa</option>
+              </select>
+              <p
+                x-show="errors.topic"
+                class="text-destructive text-sm mt-1"
+                x-text="errors.topic"
+              ></p>
+            </div>
 
-          <!-- Message -->
-          <div>
-            <label
-              for="message"
-              class="block text-sm font-semibold text-[#011E41] mb-2"
-            >
-              A Sua Mensagem *
-            </label>
-            <textarea
-              id="message"
-              x-model="message"
-              :class="{'border-red-500': errors.message, 'border-gray-300': !errors.message}"
-              rows="6"
-              class="w-full px-4 py-3 border rounded-lg text-[#011E41] placeholder-[#4A5A70] bg-white focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:border-transparent transition-colors resize-vertical"
-              placeholder="Diga-nos como podemos ajudá-lo..."
-            ></textarea>
-            <p
-              x-show="errors.message"
-              class="text-red-500 text-sm mt-1"
-              x-text="errors.message"
-            ></p>
-          </div>
+            <!-- Message -->
+            <div>
+              <label
+                for="message"
+                class="block text-sm font-semibold text-card-foreground mb-2"
+              >
+                A Sua Mensagem *
+              </label>
+              <textarea
+                id="message"
+                x-model="message"
+                :class="{'border-destructive': errors.message, 'border-input': !errors.message}"
+                rows="6"
+                class="w-full px-4 py-3 border rounded-lg text-card-foreground placeholder-muted-foreground bg-background focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-colors resize-vertical"
+                placeholder="Diga-nos como podemos ajudá-lo..."
+              ></textarea>
+              <p
+                x-show="errors.message"
+                class="text-destructive text-sm mt-1"
+                x-text="errors.message"
+              ></p>
+            </div>
 
-          <!-- Submit Button -->
-          <div class="text-center pt-4">
-            <button
-              type="submit"
-              :disabled="isSubmitting"
-              :class="{'opacity-50 cursor-not-allowed': isSubmitting}"
-              class="bg-[#011E41] text-[#FDEA00] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#022951] transition-colors focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-offset-2 disabled:hover:bg-[#011E41]"
-            >
-              <span x-show="!isSubmitting">Enviar Mensagem</span>
-              <span x-show="isSubmitting" class="flex items-center">
-                <svg
-                  class="animate-spin -ml-1 mr-3 h-5 w-5 text-[#FDEA00]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                A Enviar...
-              </span>
-            </button>
-          </div>
-        </form>
+            <!-- Submit Button -->
+            <div class="pt-4">
+              <button
+                type="submit"
+                :disabled="isSubmitting"
+                :class="{'opacity-50 cursor-not-allowed': isSubmitting}"
+                class="bg-primary text-primary-foreground px-6 py-2 rounded-full font-semibold hover:bg-primary/90 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:hover:bg-primary"
+              >
+                <span x-show="!isSubmitting">Enviar Mensagem</span>
+                <span x-show="isSubmitting" class="flex items-center">
+                  <svg
+                    class="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-foreground"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  A Enviar...
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

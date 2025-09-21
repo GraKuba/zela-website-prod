@@ -1,13 +1,10 @@
 {% extends "website/layouts/base.html" %} {% load static %} {% block title%}About Zela - Attention and care for your home{% endblock %} {% block content%}
-<div class="min-h-screen bg-white">
+<div class="min-h-screen bg-background">
   <!-- Navigation -->
   {% include "website/fragments/navbar.html" %}
 
   <!-- Hero Section -->
   {% include "website/components/page-about/hero-section.html" %}
-
-  <!-- What We Do -->
-  {% include "website/components/page-about/what-we-do.html" %}
 
   <!-- Our Values -->
   {% include "website/components/page-about/values-grid.html" %}
@@ -18,10 +15,9 @@
   <!-- Social Impact -->
   {% include "website/components/page-about/social-impact.html" %}
 
-
   <!-- Join Our Journey -->
   {% include "website/components/page-about/join-journey.html" %}
 </div>
 
 <!-- Global Footer -->
-{% include "website/components/global-footer.html" %} {% endblock %}
+{% include "website/components/page-home/global-footer.html" %} {% endblock %}

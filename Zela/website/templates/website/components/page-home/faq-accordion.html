@@ -1,15 +1,15 @@
 {% load static %}
 <!-- FAQ Accordion Section -->
-<section class="py-24 bg-white max-w-[1280px] mx-auto" id="faq">
+<section class="py-24 bg-background max-w-[1280px] mx-auto" id="faq">
   <div class="max-w-7xl mx-auto px-6">
     <!-- Section Heading -->
     <div class="text-center mb-16">
       <p
-        class="text-sm font-semibold text-[#FDEA00] uppercase tracking-wider mb-2"
+        class="text-sm font-semibold text-secondary uppercase tracking-wider mb-2"
       >
         NÃO TEM CERTEZA DE NADA?
       </p>
-      <h2 class="text-5xl font-bold text-[#011E41] mb-4 leading-tight">
+      <h2 class="text-5xl font-bold text-foreground mb-4 leading-tight">
         Perguntas Frequentes
       </h2>
     </div>
@@ -37,20 +37,20 @@
           <!-- FAQ Item 1 -->
           <div
             class="border rounded-2xl overflow-hidden shadow-sm transition-all duration-500 ease-out"
-            :class="openItem === 0 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
+            :class="openItem === 0 ? 'border-secondary bg-secondary/5' : 'border-border'"
           >
             <button
-              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              class="w-full px-6 py-5 text-left bg-card hover:bg-muted focus:bg-muted focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-inset transition-colors duration-200 cursor-pointer"
               @click="toggle(0)"
               :aria-expanded="openItem === 0"
               aria-controls="faq-answer-1"
             >
               <div class="flex items-center justify-between">
-                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                <h3 class="text-xl font-semibold text-foreground pr-4">
                   Posso cancelar ou reagendar?
                 </h3>
                 <svg
-                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  class="w-6 h-6 text-foreground transform transition-transform duration-500 ease-out"
                   :class="{'rotate-180': openItem === 0}"
                   fill="none"
                   stroke="currentColor"
@@ -78,7 +78,7 @@
               role="region"
             >
               <div class="px-6 pb-5 pt-2">
-                <p class="text-[#4A5A70] leading-relaxed">
+                <p class="text-muted-foreground leading-relaxed">
                   Sim—gratuito até 12h antes da visita. Dentro de 12h aplica-se
                   uma pequena taxa de alteração tardia.
                 </p>
@@ -92,17 +92,17 @@
             :class="openItem === 1 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
           >
             <button
-              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              class="w-full px-6 py-5 text-left bg-card hover:bg-muted focus:bg-muted focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-inset transition-colors duration-200 cursor-pointer"
               @click="toggle(1)"
               :aria-expanded="openItem === 1"
               aria-controls="faq-answer-2"
             >
               <div class="flex items-center justify-between">
-                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                <h3 class="text-xl font-semibold text-foreground pr-4">
                   Preciso de fornecer produtos de limpeza?
                 </h3>
                 <svg
-                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  class="w-6 h-6 text-foreground transform transition-transform duration-500 ease-out"
                   :class="{'rotate-180': openItem === 1}"
                   fill="none"
                   stroke="currentColor"
@@ -130,7 +130,7 @@
               role="region"
             >
               <div class="px-6 pb-5 pt-2">
-                <p class="text-[#4A5A70] leading-relaxed">
+                <p class="text-muted-foreground leading-relaxed">
                   O seu profissional Zela chega com produtos amigos do ambiente;
                   também pode pedir que usem os seus próprios.
                 </p>
@@ -144,17 +144,17 @@
             :class="openItem === 2 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
           >
             <button
-              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              class="w-full px-6 py-5 text-left bg-card hover:bg-muted focus:bg-muted focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-inset transition-colors duration-200 cursor-pointer"
               @click="toggle(2)"
               :aria-expanded="openItem === 2"
               aria-controls="faq-answer-3"
             >
               <div class="flex items-center justify-between">
-                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                <h3 class="text-xl font-semibold text-foreground pr-4">
                   Como são verificados os trabalhadores?
                 </h3>
                 <svg
-                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  class="w-6 h-6 text-foreground transform transition-transform duration-500 ease-out"
                   :class="{'rotate-180': openItem === 2}"
                   fill="none"
                   stroke="currentColor"
@@ -182,7 +182,7 @@
               role="region"
             >
               <div class="px-6 pb-5 pt-2">
-                <p class="text-[#4A5A70] leading-relaxed">
+                <p class="text-muted-foreground leading-relaxed">
                   Fazemos verificações de identidade, entrevistas presenciais,
                   chamadas de referência e testes de competências. Apenas os
                   melhores 20% passam.
@@ -197,17 +197,17 @@
             :class="openItem === 3 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
           >
             <button
-              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              class="w-full px-6 py-5 text-left bg-card hover:bg-muted focus:bg-muted focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-inset transition-colors duration-200 cursor-pointer"
               @click="toggle(3)"
               :aria-expanded="openItem === 3"
               aria-controls="faq-answer-4"
             >
               <div class="flex items-center justify-between">
-                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                <h3 class="text-xl font-semibold text-foreground pr-4">
                   Como pago?
                 </h3>
                 <svg
-                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  class="w-6 h-6 text-foreground transform transition-transform duration-500 ease-out"
                   :class="{'rotate-180': openItem === 3}"
                   fill="none"
                   stroke="currentColor"
@@ -235,7 +235,7 @@
               role="region"
             >
               <div class="px-6 pb-5 pt-2">
-                <p class="text-[#4A5A70] leading-relaxed">
+                <p class="text-muted-foreground leading-relaxed">
                   Checkout seguro online via Paystack ou PayPal. Não aceitamos
                   dinheiro.
                 </p>
@@ -249,17 +249,17 @@
             :class="openItem === 4 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
           >
             <button
-              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              class="w-full px-6 py-5 text-left bg-card hover:bg-muted focus:bg-muted focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-inset transition-colors duration-200 cursor-pointer"
               @click="toggle(4)"
               :aria-expanded="openItem === 4"
               aria-controls="faq-answer-5"
             >
               <div class="flex items-center justify-between">
-                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                <h3 class="text-xl font-semibold text-foreground pr-4">
                   A Zela está disponível fora de Luanda?
                 </h3>
                 <svg
-                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  class="w-6 h-6 text-foreground transform transition-transform duration-500 ease-out"
                   :class="{'rotate-180': openItem === 4}"
                   fill="none"
                   stroke="currentColor"
@@ -287,7 +287,7 @@
               role="region"
             >
               <div class="px-6 pb-5 pt-2">
-                <p class="text-[#4A5A70] leading-relaxed">
+                <p class="text-muted-foreground leading-relaxed">
                   Lançamos primeiro em Luanda e expandimos para Benguela e
                   Lubango no final de 2025—junte-se à lista de espera!
                 </p>
@@ -301,17 +301,17 @@
             :class="openItem === 5 ? 'border-[#FDEA00] bg-[#FDEA00]/5' : 'border-gray-200'"
           >
             <button
-              class="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 focus:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#FDEA00] focus:ring-inset transition-colors duration-200 cursor-pointer"
+              class="w-full px-6 py-5 text-left bg-card hover:bg-muted focus:bg-muted focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-inset transition-colors duration-200 cursor-pointer"
               @click="toggle(5)"
               :aria-expanded="openItem === 5"
               aria-controls="faq-answer-6"
             >
               <div class="flex items-center justify-between">
-                <h3 class="text-xl font-semibold text-[#011E41] pr-4">
+                <h3 class="text-xl font-semibold text-foreground pr-4">
                   Devo dar gorjeta?
                 </h3>
                 <svg
-                  class="w-6 h-6 text-[#011E41] transform transition-transform duration-500 ease-out"
+                  class="w-6 h-6 text-foreground transform transition-transform duration-500 ease-out"
                   :class="{'rotate-180': openItem === 5}"
                   fill="none"
                   stroke="currentColor"
@@ -339,7 +339,7 @@
               role="region"
             >
               <div class="px-6 pb-5 pt-2">
-                <p class="text-[#4A5A70] leading-relaxed">
+                <p class="text-muted-foreground leading-relaxed">
                   A gorjeta é opcional e pode ser adicionada durante a
                   avaliação. 100% vai para o seu profissional de serviço.
                 </p>
@@ -352,7 +352,7 @@
         <div class="text-center mt-12">
           <a
             href="mailto:support@zela.co.ao"
-            class="text-sm font-medium text-[#011E41] hover:text-[#022951] hover:underline transition-colors inline-flex items-center gap-1"
+            class="text-sm font-medium text-foreground hover:text-primary hover:underline transition-colors inline-flex items-center gap-1"
             hx-get="/contact"
             hx-target="body"
             hx-swap="outerHTML"
@@ -441,7 +441,7 @@
 
   /* Focus visible improvements */
   button[aria-controls]:focus-visible {
-    outline: 2px solid #fdea00;
+    outline: 2px solid oklch(0.873 0.1396 93.5379);
     outline-offset: 2px;
   }
 

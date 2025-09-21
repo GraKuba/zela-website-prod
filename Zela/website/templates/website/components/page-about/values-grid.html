@@ -1,82 +1,94 @@
 {% load static %}
 
 <!-- Our Values Section -->
-<section class="bg-[#F5F5F5] py-16 md:py-24 px-4">
-  <div class="max-w-7xl mx-auto">
-    <div class="text-center mb-12 md:mb-16">
-      <h2
-        class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#015F73] leading-tight mb-6"
-      >
-        Os Nossos Valores
-      </h2>
-      <div class="w-16 h-1 bg-[#FDEA00] mx-auto rounded-full"></div>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
-      <!-- Quality -->
-      <div
-        class="bg-white rounded-3xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-      >
-        <div class="text-center mb-6">
-          <div
-            class="w-16 h-16 bg-[#FDEA00] rounded-full flex items-center justify-center mx-auto mb-6"
+<section class="bg-background py-16 md:py-24">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="mb-16">
+        <div class="mb-4">
+          <span
+            class="text-sm font-medium text-muted-foreground uppercase tracking-wider"
           >
-            <svg
-              class="w-8 h-8 text-[#015F73]"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-              ></path>
-            </svg>
-          </div>
-          <h3 class="text-xl md:text-2xl font-bold text-[#015F73] mb-4">
-            Qualidade
-          </h3>
+            Os Nossos Princípios
+          </span>
         </div>
-        <p class="text-[#4A5A70] text-center leading-relaxed">
-          Apenas os melhores candidatos tornam-se Zeladores — e devem manter uma
-          avaliação mínima de 4,0 ★ para continuarem ativos na plataforma.
+        <h2
+          class="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 tracking-tight"
+        >
+          Os Nossos Valores
+        </h2>
+        <p
+          class="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
+        >
+          Os valores que orientam tudo o que fazemos na Zela
         </p>
       </div>
 
-      <!-- Innovation -->
-      <div
-        class="bg-white rounded-3xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-      >
-        <div class="text-center mb-6">
-          <div
-            class="w-16 h-16 bg-[#015F73] rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <svg
-              class="w-8 h-8 text-[#FDEA00]"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Quality -->
+        <div
+          class="bg-card rounded-3xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+        >
+          <div class="mb-6">
+            <div
+              class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-4"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              ></path>
-            </svg>
+              <svg
+                class="w-8 h-8 text-secondary-foreground"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-card-foreground mb-4">
+              Qualidade
+            </h3>
           </div>
-          <h3 class="text-xl md:text-2xl font-bold text-[#015F73] mb-4">
-            Inovação
-          </h3>
+          <p class="text-muted-foreground leading-relaxed">
+            Apenas os melhores candidatos tornam-se Zeladores — e devem manter
+            uma avaliação mínima de 4,0 ★ para continuarem ativos na plataforma.
+          </p>
         </div>
-        <p class="text-[#4A5A70] text-center leading-relaxed">
-          Disponibilidade em tempo real, checkout online e notificações instantâneas
-          poupam-lhe tempo.
-        </p>
-      </div>
 
+        <!-- Innovation -->
+        <div
+          class="bg-card rounded-3xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+        >
+          <div class="mb-6">
+            <div
+              class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-4"
+            >
+              <svg
+                class="w-8 h-8 text-secondary-foreground"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-card-foreground mb-4">
+              Inovação
+            </h3>
+          </div>
+          <p class="text-muted-foreground leading-relaxed">
+            Disponibilidade em tempo real, checkout online e notificações
+            instantâneas poupam-lhe tempo.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
