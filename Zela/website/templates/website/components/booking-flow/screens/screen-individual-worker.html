@@ -2,64 +2,8 @@
 
 <!-- Individual Worker Screen -->
 <div class="min-h-screen bg-white flex flex-col">
-  <!-- Sticky Header with Progress -->
-  <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-6">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
-        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
-      </div>
-
-      <!-- Progress Bar -->
-      <div class="flex-1 max-w-md mx-auto">
-        <div class="flex items-start justify-between mb-4">
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              1
-            </div>
-            <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Detalhes
-            </div>
-          </div>
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              2
-            </div>
-            <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Trabalhador
-            </div>
-          </div>
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              3
-            </div>
-            <div class="ml-2 text-sm text-gray-600">Pagamento</div>
-          </div>
-        </div>
-        <div class="w-full bg-gray-200 rounded-full h-2">
-          <div
-            class="bg-[#015e73] h-2 rounded-full"
-            style="width: 66.66%"
-          ></div>
-        </div>
-      </div>
-
-      <div class="flex items-center space-x-4">
-        <div
-          @click="window.location.href = '/dashboard/'"
-          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
-        >
-          JG
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Progress Header -->
+  {% include "website/components/booking-flow/partials/booking-progress-header.html" %}
 
   <!-- Main Content with Sticky Sidebar -->
   <div class="flex flex-1 max-w-7xl mx-auto w-full">
@@ -77,12 +21,24 @@
         <div class="bg-gray-900 text-white rounded-2xl p-4">
           <div class="flex justify-between items-center mb-2">
             <div class="text-2xl font-bold">
-              <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking" x-text="window.bookingFlowComponent?.booking?.details?.duration || '5.5'"></span>
-              <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking">5.5</span>
+              <span
+                x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking"
+                x-text="window.bookingFlowComponent?.booking?.details?.duration || '5.5'"
+              ></span>
+              <span
+                x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking"
+                >5.5</span
+              >
             </div>
             <div class="text-2xl font-bold">
-              <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking" x-text="window.bookingFlowComponent?.formatCurrency ? window.bookingFlowComponent.formatCurrency(window.bookingFlowComponent.booking?.pricing?.bookingCost || 710) : 'R710'"></span>
-              <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking">R710</span>
+              <span
+                x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking"
+                x-text="window.bookingFlowComponent?.formatCurrency ? window.bookingFlowComponent.formatCurrency(window.bookingFlowComponent.booking?.pricing?.bookingCost || 710) : 'R710'"
+              ></span>
+              <span
+                x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking"
+                >R710</span
+              >
             </div>
           </div>
           <div class="flex justify-between text-sm text-gray-300">
@@ -98,15 +54,26 @@
         <div class="flex items-center justify-between mb-4">
           <div>
             <div class="text-sm text-gray-600 mb-1">Onde:</div>
-            <div class="text-sm font-medium" style="color: #011e41" id="location-display">
-              <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking && window.bookingFlowComponent.booking.location.streetAddress" 
-                    x-text="window.bookingFlowComponent?.booking?.location?.streetAddress ? window.bookingFlowComponent.booking.location.streetAddress.substring(0, 30) + '...' : 'Selecione uma localização'"></span>
-              <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking.location.streetAddress">
+            <div
+              class="text-sm font-medium"
+              style="color: #011e41"
+              id="location-display"
+            >
+              <span
+                x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking && window.bookingFlowComponent.booking.location.streetAddress"
+                x-text="window.bookingFlowComponent?.booking?.location?.streetAddress ? window.bookingFlowComponent.booking.location.streetAddress.substring(0, 30) + '...' : 'Selecione uma localização'"
+              ></span>
+              <span
+                x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking.location.streetAddress"
+              >
                 Selecione uma localização
               </span>
             </div>
           </div>
-          <button class="text-gray-400 hover:text-gray-600 cursor-pointer" onclick="window.bookingFlowComponent && window.bookingFlowComponent.goToScreen(1)">
+          <button
+            class="text-gray-400 hover:text-gray-600 cursor-pointer"
+            onclick="window.bookingFlowComponent && window.bookingFlowComponent.goToScreen(1)"
+          >
             <svg
               class="w-4 h-4"
               fill="none"
@@ -128,8 +95,14 @@
           <div>
             <div class="text-sm text-gray-600 mb-1">O quê:</div>
             <div class="text-sm font-medium" style="color: #011e41">
-              <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking" x-text="window.bookingFlowComponent?.serviceInfo?.[window.bookingFlowComponent?.booking?.serviceType]?.name || 'Limpeza Interior'"></span>
-              <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking">Limpeza Interior</span>
+              <span
+                x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking"
+                x-text="window.bookingFlowComponent?.serviceInfo?.[window.bookingFlowComponent?.booking?.serviceType]?.name || 'Limpeza Interior'"
+              ></span>
+              <span
+                x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking"
+                >Limpeza Interior</span
+              >
             </div>
           </div>
           <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
@@ -153,11 +126,18 @@
         <div class="flex items-center justify-between">
           <div>
             <div class="text-sm text-gray-600 mb-1">Quando:</div>
-            <div class="text-sm font-medium" style="color: #011e41" id="date-display">
+            <div
+              class="text-sm font-medium"
+              style="color: #011e41"
+              id="date-display"
+            >
               <!-- Will be updated by JavaScript -->
             </div>
           </div>
-          <button class="text-gray-400 hover:text-gray-600 cursor-pointer" onclick="window.bookingFlowComponent && window.bookingFlowComponent.goToScreen(7)">
+          <button
+            class="text-gray-400 hover:text-gray-600 cursor-pointer"
+            onclick="window.bookingFlowComponent && window.bookingFlowComponent.goToScreen(7)"
+          >
             <svg
               class="w-4 h-4"
               fill="none"
@@ -211,7 +191,8 @@
     <div class="flex-1 overflow-y-auto px-6 py-8">
       <div class="max-w-2xl mx-auto">
         <!-- Enhanced Tip Section -->
-        {% include 'website/components/booking-flow/partials/tip-selection.html' %}
+        {% include 'website/components/booking-flow/partials/tip-selection.html'
+        %}
 
         <!-- Price Breakdown -->
         <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-8">
@@ -226,15 +207,37 @@
             </h4>
             <div class="flex justify-between items-center">
               <div>
-                <div class="font-medium" style="color: #011e41" id="booking-day">Mon</div>
+                <div
+                  class="font-medium"
+                  style="color: #011e41"
+                  id="booking-day"
+                >
+                  Mon
+                </div>
                 <div class="text-sm text-gray-600" id="booking-hours-time">
-                  <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking" x-text="`${window.bookingFlowComponent?.booking?.details?.duration || '5.5'} hrs @ ${window.bookingFlowComponent?.booking?.details?.startTime || '07:00'}`"></span>
-                  <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking">5.5 hrs @ 07:00</span>
+                  <span
+                    x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking"
+                    x-text="`${window.bookingFlowComponent?.booking?.details?.duration || '5.5'} hrs @ ${window.bookingFlowComponent?.booking?.details?.startTime || '07:00'}`"
+                  ></span>
+                  <span
+                    x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking"
+                    >5.5 hrs @ 07:00</span
+                  >
                 </div>
               </div>
-              <div class="text-lg font-bold" style="color: #011e41" id="booking-cost">
-                <span x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking" x-text="window.bookingFlowComponent?.formatCurrency ? window.bookingFlowComponent.formatCurrency(window.bookingFlowComponent.booking?.pricing?.bookingCost || 710) : 'R710'"></span>
-                <span x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking">R710</span>
+              <div
+                class="text-lg font-bold"
+                style="color: #011e41"
+                id="booking-cost"
+              >
+                <span
+                  x-show="window.bookingFlowComponent && window.bookingFlowComponent.booking"
+                  x-text="window.bookingFlowComponent?.formatCurrency ? window.bookingFlowComponent.formatCurrency(window.bookingFlowComponent.booking?.pricing?.bookingCost || 710) : 'R710'"
+                ></span>
+                <span
+                  x-show="!window.bookingFlowComponent || !window.bookingFlowComponent.booking"
+                  >R710</span
+                >
               </div>
             </div>
           </div>
@@ -307,7 +310,9 @@
 
             <!-- Service Fee -->
             <div class="flex justify-between items-center">
-              <span class="text-base" style="color: #011e41">Taxa de Serviço</span>
+              <span class="text-base" style="color: #011e41"
+                >Taxa de Serviço</span
+              >
               <div class="text-base font-medium" style="color: #011e41">
                 R39
               </div>
@@ -398,7 +403,6 @@
     </div>
   </div>
 </div>
-
 <!-- Individual Worker Screen Functions -->
 <script>
   // Tip selection functionality
@@ -406,20 +410,20 @@
     // Update the main booking data using global component
     if (window.bookingFlowComponent) {
       window.bookingFlowComponent.booking.tip.amount = amount;
-      
+
       // Determine tip option based on amount
-      let tipOption = 'custom';
-      if (amount === 0) tipOption = 'no-tip';
-      else if (amount === 25) tipOption = 'small';
-      else if (amount === 50) tipOption = 'medium';
-      else if (amount === 75) tipOption = 'large';
-      else if (amount === 100) tipOption = 'generous';
-      
+      let tipOption = "custom";
+      if (amount === 0) tipOption = "no-tip";
+      else if (amount === 25) tipOption = "small";
+      else if (amount === 50) tipOption = "medium";
+      else if (amount === 75) tipOption = "large";
+      else if (amount === 100) tipOption = "generous";
+
       window.bookingFlowComponent.booking.tip.selectedOption = tipOption;
-      
+
       // Save the tip data
       window.bookingFlowComponent.saveBookingData();
-      
+
       // Update pricing
       updatePriceDisplay();
     }
@@ -442,11 +446,14 @@
     if (customAmount && !isNaN(customAmount)) {
       const amount = parseInt(customAmount);
       selectTip(amount);
-      
+
       // Also highlight the custom button
-      const customBtn = document.querySelector('button[onclick="showCustomTip()"]');
+      const customBtn = document.querySelector(
+        'button[onclick="showCustomTip()"]'
+      );
       if (customBtn) {
-        customBtn.className = "px-6 py-3 rounded-full border-2 border-[#015e73] bg-[#015e73]/10 text-[#015e73] font-medium transition-colors";
+        customBtn.className =
+          "px-6 py-3 rounded-full border-2 border-[#015e73] bg-[#015e73]/10 text-[#015e73] font-medium transition-colors";
       }
     }
   }
@@ -498,51 +505,71 @@
       label.textContent = "Não";
     }
   }
-  
+
   function updatePriceDisplay() {
     // Update the total price display including tip
     if (window.bookingFlowComponent) {
       const booking = window.bookingFlowComponent.booking;
       const total = booking.pricing.total + booking.tip.amount;
-      
+
       // Update booking total display
-      const totalElements = document.querySelectorAll('[style*="color: #011e41"]');
-      totalElements.forEach(el => {
-        if (el.textContent.includes('R') && el.textContent.match(/R\d+/)) {
-          if (el.previousElementSibling && el.previousElementSibling.textContent.includes('Booking Total')) {
+      const totalElements = document.querySelectorAll(
+        '[style*="color: #011e41"]'
+      );
+      totalElements.forEach((el) => {
+        if (el.textContent.includes("R") && el.textContent.match(/R\d+/)) {
+          if (
+            el.previousElementSibling &&
+            el.previousElementSibling.textContent.includes("Booking Total")
+          ) {
             el.textContent = `R${total}`;
           }
         }
       });
     }
   }
-  
+
   // Initialize tip selection on page load
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener("DOMContentLoaded", function () {
     // Select default tip (R0)
     selectTip(0);
-    
+
     // Update date display
     updateDateDisplay();
-    
+
     // Update price displays
     updateAllPrices();
   });
-  
+
   function updateDateDisplay() {
     if (window.bookingFlowComponent) {
       const booking = window.bookingFlowComponent.booking;
-      const dateElement = document.getElementById('date-display');
-      const dayElement = document.getElementById('booking-day');
-      
+      const dateElement = document.getElementById("date-display");
+      const dayElement = document.getElementById("booking-day");
+
       if (dateElement && booking.date) {
         const date = new Date(booking.date);
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const months = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+
         const dayName = days[date.getDay()];
-        const dateStr = `${dayName} ${date.getDate()} ${months[date.getMonth()]} @ ${booking.details.startTime || '07:00'}`;
-        
+        const dateStr = `${dayName} ${date.getDate()} ${
+          months[date.getMonth()]
+        } @ ${booking.details.startTime || "07:00"}`;
+
         dateElement.textContent = dateStr;
         if (dayElement) {
           dayElement.textContent = dayName;
@@ -550,31 +577,47 @@
       }
     }
   }
-  
+
   function updateAllPrices() {
     if (window.bookingFlowComponent) {
       const booking = window.bookingFlowComponent.booking;
       const pricing = booking.pricing;
-      
+
       // Update booking total
-      const bookingTotalElements = document.querySelectorAll('.text-lg.font-bold');
-      bookingTotalElements.forEach(el => {
-        if (el.previousElementSibling && el.previousElementSibling.textContent === 'Booking Total') {
-          el.textContent = `R${pricing.bookingCost + pricing.otherCosts.bookingCover + pricing.otherCosts.serviceFee}`;
+      const bookingTotalElements =
+        document.querySelectorAll(".text-lg.font-bold");
+      bookingTotalElements.forEach((el) => {
+        if (
+          el.previousElementSibling &&
+          el.previousElementSibling.textContent === "Booking Total"
+        ) {
+          el.textContent = `R${
+            pricing.bookingCost +
+            pricing.otherCosts.bookingCover +
+            pricing.otherCosts.serviceFee
+          }`;
         }
       });
-      
+
       // Update total due
-      const totalDueElements = document.querySelectorAll('.text-xl.font-bold');
-      totalDueElements.forEach(el => {
-        if (el.previousElementSibling && el.previousElementSibling.querySelector('span')?.textContent === 'TOTAL DUE') {
-          const totalWithTip = pricing.bookingCost + pricing.otherCosts.bookingCover + pricing.otherCosts.serviceFee + booking.tip.amount;
+      const totalDueElements = document.querySelectorAll(".text-xl.font-bold");
+      totalDueElements.forEach((el) => {
+        if (
+          el.previousElementSibling &&
+          el.previousElementSibling.querySelector("span")?.textContent ===
+            "TOTAL DUE"
+        ) {
+          const totalWithTip =
+            pricing.bookingCost +
+            pricing.otherCosts.bookingCover +
+            pricing.otherCosts.serviceFee +
+            booking.tip.amount;
           el.textContent = `R${totalWithTip}`;
         }
       });
     }
   }
-  
+
   // Call update functions when screen loads
   setTimeout(() => {
     updateDateDisplay();

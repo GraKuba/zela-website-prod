@@ -2,107 +2,92 @@
 
 <!-- Screen 3: AC Unit Configuration -->
 <div class="min-h-screen bg-white flex flex-col">
-  <!-- Sticky Header with Progress -->
-  <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-6">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
-        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
-      </div>
-
-      <!-- Progress Bar -->
-      <div class="flex-1 max-w-md mx-auto">
-        <div class="flex items-start justify-between mb-4">
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              1
-            </div>
-            <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Detalhes
-            </div>
-          </div>
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              2
-            </div>
-            <div class="ml-2 text-sm text-gray-600">Trabalhador</div>
-          </div>
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              3
-            </div>
-            <div class="ml-2 text-sm text-gray-600">Pagamento</div>
-          </div>
-        </div>
-        <div class="w-full bg-gray-200 rounded-full h-2">
-          <div
-            class="bg-[#015e73] h-2 rounded-full"
-            style="width: 25%"
-          ></div>
-        </div>
-      </div>
-
-      <div class="flex items-center space-x-4">
-        <div
-          @click="window.location.href = '/dashboard/'"
-          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
-        >
-          JG
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Progress Header -->
+  {% include "website/components/booking-flow/partials/booking-progress-header.html" %}
 
   <!-- Main Content -->
-  <div class="flex-1 max-w-4xl mx-auto w-full px-6 py-8">
-    <h2 class="text-3xl font-bold mb-2" style="color: #011e41">
-      Quantas unidades de ar condicionado precisa de reparar?
-    </h2>
-    <p class="text-gray-600 mb-8">
-      Oferecemos descontos por volume para múltiplas unidades.
-    </p>
+  <div class="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 lg:py-12">
+    <!-- Title Section with better hierarchy -->
+    <div class="text-center mb-6 sm:mb-8 lg:mb-10">
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3" style="color: #011e41">
+        Quantas unidades de ar condicionado precisa de reparar?
+      </h2>
+      <p class="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto">
+        Oferecemos descontos por volume para múltiplas unidades.
+      </p>
+    </div>
 
     <!-- Unit Count Selector -->
-    <div class="bg-white border-2 border-gray-200 rounded-2xl p-8 mb-8">
-      <div class="flex items-center justify-center mb-6">
+    <div
+      class="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8 shadow-sm hover:shadow-md transition-shadow duration-200"
+    >
+      <div class="flex items-center justify-center mb-8">
         <button
           @click="decrementUnitCount()"
-          class="w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
-          :disabled="booking.unitCount <= 1"
-          :class="{ 'opacity-50 cursor-not-allowed': booking.unitCount <= 1 }"
+          class="w-16 h-16 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-110"
+          :disabled="(booking.unitCount || 1) <= 1"
+          :class="{ 'opacity-30 cursor-not-allowed hover:scale-100': (booking.unitCount || 1) <= 1 }"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M20 12H4"
+            />
           </svg>
         </button>
-        
-        <div class="mx-8 text-center">
-          <div class="text-5xl font-bold mb-2" style="color: #011e41" x-text="booking.unitCount || 1"></div>
-          <div class="text-sm text-gray-600">
-            <span x-text="booking.unitCount === 1 ? 'Unidade' : 'Unidades'"></span>
+
+        <div class="mx-12 text-center">
+          <div class="relative inline-block">
+            <div
+              class="text-5xl sm:text-6xl lg:text-7xl font-bold mb-2 transition-all duration-200"
+              style="color: #011e41"
+              x-text="booking.unitCount || 1"
+            ></div>
+            <!-- Yellow accent behind number -->
+            <div
+              class="absolute inset-0 bg-[#f4d35e]/20 rounded-full blur-2xl -z-10 scale-150"
+            ></div>
+          </div>
+          <div class="text-base text-gray-600 font-medium mt-2">
+            <span
+              x-text="(booking.unitCount || 1) === 1 ? 'Unidade' : 'Unidades'"
+            ></span>
           </div>
         </div>
-        
+
         <button
           @click="incrementUnitCount()"
-          class="w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+          class="w-16 h-16 bg-[#f4d35e]/20 hover:bg-[#f4d35e]/30 border border-[#f4d35e] rounded-full flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-110"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
           </svg>
         </button>
       </div>
 
       <!-- Pricing Breakdown -->
-      <div class="border-t border-gray-200 pt-6">
-        <h3 class="font-bold mb-4" style="color: #011e41">Detalhes do Preço:</h3>
-        
+      <div class="border-t-2 border-dashed border-gray-200 pt-8 mt-8">
+        <h3 class="font-bold text-lg mb-4" style="color: #011e41">
+          Detalhes do Preço:
+        </h3>
+
         <div class="space-y-3">
           <!-- Base Price -->
           <div class="flex justify-between items-center">
@@ -111,43 +96,112 @@
           </div>
 
           <!-- Discount -->
-          <div class="flex justify-between items-center" x-show="getACDiscount() > 0">
-            <span class="text-gray-600">
-              Desconto por volume (<span x-text="getACDiscount()"></span>%):
+          <div
+            class="flex justify-between items-center bg-[#f4d35e]/10 px-4 py-2 rounded-lg"
+            x-show="getACDiscount() > 0"
+          >
+            <span class="text-gray-700 font-medium">
+              🎉 Desconto por volume (<span x-text="getACDiscount()"></span>%):
             </span>
-            <span class="font-medium text-green-600">
+            <span class="font-bold text-green-600">
               -<span x-text="formatCurrency(getACDiscountAmount())"></span>
             </span>
           </div>
 
           <!-- Total -->
-          <div class="flex justify-between items-center pt-3 border-t border-gray-200">
-            <span class="font-bold" style="color: #011e41">Total:</span>
-            <span class="text-2xl font-bold" style="color: #015e73" x-text="formatCurrency(getACTotalPrice())"></span>
+          <div
+            class="flex justify-between items-center pt-4 mt-4 border-t-2 border-gray-300"
+          >
+            <span class="font-bold text-xl" style="color: #011e41">Total:</span>
+            <div class="text-right">
+              <span
+                class="text-3xl font-bold"
+                style="color: #015e73"
+                x-text="formatCurrency(getACTotalPrice())"
+              ></span>
+              <div
+                class="text-xs text-gray-500 mt-1"
+                x-show="getACDiscount() > 0"
+              >
+                Você economiza
+                <span x-text="formatCurrency(getACDiscountAmount())"></span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Discount Information -->
-    <div class="bg-[#015e73]/10 border border-[#015e73] rounded-2xl p-6 mb-8">
-      <h3 class="font-bold mb-3" style="color: #011e41">💰 Poupe com descontos por volume:</h3>
-      <div class="grid grid-cols-2 gap-3 text-sm">
-        <div class="flex items-center">
-          <span class="w-20 text-gray-600">1 unidade:</span>
-          <span class="font-medium">Preço total</span>
+    <div
+      class="bg-gradient-to-br from-[#f4d35e]/10 to-[#f4d35e]/5 border border-[#f4d35e]/50 rounded-2xl p-6 mb-8"
+    >
+      <h3 class="font-bold mb-4 flex items-center" style="color: #011e41">
+        <span class="text-2xl mr-2">💰</span>
+        <span>Poupe com descontos por volume:</span>
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div
+          class="flex items-center p-3 rounded-lg transition-all duration-200"
+          :class="(booking.unitCount || 1) === 1 ? 'bg-white border border-[#f4d35e]' : 'hover:bg-white/50'"
+        >
+          <div
+            class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mr-3"
+          >
+            <span class="font-bold text-gray-600">1</span>
+          </div>
+          <div>
+            <span class="block font-medium text-gray-800">1 unidade</span>
+            <span class="text-sm text-gray-600">Preço total</span>
+          </div>
         </div>
-        <div class="flex items-center">
-          <span class="w-20 text-gray-600">2-3 unidades:</span>
-          <span class="font-medium text-green-600">10% desconto cada</span>
+        <div
+          class="flex items-center p-3 rounded-lg transition-all duration-200"
+          :class="(booking.unitCount || 1) >= 2 && (booking.unitCount || 1) <= 3 ? 'bg-white border border-[#f4d35e]' : 'hover:bg-white/50'"
+        >
+          <div
+            class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-3"
+          >
+            <span class="font-bold text-green-600">2-3</span>
+          </div>
+          <div>
+            <span class="block font-medium text-gray-800">2-3 unidades</span>
+            <span class="text-sm font-semibold text-green-600"
+              >10% desconto cada</span
+            >
+          </div>
         </div>
-        <div class="flex items-center">
-          <span class="w-20 text-gray-600">4-5 unidades:</span>
-          <span class="font-medium text-green-600">15% desconto cada</span>
+        <div
+          class="flex items-center p-3 rounded-lg transition-all duration-200"
+          :class="(booking.unitCount || 1) >= 4 && (booking.unitCount || 1) <= 5 ? 'bg-white border border-[#f4d35e]' : 'hover:bg-white/50'"
+        >
+          <div
+            class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-3"
+          >
+            <span class="font-bold text-green-600">4-5</span>
+          </div>
+          <div>
+            <span class="block font-medium text-gray-800">4-5 unidades</span>
+            <span class="text-sm font-semibold text-green-600"
+              >15% desconto cada</span
+            >
+          </div>
         </div>
-        <div class="flex items-center">
-          <span class="w-20 text-gray-600">6+ unidades:</span>
-          <span class="font-medium text-green-600">20% desconto cada</span>
+        <div
+          class="flex items-center p-3 rounded-lg transition-all duration-200"
+          :class="(booking.unitCount || 1) >= 6 ? 'bg-white border border-[#f4d35e]' : 'hover:bg-white/50'"
+        >
+          <div
+            class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-3"
+          >
+            <span class="font-bold text-green-600">6+</span>
+          </div>
+          <div>
+            <span class="block font-medium text-gray-800">6+ unidades</span>
+            <span class="text-sm font-semibold text-green-600"
+              >20% desconto cada</span
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -169,19 +223,47 @@
     <div>
       <button
         @click="proceedFromACConfiguration()"
-        class="w-full py-4 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 shadow-lg"
+        class="w-full min-h-[44px] py-3 sm:py-4 lg:py-5 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#015e73] to-[#017891] text-white font-bold text-sm sm:text-base lg:text-lg rounded-2xl hover:from-[#014a5a] hover:to-[#015e73] transition-all duration-300 shadow-lg transform hover:scale-[1.01] flex items-center justify-center cursor-pointer"
       >
-        Continuar - <span x-text="formatCurrency(getACTotalPrice())"></span>
+        <span>Continuar</span>
+        <span class="mx-2">-</span>
+        <span x-text="formatCurrency(getACTotalPrice())"></span>
+        <svg
+          class="w-5 h-5 ml-3"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 7l5 5m0 0l-5 5m5-5H6"
+          />
+        </svg>
       </button>
     </div>
 
     <!-- Back Button -->
-    <div class="mt-4 text-center">
+    <div class="mt-6 text-center">
       <button
         @click="goToScreen(1)"
-        class="text-gray-500 hover:text-gray-700 font-medium"
+        class="inline-flex items-center text-gray-600 hover:text-[#015e73] font-medium transition-colors duration-200 group cursor-pointer"
       >
-        ← Voltar
+        <svg
+          class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          />
+        </svg>
+        <span>Voltar ao passo anterior</span>
       </button>
     </div>
   </div>

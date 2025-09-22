@@ -1,0 +1,255 @@
+{% load static %}
+
+<!-- Generic Duration Selection Screen -->
+<!-- Can be used for any time-based service -->
+<div class="min-h-screen bg-white flex flex-col">
+  <!-- Progress Header -->
+  {% include "website/components/booking-flow/partials/booking-progress-header.html" %}
+
+  <!-- Main Content -->
+  <div class="flex-1 max-w-4xl mx-auto w-full px-6 py-8">
+    <!-- Dynamic Title and Description -->
+    <h2 class="text-3xl font-bold mb-2" style="color: #011e41" x-text="durationConfig.title || 'Quanto tempo você precisa?'"></h2>
+    <p class="text-gray-600 mb-8" x-text="durationConfig.description || 'Selecione a duração do serviço.'"></p>
+
+    <!-- Duration Selection -->
+    <div class="bg-white rounded-2xl border-2 border-gray-200 p-8 mb-8">
+      <!-- Preset Duration Options -->
+      <div x-show="durationConfig.presetOptions && durationConfig.presetOptions.length > 0" class="mb-8">
+        <h3 class="text-lg font-medium mb-4" style="color: #011e41">Durações Sugeridas</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <template x-for="preset in durationConfig.presetOptions" :key="preset.hours">
+            <button
+              @click="selectPresetDuration(preset.hours)"
+              class="p-4 border-2 rounded-xl transition-all duration-200"
+              :class="selectedDuration === preset.hours ? 'border-[#015e73] bg-[#015e73]/10' : 'border-gray-200 hover:border-gray-300'"
+            >
+              <div class="text-2xl font-bold mb-1" style="color: #011e41" x-text="`${preset.hours}h`"></div>
+              <div class="text-sm text-gray-600" x-text="preset.label"></div>
+              <div x-show="preset.recommended" class="mt-2">
+                <span class="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded">
+                  Recomendado
+                </span>
+              </div>
+            </button>
+          </template>
+        </div>
+      </div>
+
+      <!-- Custom Duration Slider -->
+      <div class="mb-8">
+        <h3 class="text-lg font-medium mb-4" style="color: #011e41">Ou escolha uma duração personalizada</h3>
+        
+        <div class="mb-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-gray-600">Duração</span>
+            <span class="text-2xl font-bold" style="color: #011e41" x-text="`${selectedDuration} horas`"></span>
+          </div>
+          
+          <input
+            type="range"
+            x-model="selectedDuration"
+            :min="durationConfig.minDuration || 1"
+            :max="durationConfig.maxDuration || 12"
+            :step="durationConfig.step || 0.5"
+            @input="updateDuration()"
+            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+            style="background: linear-gradient(to right, #015e73 0%, #015e73 var(--value), #e5e7eb var(--value), #e5e7eb 100%)"
+          />
+          
+          <div class="flex justify-between mt-2 text-sm text-gray-500">
+            <span x-text="`${durationConfig.minDuration || 1}h`"></span>
+            <span x-text="`${durationConfig.maxDuration || 12}h`"></span>
+          </div>
+        </div>
+
+        <!-- Fine-tune buttons -->
+        <div class="flex items-center justify-center space-x-4">
+          <button
+            @click="adjustDuration(-0.5)"
+            class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            :disabled="selectedDuration <= (durationConfig.minDuration || 1)"
+            :class="{ 'opacity-50 cursor-not-allowed': selectedDuration <= (durationConfig.minDuration || 1) }"
+          >
+            - 30 min
+          </button>
+          <button
+            @click="adjustDuration(0.5)"
+            class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            :disabled="selectedDuration >= (durationConfig.maxDuration || 12)"
+            :class="{ 'opacity-50 cursor-not-allowed': selectedDuration >= (durationConfig.maxDuration || 12) }"
+          >
+            + 30 min
+          </button>
+        </div>
+      </div>
+
+      <!-- Service Scope for Duration -->
+      <div x-show="durationConfig.showScope" class="mt-8 p-4 bg-blue-50 rounded-lg">
+        <h4 class="font-medium text-blue-900 mb-2">O que está incluído:</h4>
+        <ul class="text-sm text-blue-700 space-y-1">
+          <template x-for="item in getScopeForDuration()" :key="item">
+            <li class="flex items-start">
+              <svg class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span x-text="item"></span>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Price Estimate -->
+    <div class="bg-gray-50 rounded-2xl p-6 mb-8">
+      <h3 class="text-lg font-medium mb-4" style="color: #011e41">Estimativa de Preço</h3>
+      <div class="space-y-2">
+        <div class="flex justify-between">
+          <span class="text-gray-600" x-text="`${selectedDuration} horas de serviço`"></span>
+          <span class="font-medium" style="color: #011e41" x-text="formatCurrency(calculateDurationPrice())"></span>
+        </div>
+        <div x-show="durationConfig.minimumCharge && selectedDuration < durationConfig.minimumHours" class="text-sm text-gray-500">
+          <span>Cobrança mínima: <span x-text="`${durationConfig.minimumHours} horas`"></span></span>
+        </div>
+        <div class="pt-2 border-t font-bold">
+          <div class="flex justify-between">
+            <span style="color: #011e41">Total Estimado</span>
+            <span style="color: #011e41" x-text="formatCurrency(calculateTotalPrice())"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="flex justify-between">
+      <button
+        @click="previousScreen()"
+        class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+      >
+        Voltar
+      </button>
+      <button
+        @click="saveDurationAndContinue()"
+        class="px-8 py-3 bg-[#015e73] text-white rounded-lg font-medium hover:bg-[#014a5a] transition-colors"
+      >
+        Continuar
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Custom slider styling */
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #015e73;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #015e73;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border: none;
+}
+</style>
+
+<script>
+// Add Alpine.js component data extensions for duration selection
+Alpine.data('durationSelection', () => ({
+  selectedDuration: 2,
+  durationConfig: {},
+  
+  init() {
+    // Load configuration from service config
+    if (window.bookingFlowComponent && window.bookingFlowComponent.serviceConfig) {
+      const screenConfig = window.bookingFlowComponent.flowRouter.getScreenConfig('duration');
+      this.durationConfig = screenConfig.config || {};
+      this.selectedDuration = this.durationConfig.defaultDuration || 2;
+      this.updateSliderBackground();
+    }
+  },
+  
+  selectPresetDuration(hours) {
+    this.selectedDuration = hours;
+    this.updateDuration();
+  },
+  
+  adjustDuration(change) {
+    const newDuration = this.selectedDuration + change;
+    const min = this.durationConfig.minDuration || 1;
+    const max = this.durationConfig.maxDuration || 12;
+    
+    if (newDuration >= min && newDuration <= max) {
+      this.selectedDuration = newDuration;
+      this.updateDuration();
+    }
+  },
+  
+  updateDuration() {
+    this.updateSliderBackground();
+    this.updateBookingData();
+  },
+  
+  updateSliderBackground() {
+    // Update slider visual progress
+    const slider = this.$el.querySelector('.slider');
+    if (slider) {
+      const min = parseFloat(slider.min);
+      const max = parseFloat(slider.max);
+      const percentage = ((this.selectedDuration - min) / (max - min)) * 100;
+      slider.style.setProperty('--value', `${percentage}%`);
+    }
+  },
+  
+  getScopeForDuration() {
+    if (!this.durationConfig.scopeByDuration) {
+      return this.durationConfig.defaultScope || [];
+    }
+    
+    // Find appropriate scope based on duration
+    for (const [range, scope] of Object.entries(this.durationConfig.scopeByDuration)) {
+      if (range.includes('-')) {
+        const [min, max] = range.split('-').map(Number);
+        if (this.selectedDuration >= min && this.selectedDuration <= max) {
+          return scope;
+        }
+      }
+    }
+    
+    return this.durationConfig.defaultScope || [];
+  },
+  
+  calculateDurationPrice() {
+    const hourlyRate = this.durationConfig.hourlyRate || 0;
+    const hours = Math.max(this.selectedDuration, this.durationConfig.minimumHours || 0);
+    return hourlyRate * hours;
+  },
+  
+  calculateTotalPrice() {
+    return this.calculateDurationPrice();
+  },
+  
+  updateBookingData() {
+    if (window.bookingFlowComponent) {
+      window.bookingFlowComponent.booking.details.duration = this.selectedDuration;
+      window.bookingFlowComponent.booking.pricing.bookingCost = this.calculateTotalPrice();
+      window.bookingFlowComponent.saveBookingData();
+    }
+  },
+  
+  saveDurationAndContinue() {
+    this.updateBookingData();
+    if (window.bookingFlowComponent) {
+      window.bookingFlowComponent.nextScreen();
+    }
+  }
+}));
+</script>

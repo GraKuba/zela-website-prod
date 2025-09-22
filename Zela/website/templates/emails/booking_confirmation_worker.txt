@@ -1,0 +1,38 @@
+Nova Reserva Atribuída - Zela
+
+Olá {{ worker_name }},
+
+Foi-lhe atribuída uma nova reserva!
+
+DETALHES DA RESERVA
+==================
+Referência: {{ booking_reference }}
+Serviço: {{ service_name }}
+Cliente: {{ customer_name }}
+Data: {{ booking_date }}
+Hora: {{ booking_time }}
+Morada: {{ address }}
+
+IMPORTANTE
+==========
+Por favor, confirme a sua disponibilidade o mais breve possível. 
+Se não puder comparecer, informe-nos imediatamente.
+
+Para ver todos os detalhes desta reserva, aceda ao seu dashboard:
+{{ dashboard_url }}
+
+LEMBRETES
+=========
+- Chegue 5-10 minutos antes do horário agendado
+- Leve todos os equipamentos e materiais necessários
+- Vista o uniforme da Zela (se aplicável)
+- Mantenha uma comunicação profissional com o cliente
+- Reporte qualquer problema imediatamente
+
+Se tiver alguma dúvida sobre esta reserva, por favor entre em contacto com o suporte.
+
+Bom trabalho!
+
+---
+© 2025 Zela. Todos os direitos reservados.
+Este é um email automático, por favor não responda.

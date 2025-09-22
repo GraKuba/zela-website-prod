@@ -1,0 +1,177 @@
+{% extends "website/booking_mpa/base.html" %}
+{% load static %}
+
+{% block booking_content %}
+<form id="booking-form" method="post" class="p-6">
+    {% csrf_token %}
+    
+    <!-- Title Section -->
+    <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold mb-3" style="color: #011e41">
+            Qual é o tamanho da sua propriedade?
+        </h2>
+        <p class="text-base text-gray-600 max-w-2xl mx-auto">
+            Isto ajuda-nos a calcular o preço correto e atribuir o tempo adequado para o serviço.
+        </p>
+    </div>
+    
+    <!-- Property Type Selection -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {% for property_type in property_types %}
+        <label class="relative cursor-pointer">
+            <input type="radio" 
+                   name="property_type" 
+                   value="{{ property_type.id }}"
+                   id="property_{{ property_type.name }}"
+                   class="sr-only peer"
+                   {% if booking_data.property.property_type_id == property_type.id %}checked{% endif %}>
+            
+            <div class="bg-white border rounded-2xl p-6 transition-all duration-200 
+                        hover:border-gray-600 peer-checked:bg-gradient-to-br 
+                        peer-checked:from-[#f4d35e]/5 peer-checked:to-[#f4d35e]/10 
+                        peer-checked:border-[#f4d35e] peer-checked:ring-2 peer-checked:ring-[#f4d35e]/30">
+                
+                <!-- Selected Badge -->
+                <div class="absolute -top-3 -right-3 bg-[#f4d35e] text-[#011e41] px-3 py-1 rounded-full text-xs font-semibold shadow-sm opacity-0 peer-checked:opacity-100 transition-opacity">
+                    Selecionado
+                </div>
+                
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center mb-3">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-3 bg-[#015e73]/10 peer-checked:bg-[#f4d35e]/20 peer-checked:ring-2 peer-checked:ring-[#f4d35e]/50">
+                                <span class="text-xl font-bold text-[#015e73] peer-checked:text-[#011e41]">
+                                    {{ property_type.get_name_display }}
+                                </span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold" style="color: #011e41">
+                                    {% if property_type.name == 'T1' %}
+                                        1 Quarto
+                                    {% elif property_type.name == 'T2' %}
+                                        2 Quartos
+                                    {% elif property_type.name == 'T3' %}
+                                        3 Quartos
+                                    {% elif property_type.name == 'T4' %}
+                                        4 Quartos
+                                    {% elif property_type.name == 'T5' %}
+                                        5+ Quartos
+                                    {% elif property_type.name == 'commercial' %}
+                                        Comercial
+                                    {% elif property_type.name == 'studio' %}
+                                        Estúdio
+                                    {% else %}
+                                        {{ property_type.get_name_display }}
+                                    {% endif %}
+                                </h3>
+                                <p class="text-sm text-gray-500">
+                                    {{ property_type.description|default:"" }}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2 mt-4">
+                            <div class="flex items-center text-gray-600">
+                                <svg class="w-4 h-4 mr-2 text-[#015e73]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                </svg>
+                                <span class="text-sm">~{{ property_type.typical_sqm }} m²</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ml-4">
+                        <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-200 border-gray-300 bg-white peer-checked:bg-[#f4d35e] peer-checked:border-[#f4d35e]">
+                            <svg class="w-4 h-4 text-[#011e41] opacity-0 peer-checked:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </label>
+        {% endfor %}
+    </div>
+    
+    <!-- Additional Details (Optional) -->
+    <div class="border-t pt-6">
+        <h3 class="text-lg font-semibold mb-4" style="color: #011e41">
+            Detalhes Adicionais (Opcional)
+        </h3>
+        
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label for="bedrooms" class="block text-sm font-medium text-gray-700 mb-2">
+                    Número de Quartos
+                </label>
+                <select name="bedrooms" id="bedrooms" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent">
+                    <option value="">Selecione</option>
+                    {% for i in "0123456789"|make_list %}
+                        {% if forloop.counter <= 6 %}
+                        <option value="{{ forloop.counter0 }}" {% if booking_data.property.bedrooms == forloop.counter0 %}selected{% endif %}>
+                            {{ forloop.counter0 }}{% if forloop.counter0 == 5 %}+{% endif %}
+                        </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label for="bathrooms" class="block text-sm font-medium text-gray-700 mb-2">
+                    Número de Casas de Banho
+                </label>
+                <select name="bathrooms" id="bathrooms" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent">
+                    <option value="">Selecione</option>
+                    {% for i in "123456"|make_list %}
+                        <option value="{{ forloop.counter }}" {% if booking_data.property.bathrooms == forloop.counter %}selected{% endif %}>
+                            {{ forloop.counter }}{% if forloop.counter == 6 %}+{% endif %}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    {% if form.property_type.errors %}
+    <div class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+        <p class="text-sm text-red-600">{{ form.property_type.errors.0 }}</p>
+    </div>
+    {% endif %}
+</form>
+{% endblock %}
+
+{% block help_text %}
+<div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+    <div class="flex">
+        <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+            </svg>
+        </div>
+        <div class="ml-3">
+            <h3 class="text-sm font-medium text-blue-800">
+                Dica
+            </h3>
+            <div class="mt-2 text-sm text-blue-700">
+                <p>A seleção do tipo de propriedade ajuda-nos a estimar melhor o tempo necessário para o serviço e garantir que enviamos o número adequado de profissionais.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block booking_scripts %}
+<script>
+    // Auto-submit form when property type is selected
+    document.querySelectorAll('input[name="property_type"]').forEach(input => {
+        input.addEventListener('change', function() {
+            // Add a small delay for visual feedback
+            setTimeout(() => {
+                document.getElementById('booking-form').submit();
+            }, 300);
+        });
+    });
+</script>
+{% endblock %}

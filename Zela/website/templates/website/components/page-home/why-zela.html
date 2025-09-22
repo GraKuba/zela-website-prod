@@ -40,7 +40,7 @@
 
       <!-- Card 2: Hours Saved -->
       <div
-        class="bg-card rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 row-span-2 flex flex-col"
+        class="bg-card rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 md:row-span-2 flex flex-col"
       >
         <div class="flex-1 flex flex-col">
           <div class="flex items-center justify-center mb-6">
@@ -88,7 +88,18 @@
         </div>
       </div>
 
-      <!-- Card 3: Verified Reviews -->
+      <!-- Card 3: Happy Client Image - moved up for better desktop layout -->
+      <div
+        class="bg-white rounded-3xl p-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 md:row-span-2 overflow-hidden"
+      >
+        <img
+          src="{% static 'zela-workers-new-photos/madalena-rodrigues-2.jpeg' %}"
+          alt="Cliente feliz Madalena"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <!-- Card 4: Verified Reviews - moved for layout -->
       <div
         class="bg-secondary rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
       >
@@ -103,20 +114,30 @@
         </p>
       </div>
 
-      <!-- Card 4: Happy Client Image -->
+      <!-- Card 5: Professional Team Member - made same height as adjacent photo -->
       <div
-        class="bg-white rounded-3xl p-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 row-span-2 overflow-hidden"
+        class="bg-white rounded-3xl p-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 overflow-hidden md:row-span-2 flex flex-col"
       >
         <img
-          src="{% static 'zela-workers-new-photos/madalena-rodrigues-2.jpeg' %}"
-          alt="Cliente feliz Madalena"
-          class="w-full h-full object-cover"
+          src="{% static 'zela-workers-new-photos/anotnia-cabala-1.jpeg' %}"
+          alt="Membro da equipa Antonia"
+          class="w-full flex-1 object-cover min-h-0"
         />
+        <div class="p-4">
+          <div
+            class="text-xs font-bold text-[#0A1628] mb-1 uppercase tracking-wider"
+          >
+            EQUIPA PROFISSIONAL
+          </div>
+          <p class="text-xs text-[#0A1628]/70">
+            Verificados e com antecedentes verificados
+          </p>
+        </div>
       </div>
 
-      <!-- Card 6: Trained Experts -->
+      <!-- Card 6: Trained Experts - rearranged -->
       <div
-        class="bg-[#F6D55C] rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 row-span-2 flex flex-col"
+        class="bg-[#F6D55C] rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 md:col-span-2 lg:col-span-1 lg:row-span-2 flex flex-col"
       >
         <div class="flex-1 flex flex-col">
           <div class="flex items-center justify-center mb-6">
@@ -174,9 +195,9 @@
         </div>
       </div>
 
-      <!-- Card 8: Instant Booking -->
+      <!-- Card 7: Instant Booking - adjusted position -->
       <div
-        class="bg-secondary rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+        class="bg-secondary rounded-3xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 md:col-span-1 lg:col-span-1"
       >
         <div
           class="text-xs font-bold text-secondary-foreground mb-2 uppercase tracking-wider"
@@ -187,27 +208,6 @@
         <p class="text-xs text-[#0A1628]/70">
           Reserva imediata, processo simples
         </p>
-      </div>
-
-      <!-- Card 9: Professional Team Member -->
-      <div
-        class="bg-white rounded-3xl p-0 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
-      >
-        <img
-          src="{% static 'zela-workers-new-photos/anotnia-cabala-1.jpeg' %}"
-          alt="Membro da equipa Antonia"
-          class="w-full h-32 object-cover"
-        />
-        <div class="p-4">
-          <div
-            class="text-xs font-bold text-[#0A1628] mb-1 uppercase tracking-wider"
-          >
-            EQUIPA PROFISSIONAL
-          </div>
-          <p class="text-xs text-[#0A1628]/70">
-            Verificados e com antecedentes verificados
-          </p>
-        </div>
       </div>
     </div>
 

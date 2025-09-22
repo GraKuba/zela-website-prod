@@ -546,7 +546,7 @@
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M15 17h5l-3.5-3.5a1.5 1.5 0 0 1 0-2.12L19 9H15v8z"
+            d="M10 2a6 6 0 00-6 6c0 1.887-.454 3.665-1.257 5.234a.75.75 0 00.515 1.076 32.91 32.91 0 003.256.508 3.5 3.5 0 006.972 0 32.91 32.91 0 003.256-.508.75.75 0 00.515-1.076A11.448 11.448 0 0116 8a6 6 0 00-6-6zM8.05 14.943a33.54 33.54 0 003.9 0 2 2 0 01-3.9 0z"
           />
         </svg>
         <span class="truncate">Notificações</span>
@@ -709,7 +709,7 @@
     x-transition:leave="transition ease-in duration-200"
     x-transition:leave-start="opacity-100"
     x-transition:leave-end="opacity-0"
-    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
     @keydown.escape="showBookingSuccessModal = false"
   >
     <div 
@@ -722,59 +722,93 @@
       x-transition:leave-start="opacity-100 transform scale-100"
       x-transition:leave-end="opacity-0 transform scale-90"
     >
-      <!-- Modal Content -->
-      <div class="p-8 text-center">
-        <!-- Success Icon -->
-        <div class="mb-6">
-          <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+      <!-- Modal Content with Improved Readability -->
+      <div class="relative">
+        <!-- Success Section -->
+        <div class="text-center px-8 py-12">
+          <!-- Success Icon -->
+          <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8">
             <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
             </svg>
           </div>
+          
+          <!-- Success Message -->
+          <h2 class="text-2xl font-bold mb-4 text-gray-900">
+            Reserva Criada com Sucesso!
+          </h2>
+          
+          <!-- Description -->
+          <p class="text-gray-600 text-base leading-relaxed max-w-sm mx-auto mb-8">
+            O seu serviço de limpeza foi reservado.
+            <br>
+            Receberá um e-mail de confirmação com todos os detalhes.
+          </p>
         </div>
-        
-        <!-- Success Message -->
-        <h2 class="text-2xl font-bold mb-3" style="color: #011e41">
-          Reserva Criada com Sucesso! 🎉
-        </h2>
-        <p class="text-gray-600 mb-8">
-          O seu serviço de limpeza foi reservado. Receberá em breve um e-mail de confirmação com todos os detalhes.
-        </p>
-        
-        <!-- What's Next Section -->
-        <div class="bg-blue-50 rounded-xl p-4 mb-6 text-left">
-          <h4 class="text-sm font-semibold mb-2" style="color: #011e41">O que acontece a seguir?</h4>
-          <div class="space-y-2 text-sm text-gray-700">
-            <div class="flex items-start">
-              <span class="mr-2">📧</span>
-              <span>Verifique o seu e-mail para confirmação da reserva</span>
-            </div>
-            <div class="flex items-start">
-              <span class="mr-2">🔔</span>
-              <span>Notificaremos quando o seu prestador estiver a caminho</span>
-            </div>
-            <div class="flex items-start">
-              <span class="mr-2">💬</span>
-              <span>Pode enviar mensagens ao seu prestador através da aplicação</span>
+
+        <!-- Next Steps Section -->
+        <div class="px-8 pb-8">
+          <div class="bg-gray-50 rounded-2xl p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">
+              O que acontece a seguir?
+            </h3>
+            
+            <div class="space-y-3">
+              <!-- Email Step -->
+              <div class="flex items-center">
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                  <span class="text-sm">📧</span>
+                </div>
+                <div>
+                  <p class="text-gray-800 font-medium text-sm">Verifique o seu e-mail</p>
+                  <p class="text-gray-600 text-xs">Confirmação da reserva enviada</p>
+                </div>
+              </div>
+              
+              <!-- Notification Step -->
+              <div class="flex items-center">
+                <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                  <span class="text-sm">🔔</span>
+                </div>
+                <div>
+                  <p class="text-gray-800 font-medium text-sm">Notificações em tempo real</p>
+                  <p class="text-gray-600 text-xs">Avisamos quando o prestador estiver a caminho</p>
+                </div>
+              </div>
+              
+              <!-- Chat Step -->
+              <div class="flex items-center">
+                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                  <span class="text-sm">💬</span>
+                </div>
+                <div>
+                  <p class="text-gray-800 font-medium text-sm">Chat com o prestador</p>
+                  <p class="text-gray-600 text-xs">Comunique através da aplicação</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        
+
         <!-- Action Buttons -->
-        <div class="flex gap-3">
-          <button
-            @click="showBookingSuccessModal = false"
-            class="flex-1 py-3 px-6 bg-gray-100 text-gray-700 font-semibold rounded-full hover:bg-gray-200 transition-colors duration-200 cursor-pointer"
-          >
-            Ver Reservas
-          </button>
-          <button
-            @click="window.location.href = '/book/'"
-            class="flex-1 py-3 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
-          >
-            Fazer Outra Reserva
-          </button>
+        <div class="px-8 pb-8">
+          <div class="space-y-3">
+            <button
+              @click="showBookingSuccessModal = false; currentTab = 'bookings'"
+              class="w-full py-4 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
+            >
+              Ver as Minhas Reservas
+            </button>
+            
+            <button
+              @click="window.location.href = '/book/'"
+              class="w-full py-3 px-6 border-2 border-gray-300 text-gray-700 font-medium rounded-full hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 cursor-pointer"
+            >
+              Fazer Outra Reserva
+            </button>
+          </div>
         </div>
+
       </div>
     </div>
   </div>

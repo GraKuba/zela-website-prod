@@ -1,0 +1,199 @@
+{% extends "website/booking_mpa/base.html" %}
+{% load static %}
+
+{% block title %}Service Duration - Zela{% endblock %}
+
+{% block booking_content %}
+<div class="min-h-screen bg-gradient-to-br from-secondary-100/5 to-primary-100/10">
+    <!-- Progress Header -->
+    {% include "website/booking_mpa/components/progress_header.html" with current_step=current_step service_flow=service_flow %}
+    
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Step Title -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">How Long Do You Need?</h1>
+                <p class="text-gray-600">Select the duration for your service</p>
+            </div>
+
+            <form method="POST" class="space-y-8">
+                {% csrf_token %}
+                
+                <!-- Duration Card -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <!-- Duration Slider -->
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">
+                            Service Duration
+                        </label>
+                        
+                        <div class="relative">
+                            <!-- Slider Container -->
+                            <div class="relative px-4">
+                                <input 
+                                    type="range" 
+                                    name="duration" 
+                                    id="duration-slider"
+                                    min="{{ min_duration|default:2 }}" 
+                                    max="{{ max_duration|default:8 }}" 
+                                    step="0.5"
+                                    value="{{ booking_data.duration|default:min_duration|default:2 }}"
+                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                                >
+                                
+                                <!-- Duration Display -->
+                                <div class="mt-6 text-center">
+                                    <div class="text-4xl font-bold text-primary-600" id="duration-display">
+                                        {{ booking_data.duration|default:min_duration|default:2 }} hours
+                                    </div>
+                                    <div class="text-sm text-gray-500 mt-1">
+                                        Estimated price: <span class="font-semibold text-gray-900" id="price-estimate">AOA 15,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Min/Max Labels -->
+                            <div class="flex justify-between text-xs text-gray-500 mt-2 px-4">
+                                <span>{{ min_duration|default:2 }} hrs</span>
+                                <span>{{ max_duration|default:8 }} hrs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Common Tasks (if applicable) -->
+                    {% if service_category.slug == "indoor-cleaning" or service_category.slug == "house-cleaning" %}
+                    <div class="border-t pt-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">
+                            Additional Tasks <span class="text-gray-400 text-xs">(Optional)</span>
+                        </label>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <label class="flex items-start p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition">
+                                <input type="checkbox" name="tasks" value="windows" class="mt-1 mr-3">
+                                <div>
+                                    <div class="font-medium text-gray-700">Window Cleaning</div>
+                                    <div class="text-xs text-gray-500">Interior window cleaning</div>
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-start p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition">
+                                <input type="checkbox" name="tasks" value="fridge" class="mt-1 mr-3">
+                                <div>
+                                    <div class="font-medium text-gray-700">Fridge Cleaning</div>
+                                    <div class="text-xs text-gray-500">Deep clean inside refrigerator</div>
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-start p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition">
+                                <input type="checkbox" name="tasks" value="oven" class="mt-1 mr-3">
+                                <div>
+                                    <div class="font-medium text-gray-700">Oven Cleaning</div>
+                                    <div class="text-xs text-gray-500">Deep clean oven interior</div>
+                                </div>
+                            </label>
+                            
+                            <label class="flex items-start p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition">
+                                <input type="checkbox" name="tasks" value="cabinets" class="mt-1 mr-3">
+                                <div>
+                                    <div class="font-medium text-gray-700">Cabinet Organizing</div>
+                                    <div class="text-xs text-gray-500">Organize kitchen cabinets</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Service Notes -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
+                        <div class="flex">
+                            <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            </svg>
+                            <div class="text-sm text-blue-800">
+                                <p class="font-medium">Service includes:</p>
+                                <ul class="list-disc list-inside mt-1 space-y-1 text-xs">
+                                    <li>All cleaning supplies and equipment</li>
+                                    <li>Professional, vetted cleaners</li>
+                                    <li>Satisfaction guarantee</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between">
+                    <a href="{{ previous_url }}" class="inline-flex items-center px-6 py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        Back
+                    </a>
+                    
+                    <button type="submit" class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition">
+                        Continue
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Duration slider functionality
+    const slider = document.getElementById('duration-slider');
+    const display = document.getElementById('duration-display');
+    const priceDisplay = document.getElementById('price-estimate');
+    const basePrice = 7500; // Base price per hour
+    
+    slider.addEventListener('input', function() {
+        const duration = parseFloat(this.value);
+        display.textContent = duration + ' hours';
+        
+        // Calculate estimated price
+        const price = basePrice * duration;
+        priceDisplay.textContent = 'AOA ' + price.toLocaleString();
+    });
+    
+    // Initialize on load
+    slider.dispatchEvent(new Event('input'));
+</script>
+
+<style>
+    /* Custom slider styles */
+    .slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    
+    .slider-thumb::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 24px;
+        height: 24px;
+        background: #16A34A;
+        cursor: pointer;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .slider-thumb::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        background: #16A34A;
+        cursor: pointer;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border: none;
+    }
+    
+    .slider-thumb::-webkit-slider-runnable-track {
+        background: linear-gradient(to right, #16A34A 0%, #16A34A var(--value), #e5e7eb var(--value), #e5e7eb 100%);
+        border-radius: 4px;
+        height: 8px;
+    }
+</style>
+{% endblock %}

@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import booking_config
 
 app_name = 'website_api'
 
@@ -17,4 +18,7 @@ urlpatterns = [
     
     # Booking validation
     path('booking/validate/', views.validate_booking, name='validate_booking'),
+    
+    # Booking flow configuration
+    path('booking/service-config/', booking_config.get_service_config, name='get_service_config'),
 ]

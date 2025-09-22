@@ -2,105 +2,53 @@
 
 <!-- Choose Worker Screen -->
 <div class="min-h-screen bg-white flex flex-col">
-  <!-- Sticky Header with Progress -->
-  <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-6">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
-        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
-      </div>
+  <!-- Progress Header -->
+  {% include "website/components/booking-flow/partials/booking-progress-header.html" %}
 
-      <!-- Progress Bar -->
-      <div class="flex-1 max-w-md mx-auto">
-        <div class="flex items-start justify-between mb-4">
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              1
-            </div>
-            <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Detalhes
-            </div>
-          </div>
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              2
-            </div>
-            <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Trabalhador
-            </div>
-          </div>
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              3
-            </div>
-            <div class="ml-2 text-sm text-gray-600">Pagamento</div>
-          </div>
-        </div>
-        <div class="w-full bg-gray-200 rounded-full h-2">
-          <div
-            class="bg-[#015e73] h-2 rounded-full"
-            style="width: 66.66%"
-          ></div>
-        </div>
-      </div>
-
-      <div class="flex items-center space-x-4">
-        <div
-          @click="window.location.href = '/dashboard/'"
-          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
-        >
-          JG
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Main Content with Sticky Sidebar -->
-  <div class="flex flex-1 max-w-7xl mx-auto w-full">
-    <!-- Sticky Left Column - Booking Details -->
+  <!-- Main Content - Single scrollable page -->
+  <div class="flex flex-col lg:flex-row flex-1 max-w-7xl mx-auto w-full">
+    <!-- Left Column - Booking Details (not sticky) -->
     <div
-      class="w-80 flex-shrink-0 sticky top-0 h-screen overflow-y-auto px-6 py-8 space-y-6"
+      class="w-full lg:w-80 lg:flex-shrink-0 px-4 sm:px-6 py-4 sm:py-6 lg:py-8 space-y-4 sm:space-y-6 border-b lg:border-b-0 lg:border-r border-gray-200"
     >
       <!-- Booking Details -->
-      <div class="bg-white border border-gray-200 rounded-2xl p-6">
-        <h3 class="text-lg font-bold mb-4" style="color: #011e41">
+      <div class="bg-white border border-gray-200 rounded-2xl p-4 sm:p-6">
+        <h3 class="text-base sm:text-lg font-bold mb-3 sm:mb-4" style="color: #011e41">
           Detalhes da Reserva
         </h3>
 
         <!-- Pricing Display -->
-        <div class="bg-gray-900 text-white rounded-2xl p-4">
-          <div class="flex justify-between items-center mb-2">
-            <div class="text-2xl font-bold" x-text="booking.details.duration + ' hrs'">
+        <div class="bg-[#F4D35E] text-[#011e41] rounded-2xl p-5">
+          <div class="space-y-4">
+            <!-- Hours Row -->
+            <div class="pb-3 border-b border-[#011e41]/20">
+              <div class="text-2xl font-bold mb-1">
+                <span x-text="booking.details.duration"></span> Horas
+              </div>
+              <div class="text-sm text-[#011e41]/70">Horas Est.</div>
             </div>
-            <div
-              class="text-2xl font-bold"
-              x-text="formatCurrency(booking.pricing.bookingCost)"
-            >
+            <!-- Price Row -->
+            <div>
+              <div class="text-2xl font-bold mb-1" x-text="formatCurrency(booking.pricing.bookingCost)"></div>
+              <div class="text-sm text-[#011e41]/70">Preço Est.</div>
             </div>
-          </div>
-          <div class="flex justify-between text-sm text-gray-300">
-            <div>Total de horas</div>
-            <div>Preço da Reserva</div>
           </div>
         </div>
       </div>
 
       <!-- Location & Service Details -->
-      <div class="bg-white border border-gray-200 rounded-2xl p-6">
+      <div class="bg-white border border-gray-200 rounded-2xl p-4 sm:p-6">
         <!-- Location -->
         <div class="flex items-center justify-between mb-4">
           <div>
             <div class="text-sm text-gray-600 mb-1">Onde:</div>
-            <div class="text-sm font-medium" style="color: #011e41" x-text="booking.location.streetAddress.substring(0, 30) + (booking.location.streetAddress.length > 30 ? '...' : '')">
-            </div>
+            <div
+              class="text-sm font-medium"
+              style="color: #011e41"
+              x-text="booking.location.streetAddress.substring(0, 30) + (booking.location.streetAddress.length > 30 ? '...' : '')"
+            ></div>
           </div>
-          <button 
+          <button
             @click="goToScreen(1)"
             class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
             title="Edit location"
@@ -125,10 +73,13 @@
         <div class="flex items-center justify-between mb-4">
           <div>
             <div class="text-sm text-gray-600 mb-1">O quê:</div>
-            <div class="text-sm font-medium" style="color: #011e41" x-text="serviceInfo[booking.serviceType]?.name || 'Indoor Cleaning'">
-            </div>
+            <div
+              class="text-sm font-medium"
+              style="color: #011e41"
+              x-text="'{{ service_name|default:'Limpeza Interior' }}'"
+            ></div>
           </div>
-          <button 
+          <button
             @click="alert('O tipo de serviço não pode ser alterado nesta fase. Por favor, inicie uma nova reserva.')"
             class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
             title="Service type cannot be changed"
@@ -154,11 +105,13 @@
           <div>
             <div class="text-sm text-gray-600 mb-1">Quando:</div>
             <div class="text-sm font-medium" style="color: #011e41">
-              <span x-text="booking.dateBucket === 'tomorrow' ? 'Amanhã' : new Date(booking.date).toLocaleDateString('pt-PT', { weekday: 'short', month: 'short', day: 'numeric' })"></span>
+              <span
+                x-text="booking.dateBucket === 'tomorrow' ? 'Amanhã' : new Date(booking.date).toLocaleDateString('pt-PT', { weekday: 'short', month: 'short', day: 'numeric' })"
+              ></span>
               @ <span x-text="booking.details.startTime || '07:00'"></span>
             </div>
           </div>
-          <button 
+          <button
             @click="goToScreen(7)"
             class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
             title="Edit date and time"
@@ -181,12 +134,12 @@
       </div>
 
       <!-- Choose For Me Option -->
-      <div class="bg-white border border-gray-200 rounded-2xl p-6 text-center">
+      <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 text-center">
         <div
-          class="w-20 h-20 bg-[#015e73]/10 rounded-full mx-auto mb-4 flex items-center justify-center"
+          class="w-16 h-16 bg-[#015e73]/10 rounded-full mx-auto mb-3 flex items-center justify-center"
         >
           <svg
-            class="w-10 h-10 text-[#015e73]"
+            class="w-8 h-8 text-[#015e73]"
             fill="currentColor"
             viewBox="0 0 24 24"
           >
@@ -195,12 +148,15 @@
             />
           </svg>
         </div>
-        <div class="text-lg font-bold mb-2" style="color: #011e41">
+        
+        <div class="border-t border-gray-200 my-3"></div>
+        
+        <div class="text-base font-bold mb-2" style="color: #011e41">
           Escolha por mim
         </div>
-        <div class="flex items-center justify-center mb-2">
+        <div class="flex items-center justify-center mb-1">
           <svg
-            class="w-4 h-4 text-[#015e73] mr-1"
+            class="w-3.5 h-3.5 text-[#015e73] mr-1"
             fill="currentColor"
             viewBox="0 0 24 24"
           >
@@ -208,28 +164,28 @@
               d="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.63L12 2L9.19 8.63L2 9.24L7.46 13.97L5.82 21L12 17.27Z"
             />
           </svg>
-          <span class="text-sm font-medium" style="color: #011e41"
+          <span class="text-xs font-medium" style="color: #011e41"
             >97% Recomendam</span
           >
         </div>
-        <div class="text-sm text-gray-600 mb-4">2+ Anos de Experiência</div>
-        <div class="text-sm text-gray-600 mb-6 leading-relaxed">
-          A nossa equipa encontrará um trabalhador que possa ajudá-lo. Fique atento à sua
-          caixa de entrada. Enviaremos a sua correspondência em breve.
+        <div class="text-xs text-gray-600 mb-3">2+ Anos de Experiência</div>
+        <div class="text-xs text-gray-600 mb-4 leading-relaxed px-2">
+          A nossa equipa encontrará um trabalhador que possa ajudá-lo. Fique
+          atento à sua caixa de entrada.
         </div>
         <button
           @click="chooseForMe()"
-          class="w-full bg-[#015e73] text-white font-bold py-3 px-4 rounded-2xl hover:bg-[#014a5a] transition-colors cursor-pointer"
+          class="w-full bg-[#015e73] text-white text-sm font-medium py-2.5 px-3 rounded-xl hover:bg-[#014a5a] transition-colors cursor-pointer"
         >
-          Deixar a Zela Escolher Por Mim
+          Escolher Por Mim
         </button>
       </div>
     </div>
 
-    <!-- Scrollable Right Column - Worker Selection -->
-    <div class="flex-1 overflow-y-auto px-6 py-8">
+    <!-- Right Column - Worker Selection -->
+    <div class="flex-1 px-4 sm:px-6 py-4 sm:py-6 lg:py-8">
       <div class="max-w-2xl">
-        <h2 class="text-3xl font-bold mb-8 text-center" style="color: #011e41">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center" style="color: #011e41">
           Escolha o seu trabalhador
         </h2>
 
@@ -239,8 +195,18 @@
           <!-- Fallback message if no workers -->
           <div class="text-center py-8 text-gray-500">
             <div class="mb-4">
-              <svg class="w-16 h-16 mx-auto text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              <svg
+                class="w-16 h-16 mx-auto text-gray-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                />
               </svg>
             </div>
             <p>A carregar trabalhadores disponíveis...</p>
@@ -250,4 +216,3 @@
     </div>
   </div>
 </div>
-

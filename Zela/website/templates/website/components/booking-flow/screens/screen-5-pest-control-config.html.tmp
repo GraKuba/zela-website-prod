@@ -1,0 +1,362 @@
+{% load static %}
+
+<!-- Screen 5: Pest Control Service Configuration -->
+<div class="min-h-screen bg-white flex flex-col">
+  <!-- Progress Header -->
+  {% include "website/components/booking-flow/partials/booking-progress-header.html" %}
+  <!-- Main Content -->
+  <!-- Main Content -->
+  <div class="flex-1 max-w-4xl mx-auto w-full px-6 py-8">
+    <h2 class="text-3xl font-bold mb-2" style="color: #011e41">
+      Escolha o tipo de controlo de pragas
+    </h2>
+    <p class="text-gray-600 mb-8">
+      Selecione o serviço necessário e descreva o problema.
+    </p>
+
+    <!-- Service Type Selection -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Regular Service -->
+      <div
+        @click="selectPestControlType('regular')"
+        class="bg-white border-2 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-all duration-200"
+        :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.pestControlType === 'regular' }"
+      >
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex-1">
+            <div class="flex items-center mb-3">
+              <svg
+                class="w-8 h-8 text-[#015e73] mr-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <h3 class="text-xl font-bold" style="color: #011e41">
+                Serviço Regular
+              </h3>
+            </div>
+            <p class="text-gray-600 mb-3">
+              Controlo preventivo e tratamento básico
+            </p>
+            <ul class="text-sm text-gray-500 space-y-1">
+              <li>• Inspeção completa</li>
+              <li>• Tratamento preventivo</li>
+              <li>• Produtos seguros</li>
+              <li>• Garantia de 30 dias</li>
+            </ul>
+          </div>
+          <div class="ml-4">
+            <div
+              class="w-6 h-6 rounded-full border-2 flex items-center justify-center"
+              :class="booking.pestControlType === 'regular' ? 'bg-[#015e73] border-[#015e73]' : 'border-gray-300'"
+            >
+              <svg
+                x-show="booking.pestControlType === 'regular'"
+                class="w-3 h-3 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="pt-3 border-t border-gray-200">
+          <div class="text-sm text-gray-500">Preço base:</div>
+          <div
+            class="text-lg font-bold"
+            style="color: #015e73"
+            x-text="formatCurrency(getPestControlBasePrice('regular'))"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Extreme Service -->
+      <div
+        @click="selectPestControlType('extreme')"
+        class="bg-white border-2 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-all duration-200"
+        :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.pestControlType === 'extreme' }"
+      >
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex-1">
+            <div class="flex items-center mb-3">
+              <svg
+                class="w-8 h-8 text-orange-500 mr-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <h3 class="text-xl font-bold" style="color: #011e41">
+                Serviço Extremo
+              </h3>
+            </div>
+            <p class="text-gray-600 mb-3">
+              Para infestações graves e tratamento intensivo
+            </p>
+            <ul class="text-sm text-gray-500 space-y-1">
+              <li>• Tratamento intensivo</li>
+              <li>• Múltiplas aplicações</li>
+              <li>• Produtos profissionais</li>
+              <li>• Acompanhamento incluído</li>
+              <li>• Garantia de 60 dias</li>
+            </ul>
+          </div>
+          <div class="ml-4">
+            <div
+              class="w-6 h-6 rounded-full border-2 flex items-center justify-center"
+              :class="booking.pestControlType === 'extreme' ? 'bg-[#015e73] border-[#015e73]' : 'border-gray-300'"
+            >
+              <svg
+                x-show="booking.pestControlType === 'extreme'"
+                class="w-3 h-3 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="pt-3 border-t border-gray-200">
+          <div class="text-sm text-gray-500">Preço base:</div>
+          <div
+            class="text-lg font-bold"
+            style="color: #015e73"
+            x-text="formatCurrency(getPestControlBasePrice('extreme'))"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pest Type Selection -->
+    <div class="mb-8" x-show="booking.pestControlType">
+      <label class="block text-sm font-medium mb-2" style="color: #4a5a70">
+        Que tipo de praga? <span class="text-red-500">*</span>
+      </label>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <label class="cursor-pointer">
+          <input
+            type="checkbox"
+            x-model="booking.pestTypes"
+            value="roaches"
+            class="peer sr-only"
+          />
+          <div
+            class="p-3 border-2 border-gray-200 rounded-lg peer-checked:bg-[#015e73]/10 peer-checked:border-[#015e73] hover:border-gray-300 transition-all"
+          >
+            <span class="text-sm font-medium">Baratas</span>
+          </div>
+        </label>
+        <label class="cursor-pointer">
+          <input
+            type="checkbox"
+            x-model="booking.pestTypes"
+            value="ants"
+            class="peer sr-only"
+          />
+          <div
+            class="p-3 border-2 border-gray-200 rounded-lg peer-checked:bg-[#015e73]/10 peer-checked:border-[#015e73] hover:border-gray-300 transition-all"
+          >
+            <span class="text-sm font-medium">Formigas</span>
+          </div>
+        </label>
+        <label class="cursor-pointer">
+          <input
+            type="checkbox"
+            x-model="booking.pestTypes"
+            value="rats"
+            class="peer sr-only"
+          />
+          <div
+            class="p-3 border-2 border-gray-200 rounded-lg peer-checked:bg-[#015e73]/10 peer-checked:border-[#015e73] hover:border-gray-300 transition-all"
+          >
+            <span class="text-sm font-medium">Ratos</span>
+          </div>
+        </label>
+        <label class="cursor-pointer">
+          <input
+            type="checkbox"
+            x-model="booking.pestTypes"
+            value="termites"
+            class="peer sr-only"
+          />
+          <div
+            class="p-3 border-2 border-gray-200 rounded-lg peer-checked:bg-[#015e73]/10 peer-checked:border-[#015e73] hover:border-gray-300 transition-all"
+          >
+            <span class="text-sm font-medium">Térmitas</span>
+          </div>
+        </label>
+        <label class="cursor-pointer">
+          <input
+            type="checkbox"
+            x-model="booking.pestTypes"
+            value="mosquitos"
+            class="peer sr-only"
+          />
+          <div
+            class="p-3 border-2 border-gray-200 rounded-lg peer-checked:bg-[#015e73]/10 peer-checked:border-[#015e73] hover:border-gray-300 transition-all"
+          >
+            <span class="text-sm font-medium">Mosquitos</span>
+          </div>
+        </label>
+        <label class="cursor-pointer">
+          <input
+            type="checkbox"
+            x-model="booking.pestTypes"
+            value="other"
+            class="peer sr-only"
+          />
+          <div
+            class="p-3 border-2 border-gray-200 rounded-lg peer-checked:bg-[#015e73]/10 peer-checked:border-[#015e73] hover:border-gray-300 transition-all"
+          >
+            <span class="text-sm font-medium">Outro</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Additional Notes -->
+    <div class="mb-8" x-show="booking.pestControlType">
+      <label class="block text-sm font-medium mb-2" style="color: #4a5a70">
+        Descrição do problema (opcional)
+      </label>
+      <textarea
+        x-model="booking.pestControlNotes"
+        placeholder="Ex: Vejo baratas na cozinha principalmente à noite, já tentei spray mas não funcionou..."
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent resize-none"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <!-- Pricing Summary -->
+    <div
+      class="bg-gray-50 rounded-2xl p-6 mb-8"
+      x-show="booking.pestControlType && booking.propertyTypology"
+    >
+      <h3 class="font-bold mb-4" style="color: #011e41">Resumo do Preço:</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600">Tipo de serviço:</span>
+          <span
+            class="font-medium"
+            x-text="booking.pestControlType === 'regular' ? 'Regular' : 'Extremo'"
+          ></span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600">Tamanho da propriedade:</span>
+          <span class="font-medium" x-text="booking.propertyTypology"></span>
+        </div>
+        <div
+          class="flex justify-between items-center pt-3 border-t border-gray-200"
+        >
+          <span class="font-bold" style="color: #011e41">Total:</span>
+          <span
+            class="text-2xl font-bold"
+            style="color: #015e73"
+            x-text="formatCurrency(getPestControlTotalPrice())"
+          ></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Safety Information -->
+    <div class="bg-green-50 border border-green-200 rounded-2xl p-6 mb-8">
+      <h3 class="font-bold mb-3" style="color: #011e41">
+        🌱 Segurança e saúde:
+      </h3>
+      <ul class="space-y-2 text-sm text-gray-700">
+        <li class="flex items-start">
+          <svg
+            class="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Produtos aprovados e seguros para crianças e animais
+        </li>
+        <li class="flex items-start">
+          <svg
+            class="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Técnicos certificados e treinados
+        </li>
+        <li class="flex items-start">
+          <svg
+            class="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Orientações de segurança fornecidas após o serviço
+        </li>
+      </ul>
+    </div>
+
+    <!-- Continue Button -->
+    <div
+      x-show="booking.pestControlType && booking.pestTypes && booking.pestTypes.length > 0"
+    >
+      <button
+        @click="proceedFromPestControlConfig()"
+        class="w-full py-4 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 shadow-lg"
+      >
+        Continuar -
+        <span x-text="formatCurrency(getPestControlTotalPrice())"></span>
+      </button>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-4 text-center">
+      <button
+        @click="goToScreen(booking.propertyTypology ? 2 : 1)"
+        class="text-gray-500 hover:text-gray-700 font-medium"
+      >
+        ← Voltar
+      </button>
+    </div>
+  </div>
+</div>

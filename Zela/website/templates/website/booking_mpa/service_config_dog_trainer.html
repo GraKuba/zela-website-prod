@@ -1,0 +1,395 @@
+{% extends "website/booking_mpa/base.html" %}
+{% load static %}
+
+{% block title %}Dog Training Service Configuration - Zela{% endblock %}
+
+{% block booking_content %}
+<div class="min-h-screen bg-gradient-to-br from-secondary-100/5 to-primary-100/10">
+    <!-- Progress Header -->
+    {% include "website/booking_mpa/components/progress_header.html" with current_step=current_step service_flow=service_flow %}
+    
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Step Title -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Dog Training Package</h1>
+                <p class="text-gray-600">Choose the perfect training program for your furry friend</p>
+            </div>
+
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Training Packages -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">Select Training Package</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Basic Package -->
+                        <label class="relative border-2 border-gray-200 rounded-lg p-6 hover:border-primary-300 cursor-pointer transition group">
+                            <input type="radio" name="package_type" value="basic" class="absolute opacity-0" required>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition">
+                                            <span class="text-2xl">🐕</span>
+                                        </div>
+                                        <div class="ml-3">
+                                            <div class="font-bold text-lg text-gray-900">Basic Training</div>
+                                            <div class="text-sm text-gray-500">Foundation skills</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Sit, Stay, Come commands
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Leash walking basics
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        House training
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        4 sessions (1 hour each)
+                                    </div>
+                                </div>
+                                <div class="pt-3 border-t">
+                                    <div class="text-2xl font-bold text-primary-600">AOA 35,000</div>
+                                    <div class="text-xs text-gray-500">Perfect for puppies and beginners</div>
+                                </div>
+                            </div>
+                        </label>
+                        
+                        <!-- Advanced Package -->
+                        <label class="relative border-2 border-gray-200 rounded-lg p-6 hover:border-primary-300 cursor-pointer transition group">
+                            <input type="radio" name="package_type" value="advanced" class="absolute opacity-0" required>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition">
+                                            <span class="text-2xl">🦮</span>
+                                        </div>
+                                        <div class="ml-3">
+                                            <div class="font-bold text-lg text-gray-900">Advanced Training</div>
+                                            <div class="text-sm text-gray-500">Complete program</div>
+                                        </div>
+                                    </div>
+                                    <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full">POPULAR</span>
+                                </div>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        All basic commands + advanced
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Off-leash training
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Socialization skills
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        8 sessions (1 hour each)
+                                    </div>
+                                </div>
+                                <div class="pt-3 border-t">
+                                    <div class="text-2xl font-bold text-primary-600">AOA 65,000</div>
+                                    <div class="text-xs text-gray-500">Comprehensive training solution</div>
+                                </div>
+                            </div>
+                        </label>
+                        
+                        <!-- Behavioral Package -->
+                        <label class="relative border-2 border-gray-200 rounded-lg p-6 hover:border-primary-300 cursor-pointer transition group">
+                            <input type="radio" name="package_type" value="behavioral" class="absolute opacity-0" required>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center group-hover:bg-orange-200 transition">
+                                            <span class="text-2xl">🐕‍🦺</span>
+                                        </div>
+                                        <div class="ml-3">
+                                            <div class="font-bold text-lg text-gray-900">Behavioral Correction</div>
+                                            <div class="text-sm text-gray-500">Problem solving</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Aggression management
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Excessive barking control
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Anxiety & fear issues
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        6 sessions + follow-up
+                                    </div>
+                                </div>
+                                <div class="pt-3 border-t">
+                                    <div class="text-2xl font-bold text-primary-600">AOA 55,000</div>
+                                    <div class="text-xs text-gray-500">Specialized behavioral therapy</div>
+                                </div>
+                            </div>
+                        </label>
+                        
+                        <!-- Custom Package -->
+                        <label class="relative border-2 border-gray-200 rounded-lg p-6 hover:border-primary-300 cursor-pointer transition group">
+                            <input type="radio" name="package_type" value="custom" class="absolute opacity-0" required>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition">
+                                            <span class="text-2xl">🎯</span>
+                                        </div>
+                                        <div class="ml-3">
+                                            <div class="font-bold text-lg text-gray-900">Custom Program</div>
+                                            <div class="text-sm text-gray-500">Tailored to your needs</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Initial assessment
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Personalized plan
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Flexible scheduling
+                                    </div>
+                                    <div class="flex items-center text-gray-600">
+                                        <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Price on consultation
+                                    </div>
+                                </div>
+                                <div class="pt-3 border-t">
+                                    <div class="text-2xl font-bold text-primary-600">Custom Quote</div>
+                                    <div class="text-xs text-gray-500">Contact for pricing</div>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Dog Information -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6">About Your Dog</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Dog Name -->
+                        <div>
+                            <label for="dog_name" class="block text-sm font-medium text-gray-700 mb-2">
+                                Dog's Name
+                            </label>
+                            <input 
+                                type="text" 
+                                id="dog_name" 
+                                name="dog_name" 
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                placeholder="e.g., Max"
+                            >
+                        </div>
+                        
+                        <!-- Dog Age -->
+                        <div>
+                            <label for="dog_age" class="block text-sm font-medium text-gray-700 mb-2">
+                                Age
+                            </label>
+                            <select 
+                                id="dog_age" 
+                                name="dog_age" 
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                            >
+                                <option value="">Select age range</option>
+                                <option value="puppy">Puppy (< 6 months)</option>
+                                <option value="young">Young (6 months - 2 years)</option>
+                                <option value="adult">Adult (2 - 7 years)</option>
+                                <option value="senior">Senior (7+ years)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Dog Breed -->
+                        <div>
+                            <label for="dog_breed" class="block text-sm font-medium text-gray-700 mb-2">
+                                Breed
+                            </label>
+                            <input 
+                                type="text" 
+                                id="dog_breed" 
+                                name="dog_breed" 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                placeholder="e.g., Golden Retriever, Mixed"
+                            >
+                        </div>
+                        
+                        <!-- Dog Size -->
+                        <div>
+                            <label for="dog_size" class="block text-sm font-medium text-gray-700 mb-2">
+                                Size
+                            </label>
+                            <select 
+                                id="dog_size" 
+                                name="dog_size" 
+                                required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                            >
+                                <option value="">Select size</option>
+                                <option value="small">Small (< 10 kg)</option>
+                                <option value="medium">Medium (10 - 25 kg)</option>
+                                <option value="large">Large (25 - 40 kg)</option>
+                                <option value="extra_large">Extra Large (> 40 kg)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Training Goals -->
+                    <div class="mt-6 border-t pt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-3">
+                            Training Goals (Select all that apply)
+                        </label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" name="goals" value="basic_obedience" class="mr-2">
+                                <span class="text-gray-700 text-sm">Basic obedience</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" name="goals" value="leash_training" class="mr-2">
+                                <span class="text-gray-700 text-sm">Leash training</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" name="goals" value="socialization" class="mr-2">
+                                <span class="text-gray-700 text-sm">Socialization</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" name="goals" value="aggression" class="mr-2">
+                                <span class="text-gray-700 text-sm">Aggression control</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" name="goals" value="anxiety" class="mr-2">
+                                <span class="text-gray-700 text-sm">Anxiety reduction</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" name="goals" value="tricks" class="mr-2">
+                                <span class="text-gray-700 text-sm">Fun tricks</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Notes -->
+                    <div class="mt-6">
+                        <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">
+                            Special Notes <span class="text-gray-400">(Optional)</span>
+                        </label>
+                        <textarea 
+                            id="notes" 
+                            name="notes" 
+                            rows="3"
+                            placeholder="Any specific behavioral issues or special requirements..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-none"
+                        ></textarea>
+                    </div>
+                    
+                    <!-- Training Info -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
+                        <div class="flex">
+                            <svg class="w-5 h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            </svg>
+                            <div class="text-sm text-blue-800">
+                                <p class="font-medium">Training includes:</p>
+                                <ul class="list-disc list-inside mt-1 space-y-1 text-xs">
+                                    <li>Professional certified trainer</li>
+                                    <li>Progress report after each session</li>
+                                    <li>Training materials and guides</li>
+                                    <li>Owner education and support</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between">
+                    <a href="{{ previous_url }}" class="inline-flex items-center px-6 py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        Back
+                    </a>
+                    
+                    <button type="submit" class="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition">
+                        Continue
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Handle package selection
+    document.querySelectorAll('input[name="package_type"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.querySelectorAll('input[name="package_type"]').forEach(r => {
+                r.closest('label').classList.remove('border-primary-500', 'bg-primary-50', 'shadow-lg');
+            });
+            if (this.checked) {
+                this.closest('label').classList.add('border-primary-500', 'bg-primary-50', 'shadow-lg');
+            }
+        });
+    });
+</script>
+{% endblock %}

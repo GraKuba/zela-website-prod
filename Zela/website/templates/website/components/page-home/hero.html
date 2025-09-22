@@ -29,61 +29,49 @@
       class="space-y-3 md:space-y-4 flex flex-col items-center lg:items-start relative z-10"
     >
       <div class="flex items-center gap-3">
-        <div
-          class="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"
+        <svg
+          class="w-5 h-5 text-[#015e73] flex-shrink-0"
+          fill="currentColor"
+          viewBox="0 0 20 20"
         >
-          <svg
-            class="w-4 h-4 text-white"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </div>
+          <path
+            fill-rule="evenodd"
+            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
         <span class="text-foreground text-sm md:text-base font-medium"
           >Profissionais de confiança, 5-estrelas</span
         >
       </div>
       <div class="flex items-center gap-3">
-        <div
-          class="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"
+        <svg
+          class="w-5 h-5 text-[#015e73] flex-shrink-0"
+          fill="currentColor"
+          viewBox="0 0 20 20"
         >
-          <svg
-            class="w-4 h-4 text-white"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </div>
+          <path
+            fill-rule="evenodd"
+            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
         <span class="text-foreground text-sm md:text-base font-medium"
           >Reserva em menos de 60 segundos</span
         >
       </div>
       <div class="flex items-center gap-3">
-        <div
-          class="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"
+        <svg
+          class="w-5 h-5 text-[#015e73] flex-shrink-0"
+          fill="currentColor"
+          viewBox="0 0 20 20"
         >
-          <svg
-            class="w-4 h-4 text-white"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </div>
+          <path
+            fill-rule="evenodd"
+            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
         <span class="text-foreground text-sm md:text-base font-medium"
           >Garantia "Lar Impecável"</span
         >
@@ -93,7 +81,7 @@
       {% if user.is_authenticated %}
       <a
         href="{% url 'website:dashboard' %}"
-        class="bg-primary text-primary-foreground px-6 py-2 rounded-full font-semibold hover:bg-primary/90 transition-colors shadow-lg w-fit my-6 md:my-8 cursor-pointer inline-block"
+        class="bg-[#F4D35E] text-[#011E41] px-6 py-2 rounded-full font-semibold hover:bg-[#F4D35E]/90 transition-colors shadow-lg w-fit my-6 md:my-8 cursor-pointer inline-block"
         hx-get="{% url 'website:dashboard' %}"
         hx-target="body"
         hx-swap="outerHTML"

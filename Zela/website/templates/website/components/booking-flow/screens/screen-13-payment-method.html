@@ -1,63 +1,8 @@
 {% load static %}
 <!-- Screen 13: Select Payment Method -->
-<div class="min-h-screen bg-white">
-  <!-- Header with Progress -->
-  <div class="border-b border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-6">
-      <div class="flex items-center">
-        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
-        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
-      </div>
-
-      <div class="flex items-center space-x-4">
-        <div
-          onclick="window.location.href = '/dashboard/'"
-          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
-        >
-          JG
-        </div>
-      </div>
-    </div>
-
-    <!-- Progress Bar -->
-    <div class="max-w-md mx-auto">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center">
-          <div
-            class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
-          >
-            ✓
-          </div>
-          <div class="ml-2 text-sm font-medium" style="color: #011e41">
-            Detalhes
-          </div>
-        </div>
-        <div class="flex items-center">
-          <div
-            class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
-          >
-            ✓
-          </div>
-          <div class="ml-2 text-sm font-medium" style="color: #011e41">
-            Trabalhador
-          </div>
-        </div>
-        <div class="flex items-center">
-          <div
-            class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
-          >
-            3
-          </div>
-          <div class="ml-2 text-sm font-medium" style="color: #011e41">
-            Pagamento
-          </div>
-        </div>
-      </div>
-      <div class="w-full bg-gray-200 rounded-full h-2">
-        <div class="bg-[#015e73] h-2 rounded-full" style="width: 100%"></div>
-      </div>
-    </div>
-  </div>
+<div class="min-h-screen bg-white flex flex-col">
+  <!-- Progress Header -->
+  {% include "website/components/booking-flow/partials/booking-progress-header.html" %}
 
   <!-- Main Content -->
   <div class="flex max-w-7xl mx-auto px-6 py-8">
@@ -68,10 +13,12 @@
         <h3 class="text-lg font-bold mb-4" style="color: #011e41">
           Resumo do Pagamento
         </h3>
-        <div class="bg-gray-900 text-white rounded-2xl p-4">
+        <div class="bg-[#F4D35E] text-[#011e41] rounded-2xl p-4">
           <div class="flex items-center justify-between">
-            <div class="text-lg font-bold">Total: R770</div>
-            <button class="text-gray-300 hover:text-white cursor-pointer">
+            <div class="text-lg font-bold" x-text="`Total: AOA ${(window.bookingFlowComponent?.booking?.pricing?.total || 0).toLocaleString('pt-AO')}`">Total: AOA 0</div>
+            <button
+              class="text-[#011e41]/60 hover:text-[#011e41] cursor-pointer"
+            >
               <svg
                 class="w-4 h-4"
                 fill="none"
@@ -96,8 +43,13 @@
         <div class="flex items-center justify-between mb-4">
           <div>
             <div class="text-sm text-gray-600 mb-1">Onde:</div>
-            <div class="text-sm font-medium" style="color: #011e41">
-              1 Osborne Rd, Mowbray, Cape To...
+            <div class="text-sm font-medium" style="color: #011e41" 
+                 x-text="window.bookingFlowComponent?.booking?.location?.streetAddress ? 
+                         (window.bookingFlowComponent.booking.location.streetAddress.length > 35 ? 
+                          window.bookingFlowComponent.booking.location.streetAddress.substring(0, 35) + '...' : 
+                          window.bookingFlowComponent.booking.location.streetAddress) : 
+                         'Endereço não definido'">
+              Endereço não definido
             </div>
           </div>
           <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
@@ -121,8 +73,24 @@
         <div class="flex items-center justify-between mb-4">
           <div>
             <div class="text-sm text-gray-600 mb-1">O quê:</div>
-            <div class="text-sm font-medium" style="color: #011e41">
-              Limpeza Interior
+            <div class="text-sm font-medium" style="color: #011e41"
+                 x-text="(() => {
+                   const serviceMap = {
+                     'indoor-cleaning': 'Limpeza Interna',
+                     'outdoor': 'Serviços Externos',
+                     'office': 'Limpeza de Escritório',
+                     'moving': 'Limpeza de Mudança',
+                     'express': 'Limpeza Express',
+                     'laundry': 'Lavandaria e Engomadoria',
+                     'electrician': 'Eletricista',
+                     'ac-repair': 'Reparação de AC',
+                     'pest-control': 'Desinfestação',
+                     'dog-trainer': 'Adestrador'
+                   };
+                   const serviceType = window.bookingFlowComponent?.booking?.serviceType || 'indoor-cleaning';
+                   return serviceMap[serviceType] || 'Limpeza Interna';
+                 })()">
+              Limpeza Interna
             </div>
           </div>
           <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
@@ -146,8 +114,23 @@
         <div class="flex items-center justify-between">
           <div>
             <div class="text-sm text-gray-600 mb-1">Quando:</div>
-            <div class="text-sm font-medium" style="color: #011e41">
-              Sun 6 Jul @ 07:00
+            <div class="text-sm font-medium" style="color: #011e41"
+                 x-text="(() => {
+                   const booking = window.bookingFlowComponent?.booking;
+                   if (!booking?.date) return 'Data não definida';
+                   
+                   const date = new Date(booking.date);
+                   const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+                   const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                   
+                   const dayName = days[date.getDay()];
+                   const day = date.getDate();
+                   const month = months[date.getMonth()];
+                   const time = booking.timeWindow || booking.details?.startTime || '07:00';
+                   
+                   return `${dayName} ${day} ${month} @ ${time.split(' - ')[0]}`;
+                 })()">
+              Data não definida
             </div>
           </div>
           <button class="text-gray-400 hover:text-gray-600 cursor-pointer">
@@ -167,7 +150,6 @@
           </button>
         </div>
       </div>
-
     </div>
 
     <!-- Right Column - Payment Method Selection -->
@@ -176,7 +158,7 @@
         <h2 class="text-2xl font-bold mb-8" style="color: #011e41">
           Qual é o seu método de pagamento preferido?
         </h2>
-        <p class="text-gray-600 mb-6">Total a pagar: R780.00</p>
+        <p class="text-gray-600 mb-6" x-text="`Total a pagar: AOA ${(window.bookingFlowComponent?.booking?.pricing?.total || 0).toLocaleString('pt-AO')}`">Total a pagar: AOA 0</p>
 
         <div class="space-y-4 mb-8">
           <!-- Credit Card / UCount -->
@@ -247,8 +229,13 @@
                     d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
                   />
                 </svg>
-                <span class="font-medium" style="color: #011e41">Transferência Bancária</span>
-                <span class="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">Em breve</span>
+                <span class="font-medium" style="color: #011e41"
+                  >Transferência Bancária</span
+                >
+                <span
+                  class="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
+                  >Em breve</span
+                >
               </div>
             </div>
           </div>
@@ -284,27 +271,43 @@
                   />
                 </svg>
                 <span class="font-medium" style="color: #011e41">SnapScan</span>
-                <span class="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">Em breve</span>
+                <span
+                  class="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
+                  >Em breve</span
+                >
               </div>
             </div>
           </div>
         </div>
 
         <!-- Payment Info -->
-        <div class="mb-8" id="payment-info-section" style="display: none;">
+        <div class="mb-8" id="payment-info-section" style="display: none">
           <h3 class="text-xl font-bold mb-4" style="color: #011e41">
             Informações de Pagamento
           </h3>
-          
+
           <!-- Test Mode Notice -->
           <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <div class="flex items-start gap-3">
-              <svg class="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                class="w-5 h-5 text-blue-600 mt-0.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               <div class="text-sm text-blue-800">
                 <p class="font-medium mb-1">Modo de Teste Ativo</p>
-                <p>O processamento de pagamento está atualmente em modo de teste. Nenhuma cobrança real será feita.</p>
+                <p>
+                  O processamento de pagamento está atualmente em modo de teste.
+                  Nenhuma cobrança real será feita.
+                </p>
               </div>
             </div>
           </div>
@@ -313,7 +316,7 @@
           <div class="space-y-3 mb-4" id="saved-cards-container">
             <!-- Cards will be loaded here dynamically -->
           </div>
-          
+
           <button
             onclick="addNewCard()"
             class="flex items-center text-green-600 hover:text-green-700 font-medium transition-colors duration-200 cursor-pointer"
@@ -360,10 +363,10 @@
 
   function selectPaymentMethod(method) {
     // Prevent selection of coming soon methods
-    if (method === 'eft' || method === 'snapscan') {
+    if (method === "eft" || method === "snapscan") {
       return;
     }
-    
+
     // Clear all previous selections
     ["credit-card", "eft", "snapscan"].forEach((methodId) => {
       const element = document.getElementById(`payment-${methodId}`);
@@ -397,47 +400,60 @@
     if (window.bookingFlowComponent) {
       window.bookingFlowComponent.booking.payment.method = method;
     }
-    
+
     // Show payment info section for credit card
-    const paymentInfoSection = document.getElementById('payment-info-section');
+    const paymentInfoSection = document.getElementById("payment-info-section");
     if (paymentInfoSection) {
-      paymentInfoSection.style.display = method === 'credit-card' ? 'block' : 'none';
+      paymentInfoSection.style.display =
+        method === "credit-card" ? "block" : "none";
     }
-    
+
     // Load saved cards if credit card is selected
-    if (method === 'credit-card') {
+    if (method === "credit-card") {
       loadSavedCards();
     }
   }
-  
+
   function loadSavedCards() {
     // Load saved cards from the user's profile
-    fetch('/api/payment-methods/')
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('saved-cards-container');
+    fetch("/api/payment-methods/")
+      .then((response) => response.json())
+      .then((data) => {
+        const container = document.getElementById("saved-cards-container");
         if (container && data.cards) {
-          container.innerHTML = data.cards.map(card => `
+          container.innerHTML = data.cards
+            .map(
+              (card) => `
             <div class="border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-[#015e73] transition-colors"
                  onclick="selectCard('${card.id}')">
               <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                  <input type="radio" name="card" value="${card.id}" class="text-[#015e73]" />
+                  <input type="radio" name="card" value="${
+                    card.id
+                  }" class="text-[#015e73]" />
                   <div>
                     <div class="font-medium">•••• •••• •••• ${card.last4}</div>
-                    <div class="text-sm text-gray-500">${card.brand} - Expires ${card.exp_month}/${card.exp_year}</div>
+                    <div class="text-sm text-gray-500">${
+                      card.brand
+                    } - Expires ${card.exp_month}/${card.exp_year}</div>
                   </div>
                 </div>
-                ${card.is_default ? '<span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Default</span>' : ''}
+                ${
+                  card.is_default
+                    ? '<span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Default</span>'
+                    : ""
+                }
               </div>
             </div>
-          `).join('');
+          `
+            )
+            .join("");
         }
       })
-      .catch(error => {
-        console.log('Using mock data for cards');
+      .catch((error) => {
+        console.log("Using mock data for cards");
         // Mock data for demo
-        const container = document.getElementById('saved-cards-container');
+        const container = document.getElementById("saved-cards-container");
         if (container) {
           container.innerHTML = `
             <div class="border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-[#015e73] transition-colors"
@@ -457,7 +473,7 @@
         }
       });
   }
-  
+
   function selectCard(cardId) {
     if (window.bookingFlowComponent) {
       window.bookingFlowComponent.booking.payment.cardId = cardId;
@@ -519,9 +535,9 @@
       alert("Por favor, selecione um método de pagamento primeiro");
       return;
     }
-    
+
     // For credit card, check if a card is selected
-    if (selectedPaymentMethod === 'credit-card') {
+    if (selectedPaymentMethod === "credit-card") {
       const selectedCard = document.querySelector('input[name="card"]:checked');
       if (!selectedCard) {
         alert("Por favor, selecione um cartão ou adicione um novo");
@@ -534,9 +550,9 @@
       // Show a loading state or confirmation
       const continueBtn = event.target;
       const originalText = continueBtn.textContent;
-      continueBtn.textContent = 'Processando...';
+      continueBtn.textContent = "Processando...";
       continueBtn.disabled = true;
-      
+
       // Complete the booking after a short delay for UX
       setTimeout(() => {
         window.bookingFlowComponent.completeBooking();
@@ -547,11 +563,11 @@
   }
 
   function goBackToWorker() {
-    // Use the global component if available
-    if (window.bookingFlowComponent && window.bookingFlowComponent.goToScreen) {
-      window.bookingFlowComponent.goToScreen("individual-worker");
+    // Use the global component's previousScreen method to navigate back properly
+    if (window.bookingFlowComponent && window.bookingFlowComponent.previousScreen) {
+      window.bookingFlowComponent.previousScreen();
     } else {
-      console.error("Could not find booking flow component");
+      console.error("Could not find booking flow component or previousScreen method");
     }
   }
 </script>

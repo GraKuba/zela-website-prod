@@ -1,0 +1,177 @@
+{% extends "website/booking_mpa/base.html" %}
+{% load static %}
+
+{% block booking_content %}
+<form id="booking-form" method="post" class="p-6">
+    {% csrf_token %}
+    
+    <!-- Title Section -->
+    <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold mb-3" style="color: #011e41">
+            Quando precisa do serviço?
+        </h2>
+        <p class="text-base text-gray-600">
+            Escolha a data e o período que melhor lhe convém
+        </p>
+    </div>
+    
+    <!-- Date Selection -->
+    <div class="mb-8">
+        <label for="date" class="block text-sm font-medium text-gray-700 mb-2">
+            Data do Serviço
+        </label>
+        <input type="date" 
+               name="date" 
+               id="date"
+               value="{{ booking_data.schedule.date|default:'' }}"
+               min="{{ today }}"
+               required
+               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent">
+        {% if form.date.errors %}
+        <p class="mt-1 text-sm text-red-600">{{ form.date.errors.0 }}</p>
+        {% endif %}
+    </div>
+    
+    <!-- Time Period Selection -->
+    <div class="mb-8">
+        <label class="block text-sm font-medium text-gray-700 mb-4">
+            Período Preferencial
+        </label>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <label class="relative cursor-pointer">
+                <input type="radio" 
+                       name="time" 
+                       value="morning"
+                       class="sr-only peer"
+                       {% if booking_data.schedule.time == 'morning' %}checked{% endif %}
+                       required>
+                <div class="border-2 rounded-lg p-6 text-center transition-all
+                            hover:border-gray-400 peer-checked:border-[#015e73] 
+                            peer-checked:bg-[#015e73]/5">
+                    <div class="mb-2">
+                        <svg class="w-8 h-8 mx-auto text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                    <div class="font-semibold text-gray-900">Manhã</div>
+                    <div class="text-sm text-gray-600">8:00 - 12:00</div>
+                </div>
+            </label>
+            
+            <label class="relative cursor-pointer">
+                <input type="radio" 
+                       name="time" 
+                       value="afternoon"
+                       class="sr-only peer"
+                       {% if booking_data.schedule.time == 'afternoon' %}checked{% endif %}
+                       required>
+                <div class="border-2 rounded-lg p-6 text-center transition-all
+                            hover:border-gray-400 peer-checked:border-[#015e73] 
+                            peer-checked:bg-[#015e73]/5">
+                    <div class="mb-2">
+                        <svg class="w-8 h-8 mx-auto text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                    <div class="font-semibold text-gray-900">Tarde</div>
+                    <div class="text-sm text-gray-600">12:00 - 16:00</div>
+                </div>
+            </label>
+            
+            <label class="relative cursor-pointer">
+                <input type="radio" 
+                       name="time" 
+                       value="evening"
+                       class="sr-only peer"
+                       {% if booking_data.schedule.time == 'evening' %}checked{% endif %}
+                       required>
+                <div class="border-2 rounded-lg p-6 text-center transition-all
+                            hover:border-gray-400 peer-checked:border-[#015e73] 
+                            peer-checked:bg-[#015e73]/5">
+                    <div class="mb-2">
+                        <svg class="w-8 h-8 mx-auto text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                    </div>
+                    <div class="font-semibold text-gray-900">Fim de Tarde</div>
+                    <div class="text-sm text-gray-600">16:00 - 20:00</div>
+                </div>
+            </label>
+        </div>
+        {% if form.time.errors %}
+        <p class="mt-2 text-sm text-red-600">{{ form.time.errors.0 }}</p>
+        {% endif %}
+    </div>
+    
+    <!-- Urgency Selection -->
+    <div class="mb-8">
+        <label class="block text-sm font-medium text-gray-700 mb-4">
+            Urgência do Serviço
+        </label>
+        <div class="space-y-3">
+            <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                <input type="radio" 
+                       name="urgency" 
+                       value="normal"
+                       class="mr-3"
+                       {% if booking_data.schedule.urgency == 'normal' or not booking_data.schedule.urgency %}checked{% endif %}>
+                <div class="flex-1">
+                    <div class="font-medium text-gray-900">Normal</div>
+                    <div class="text-sm text-gray-600">Agendamento regular</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm text-gray-500">Sem custo adicional</div>
+                </div>
+            </label>
+            
+            <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                <input type="radio" 
+                       name="urgency" 
+                       value="urgent"
+                       class="mr-3"
+                       {% if booking_data.schedule.urgency == 'urgent' %}checked{% endif %}>
+                <div class="flex-1">
+                    <div class="font-medium text-gray-900">Urgente</div>
+                    <div class="text-sm text-gray-600">Preciso do serviço em 24-48 horas</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm font-semibold text-orange-600">+20% do valor</div>
+                </div>
+            </label>
+            
+            <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+                <input type="radio" 
+                       name="urgency" 
+                       value="emergency"
+                       class="mr-3"
+                       {% if booking_data.schedule.urgency == 'emergency' %}checked{% endif %}>
+                <div class="flex-1">
+                    <div class="font-medium text-gray-900">Emergência</div>
+                    <div class="text-sm text-gray-600">Preciso do serviço hoje</div>
+                </div>
+                <div class="text-right">
+                    <div class="text-sm font-semibold text-red-600">+50% do valor</div>
+                </div>
+            </label>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block booking_scripts %}
+<script>
+    // Set minimum date to today
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInput = document.getElementById('date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+        
+        // If no date is set, default to tomorrow
+        if (!dateInput.value) {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            dateInput.value = tomorrow.toISOString().split('T')[0];
+        }
+    });
+</script>
+{% endblock %}

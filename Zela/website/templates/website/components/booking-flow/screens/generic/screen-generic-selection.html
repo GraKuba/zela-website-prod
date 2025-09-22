@@ -1,0 +1,253 @@
+{% load static %}
+
+<!-- Generic Selection Screen - Configurable for Multiple Services -->
+<div class="min-h-screen bg-white flex flex-col" x-data="genericSelection()">
+  <!-- Progress Header -->
+  {% include "website/components/booking-flow/partials/booking-progress-header.html" %}
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col lg:flex-row px-4 sm:px-6 py-4 sm:py-6">
+    <div class="w-full max-w-4xl mx-auto">
+      <!-- Section Header -->
+      <div class="mb-6">
+        <button
+          @click="previousScreen()"
+          class="flex items-center text-gray-600 hover:text-gray-800 transition-colors mb-4"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Voltar
+        </button>
+
+        <h2 class="text-2xl sm:text-3xl font-bold text-[#011e41] mb-2" x-text="config.title">
+          Selecione uma opção
+        </h2>
+        <p class="text-gray-600" x-text="config.description">
+          Escolha a opção desejada
+        </p>
+      </div>
+
+      <!-- Options Grid/List -->
+      <div class="space-y-4">
+        <template x-for="option in config.options" :key="option.id">
+          <div
+            @click="selectOption(option)"
+            :class="isSelected(option.id) ? 'border-[#015e73] bg-green-50' : 'border-gray-200 hover:border-gray-300'"
+            class="border-2 rounded-lg p-4 sm:p-6 cursor-pointer transition-all"
+          >
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <h3 class="text-lg sm:text-xl font-semibold text-[#011e41]" x-text="option.label"></h3>
+                <template x-if="option.description">
+                  <p class="text-gray-600 mt-1" x-text="option.description"></p>
+                </template>
+                <template x-if="option.price">
+                  <p class="text-[#015e73] font-semibold mt-2">
+                    AOA <span x-text="option.price.toLocaleString('pt-AO')"></span>
+                  </p>
+                </template>
+              </div>
+              <div class="ml-4">
+                <!-- Checkbox for multi-select -->
+                <template x-if="config.multiSelect">
+                  <div 
+                    :class="isSelected(option.id) ? 'bg-[#015e73]' : 'bg-white border-2 border-gray-300'"
+                    class="w-6 h-6 rounded flex items-center justify-center transition-all"
+                  >
+                    <template x-if="isSelected(option.id)">
+                      <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </template>
+                  </div>
+                </template>
+                <!-- Radio for single-select -->
+                <template x-if="!config.multiSelect">
+                  <div 
+                    :class="isSelected(option.id) ? 'border-[#015e73]' : 'border-gray-300'"
+                    class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all"
+                  >
+                    <template x-if="isSelected(option.id)">
+                      <div class="w-3 h-3 rounded-full bg-[#015e73]"></div>
+                    </template>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- Continue Button -->
+      <div class="mt-8">
+        <button
+          @click="continueToNext()"
+          :disabled="!hasValidSelection()"
+          :class="hasValidSelection() ? 'bg-[#015e73] hover:bg-[#014a5a]' : 'bg-gray-300 cursor-not-allowed'"
+          class="w-full py-4 rounded-lg text-white font-semibold text-lg transition-colors"
+        >
+          Continuar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function genericSelection() {
+  return {
+    config: {
+      title: 'Selecione uma opção',
+      description: 'Escolha a opção desejada',
+      options: [],
+      multiSelect: false,
+      minSelection: 1,
+      maxSelection: null,
+    },
+    selectedOptions: [],
+    
+    init() {
+      // Get configuration from parent component or URL params
+      if (window.bookingFlowComponent) {
+        const screenConfig = window.bookingFlowComponent.flowRouter.getScreenConfig(
+          window.bookingFlowComponent.currentScreenName
+        );
+        
+        // Load configuration based on service type and screen
+        const serviceType = window.bookingFlowComponent.booking.serviceType;
+        const screenName = window.bookingFlowComponent.currentScreenName;
+        
+        // Use the configuration from the parent component's loadGenericSelectionScreen method
+        // This would be passed via HTMX parameters in a real implementation
+        this.loadConfiguration(serviceType, screenName);
+        
+        // Restore previous selections if any
+        const bookingData = window.bookingFlowComponent.booking;
+        if (bookingData.selections && bookingData.selections[screenName]) {
+          this.selectedOptions = bookingData.selections[screenName];
+        }
+      }
+    },
+    
+    loadConfiguration(serviceType, screenName) {
+      // This configuration should match what's in the parent component's loadGenericSelectionScreen
+      // In production, this would be passed via the server or HTMX
+      const configs = {
+        'outdoor-services': {
+          'garden_area': {
+            title: "Área do Jardim",
+            description: "Qual é o tamanho da área exterior?",
+            options: [
+              { id: "small", label: "Pequeno (até 50m²)", price: 15000 },
+              { id: "medium", label: "Médio (50-150m²)", price: 25000 },
+              { id: "large", label: "Grande (150-300m²)", price: 35000 },
+              { id: "xlarge", label: "Muito Grande (300m²+)", price: 50000 },
+            ],
+            multiSelect: false,
+          },
+          'service_type': {
+            title: "Tipo de Serviço",
+            description: "Que serviço exterior precisa?",
+            options: [
+              { id: "lawn", label: "Corte de Relva" },
+              { id: "hedge", label: "Poda de Sebes" },
+              { id: "pressure", label: "Lavagem com Pressão" },
+              { id: "pool", label: "Limpeza de Piscina" },
+              { id: "general", label: "Manutenção Geral" },
+            ],
+            multiSelect: true,
+          }
+        },
+        'moving-cleaning': {
+          'move_type': {
+            title: "Tipo de Mudança",
+            description: "É mudança de entrada ou saída?",
+            options: [
+              { id: "move-in", label: "Mudança de Entrada", description: "Limpeza antes de se mudar" },
+              { id: "move-out", label: "Mudança de Saída", description: "Limpeza após sair" },
+              { id: "both", label: "Ambos", description: "Limpeza completa de entrada e saída" },
+            ],
+            multiSelect: false,
+          }
+        },
+        // Add more configurations as needed
+      };
+      
+      if (configs[serviceType] && configs[serviceType][screenName]) {
+        Object.assign(this.config, configs[serviceType][screenName]);
+      }
+    },
+    
+    selectOption(option) {
+      if (this.config.multiSelect) {
+        // Multi-select logic
+        const index = this.selectedOptions.findIndex(o => o.id === option.id);
+        if (index > -1) {
+          this.selectedOptions.splice(index, 1);
+        } else {
+          if (!this.config.maxSelection || this.selectedOptions.length < this.config.maxSelection) {
+            this.selectedOptions.push(option);
+          }
+        }
+      } else {
+        // Single-select logic
+        this.selectedOptions = [option];
+      }
+    },
+    
+    isSelected(optionId) {
+      return this.selectedOptions.some(o => o.id === optionId);
+    },
+    
+    hasValidSelection() {
+      const minRequired = this.config.minSelection || 1;
+      return this.selectedOptions.length >= minRequired;
+    },
+    
+    continueToNext() {
+      if (!this.hasValidSelection()) return;
+      
+      // Save selection to parent component
+      if (window.bookingFlowComponent) {
+        const screenName = window.bookingFlowComponent.currentScreenName;
+        
+        // Initialize selections object if it doesn't exist
+        if (!window.bookingFlowComponent.booking.selections) {
+          window.bookingFlowComponent.booking.selections = {};
+        }
+        
+        // Save the selection
+        window.bookingFlowComponent.booking.selections[screenName] = this.selectedOptions;
+        
+        // Save to specific booking fields based on screen
+        if (screenName === 'garden_area') {
+          window.bookingFlowComponent.booking.gardenArea = this.selectedOptions[0];
+        } else if (screenName === 'service_type') {
+          window.bookingFlowComponent.booking.outdoorServices = this.selectedOptions;
+        } else if (screenName === 'move_type') {
+          window.bookingFlowComponent.booking.moveType = this.selectedOptions[0];
+        } else if (screenName === 'care_requirements') {
+          window.bookingFlowComponent.booking.careRequirements = this.selectedOptions;
+        } else if (screenName === 'medical_needs') {
+          window.bookingFlowComponent.booking.medicalNeeds = this.selectedOptions;
+        } else if (screenName === 'visit_type') {
+          window.bookingFlowComponent.booking.visitType = this.selectedOptions[0];
+        } else if (screenName === 'service_options') {
+          window.bookingFlowComponent.booking.laundryOptions = this.selectedOptions;
+        }
+        
+        // Save booking data and navigate to next screen
+        window.bookingFlowComponent.saveBookingData();
+        window.bookingFlowComponent.nextScreen();
+      }
+    },
+    
+    previousScreen() {
+      if (window.bookingFlowComponent) {
+        window.bookingFlowComponent.previousScreen();
+      }
+    }
+  }
+}
+</script>

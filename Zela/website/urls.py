@@ -10,7 +10,8 @@ from .views.dashboard import (
     ProfileUpdateView, RatingCreatePartial, AddPaymentMethodView,
     set_default_payment_method, update_provider_availability,
     update_provider_schedule, update_service_areas, upload_document,
-    update_profile, ProviderRatingsPartial, update_settings
+    update_profile, ProviderRatingsPartial, update_settings,
+    booking_details_modal
 )
 from .views.providers import ProviderLandingView, ProviderApplicationWizard, ApplyWorkerView
 from .views.booking import booking_flow, booking_screen, save_booking_data, get_booking_data, process_payment, get_available_workers, get_user_addresses
@@ -53,6 +54,7 @@ urlpatterns = [
     path('dashboard/booking/<int:pk>/update/', BookingUpdatePartial.as_view(), name='dashboard-booking-update'),
     path('dashboard/profile/', ProfileUpdateView.as_view(), name='dashboard-profile'),
     path('dashboard/booking/<int:booking_pk>/rate/', RatingCreatePartial.as_view(), name='dashboard-rating-create'),
+    path('dashboard/booking/<int:booking_id>/details/', booking_details_modal, name='booking-details-modal'),
     path('dashboard/ratings/', ProviderRatingsPartial.as_view(), name='dashboard-ratings'),
     path('dashboard/payment-method/add/', AddPaymentMethodView.as_view(), name='add-payment-method'),
     path('dashboard/payment-method/<int:pk>/set-default/', set_default_payment_method, name='set-default-payment'),
@@ -72,14 +74,17 @@ urlpatterns = [
     path('providers/apply/', ProviderApplicationWizard.as_view(), name='provider-apply'),
     path('apply-worker/', ApplyWorkerView.as_view(), name='apply-worker'),
     
-    # Booking Flow
+    # Booking Flow (Original - keeping for backward compatibility)
     path('book/', booking_flow, name='booking-flow'),
-    path('booking-flow/screen/<int:screen_number>/', booking_screen, name='booking-screen'),
+    path('booking-flow/screen/<str:screen_number>/', booking_screen, name='booking-screen'),
     path('booking-flow/save-data/', save_booking_data, name='save-booking-data'),
     path('booking-flow/get-data/', get_booking_data, name='get-booking-data'),
     path('booking-flow/workers/', get_available_workers, name='get-available-workers'),
     path('booking-flow/addresses/', get_user_addresses, name='get-user-addresses'),
     path('booking-flow/payment/', process_payment, name='process-payment'),
+    
+    # MPA Booking Flow (New simplified architecture)
+    path('book-mpa/', include('website.urls_mpa', namespace='booking_mpa')),
     
     # API endpoints
     path('api/payment-methods/', get_payment_methods, name='api-payment-methods'),

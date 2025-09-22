@@ -1,0 +1,5 @@
+{% load static %}
+<!-- Screen 7: Choose Date Bucket -->
+<div class="min-h-screen bg-white flex flex-col">
+  <!-- Progress Header -->
+  {% include "website/components/booking-flow/partials/booking-progress-header.html" %}

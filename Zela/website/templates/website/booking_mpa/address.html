@@ -1,0 +1,755 @@
+{% extends "website/layouts/base.html" %}
+{% load static %}
+
+{% block title %}Booking - Address{% endblock %}
+
+{% block styles %}
+{{ block.super }}
+<!-- Include Leaflet CSS in head -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  crossorigin=""
+/>
+<style>
+  /* Override base template constraints */
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f0fe 100%);
+  }
+  
+  main {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Full screen container */
+  .booking-container {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Map wrapper - full screen */
+  .map-wrapper {
+    position: relative;
+    flex: 1;
+    min-height: calc(100vh - 72px);
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f0fe 100%);
+  }
+
+  /* Map fills the wrapper */
+  #booking-map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .leaflet-container {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f0fe 100%);
+  }
+
+  /* Form card as overlay */
+  .form-card {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 28rem;
+    z-index: 1000;
+  }
+
+  /* Continue button as overlay */
+  .continue-btn-wrapper {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 28rem;
+    z-index: 1000;
+  }
+
+  /* Service modal for desktop */
+  @media (min-width: 1024px) {
+    .map-wrapper.with-sidebar {
+      margin-right: 384px;
+    }
+
+    .service-sidebar {
+      position: fixed;
+      top: 72px;
+      right: 0;
+      bottom: 0;
+      width: 384px;
+      background: white;
+      border-left: 1px solid #e5e7eb;
+      z-index: 999;
+      display: block !important;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Full screen booking container -->
+<div class="booking-container">
+  <!-- Header -->
+  <div
+    class="flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200"
+    style="height: 72px; position: relative; z-index: 1001"
+  >
+    <div class="flex items-center">
+      <img
+        src="{% static 'zela-logo.png' %}"
+        alt="Zela"
+        class="w-8 h-8 sm:w-10 sm:h-10"
+      />
+      <span
+        class="ml-2 sm:ml-3 text-lg sm:text-xl font-bold"
+        style="color: #011e41"
+        >Zela</span
+      >
+    </div>
+
+    <div class="flex items-center space-x-4">
+      {% if user.is_authenticated %}
+      <div
+        onclick="window.location.href = '/dashboard/'"
+        class="w-8 h-8 sm:w-10 sm:h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors overflow-hidden"
+      >
+        {% if user.profile.profile_picture %}
+        <img
+          src="{{ user.profile.profile_picture.url }}"
+          alt="{{ user.get_full_name }}"
+          class="w-full h-full object-cover"
+        />
+        {% else %} {{ user.first_name|first|upper }}{{
+        user.last_name|first|upper }} {% endif %}
+      </div>
+      {% else %}
+      <div
+        onclick="window.location.href = '/accounts/login/'"
+        class="w-8 h-8 sm:w-10 sm:h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-gray-500 transition-colors"
+      >
+        ?
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Map Container -->
+  <div class="map-wrapper" id="map-wrapper">
+    <!-- Map will be initialized here -->
+    <div id="booking-map"></div>
+
+    <!-- Address Form Card -->
+    <div class="form-card">
+      <form
+        id="booking-form"
+        method="post"
+        class="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8"
+      >
+        {% csrf_token %}
+
+        <h2
+          class="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6"
+          style="color: #011e41"
+        >
+          Onde precisa de ajuda?
+        </h2>
+
+        {% if saved_addresses %}
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-2" style="color: #4a5a70">
+            Escolha entre os endereços guardados
+          </label>
+          <div class="space-y-2 max-h-32 overflow-y-auto">
+            {% for address in saved_addresses %}
+            <div
+              onclick="selectSavedAddress({{ address.id }}, '{{ address.full_address|escapejs }}')"
+              class="p-2 border border-gray-200 rounded-lg hover:border-[#015e73] hover:bg-[#015e73]/5 cursor-pointer transition-colors"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-medium text-sm">{{ address.name }}</div>
+                  <div class="text-xs text-gray-600">
+                    {{ address.full_address }}
+                  </div>
+                </div>
+                {% if address.is_main %}
+                <div class="text-xs bg-[#015e73] text-white px-2 py-1 rounded">
+                  Principal
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="mt-3 text-center">
+            <span class="text-sm text-gray-500">ou</span>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Unit/Apartment Field -->
+        <div class="mb-3">
+          <label class="block text-sm font-medium mb-1" style="color: #4a5a70">
+            Unidade/Número e Nome do Apartamento (Opcional)
+          </label>
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              >🏠</span
+            >
+            <input
+              type="text"
+              name="complement"
+              id="id_complement"
+              value="{{ form.complement.value|default:'' }}"
+              placeholder="Ex. 2a Apartamento Verde"
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+            />
+          </div>
+        </div>
+
+        <!-- Street Address Field -->
+        <div class="mb-3">
+          <label class="block text-sm font-medium mb-1" style="color: #4a5a70">
+            Endereço da Rua
+          </label>
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              >📍</span
+            >
+            <input
+              type="text"
+              name="street"
+              id="id_street"
+              value="{{ form.street.value|default:'' }}"
+              placeholder="Ex. Rua Major Kanhangulo, Luanda"
+              required
+              class="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+            />
+            <button
+              type="button"
+              onclick="clearAddress()"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Results -->
+        <div id="search-results-container" style="display: none" class="mb-3">
+          <div
+            class="max-h-32 overflow-y-auto border border-gray-200 rounded-lg"
+            id="search-results"
+          ></div>
+        </div>
+
+        <!-- Hidden fields -->
+        <input
+          type="hidden"
+          name="number"
+          id="id_number"
+          value="{{ form.number.value|default:'1' }}"
+        />
+        <input
+          type="hidden"
+          name="district"
+          id="id_district"
+          value="{{ form.district.value|default:'Luanda' }}"
+        />
+        <input
+          type="hidden"
+          name="city"
+          id="id_city"
+          value="{{ form.city.value|default:'Luanda' }}"
+        />
+        <input
+          type="hidden"
+          name="postal_code"
+          id="id_postal_code"
+          value="{{ form.postal_code.value|default:'' }}"
+        />
+        <input
+          type="hidden"
+          name="latitude"
+          id="id_latitude"
+          value="{{ form.latitude.value|default:'-8.8941' }}"
+        />
+        <input
+          type="hidden"
+          name="longitude"
+          id="id_longitude"
+          value="{{ form.longitude.value|default:'13.2897' }}"
+        />
+      </form>
+    </div>
+
+    <!-- Continue Button -->
+    <div
+      class="continue-btn-wrapper"
+      id="continue-button-container"
+    >
+      <button
+        type="submit"
+        form="booking-form"
+        class="w-full min-h-[44px] py-3 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 shadow-lg text-base"
+      >
+        Continuar com esta localização
+      </button>
+    </div>
+  </div>
+
+  <!-- Service Sidebar (Desktop only) -->
+  <div
+    id="service-sidebar"
+    class="service-sidebar hidden lg:block"
+  >
+    <div class="h-full flex flex-col">
+      <!-- Service Header -->
+      <div class="p-6 bg-gray-50 border-b border-gray-200">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center">
+            <div
+              class="w-16 h-16 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center"
+            >
+              <svg
+                class="w-10 h-10 text-blue-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g>
+                  <rect
+                    x="8"
+                    y="10"
+                    width="8"
+                    height="10"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="white"
+                  />
+                  <path
+                    d="M12 10V4"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M10 4h4"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <circle cx="9" cy="19" r="1.5" fill="currentColor" />
+                  <circle cx="15" cy="19" r="1.5" fill="currentColor" />
+                </g>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-xl font-bold" style="color: #011e41">
+                {{ service_name|default:"Limpeza Interior" }}
+              </h3>
+            </div>
+          </div>
+          <button
+            onclick="dismissServiceModal()"
+            class="text-gray-400 hover:text-gray-600 text-2xl cursor-pointer hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center transition-colors"
+          >
+            ✕
+          </button>
+        </div>
+        <p class="text-gray-700 text-sm">
+          {{ service_description|default:"Obtenha 3,5 a 10 horas de limpeza
+          completa e abrangente da sua casa." }}
+        </p>
+      </div>
+
+      <!-- How it works -->
+      <div class="flex-1 p-6 overflow-y-auto">
+        <h4 class="text-xl font-bold mb-6" style="color: #011e41">
+          Como funciona
+        </h4>
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <span class="text-[#015e73] text-sm font-light mr-4">1.</span>
+            <p class="text-gray-700">Diga-nos onde precisa de ajuda</p>
+          </div>
+          <div class="flex items-start">
+            <span class="text-[#015e73] text-sm font-light mr-4">2.</span>
+            <p class="text-gray-700">Configure os requisitos da sua reserva</p>
+          </div>
+          <div class="flex items-start">
+            <span class="text-[#015e73] text-sm font-light mr-4">3.</span>
+            <p class="text-gray-700">Escolha o seu trabalhador</p>
+          </div>
+          <div class="flex items-start pt-3 mt-3 border-t border-gray-100">
+            <span class="text-[#f4d35e] mr-4">✓</span>
+            <p class="text-gray-800 font-medium">Concluído 🎉</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Got It Button -->
+      <div class="p-6 border-t border-gray-200">
+        <button
+          onclick="dismissServiceModal()"
+          class="w-full py-3 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors"
+        >
+          Entendi!
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<!-- Include Leaflet JS -->
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  crossorigin=""
+></script>
+
+<script>
+  // Global variables
+  let map = null;
+  let marker = null;
+  let searchTimeout = null;
+
+  // Wait for DOM content to be loaded
+  document.addEventListener("DOMContentLoaded", function () {
+    console.log("DOM loaded, initializing components...");
+    
+    // Set up event listeners first
+    setupEventListeners();
+
+    // Check initial state
+    checkAddressState();
+
+    // Initialize map only if Leaflet is available
+    if (typeof L !== 'undefined') {
+      // Initialize map after a short delay to ensure container is ready
+      setTimeout(function () {
+        initializeMap();
+      }, 100);
+    } else {
+      console.log("Leaflet not loaded, showing form without map");
+    }
+
+    // Show service sidebar on desktop
+    if (window.innerWidth >= 1024) {
+      showServiceInfo();
+    }
+  });
+
+  function initializeMap() {
+    try {
+      const mapContainer = document.getElementById("booking-map");
+      const mapWrapper = document.getElementById("map-wrapper");
+
+      if (!mapContainer || !mapWrapper) {
+        console.error("Map container not found");
+        return;
+      }
+
+      // Map container is already visible
+
+      // Get coordinates
+      const latInput = document.getElementById("id_latitude");
+      const lngInput = document.getElementById("id_longitude");
+      const lat =
+        latInput && latInput.value ? parseFloat(latInput.value) : -8.8941;
+      const lng =
+        lngInput && lngInput.value ? parseFloat(lngInput.value) : 13.2897;
+
+      console.log("Initializing map at:", lat, lng);
+
+      // Initialize the map
+      map = L.map("booking-map", {
+        center: [lat, lng],
+        zoom: 13,
+        zoomControl: true,
+      });
+
+      // Add tile layer
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+        maxZoom: 19,
+      }).addTo(map);
+
+      // Add marker
+      marker = L.marker([lat, lng], {
+        draggable: true,
+      }).addTo(map);
+
+      // Marker events
+      marker.on("dragend", function (e) {
+        const position = marker.getLatLng();
+        updateCoordinates(position.lat, position.lng);
+        if (!document.getElementById("id_street").value) {
+          reverseGeocode(position.lat, position.lng);
+        }
+      });
+
+      // Map click event
+      map.on("click", function (e) {
+        marker.setLatLng(e.latlng);
+        updateCoordinates(e.latlng.lat, e.latlng.lng);
+        if (!document.getElementById("id_street").value) {
+          reverseGeocode(e.latlng.lat, e.latlng.lng);
+        }
+      });
+
+      // Add map-loaded class to wrapper for styling
+      mapWrapper.classList.add("map-loaded");
+
+      // Force map to refresh its size
+      setTimeout(function () {
+        map.invalidateSize();
+      }, 200);
+
+      console.log("Map initialized successfully");
+    } catch (error) {
+      console.error("Error initializing map:", error);
+      // Don't retry indefinitely, show form anyway
+      console.log("Map failed to load, showing form without map");
+    }
+  }
+
+  function setupEventListeners() {
+    // Street input listener
+    const streetInput = document.getElementById("id_street");
+    if (streetInput) {
+      streetInput.addEventListener("input", function (e) {
+        searchAddress(e.target.value);
+        checkAddressState();
+      });
+
+      streetInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          geocodeAndCenterMap(e.target.value);
+        }
+      });
+    }
+  }
+
+  function updateCoordinates(lat, lng) {
+    document.getElementById("id_latitude").value = lat;
+    document.getElementById("id_longitude").value = lng;
+    checkAddressState();
+  }
+
+  function searchAddress(value) {
+    clearTimeout(searchTimeout);
+
+    if (!value || value.length < 3) {
+      hideSearchResults();
+      return;
+    }
+
+    searchTimeout = setTimeout(function () {
+      fetch(
+        "https://nominatim.openstreetmap.org/search?format=json&q=" +
+          encodeURIComponent(value + ", Luanda, Angola") +
+          "&limit=5"
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && data.length > 0) {
+            showSearchResults(data);
+          } else {
+            hideSearchResults();
+          }
+        })
+        .catch((error) => {
+          console.error("Search error:", error);
+          hideSearchResults();
+        });
+    }, 500);
+  }
+
+  function showSearchResults(results) {
+    const container = document.getElementById("search-results-container");
+    const resultsDiv = document.getElementById("search-results");
+
+    resultsDiv.innerHTML = "";
+
+    results.forEach(function (result) {
+      const div = document.createElement("div");
+      div.className =
+        "p-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0";
+      div.onclick = function () {
+        selectSearchResult(result);
+      };
+
+      const textDiv = document.createElement("div");
+      textDiv.className = "text-sm";
+      textDiv.textContent = result.display_name;
+
+      div.appendChild(textDiv);
+      resultsDiv.appendChild(div);
+    });
+
+    container.style.display = "block";
+  }
+
+  function hideSearchResults() {
+    const container = document.getElementById("search-results-container");
+    if (container) {
+      container.style.display = "none";
+    }
+  }
+
+  function selectSearchResult(result) {
+    const lat = parseFloat(result.lat);
+    const lng = parseFloat(result.lon);
+
+    document.getElementById("id_street").value = result.display_name;
+
+    const addressParts = result.display_name.split(",");
+    if (addressParts.length > 1) {
+      document.getElementById("id_district").value = addressParts[1].trim();
+    }
+    if (addressParts.length > 2) {
+      document.getElementById("id_city").value = addressParts[2].trim();
+    }
+
+    if (map && marker) {
+      map.setView([lat, lng], 15);
+      marker.setLatLng([lat, lng]);
+      updateCoordinates(lat, lng);
+    }
+
+    hideSearchResults();
+    checkAddressState();
+  }
+
+  function geocodeAndCenterMap(address) {
+    if (!address) return;
+
+    fetch(
+      "https://nominatim.openstreetmap.org/search?format=json&q=" +
+        encodeURIComponent(address + ", Luanda, Angola") +
+        "&limit=1"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.length > 0) {
+          const lat = parseFloat(data[0].lat);
+          const lng = parseFloat(data[0].lon);
+
+          if (map && marker) {
+            map.setView([lat, lng], 15);
+            marker.setLatLng([lat, lng]);
+            updateCoordinates(lat, lng);
+          }
+        }
+      })
+      .catch((error) => console.error("Geocoding error:", error));
+  }
+
+  function reverseGeocode(lat, lng) {
+    fetch(
+      "https://nominatim.openstreetmap.org/reverse?format=json&lat=" +
+        lat +
+        "&lon=" +
+        lng +
+        "&zoom=18&addressdetails=1"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.display_name) {
+          document.getElementById("id_street").value = data.display_name;
+          checkAddressState();
+        }
+      })
+      .catch((error) => console.error("Reverse geocoding error:", error));
+  }
+
+  function clearAddress() {
+    document.getElementById("id_street").value = "";
+    checkAddressState();
+  }
+
+  function checkAddressState() {
+    const streetAddress = document.getElementById("id_street").value;
+    const continueBtn = document.getElementById("continue-button-container");
+
+    // Continue button is always visible, just update its state
+    if (continueBtn) {
+      const button = continueBtn.querySelector("button");
+      if (button) {
+        if (streetAddress && streetAddress.trim() !== "") {
+          button.disabled = false;
+          button.style.opacity = "1";
+        } else {
+          button.disabled = true;
+          button.style.opacity = "0.5";
+        }
+      }
+    }
+  }
+
+  function selectSavedAddress(addressId, fullAddress) {
+    document.getElementById("id_street").value = fullAddress;
+    checkAddressState();
+    // TODO: Get coordinates for saved address
+  }
+
+  function showServiceInfo() {
+    const sidebar = document.getElementById("service-sidebar");
+    const mapWrapper = document.getElementById("map-wrapper");
+
+    if (sidebar) {
+      sidebar.classList.remove("hidden");
+      if (mapWrapper) {
+        mapWrapper.classList.add("with-sidebar");
+      }
+
+      // Resize map after showing sidebar
+      setTimeout(function () {
+        if (map) {
+          map.invalidateSize();
+        }
+      }, 300);
+    }
+  }
+
+  function dismissServiceModal() {
+    const sidebar = document.getElementById("service-sidebar");
+    const mapWrapper = document.getElementById("map-wrapper");
+
+    if (sidebar) {
+      sidebar.classList.add("hidden");
+      if (mapWrapper) {
+        mapWrapper.classList.remove("with-sidebar");
+      }
+
+      // Resize map after hiding sidebar
+      setTimeout(function () {
+        if (map) {
+          map.invalidateSize();
+        }
+      }, 300);
+    }
+  }
+</script>
+{% endblock %}

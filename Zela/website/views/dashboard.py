@@ -1506,3 +1506,28 @@ def update_settings(request):
             'ok': 0,
             'message': f'Error updating settings: {str(e)}'
         }, status=400)
+
+
+@login_required
+def booking_details_modal(request, booking_id):
+    """Render booking details modal via HTMX."""
+    try:
+        # Get the booking, ensuring it belongs to the current user
+        booking = get_object_or_404(
+            Booking.objects.select_related('provider__provider', 'service_task'), 
+            id=booking_id,
+            customer=request.user
+        )
+        
+        context = {
+            'booking': booking
+        }
+        
+        return render(
+            request, 
+            'website/components/dashboard/modals/booking-details.html', 
+            context
+        )
+        
+    except Booking.DoesNotExist:
+        return HttpResponse("Reserva não encontrada", status=404)

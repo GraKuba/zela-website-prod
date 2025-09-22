@@ -1,0 +1,79 @@
+{% load static %}
+<!-- Booking Flow Progress Header - Reusable Component -->
+<div class="sticky top-0 z-50 bg-white border-b border-gray-200 px-6 py-3">
+  <div class="flex items-center justify-between">
+    <!-- Logo -->
+    <div class="flex items-center">
+      <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-8 h-8 sm:w-10 sm:h-10" />
+      <span class="ml-2 sm:ml-3 text-lg sm:text-xl font-bold" style="color: #011e41">Zela</span>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="flex-1 max-w-xs sm:max-w-md mx-auto">
+      <div class="flex items-center justify-between mb-2 sm:mb-3">
+        <div 
+          class="text-xs sm:text-sm text-center"
+          :class="progressStep >= 1 ? 'font-medium text-[#015e73]' : 'text-gray-400'"
+        >
+          <span class="hidden sm:inline">Details</span>
+          <span class="sm:hidden">1</span>
+        </div>
+        <div 
+          class="text-xs sm:text-sm text-center"
+          :class="progressStep >= 2 ? 'font-medium text-[#015e73]' : 'text-gray-400'"
+        >
+          <span class="hidden sm:inline">Worker</span>
+          <span class="sm:hidden">2</span>
+        </div>
+        <div 
+          class="text-xs sm:text-sm text-center"
+          :class="progressStep >= 3 ? 'font-medium text-[#015e73]' : 'text-gray-400'"
+        >
+          <span class="hidden sm:inline">Payment</span>
+          <span class="sm:hidden">3</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-1 sm:space-x-2">
+        <div 
+          class="flex-1 h-1 rounded-full transition-colors duration-300"
+          :class="progressStep >= 1 ? 'bg-[#015e73]' : 'bg-gray-200'"
+        ></div>
+        <div 
+          class="flex-1 h-1 rounded-full transition-colors duration-300"
+          :class="progressStep >= 2 ? 'bg-[#015e73]' : 'bg-gray-200'"
+        ></div>
+        <div 
+          class="flex-1 h-1 rounded-full transition-colors duration-300"
+          :class="progressStep >= 3 ? 'bg-[#015e73]' : 'bg-gray-200'"
+        ></div>
+      </div>
+    </div>
+
+    <!-- User Avatar -->
+    <div class="flex items-center space-x-4">
+      {% if user.is_authenticated %}
+      <div
+        @click="window.location.href = '/dashboard/'"
+        class="w-8 h-8 sm:w-10 sm:h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors overflow-hidden"
+      >
+        {% if user.profile.profile_picture %}
+        <img
+          src="{{ user.profile.profile_picture.url }}"
+          alt="{{ user.get_full_name }}"
+          class="w-full h-full object-cover"
+        />
+        {% else %}
+        {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+        {% endif %}
+      </div>
+      {% else %}
+      <div
+        @click="window.location.href = '/accounts/login/'"
+        class="w-8 h-8 sm:w-10 sm:h-10 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-gray-500 transition-colors"
+      >
+        ?
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+Reserva Confirmada - Zela
+
+Olá {{ customer_name }},
+
+A sua reserva foi confirmada com sucesso!
+
+DETALHES DA RESERVA
+==================
+Referência: {{ booking_reference }}
+Serviço: {{ service_name }}
+Data: {{ booking_date }}
+Hora: {{ booking_time }}
+{% if booking.worker %}Profissional: {{ booking.worker.user.get_full_name }}{% endif %}
+Morada: {{ booking.address }}
+Valor Total: {{ total_price }} Kz
+
+PRÓXIMOS PASSOS
+===============
+- O profissional chegará no horário agendado
+- Tenha o pagamento preparado (se escolheu pagamento em dinheiro)
+- Certifique-se de que alguém estará presente para receber o profissional
+
+Para ver mais detalhes da sua reserva, aceda ao seu dashboard:
+{{ dashboard_url }}
+
+Se precisar de cancelar ou reagendar, por favor entre em contacto connosco o mais breve possível.
+
+Obrigado por escolher a Zela!
+
+---
+© 2025 Zela. Todos os direitos reservados.
+Este é um email automático, por favor não responda.

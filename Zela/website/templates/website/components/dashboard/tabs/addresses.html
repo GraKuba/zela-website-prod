@@ -17,19 +17,35 @@
   class="space-y-6"
 >
   <!-- Header Section -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+  <div
+    class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+  >
     <div class="p-6 border-b border-gray-100">
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+      >
         <div>
           <h3 class="text-xl font-semibold text-gray-900">Meus Endereços</h3>
-          <p class="text-sm text-gray-600 mt-1">Gerencie seus endereços e locais de entrega</p>
+          <p class="text-sm text-gray-600 mt-1">
+            Gerencie seus endereços e locais de entrega
+          </p>
         </div>
         <button
           @click="showAddLocation = true"
           class="inline-flex items-center px-4 py-2.5 bg-[#015e73] text-white text-sm font-medium rounded-lg hover:bg-[#014a5a] focus:ring-4 focus:ring-[#015e73]/20 transition-all duration-200 shadow-sm cursor-pointer"
         >
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          <svg
+            class="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            ></path>
           </svg>
           Adicionar Novo Endereço
         </button>
@@ -44,9 +60,19 @@
             x-model="searchQuery"
             placeholder="Pesquisar endereços..."
             class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent text-sm"
+          />
+          <svg
+            class="absolute left-3 top-2.5 w-5 h-5 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-          <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
           </svg>
         </div>
       </div>
@@ -56,133 +82,249 @@
     <!-- Locations List -->
     <div class="p-6">
       {% if locations %}
-        <div class="grid gap-4">
-          {% for location in locations %}
-            <div 
-              class="group relative bg-gray-50 rounded-xl p-5 hover:bg-white hover:shadow-lg border-2 {% if location.is_main %}border-[#015e73] bg-[#015e73]/5 hover:bg-[#015e73]/5{% else %}border-transparent{% endif %} transition-all duration-200"
-              x-show="!searchQuery || '{{ location.name }}'.toLowerCase().includes(searchQuery.toLowerCase()) || '{{ location.address_line_1 }}'.toLowerCase().includes(searchQuery.toLowerCase()) || '{{ location.city }}'.toLowerCase().includes(searchQuery.toLowerCase())"
+      <div class="grid gap-4">
+        {% for location in locations %}
+        <div
+          class="group relative bg-gray-50 rounded-xl p-5 hover:bg-white hover:shadow-lg border-2 {% if location.is_main %}border-[#f4d35e] bg-[#f4d35e]/5 hover:bg-[#f4d35e]/5{% else %}border-transparent{% endif %} transition-all duration-200"
+          x-show="!searchQuery || '{{ location.name }}'.toLowerCase().includes(searchQuery.toLowerCase()) || '{{ location.address_line_1 }}'.toLowerCase().includes(searchQuery.toLowerCase()) || '{{ location.city }}'.toLowerCase().includes(searchQuery.toLowerCase())"
+        >
+          <!-- Main Location Indicator -->
+          {% if location.is_main %}
+          <div class="absolute -top-2 -right-2">
+            <span
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#f4d35e] text-gray-900 shadow-sm"
             >
-              <!-- Main Location Indicator -->
-              {% if location.is_main %}
-              <div class="absolute -top-2 -right-2">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#015e73] text-white shadow-sm">
-                  <svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                  </svg>
-                  Principal
-                </span>
-              </div>
-              {% endif %}
+              <svg
+                class="w-3.5 h-3.5 mr-1"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                />
+              </svg>
+              Principal
+            </span>
+          </div>
+          {% endif %}
 
-              <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                <!-- Location Details -->
+          <div
+            class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4"
+          >
+            <!-- Location Details -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start gap-3 mb-3">
+                <div
+                  class="flex-shrink-0 w-10 h-10 {% if location.is_main %}bg-[#f4d35e]/20{% else %}bg-gray-100{% endif %} rounded-lg flex items-center justify-center"
+                >
+                  <svg
+                    class="w-5 h-5 {% if location.is_main %}text-[#f4d35e]{% else %}text-gray-600{% endif %}"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                </div>
                 <div class="flex-1 min-w-0">
-                  <div class="flex items-start gap-3 mb-3">
-                    <div class="flex-shrink-0 w-10 h-10 {% if location.is_main %}bg-[#015e73]/10{% else %}bg-gray-100{% endif %} rounded-lg flex items-center justify-center">
-                      <svg class="w-5 h-5 {% if location.is_main %}text-[#015e73]{% else %}text-gray-600{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                      </svg>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <h4 class="text-base font-semibold text-gray-900 truncate">{{ location.name }}</h4>
-                      <div class="mt-1 space-y-1">
-                        <p class="text-sm text-gray-700">{{ location.address_line_1 }}</p>
-                        {% if location.address_line_2 %}
-                          <p class="text-sm text-gray-600">{{ location.address_line_2 }}</p>
-                        {% endif %}
-                        <p class="text-sm text-gray-600">
-                          {{ location.city }}, {{ location.province }}{% if location.postal_code %} {{ location.postal_code }}{% endif %}
-                        </p>
-                        <p class="text-sm text-gray-500">{{ location.get_country_display }}</p>
-                      </div>
-                    </div>
+                  <h4 class="text-base font-semibold text-gray-900 truncate">
+                    {{ location.name }}
+                  </h4>
+                  <div class="mt-1 space-y-1">
+                    <p class="text-sm text-gray-700">
+                      {{ location.address_line_1 }}
+                    </p>
+                    {% if location.address_line_2 %}
+                    <p class="text-sm text-gray-600">
+                      {{ location.address_line_2 }}
+                    </p>
+                    {% endif %}
+                    <p class="text-sm text-gray-600">
+                      {{ location.city }}, {{ location.province }}{% if
+                      location.postal_code %} {{ location.postal_code }}{% endif
+                      %}
+                    </p>
+                    <p class="text-sm text-gray-500">
+                      {{ location.get_country_display }}
+                    </p>
                   </div>
                 </div>
-
-                <!-- Actions -->
-                <div class="flex items-center gap-2 sm:gap-3">
-                  {% if not location.is_main %}
-                    <button
-                      hx-post="{% url 'accounts:location-set-main' location.id %}"
-                      hx-target="#addresses-tab"
-                      hx-swap="innerHTML"
-                      hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                      class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-[#015e73] bg-[#015e73]/10 rounded-lg hover:bg-[#015e73]/20 transition-colors cursor-pointer"
-                      title="Set as main location"
-                    >
-                      <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                      </svg>
-                      Definir Principal
-                    </button>
-                  {% endif %}
-                  
-                  <button
-                    @click="editingLocation = editingLocation === {{ location.id }} ? null : {{ location.id }}"
-                    hx-get="{% url 'accounts:location-edit' location.id %}"
-                    hx-target="#location-form-{{ location.id }}"
-                    hx-swap="innerHTML"
-                    class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
-                    title="Edit location"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                    </svg>
-                  </button>
-                  
-                  {% if not location.is_main %}
-                  <button
-                    hx-delete="{% url 'accounts:location-delete' location.id %}"
-                    hx-target="#addresses-tab"
-                    hx-swap="innerHTML"
-                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
-                    hx-confirm="Tem certeza de que deseja excluir '{{ location.name }}'? Esta ação não pode ser desfeita."
-                    class="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                    title="Delete location"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                    </svg>
-                  </button>
-                  {% endif %}
-                </div>
               </div>
-              
-              <!-- Inline Edit Form -->
-              <div id="location-form-{{ location.id }}" class="mt-4" x-show="editingLocation === {{ location.id }}" x-collapse></div>
             </div>
-          {% endfor %}
-        </div>
 
-        <!-- No search results -->
-        <div x-show="searchQuery && !document.querySelectorAll('#addresses-tab [x-show]:not([style*='display: none'])').length" class="text-center py-8" style="display: none;">
-          <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
-          <p class="text-gray-600">Nenhum endereço encontrado correspondente à sua pesquisa.</p>
-        </div>
-      {% else %}
-        <!-- Empty State -->
-        <div class="text-center py-12">
-          <div class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-            <svg class="w-12 h-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
+            <!-- Actions -->
+            <div class="flex items-center gap-2 sm:gap-3">
+              {% if not location.is_main %}
+              <button
+                hx-post="{% url 'accounts:location-set-main' location.id %}"
+                hx-target="#addresses-tab"
+                hx-swap="innerHTML"
+                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-800 bg-[#f4d35e]/20 rounded-lg hover:bg-[#f4d35e]/30 transition-colors cursor-pointer"
+                title="Set as main location"
+              >
+                <svg
+                  class="w-4 h-4 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                  />
+                </svg>
+                Definir Principal
+              </button>
+              {% endif %}
+
+              <button
+                @click="editingLocation = editingLocation === {{ location.id }} ? null : {{ location.id }}"
+                hx-get="{% url 'accounts:location-edit' location.id %}"
+                hx-target="#location-form-{{ location.id }}"
+                hx-swap="innerHTML"
+                class="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+                title="Edit location"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  ></path>
+                </svg>
+              </button>
+
+              {% if not location.is_main %}
+              <button
+                hx-delete="{% url 'accounts:location-delete' location.id %}"
+                hx-target="#addresses-tab"
+                hx-swap="innerHTML"
+                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                hx-confirm="Tem certeza de que deseja excluir '{{ location.name }}'? Esta ação não pode ser desfeita."
+                class="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                title="Delete location"
+              >
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  ></path>
+                </svg>
+              </button>
+              {% endif %}
+            </div>
           </div>
-          <h3 class="text-lg font-medium text-gray-900 mb-2">Nenhum endereço salvo ainda</h3>
-          <p class="text-gray-600 mb-6 max-w-sm mx-auto">Adicione sua casa, escritório ou outros endereços frequentemente usados para agilizar suas reservas.</p>
-          <button
-            @click="showAddLocation = true"
-            class="inline-flex items-center px-6 py-3 bg-[#015e73] text-white font-medium rounded-lg hover:bg-[#014a5a] focus:ring-4 focus:ring-[#015e73]/20 transition-all duration-200 shadow-sm cursor-pointer"
-          >
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
-            Adicionar Seu Primeiro Endereço
-          </button>
+
+          <!-- Inline Edit Form -->
+          <div
+            id="location-form-{{ location.id }}"
+            class="mt-4"
+            x-show="editingLocation === {{ location.id }}"
+            x-collapse
+          ></div>
         </div>
+        {% endfor %}
+      </div>
+
+      <!-- No search results -->
+      <div
+        x-show="searchQuery && !document.querySelectorAll('#addresses-tab [x-show]:not([style*='display: none'])').length"
+        class="text-center py-8"
+        style="display: none"
+      >
+        <svg
+          class="mx-auto h-12 w-12 text-gray-400 mb-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+        <p class="text-gray-600">
+          Nenhum endereço encontrado correspondente à sua pesquisa.
+        </p>
+      </div>
+      {% else %}
+      <!-- Empty State -->
+      <div class="text-center py-12">
+        <div
+          class="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4"
+        >
+          <svg
+            class="w-12 h-12 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">
+          Nenhum endereço salvo ainda
+        </h3>
+        <p class="text-gray-600 mb-6 max-w-sm mx-auto">
+          Adicione sua casa, escritório ou outros endereços frequentemente
+          usados para agilizar suas reservas.
+        </p>
+        <button
+          @click="showAddLocation = true"
+          class="inline-flex items-center px-6 py-3 bg-[#015e73] text-white font-medium rounded-lg hover:bg-[#014a5a] focus:ring-4 focus:ring-[#015e73]/20 transition-all duration-200 shadow-sm cursor-pointer"
+        >
+          <svg
+            class="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            ></path>
+          </svg>
+          Adicionar Seu Primeiro Endereço
+        </button>
+      </div>
       {% endif %}
     </div>
   </div>
@@ -195,7 +337,7 @@
     @keydown.escape.window="showAddLocation = false"
   >
     <!-- Background overlay - moved outside flex container -->
-    <div 
+    <div
       x-show="showAddLocation"
       x-transition:enter="ease-out duration-300"
       x-transition:enter-start="opacity-0"
@@ -206,9 +348,10 @@
       class="fixed inset-0 bg-black/40 transition-opacity"
       @click="showAddLocation = false"
     ></div>
-    
-    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
 
+    <div
+      class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0"
+    >
       <!-- Modal panel -->
       <div
         x-show="showAddLocation"
@@ -224,20 +367,49 @@
         <div class="bg-gradient-to-r from-[#015e73] to-[#014a5a] px-6 py-4">
           <div class="flex items-center justify-between">
             <div class="flex items-center">
-              <div class="flex-shrink-0 w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-3">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <div
+                class="flex-shrink-0 w-10 h-10 bg-white bg-opacity-20 rounded-lg flex items-center justify-center mr-3"
+              >
+                <svg
+                  class="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
                 </svg>
               </div>
-              <h3 class="text-lg font-semibold text-white">Adicionar Novo Endereço</h3>
+              <h3 class="text-lg font-semibold text-white">
+                Adicionar Novo Endereço
+              </h3>
             </div>
-            <button 
-              @click="showAddLocation = false" 
+            <button
+              @click="showAddLocation = false"
               class="text-white hover:text-gray-200 transition-colors cursor-pointer"
             >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
               </svg>
             </button>
           </div>
@@ -253,10 +425,13 @@
           class="px-6 py-4"
         >
           {% csrf_token %}
-          
+
           <!-- Location Name -->
           <div class="mb-4">
-            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              for="name"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
               Nome do Local <span class="text-red-500">*</span>
             </label>
             <div class="relative">
@@ -277,13 +452,23 @@
                 type="text"
                 x-ref="customName"
                 placeholder="Digite o nome personalizado"
-                style="display: none;"
+                style="display: none"
                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent"
                 @input="$refs.nameHidden.value = $event.target.value"
+              />
+              <input type="hidden" name="name" x-ref="nameHidden" required />
+              <svg
+                class="absolute right-3 top-3 w-5 h-5 text-gray-400 pointer-events-none"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-              <input type="hidden" name="name" x-ref="nameHidden" required>
-              <svg class="absolute right-3 top-3 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
               </svg>
             </div>
           </div>
@@ -291,7 +476,10 @@
           <!-- Address Fields -->
           <div class="space-y-4">
             <div>
-              <label for="address_line_1" class="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                for="address_line_1"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Endereço <span class="text-red-500">*</span>
               </label>
               <input
@@ -301,12 +489,16 @@
                 required
                 placeholder="Rua Principal, 123"
                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent"
-              >
+              />
             </div>
 
             <div>
-              <label for="address_line_2" class="block text-sm font-medium text-gray-700 mb-2">
-                Apartamento, Suíte, etc. <span class="text-gray-400 text-xs">(opcional)</span>
+              <label
+                for="address_line_2"
+                class="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Apartamento, Suíte, etc.
+                <span class="text-gray-400 text-xs">(opcional)</span>
               </label>
               <input
                 type="text"
@@ -314,12 +506,15 @@
                 id="address_line_2"
                 placeholder="Apto 4B"
                 class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent"
-              >
+              />
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  for="city"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Cidade <span class="text-red-500">*</span>
                 </label>
                 <input
@@ -329,11 +524,14 @@
                   required
                   placeholder="Luanda"
                   class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent"
-                >
+                />
               </div>
 
               <div>
-                <label for="province" class="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  for="province"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Província <span class="text-red-500">*</span>
                 </label>
                 <input
@@ -343,14 +541,18 @@
                   required
                   placeholder="Luanda"
                   class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent"
-                >
+                />
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label for="postal_code" class="block text-sm font-medium text-gray-700 mb-2">
-                  Código Postal <span class="text-gray-400 text-xs">(opcional)</span>
+                <label
+                  for="postal_code"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Código Postal
+                  <span class="text-gray-400 text-xs">(opcional)</span>
                 </label>
                 <input
                   type="text"
@@ -358,11 +560,14 @@
                   id="postal_code"
                   placeholder="12345"
                   class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent"
-                >
+                />
               </div>
 
               <div>
-                <label for="country" class="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  for="country"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                >
                   País <span class="text-red-500">*</span>
                 </label>
                 <select
@@ -388,10 +593,14 @@
                   name="is_main"
                   id="is_main"
                   class="mt-1 h-4 w-4 text-[#015e73] focus:ring-[#015e73] border-gray-300 rounded"
-                >
+                />
                 <div class="ml-3">
-                  <span class="block text-sm font-medium text-gray-900">Definir como endereço principal</span>
-                  <span class="block text-xs text-gray-600 mt-0.5">Este será seu endereço de entrega padrão</span>
+                  <span class="block text-sm font-medium text-gray-900"
+                    >Definir como endereço principal</span
+                  >
+                  <span class="block text-xs text-gray-600 mt-0.5"
+                    >Este será seu endereço de entrega padrão</span
+                  >
                 </div>
               </label>
             </div>
@@ -418,4 +627,3 @@
     </div>
   </div>
 </div>
-

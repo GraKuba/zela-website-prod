@@ -2,62 +2,8 @@
 
 <!-- Screen: Repeat Booking Details -->
 <div class="min-h-screen bg-white flex flex-col">
-  <!-- Sticky Header with Progress -->
-  <div class="sticky top-0 z-50 bg-white border-b border-gray-200 p-6">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <img src="{% static 'zela-logo.png' %}" alt="Zela" class="w-10 h-10" />
-        <span class="ml-3 text-xl font-bold" style="color: #011e41">Zela</span>
-      </div>
-
-      <!-- Progress Bar -->
-      <div class="flex-1 max-w-md mx-auto">
-        <div class="flex items-start justify-between mb-4">
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-[#015e73] text-white rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              1
-            </div>
-            <div class="ml-2 text-sm font-medium" style="color: #011e41">
-              Detalhes
-            </div>
-          </div>
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              2
-            </div>
-            <div class="ml-2 text-sm text-gray-600">Trabalhador</div>
-          </div>
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-bold"
-            >
-              3
-            </div>
-            <div class="ml-2 text-sm text-gray-600">Pagamento</div>
-          </div>
-        </div>
-        <div class="w-full bg-gray-200 rounded-full h-2">
-          <div
-            class="bg-[#015e73] h-2 rounded-full"
-            style="width: 33.33%"
-          ></div>
-        </div>
-      </div>
-
-      <div class="flex items-center space-x-4">
-        <div
-          @click="window.location.href = '/dashboard/'"
-          class="w-10 h-10 bg-[#015e73] rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-[#014a5a] transition-colors"
-        >
-          JG
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Progress Header -->
+  {% include "website/components/booking-flow/partials/booking-progress-header.html" %}
 
   <!-- Main Content with Sticky Sidebar -->
   <div class="flex flex-1 max-w-7xl mx-auto w-full">
@@ -75,24 +21,16 @@
         <div class="bg-gray-900 text-white rounded-2xl p-4">
           <div class="flex justify-between items-center mb-2">
             <div class="flex flex-col">
-              <div
-                class="text-2xl font-bold"
-                data-sessions
-              >4</div>
+              <div class="text-2xl font-bold" data-sessions>4</div>
               <div class="text-sm text-gray-300">sessões</div>
             </div>
             <div class="flex flex-col text-right">
-              <div
-                class="text-2xl font-bold"
-                data-total-cost
-              >R2840</div>
+              <div class="text-2xl font-bold" data-total-cost>R2840</div>
               <div class="text-sm text-gray-300">total</div>
             </div>
           </div>
           <div class="flex justify-between text-sm text-gray-300">
-            <div
-              data-duration
-            >5.5 hrs each</div>
+            <div data-duration>5.5 hrs each</div>
             <div>Melhor Valor</div>
           </div>
         </div>
@@ -101,8 +39,13 @@
         <div class="mt-4 bg-[#FDEA00] text-gray-900 rounded-lg p-3 text-center">
           <div class="font-bold text-sm">
             <span x-show="booking.repeat.numberOfSessions >= 8">Poupe 25%</span>
-            <span x-show="booking.repeat.numberOfSessions >= 4 && booking.repeat.numberOfSessions < 8">Poupe 15%</span>
-            <span x-show="booking.repeat.numberOfSessions < 4">Reserve mais para poupar!</span>
+            <span
+              x-show="booking.repeat.numberOfSessions >= 4 && booking.repeat.numberOfSessions < 8"
+              >Poupe 15%</span
+            >
+            <span x-show="booking.repeat.numberOfSessions < 4"
+              >Reserve mais para poupar!</span
+            >
           </div>
         </div>
       </div>
@@ -186,7 +129,8 @@
           Reserva Recorrente
         </h2>
         <p class="text-gray-600 mb-8">
-          Poupe dinheiro com serviço regular. Defina o seu horário e desfrute de consistência.
+          Poupe dinheiro com serviço regular. Defina o seu horário e desfrute de
+          consistência.
         </p>
 
         <!-- Form Fields -->
@@ -202,7 +146,9 @@
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="frequency-weekly"
               >
-                <div class="text-lg font-bold mb-2" style="color: #011e41">Semanal</div>
+                <div class="text-lg font-bold mb-2" style="color: #011e41">
+                  Semanal
+                </div>
                 <div class="text-sm text-gray-600">Todas as semanas</div>
                 <div class="mt-2 hidden" id="frequency-weekly-indicator">
                   <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
@@ -213,7 +159,9 @@
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="frequency-bi-weekly"
               >
-                <div class="text-lg font-bold mb-2" style="color: #011e41">Quinzenal</div>
+                <div class="text-lg font-bold mb-2" style="color: #011e41">
+                  Quinzenal
+                </div>
                 <div class="text-sm text-gray-600">A cada 2 semanas</div>
                 <div class="mt-2 hidden" id="frequency-bi-weekly-indicator">
                   <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
@@ -224,7 +172,9 @@
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="frequency-monthly"
               >
-                <div class="text-lg font-bold mb-2" style="color: #011e41">Mensal</div>
+                <div class="text-lg font-bold mb-2" style="color: #011e41">
+                  Mensal
+                </div>
                 <div class="text-sm text-gray-600">Todos os meses</div>
                 <div class="mt-2 hidden" id="frequency-monthly-indicator">
                   <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
@@ -235,7 +185,9 @@
                 class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center"
                 id="frequency-custom"
               >
-                <div class="text-lg font-bold mb-2" style="color: #011e41">Personalizado</div>
+                <div class="text-lg font-bold mb-2" style="color: #011e41">
+                  Personalizado
+                </div>
                 <div class="text-sm text-gray-600">Defina o seu próprio</div>
                 <div class="mt-2 hidden" id="frequency-custom-indicator">
                   <div class="w-2 h-2 bg-[#015e73] rounded-full mx-auto"></div>
@@ -245,7 +197,7 @@
           </div>
 
           <!-- Days of Week (for weekly/bi-weekly) -->
-          <div data-days-section style="display: none;">
+          <div data-days-section style="display: none">
             <h4 class="text-lg font-bold mb-4" style="color: #011e41">
               Quais dias?
             </h4>
@@ -300,7 +252,10 @@
                 <div class="text-sm font-medium">Dom</div>
               </div>
             </div>
-            <div class="mt-2 text-sm text-gray-600 text-center" id="days-counter">
+            <div
+              class="mt-2 text-sm text-gray-600 text-center"
+              id="days-counter"
+            >
               <span class="text-gray-500">
                 Selecione os dias que deseja o serviço
               </span>
@@ -361,7 +316,10 @@
                 </svg>
               </button>
             </div>
-            <div class="mt-2 text-sm text-gray-600 text-center" id="sessions-savings">
+            <div
+              class="mt-2 text-sm text-gray-600 text-center"
+              id="sessions-savings"
+            >
               <span class="text-green-600 font-medium">
                 💰 Poupe 15% em 4+ sessões!
               </span>
@@ -498,13 +456,13 @@
           <div class="flex space-x-4 pt-6">
             <button
               onclick="findWorker()"
-              class="flex-1 py-3 px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer"
+              class="flex-1 min-h-[44px] py-2.5 sm:py-3 px-3 sm:px-4 lg:px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer text-sm sm:text-base"
             >
               Encontrar um Trabalhador
             </button>
             <button
               onclick="goToScreen(7)"
-              class="flex-1 py-3 px-6 bg-white border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
+              class="flex-1 min-h-[44px] py-2.5 sm:py-3 px-3 sm:px-4 lg:px-6 bg-white border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer text-sm sm:text-base"
             >
               Voltar
             </button>

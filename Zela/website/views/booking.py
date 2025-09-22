@@ -11,18 +11,31 @@ from workers.models import PropertyTypology, ServicePackage
 
 def booking_flow(request):
     """Main booking flow view with new model support."""
-    service_slug = request.GET.get('service', 'house-cleaning')
+    service_slug = request.GET.get('service', 'indoor-cleaning')
+    
+    # Service slug mapping for URL convenience
+    service_mapping = {
+        'indoor': 'indoor-cleaning',
+        'outdoor': 'outdoor-services',
+        'office': 'office-cleaning',
+        'moving': 'moving-cleaning',
+        'express': 'express-cleaning',
+        'laundry': 'laundry-ironing',
+    }
+    
+    # Apply mapping if exists, otherwise use as-is
+    db_slug = service_mapping.get(service_slug, service_slug)
     
     # Get service category from database
     try:
-        service_category = ServiceCategory.objects.get(slug=service_slug, is_active=True)
+        service_category = ServiceCategory.objects.get(slug=db_slug, is_active=True)
         service_tasks = service_category.tasks.filter(is_active=True).order_by('order')
         
         # Prepare service data for frontend
         service_data = {
             'id': service_category.id,
             'name': service_category.name,
-            'slug': service_category.slug,
+            'slug': service_category.slug,  # This will be the actual DB slug
             'icon': service_category.icon,
             'description': service_category.description,
             'worker_model_type': service_category.worker_model_type,
@@ -48,9 +61,9 @@ def booking_flow(request):
         # Fallback to default service
         service_data = {
             'id': 0,
-            'name': 'House Cleaning',
-            'slug': 'house-cleaning',
-            'description': 'Professional house cleaning service',
+            'name': 'Limpeza Interna',
+            'slug': 'indoor-cleaning',
+            'description': 'Limpeza completa e profissional da sua casa',
             'pricing_model': 'fixed',
             'tasks': []
         }
@@ -103,36 +116,98 @@ def booking_flow(request):
 def booking_screen(request, screen_number):
     """HTMX endpoint for loading individual booking screens."""
     
-    screen_templates = {
-        1: 'website/components/booking-flow/screens/screen-1-address-capture.html',
-        2: 'website/components/booking-flow/screens/screen-2-property-typology.html',  # New screen for property selection
-        3: 'website/components/booking-flow/screens/screen-3-ac-units.html',  # AC unit configuration
-        4: 'website/components/booking-flow/screens/screen-4-electrician-config.html',  # Electrician configuration
-        5: 'website/components/booking-flow/screens/screen-5-pest-control-config.html',  # Pest control configuration  
-        6: 'website/components/booking-flow/screens/screen-6-dog-trainer-packages.html',  # Dog trainer packages
-        7: 'website/components/booking-flow/screens/screen-7-date-bucket.html',
-        8: 'website/components/booking-flow/screens/screen-8-booking-details.html',
-        9: 'website/components/booking-flow/screens/screen-9-worker-selection.html',  # Updated worker selection
-        10: 'website/components/booking-flow/screens/screen-10-matchmaking.html',  # Worker matchmaking
-        11: 'website/components/booking-flow/screens/screen-11-schedule-sessions.html',  # For package-based services
-        12: 'website/components/booking-flow/screens/screen-12-cost-review.html',
-        13: 'website/components/booking-flow/screens/screen-13-payment-method.html',
-        14: 'website/components/booking-flow/screens/screen-14-select-card.html',
-        # Legacy screens for backward compatibility
-        21: 'website/components/booking-flow/screens/screen-2-map-address.html', 
-        22: 'website/components/booking-flow/screens/screen-3-confirm-pin.html',
-        23: 'website/components/booking-flow/screens/screen-4-frequency.html',
-    }
+    # Handle generic screens with string identifiers
+    if isinstance(screen_number, str):
+        if screen_number == 'generic-duration':
+            template = 'website/components/booking-flow/screens/generic/screen-generic-duration.html'
+        elif screen_number == 'generic-units':
+            template = 'website/components/booking-flow/screens/generic/screen-generic-units.html'
+        elif screen_number == 'generic-selection':
+            template = 'website/components/booking-flow/screens/generic/screen-generic-selection.html'
+        else:
+            # Try to convert to int for numeric screens
+            try:
+                screen_number = int(screen_number)
+            except ValueError:
+                return JsonResponse({'error': 'Invalid screen identifier'}, status=404)
     
-    template = screen_templates.get(screen_number)
+    # Handle numeric screens
+    if isinstance(screen_number, int):
+        screen_templates = {
+            1: 'website/components/booking-flow/screens/screen-1-address-capture.html',
+            2: 'website/components/booking-flow/screens/screen-2-property-typology.html',  # New screen for property selection
+            3: 'website/components/booking-flow/screens/screen-3-ac-units.html',  # AC unit configuration
+            4: 'website/components/booking-flow/screens/screen-4-electrician-config.html',  # Electrician configuration
+            5: 'website/components/booking-flow/screens/screen-5-pest-control-config.html',  # Pest control configuration  
+            6: 'website/components/booking-flow/screens/screen-6-dog-trainer-packages.html',  # Dog trainer packages
+            7: 'website/components/booking-flow/screens/screen-7-date-bucket.html',
+            8: 'website/components/booking-flow/screens/screen-8-booking-details.html',
+            9: 'website/components/booking-flow/screens/screen-9-worker-selection.html',  # Updated worker selection
+            10: 'website/components/booking-flow/screens/screen-10-matchmaking.html',  # Worker matchmaking
+            11: 'website/components/booking-flow/screens/screen-11-schedule-sessions.html',  # For package-based services
+            12: 'website/components/booking-flow/screens/screen-12-cost-review.html',
+            13: 'website/components/booking-flow/screens/screen-13-payment-method.html',
+            14: 'website/components/booking-flow/screens/screen-14-select-card.html',
+            # Legacy screens for backward compatibility
+            21: 'website/components/booking-flow/screens/screen-2-map-address.html', 
+            22: 'website/components/booking-flow/screens/screen-3-confirm-pin.html',
+            23: 'website/components/booking-flow/screens/screen-4-frequency.html',
+        }
+        
+        template = screen_templates.get(screen_number)
+    
     if not template:
         return JsonResponse({'error': 'Screen not found'}, status=404)
     
     # Get booking data from session
     booking_data = request.session.get('booking_data', {})
     
-    # Format the booking data for the template
+    # Get configuration for generic screens if passed
+    config = {}
+    if request.GET.get('config'):
+        try:
+            import json
+            config = json.loads(request.GET.get('config'))
+        except:
+            config = {}
+    
+    # Service info mapping - matches the frontend serviceInfo object
+    service_info = {
+        'indoor-cleaning': {
+            'name': 'Limpeza Interior',
+            'description': 'Obtenha 3,5 a 10 horas de limpeza completa e abrangente da sua casa.',
+        },
+        'outdoor-services': {
+            'name': 'Serviços Exteriores',
+            'description': 'Limpeza e manutenção exterior profissional incluindo jardinagem, limpeza de piscinas e lavagem exterior.',
+        },
+        'office-cleaning': {
+            'name': 'Limpeza de Escritórios',
+            'description': 'Mantenha o seu espaço de trabalho impecável com os nossos serviços abrangentes de limpeza de escritórios.',
+        },
+        'moving-cleaning': {
+            'name': 'Limpeza de Mudança',
+            'description': 'Serviços de limpeza profunda para mudanças de entrada e saída para garantir que o seu espaço esteja impecável.',
+        },
+        'express-cleaning': {
+            'name': 'Limpeza Express',
+            'description': 'Serviço de limpeza rápido e eficiente quando precisa com urgência - perfeito para necessidades de última hora.',
+        },
+        'laundry-ironing': {
+            'name': 'Lavandaria e Engomadoria',
+            'description': 'Serviços profissionais de lavandaria e engomadoria para manter as suas roupas frescas e sem rugas.',
+        },
+    }
+    
+    # Get the service type from booking data
+    service_type = booking_data.get('serviceType', 'indoor-cleaning')
+    current_service = service_info.get(service_type, service_info['indoor-cleaning'])
+    
+    # Format the booking data for the template  
     context = {
+        'config': json.dumps(config) if config else '{}',
+        'service_name': current_service['name'],
+        'service_description': current_service['description'],
         'booking': {
             'service_type': booking_data.get('serviceType', 'indoor-cleaning'),
             'location': booking_data.get('location', {
@@ -376,15 +451,15 @@ def process_payment(request):
 def get_available_workers(request):
     """Get available workers for booking."""
     try:
-        from accounts.models import User, ProviderProfile
+        from accounts.models import User, ProviderProfile, Profile
         
-        # Get all approved providers
+        # Get all approved providers with profile
         workers = User.objects.filter(
             role='provider',
             is_active=True,
             provider__is_approved=True,
             provider__is_available=True
-        ).select_related('provider')
+        ).select_related('provider', 'profile')
         
         # Build worker data
         workers_data = []
@@ -398,10 +473,18 @@ def get_available_workers(request):
             else:
                 recommend_rate = 95  # Default for new providers
             
+            # Get avatar URL from profile if it exists
+            avatar_url = None
+            try:
+                if hasattr(worker, 'profile') and worker.profile.profile_picture:
+                    avatar_url = worker.profile.profile_picture.url
+            except:
+                pass
+            
             workers_data.append({
                 'id': worker.id,
                 'name': worker.get_full_name() or worker.username,
-                'avatar': None,  # Would use provider_profile.avatar.url if we had avatars
+                'avatar': avatar_url,
                 'recommend_rate': recommend_rate,
                 'jobs_completed': provider_profile.jobs_completed,
                 'rating': float(provider_profile.rating_average),
@@ -431,6 +514,22 @@ def get_user_addresses(request):
         # Build location data
         locations_data = []
         for location in locations:
+            # Build full address if not set
+            full_address = location.full_address
+            if not full_address:
+                parts = []
+                if location.address_line_1:
+                    parts.append(location.address_line_1)
+                if location.address_line_2:
+                    parts.append(location.address_line_2)
+                if location.city:
+                    parts.append(location.city)
+                if location.province:
+                    parts.append(location.province)
+                if location.country:
+                    parts.append(location.country)
+                full_address = ', '.join(parts) if parts else location.name or 'Principal'
+            
             locations_data.append({
                 'id': location.id,
                 'name': location.name,
@@ -443,7 +542,7 @@ def get_user_addresses(request):
                 'is_main': location.is_main,
                 'latitude': float(location.latitude) if location.latitude else None,
                 'longitude': float(location.longitude) if location.longitude else None,
-                'full_address': location.full_address,
+                'full_address': full_address,
             })
         
         return JsonResponse({'status': 'success', 'addresses': locations_data})

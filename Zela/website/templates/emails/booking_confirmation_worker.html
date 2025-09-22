@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Reserva Atribuída - Zela</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .content {
+            background: white;
+            padding: 30px;
+            border: 1px solid #e0e0e0;
+            border-radius: 0 0 10px 10px;
+        }
+        .booking-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+        }
+        .detail-value {
+            color: #333;
+        }
+        .alert {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Nova Reserva Atribuída!</h1>
+        <p>Referência: {{ booking_reference }}</p>
+    </div>
+    
+    <div class="content">
+        <p>Olá {{ worker_name }},</p>
+        
+        <p>Foi-lhe atribuída uma nova reserva. Por favor, reveja os detalhes abaixo:</p>
+        
+        <div class="booking-details">
+            <div class="detail-row">
+                <span class="detail-label">Serviço:</span>
+                <span class="detail-value">{{ service_name }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Cliente:</span>
+                <span class="detail-value">{{ customer_name }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Data:</span>
+                <span class="detail-value">{{ booking_date }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Hora:</span>
+                <span class="detail-value">{{ booking_time }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Morada:</span>
+                <span class="detail-value">{{ address }}</span>
+            </div>
+        </div>
+        
+        <div class="alert">
+            <strong>Importante:</strong> Por favor, confirme a sua disponibilidade o mais breve possível. Se não puder comparecer, informe-nos imediatamente.
+        </div>
+        
+        <center>
+            <a href="{{ dashboard_url }}" class="button">Ver Detalhes Completos</a>
+        </center>
+        
+        <h3>Lembretes:</h3>
+        <ul>
+            <li>Chegue 5-10 minutos antes do horário agendado</li>
+            <li>Leve todos os equipamentos e materiais necessários</li>
+            <li>Vista o uniforme da Zela (se aplicável)</li>
+            <li>Mantenha uma comunicação profissional com o cliente</li>
+            <li>Reporte qualquer problema imediatamente</li>
+        </ul>
+        
+        <p>Se tiver alguma dúvida sobre esta reserva, por favor entre em contacto com o suporte.</p>
+        
+        <p>Bom trabalho!</p>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; 2025 Zela. Todos os direitos reservados.</p>
+        <p>Este é um email automático, por favor não responda.</p>
+    </div>
+</body>
+</html>

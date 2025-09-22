@@ -1,0 +1,6 @@
+{% load static %}
+
+<!-- Screen 4: Electrician Service Configuration -->
+<div class="min-h-screen bg-white flex flex-col">
+  <!-- Progress Header -->
+  {% include "website/components/booking-flow/partials/booking-progress-header.html" %}
