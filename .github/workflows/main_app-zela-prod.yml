@@ -98,4 +98,4 @@ jobs:
           app-name: 'app-zela-prod'
           slot-name: 'Production'
           package: .
-          startup-command: 'cd Zela && gunicorn --bind=0.0.0.0:8000 --timeout 600 --workers=2 Zela.wsgi:application'
+          startup-command: 'cd Zela && bash startup.sh'
