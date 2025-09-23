@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./Zela
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=Zela.settings.production
+      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - DEBUG=False
+      - ALLOWED_HOSTS=localhost,127.0.0.1,app-zela-prod-bydye9czddhwgff2.southafricanorth-01.azurewebsites.net
+    volumes:
+      - ./Zela/media:/app/media
+      - ./Zela/staticfiles:/app/staticfiles
+    command: gunicorn --bind 0.0.0.0:8000 --workers 2 --threads 4 Zela.wsgi:application

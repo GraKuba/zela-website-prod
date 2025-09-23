@@ -1,50 +1,27 @@
-# Git files
-.git
-.gitignore
-
-# Python cache
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+env/
+venv/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Environment variables
-.env
-.env.local
-.env.development
-.env.test
-.env.production
-
-# Database
-*.db
-*.sqlite3
+# Django
+*.log
 db.sqlite3
-
-# Static files (will be collected during build)
-staticfiles/
 media/
+staticfiles/
+.env
+.env.*
 
-# Node modules
+# Node
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+npm-debug.log
+yarn-error.log
 
 # IDE
 .vscode/
@@ -53,15 +30,28 @@ yarn-error.log*
 *.swo
 *~
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
-# Documentation
-README.md
-docs/
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Azure
+.azure/
+azure-*.sh
+startup.sh
+startup.txt
+prebuild.sh
+app_service_config.json
 
 # Testing
 .coverage
+htmlcov/
 .pytest_cache/
-htmlcov/ 
