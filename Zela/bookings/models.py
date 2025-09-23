@@ -26,21 +26,13 @@ class Booking(models.Model):
         related_name="bookings",
         help_text="Customer who made the booking"
     )
-    provider = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="jobs",
-        help_text="Provider assigned to this booking"
-    )
     worker = models.ForeignKey(
         'workers.Worker',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="bookings",
-        help_text="Worker assigned to this booking (new system)"
+        help_text="Worker assigned to this booking"
     )
     service_task = models.ForeignKey(
         ServiceTask,
@@ -178,6 +170,11 @@ class Booking(models.Model):
     def total_price_display(self) -> str:
         """Return formatted total price."""
         return f"AOA {self.total_price:,}"
+    
+    @property
+    def provider(self):
+        """Get provider user from worker for backward compatibility."""
+        return self.worker.user if self.worker else None
     
     class Meta:
         verbose_name = 'Booking'

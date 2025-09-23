@@ -1,6 +1,0 @@
-{% load static %}
-
-<!-- Screen 3: AC Unit Configuration -->
-<div class="min-h-screen bg-white flex flex-col">
-  <!-- Progress Header -->
-  {% include "website/components/booking-flow/partials/booking-progress-header.html" %}

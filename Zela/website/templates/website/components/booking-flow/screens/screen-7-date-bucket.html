@@ -139,10 +139,15 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-12">
           <!-- One Time (Default/Unselected) -->
           <div
-            @click="selectFrequency('one-time')"
-            class="bg-white border-2 border-gray-200 rounded-2xl p-4 sm:p-6 cursor-pointer hover:border-[#015e73] transition-colors duration-200"
+            @click="selectFrequency('one-time'); goToScreen(8)"
+            class="bg-white border-2 border-gray-200 rounded-2xl p-4 sm:p-6 cursor-pointer hover:border-[#015e73] transition-colors duration-200 relative"
             :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.frequency === 'one-time' }"
           >
+            <div
+              class="absolute -top-2 -right-2 bg-[#FDEA00] text-gray-900 text-xs font-bold px-3 py-1 rounded-full"
+            >
+              Melhor Valor
+            </div>
             <div class="flex items-center mb-4">
               <div
                 class="w-8 h-8 rounded-full flex items-center justify-center mr-3"
@@ -172,37 +177,19 @@
 
           <!-- Repeat -->
           <div
-            @click="selectFrequency('repeat')"
-            class="bg-white border-2 border-gray-200 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-colors duration-200 relative"
-            :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.frequency === 'repeat' }"
+            class="bg-gray-100 border-2 border-gray-200 rounded-2xl p-6 cursor-not-allowed opacity-60 relative"
           >
             <div
-              class="absolute -top-2 -right-2 bg-[#FDEA00] text-gray-900 text-xs font-bold px-3 py-1 rounded-full"
+              class="absolute -top-2 -right-2 bg-gray-500 text-white text-xs font-bold px-3 py-1 rounded-full"
             >
-              Melhor Valor
+              Coming Soon
             </div>
             <div class="flex items-center mb-4">
               <div
-                class="w-8 h-8 rounded-full flex items-center justify-center mr-3"
-                :class="booking.frequency === 'repeat' ? 'bg-[#015e73]' : 'bg-gray-200'"
+                class="w-8 h-8 rounded-full flex items-center justify-center mr-3 bg-gray-300"
               >
                 <svg
-                  x-show="booking.frequency === 'repeat'"
-                  class="w-4 h-4 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-                <svg
-                  x-show="booking.frequency !== 'repeat'"
-                  class="w-4 h-4 text-gray-400"
+                  class="w-4 h-4 text-gray-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -215,69 +202,15 @@
                   />
                 </svg>
               </div>
-              <h3 class="text-lg font-bold" style="color: #011e41">Repetir</h3>
+              <h3 class="text-lg font-bold text-gray-500">Repetir</h3>
             </div>
-            <p class="text-gray-600">
+            <p class="text-gray-500">
               Para serviços repetidos a cada poucos dias / semanas.
             </p>
           </div>
         </div>
 
-        <!-- Date Selection -->
-        <div x-show="booking.frequency">
-          <h3 class="text-2xl font-bold mb-4" style="color: #011e41">
-            Quando precisa de ajuda?
-          </h3>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <!-- Tomorrow -->
-            <div
-              @click="selectDateBucket('tomorrow')"
-              class="bg-white border-2 border-gray-200 rounded-2xl p-6 cursor-pointer hover:border-[#015e73] transition-colors duration-200 relative"
-              :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.dateBucket === 'tomorrow' }"
-            >
-              <!-- Premium Badge -->
-              <div
-                class="absolute -top-2 -right-2 bg-[#FDEA00] text-gray-900 text-xs font-bold px-3 py-1 rounded-full"
-              >
-                Premium
-              </div>
-
-              <div class="text-center">
-                <div class="text-lg font-bold mb-2" style="color: #011e41">
-                  Amanhã
-                </div>
-                <div class="text-sm text-gray-600">Obter ajuda amanhã</div>
-              </div>
-            </div>
-
-            <!-- Later -->
-            <div
-              @click="selectDateBucket('later')"
-              class="bg-white border-2 border-gray-200 rounded-2xl p-4 sm:p-6 cursor-pointer hover:border-[#015e73] transition-colors duration-200"
-              :class="{ 'bg-[#015e73]/10 border-[#015e73]': booking.dateBucket === 'later' }"
-            >
-              <div class="text-center">
-                <div class="text-lg font-bold mb-2" style="color: #011e41">
-                  Mais Tarde
-                </div>
-                <div class="text-sm text-gray-600">Obter ajuda mais tarde</div>
-              </div>
-            </div>
-
-            <!-- Today (Disabled) -->
-            <div
-              class="bg-gray-100 border-2 border-gray-200 rounded-2xl p-6 cursor-not-allowed opacity-50"
-            >
-              <div class="text-center">
-                <div class="text-lg font-bold mb-2 text-gray-500">Hoje</div>
-                <div class="text-sm text-gray-500">Totalmente Reservado</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Navigation happens automatically when dateBucket is selected -->
-        </div>
+        <!-- Navigation happens automatically when frequency is selected -->
       </div>
     </div>
   </div>

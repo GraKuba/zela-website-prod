@@ -32,12 +32,13 @@ class Payment(models.Model):
         on_delete=models.CASCADE,
         help_text="Booking this payment is for"
     )
-    provider = models.ForeignKey(
-        User,
+    worker = models.ForeignKey(
+        'workers.Worker',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        help_text="Provider who will receive payment"
+        related_name="payments_received",
+        help_text="Worker who will receive payment"
     )
     reference = models.CharField(
         max_length=120,
@@ -89,6 +90,11 @@ class Payment(models.Model):
         """Check if payment was refunded."""
         return self.status in ["refunded", "partial_refund"]
     
+    @property
+    def provider(self):
+        """Get provider user from worker for backward compatibility."""
+        return self.worker.user if self.worker else None
+    
     class Meta:
         verbose_name = 'Payment'
         verbose_name_plural = 'Payments'
@@ -106,11 +112,13 @@ class Payout(models.Model):
         ("cancelled", "Cancelled"),
     ]
     
-    provider = models.ForeignKey(
-        User,
+    worker = models.ForeignKey(
+        'workers.Worker',
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name="payouts",
-        help_text="Provider receiving the payout"
+        help_text="Worker receiving the payout"
     )
     week_start = models.DateField(
         help_text="Start date of the week being paid out"
@@ -175,7 +183,7 @@ class Payout(models.Model):
         super().save(*args, **kwargs)
     
     def __str__(self) -> str:
-        return f"Payout {self.provider.get_full_name()} - {self.week_start}"
+        return f"Payout {self.worker.user.get_full_name()} - {self.week_start}"
     
     @property
     def amount_display(self) -> str:
@@ -196,17 +204,19 @@ class Payout(models.Model):
         verbose_name = 'Payout'
         verbose_name_plural = 'Payouts'
         ordering = ['-week_start']
-        unique_together = ['provider', 'week_start']
+        unique_together = ['worker', 'week_start']
 
 
 class ProviderWallet(models.Model):
-    """Wallet for tracking provider balances and earnings."""
+    """Wallet for tracking worker balances and earnings."""
     
-    provider = models.OneToOneField(
-        User,
+    worker = models.OneToOneField(
+        'workers.Worker',
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name="wallet",
-        help_text="Provider who owns this wallet"
+        help_text="Worker who owns this wallet"
     )
     available_balance = models.DecimalField(
         max_digits=10,
@@ -235,7 +245,7 @@ class ProviderWallet(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"Wallet - {self.provider.get_full_name()}"
+        return f"Wallet - {self.worker.user.get_full_name()}"
     
     @property
     def total_balance(self):
@@ -248,13 +258,15 @@ class ProviderWallet(models.Model):
 
 
 class EarningsHistory(models.Model):
-    """Track daily earnings for providers."""
+    """Track daily earnings for workers."""
     
-    provider = models.ForeignKey(
-        User,
+    worker = models.ForeignKey(
+        'workers.Worker',
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name="earnings_history",
-        help_text="Provider who earned this"
+        help_text="Worker who earned this"
     )
     date = models.DateField(
         help_text="Date of earnings"
@@ -296,17 +308,17 @@ class EarningsHistory(models.Model):
         super().save(*args, **kwargs)
     
     def __str__(self):
-        return f"{self.provider.get_full_name()} - {self.date}"
+        return f"{self.worker.user.get_full_name()} - {self.date}"
     
     class Meta:
         verbose_name = 'Earnings History'
         verbose_name_plural = 'Earnings Histories'
-        unique_together = ['provider', 'date']
+        unique_together = ['worker', 'date']
         ordering = ['-date']
 
 
 class PayoutRequest(models.Model):
-    """Payout requests from providers."""
+    """Payout requests from workers."""
     
     TYPE_CHOICES = [
         ("instant", "Instant Payout"),
@@ -321,11 +333,13 @@ class PayoutRequest(models.Model):
         ("cancelled", "Cancelled"),
     ]
     
-    provider = models.ForeignKey(
-        User,
+    worker = models.ForeignKey(
+        'workers.Worker',
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name="payout_requests",
-        help_text="Provider requesting payout"
+        help_text="Worker requesting payout"
     )
     payout_type = models.CharField(
         max_length=20,
@@ -391,7 +405,7 @@ class PayoutRequest(models.Model):
         super().save(*args, **kwargs)
     
     def __str__(self):
-        return f"{self.reference} - {self.provider.get_full_name()}"
+        return f"{self.reference} - {self.worker.user.get_full_name()}"
     
     class Meta:
         verbose_name = 'Payout Request'

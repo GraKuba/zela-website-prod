@@ -19,7 +19,7 @@
       <button
         @click="window.location.href = '/book/'"
         class="px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
-        style="background-color: #fdea00; color: #011e41"
+        style="background-color: #F4D35E; color: #011e41"
       >
         Reservar Novo Serviço
       </button>
@@ -65,7 +65,7 @@
         Concluídas
         <span
           class="ml-2 text-xs font-medium px-2 py-1 rounded-full"
-          style="background-color: #fdea00; color: #035d73"
+          style="background-color: #F4D35E; color: #035d73"
         >{{ completed_bookings_count }}</span>
       </button>
       <button
@@ -115,7 +115,7 @@
                       {% if booking.status == 'pending_confirmation' %}
                         style="background-color: #ff9800; color: white"
                       {% elif booking.status == 'pending' %}
-                        style="background-color: #fdea00; color: #035d73"
+                        style="background-color: #F4D35E; color: #035d73"
                       {% elif booking.status == 'accepted' %}
                         style="background-color: #035d73; color: white"
                       {% else %}
@@ -210,7 +210,7 @@
               <button
                 @click="window.location.href = '/book/'"
                 class="inline-flex items-center px-4 py-2 rounded-full font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
-                style="background-color: #fdea00; color: #011e41"
+                style="background-color: #F4D35E; color: #011e41"
               >
                 Reservar um Serviço
               </button>
@@ -275,7 +275,7 @@
                     <h3 class="font-semibold text-gray-900">{{ booking.service_task.name }}</h3>
                     <span
                       class="px-2 py-1 text-xs font-medium rounded-full"
-                      style="background-color: #fdea00; color: #035d73"
+                      style="background-color: #F4D35E; color: #035d73"
                     >Concluída</span>
                   </div>
                   {% if booking.provider %}

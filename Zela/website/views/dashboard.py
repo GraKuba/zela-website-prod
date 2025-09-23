@@ -128,7 +128,7 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
         # Fetch bookings for the bookings tab
         if user.role == 'admin':
             # Admins see all bookings
-            all_bookings = Booking.objects.select_related('customer', 'provider', 'service_task').order_by('-start_at')
+            all_bookings = Booking.objects.select_related('customer', 'worker__user', 'service_task').order_by('-start_at')
             
             upcoming_bookings_list = all_bookings.filter(
                 status__in=['pending_confirmation', 'pending', 'accepted', 'in_progress']
@@ -144,7 +144,7 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
             
         elif user.role == 'customer':
             # Get bookings categorized by status
-            all_bookings = user.bookings.select_related('provider', 'service_task').order_by('-start_at')
+            all_bookings = user.bookings.select_related('worker__user', 'service_task').order_by('-start_at')
             
             upcoming_bookings_list = all_bookings.filter(
                 status__in=['pending_confirmation', 'pending', 'accepted', 'in_progress']
@@ -590,7 +590,7 @@ class BookingListPartial(LoginRequiredMixin, ListView):
         if status:
             queryset = queryset.filter(status=status)
         
-        return queryset.select_related('customer', 'provider', 'service_task').order_by('-created_at')
+        return queryset.select_related('customer', 'worker__user', 'service_task').order_by('-created_at')
     
     def get_context_data(self, **kwargs) -> Dict[str, Any]:
         """Add context data for bookings."""
@@ -1514,7 +1514,7 @@ def booking_details_modal(request, booking_id):
     try:
         # Get the booking, ensuring it belongs to the current user
         booking = get_object_or_404(
-            Booking.objects.select_related('provider__provider', 'service_task'), 
+            Booking.objects.select_related('worker__user__provider', 'service_task'), 
             id=booking_id,
             customer=request.user
         )

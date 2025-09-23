@@ -106,30 +106,26 @@
             <div class="text-sm text-gray-600 mb-1">Quando:</div>
             <div class="text-sm font-medium" style="color: #011e41">
               <span
-                x-text="booking.dateBucket === 'tomorrow' ? 'Amanhã' : new Date(booking.date).toLocaleDateString('pt-PT', { weekday: 'short', month: 'short', day: 'numeric' })"
+                x-text="(() => {
+                  const selectedDate = booking.details.date || booking.date;
+                  if (!selectedDate) return 'Selecione uma data';
+                  const date = new Date(selectedDate);
+                  const today = new Date();
+                  const tomorrow = new Date(today);
+                  tomorrow.setDate(tomorrow.getDate() + 1);
+                  
+                  // Check if selected date is tomorrow
+                  if (date.toDateString() === tomorrow.toDateString()) {
+                    return 'Amanhã';
+                  }
+                  
+                  // Otherwise show the actual date
+                  return date.toLocaleDateString('pt-PT', { weekday: 'short', month: 'short', day: 'numeric' });
+                })()"
               ></span>
               @ <span x-text="booking.details.startTime || '07:00'"></span>
             </div>
           </div>
-          <button
-            @click="goToScreen(7)"
-            class="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors"
-            title="Edit date and time"
-          >
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-              />
-            </svg>
-          </button>
         </div>
       </div>
     </div>
@@ -145,69 +141,14 @@
           qualquer momento
         </p>
 
-        <!-- Date/Time Banner -->
-        <div
-          class="bg-[#015e73]/10 border border-[#015e73]/20 rounded-2xl p-4 mb-8"
-        >
-          <div class="flex items-center">
-            <div
-              class="w-8 h-8 bg-[#015e73] rounded-full flex items-center justify-center mr-3"
-            >
-              <svg
-                class="w-4 h-4 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <div>
-              <div class="font-bold" style="color: #011e41">Amanhã</div>
-              <div class="text-sm text-gray-600">
-                <span
-                  class="bg-[#FDEA00] text-gray-900 px-2 py-1 rounded text-xs font-bold mr-2"
-                  >Premium</span
-                >
-                6 Jul 2025 | 07:00 - 07:30
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- Form Fields -->
         <div class="space-y-6">
-          <!-- Home Size -->
+          <!-- Booking Details Header -->
           <div>
             <h3 class="text-base sm:text-lg font-bold mb-3 sm:mb-4" style="color: #011e41">
               Adicione detalhes sobre a sua reserva
             </h3>
-            <label
-              class="block text-sm font-medium mb-2"
-              style="color: #4a5a70"
-            >
-              Qual é o tamanho da sua casa?
-            </label>
-            <select
-              x-model="booking.details.homeSize"
-              @change="updateHomeSizeDuration()"
-              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer"
-            >
-              <option value="small-1-2-bedrooms">
-                Casa Pequena: 1-2 Quartos
-              </option>
-              <option value="medium-3-4-bedrooms" selected>
-                Casa Média: 3-4 Quartos
-              </option>
-              <option value="large-5-plus-bedrooms">
-                Casa Grande: 5+ Quartos
-              </option>
-            </select>
           </div>
 
           <!-- Extra Tasks -->
@@ -399,190 +340,6 @@
                   Janelas Interiores
                 </div>
               </div>
-
-              <div
-                @click="toggleExtraTask('interior-walls')"
-                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('interior-walls') }"
-              >
-                <!-- Selected Checkmark -->
-                <div
-                  x-show="booking.details.extraTasks.includes('interior-walls')"
-                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
-                >
-                  <svg
-                    class="w-3 h-3 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <svg
-                  class="w-8 h-8 mx-auto mb-2"
-                  :class="booking.details.extraTasks.includes('interior-walls') ? 'text-[#015e73]' : 'text-gray-600'"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                  />
-                </svg>
-                <div
-                  class="text-xs font-medium"
-                  :class="booking.details.extraTasks.includes('interior-walls') ? 'text-[#015e73]' : 'text-gray-700'"
-                >
-                  Paredes Interiores
-                </div>
-              </div>
-
-              <div
-                @click="toggleExtraTask('water-plants')"
-                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('water-plants') }"
-              >
-                <!-- Selected Checkmark -->
-                <div
-                  x-show="booking.details.extraTasks.includes('water-plants')"
-                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
-                >
-                  <svg
-                    class="w-3 h-3 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <svg
-                  class="w-8 h-8 mx-auto mb-2"
-                  :class="booking.details.extraTasks.includes('water-plants') ? 'text-[#015e73]' : 'text-gray-600'"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM7 3V1m0 18v2m8-10v2m0-6V3m0 18v-2"
-                  />
-                </svg>
-                <div
-                  class="text-xs font-medium"
-                  :class="booking.details.extraTasks.includes('water-plants') ? 'text-[#015e73]' : 'text-gray-700'"
-                >
-                  Regar Plantas
-                </div>
-              </div>
-
-              <div
-                @click="toggleExtraTask('ironing')"
-                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('ironing') }"
-              >
-                <!-- Selected Checkmark -->
-                <div
-                  x-show="booking.details.extraTasks.includes('ironing')"
-                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
-                >
-                  <svg
-                    class="w-3 h-3 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <svg
-                  class="w-8 h-8 mx-auto mb-2"
-                  :class="booking.details.extraTasks.includes('ironing') ? 'text-[#015e73]' : 'text-gray-600'"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <div
-                  class="text-xs font-medium"
-                  :class="booking.details.extraTasks.includes('ironing') ? 'text-[#015e73]' : 'text-gray-700'"
-                >
-                  Passar a Ferro
-                </div>
-              </div>
-
-              <div
-                @click="toggleExtraTask('laundry')"
-                class="bg-white border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-[#015e73] transition-colors duration-200 text-center relative"
-                :class="{ 'border-[#015e73] bg-[#015e73]/10': booking.details.extraTasks.includes('laundry') }"
-              >
-                <!-- Selected Checkmark -->
-                <div
-                  x-show="booking.details.extraTasks.includes('laundry')"
-                  class="absolute -top-2 -right-2 w-6 h-6 bg-[#015e73] rounded-full flex items-center justify-center"
-                >
-                  <svg
-                    class="w-3 h-3 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-                <svg
-                  class="w-8 h-8 mx-auto mb-2"
-                  :class="booking.details.extraTasks.includes('laundry') ? 'text-[#015e73]' : 'text-gray-600'"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-                <div
-                  class="text-xs font-medium"
-                  :class="booking.details.extraTasks.includes('laundry') ? 'text-[#015e73]' : 'text-gray-700'"
-                >
-                  Lavandaria
-                </div>
-              </div>
             </div>
           </div>
 
@@ -635,6 +392,39 @@
             </div>
           </div>
 
+          <!-- Date Selection -->
+          <div>
+            <h4 class="text-base sm:text-lg font-bold mb-3 sm:mb-4" style="color: #011e41">
+              Quando precisa de ajuda?
+            </h4>
+            <div x-data="{ dateError: false, dateErrorMessage: '' }">
+              <input
+                type="date"
+                x-model="booking.details.date"
+                @change="() => {
+                  const selectedDate = new Date($event.target.value);
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  
+                  if (selectedDate < today) {
+                    dateError = true;
+                    dateErrorMessage = 'Por favor, selecione uma data a partir de hoje';
+                    booking.details.date = '';
+                  } else {
+                    dateError = false;
+                    dateErrorMessage = '';
+                    window.bookingFlowComponent.saveBookingData();
+                  }
+                }"
+                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer transition-colors"
+                :class="dateError ? 'border-red-500 bg-red-50' : 'border-gray-300'"
+                :min="new Date().toISOString().split('T')[0]"
+                required
+              />
+              <p x-show="dateError" x-text="dateErrorMessage" class="mt-2 text-sm text-red-600"></p>
+            </div>
+          </div>
+
           <!-- Start Time -->
           <div>
             <h4 class="text-base sm:text-lg font-bold mb-3 sm:mb-4" style="color: #011e41">
@@ -667,13 +457,27 @@
           <!-- Action Buttons -->
           <div class="flex space-x-4 pt-6">
             <button
-              @click="findWorker()"
+              @click="() => {
+                if (!booking.details.date) {
+                  alert('Por favor, selecione uma data para a sua reserva');
+                  return;
+                }
+                const selectedDate = new Date(booking.details.date);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                if (selectedDate < today) {
+                  alert('Por favor, selecione uma data válida (a partir de hoje)');
+                  return;
+                }
+                findWorker();
+              }"
               class="flex-1 min-h-[44px] py-2.5 sm:py-3 px-3 sm:px-4 lg:px-6 bg-[#015e73] text-white font-semibold rounded-full hover:bg-[#014a5a] transition-colors duration-200 cursor-pointer text-sm sm:text-base"
             >
               Encontrar um Trabalhador
             </button>
             <button
-              @click="goToScreen(7)"
+              @click="goToScreen(2)"
               class="flex-1 min-h-[44px] py-2.5 sm:py-3 px-3 sm:px-4 lg:px-6 bg-white border border-gray-300 text-gray-700 font-semibold rounded-full hover:bg-gray-50 transition-colors duration-200 cursor-pointer text-sm sm:text-base"
             >
               Voltar

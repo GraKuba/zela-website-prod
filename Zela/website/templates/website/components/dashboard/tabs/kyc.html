@@ -371,10 +371,10 @@
         :disabled="saveState === 'loading'"
         class="px-6 py-2 rounded-lg hover:opacity-90 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         :class="{ 'opacity-50': saveState === 'loading' }"
-        style="background-color: #fdea00; color: #000"
-        :style="{ backgroundColor: isLoading ? '#fdea00' : '#fdea00' }"
-        @mouseover="if (saveState !== 'loading') $el.style.backgroundColor='#fcd34d'"
-        @mouseout="$el.style.backgroundColor='#fdea00'">
+        style="background-color: #F4D35E; color: #000"
+        :style="{ backgroundColor: isLoading ? '#F4D35E' : '#F4D35E' }"
+        @mouseover="if (saveState !== 'loading') $el.style.backgroundColor='#F6DD7A'"
+        @mouseout="$el.style.backgroundColor='#F4D35E'">
         <span x-text="saveState === 'loading' ? 'Saving...' : 'Save Changes'"></span>
       </button>
         </div>

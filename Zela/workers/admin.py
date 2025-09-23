@@ -3,7 +3,8 @@ from django.utils.html import format_html
 from .models import (
     PropertyTypology, Worker, CleaningWorker, ElectricianWorker,
     ACTechnicianWorker, PestControlWorker, DogTrainerWorker,
-    HandymanWorker, GardenerWorker, PlacementWorker, ServicePackage
+    HandymanWorker, GardenerWorker, PlacementWorker, ServicePackage,
+    WorkerService, WorkerServicePricing
 )
 
 
@@ -78,8 +79,8 @@ class WorkerAdmin(admin.ModelAdmin):
         if obj.rating_count == 0:
             return '-'
         return format_html(
-            '<span style="color: #f39c12;">{:.1f} ★</span> ({})',
-            obj.rating_average, obj.rating_count
+            '<span style="color: #f39c12;">{} ★</span> ({})',
+            f"{obj.rating_average:.1f}", obj.rating_count
         )
     rating_display.short_description = 'Rating'
     
@@ -298,3 +299,74 @@ class ServicePackageAdmin(admin.ModelAdmin):
         updated = queryset.update(status='expired')
         self.message_user(request, f'{updated} packages marked as expired.')
     mark_as_expired.short_description = 'Mark as expired'
+
+
+@admin.register(WorkerService)
+class WorkerServiceAdmin(admin.ModelAdmin):
+    """Admin for worker-service relationships."""
+    list_display = (
+        'worker', 'service_category', 'is_verified', 'priority', 'created_at'
+    )
+    list_filter = ('is_verified', 'service_category', 'created_at')
+    search_fields = (
+        'worker__user__username', 'worker__user__first_name', 'worker__user__last_name',
+        'service_category__name'
+    )
+    list_editable = ('is_verified', 'priority')
+    ordering = ('-priority', 'created_at')
+    
+    fieldsets = (
+        ('Relationship', {
+            'fields': ('worker', 'service_category')
+        }),
+        ('Configuration', {
+            'fields': ('is_verified', 'priority')
+        }),
+    )
+    
+    actions = ['verify_services', 'unverify_services']
+    
+    def verify_services(self, request, queryset):
+        """Verify selected worker services."""
+        updated = queryset.update(is_verified=True)
+        self.message_user(request, f'{updated} worker services verified.')
+    verify_services.short_description = 'Verify selected services'
+    
+    def unverify_services(self, request, queryset):
+        """Unverify selected worker services."""
+        updated = queryset.update(is_verified=False)
+        self.message_user(request, f'{updated} worker services unverified.')
+    unverify_services.short_description = 'Unverify selected services'
+
+
+@admin.register(WorkerServicePricing)
+class WorkerServicePricingAdmin(admin.ModelAdmin):
+    """Admin for worker service pricing."""
+    list_display = (
+        'worker_service', 'markup_percentage', 'minimum_price', 'is_active', 'created_at'
+    )
+    list_filter = ('is_active', 'created_at')
+    search_fields = (
+        'worker_service__worker__user__username',
+        'worker_service__service_category__name'
+    )
+    list_editable = ('markup_percentage', 'minimum_price', 'is_active')
+    
+    fieldsets = (
+        ('Worker Service', {
+            'fields': ('worker_service',)
+        }),
+        ('Pricing Configuration', {
+            'fields': ('pricing_config', 'markup_percentage', 'minimum_price')
+        }),
+        ('Status', {
+            'fields': ('is_active',)
+        }),
+    )
+    
+    def get_readonly_fields(self, request, obj=None):
+        """Make created_at readonly."""
+        readonly = ['created_at', 'updated_at']
+        if obj:  # Editing existing object
+            readonly.append('worker_service')
+        return readonly

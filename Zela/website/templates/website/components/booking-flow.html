@@ -493,7 +493,7 @@
         const baseScreenMapping = {
           address: 1,
           property_typology: 2,
-          schedule: 7,
+          schedule: 8, // Skip screen 7, go directly to booking details
           worker: "choose-worker",
           payment: 13,
           confirmation: 15,
@@ -718,7 +718,7 @@
           4: 'electrician_config',
           5: 'pest_control_config',
           6: 'dog_trainer_packages',
-          7: 'schedule',
+          7: 'duration_tasks', // Screen 7 now maps to booking details (was schedule)
           8: 'duration_tasks',
           9: 'worker',  // Worker selection screen
           13: 'payment',  // Payment screen
@@ -917,9 +917,9 @@
         // Save state to session
         this.saveBookingData();
 
-        // Navigate based on frequency
+        // Navigate based on frequency - skip screen 7, go directly to screen 8
         if (this.booking.frequency === "one-time") {
-          this.goToScreen(8); // Go to one-time booking details
+          this.goToScreen(8); // Go to one-time booking details (was screen 8, now screen 7 is skipped)
         } else if (this.booking.frequency === "repeat") {
           this.goToScreen("repeat-booking"); // Go to repeat booking details
         }
@@ -1875,15 +1875,20 @@
         if (this.flowRouter) {
           const nextScreen = this.flowRouter.getNextScreen(this.booking);
           if (nextScreen) {
-            // Use the loadScreen method which handles service-specific mapping
-            this.currentScreenName = nextScreen;
-            this.loadScreen(nextScreen);
+            // Skip screen 7 (date-bucket), go directly to screen 8 (booking details)
+            if (nextScreen === "schedule" || nextScreen === "date_bucket") {
+              this.goToScreen(8); // Skip to booking details
+            } else {
+              // Use the loadScreen method which handles service-specific mapping
+              this.currentScreenName = nextScreen;
+              this.loadScreen(nextScreen);
+            }
           } else {
             // End of flow or error
             console.error('No next screen found in flow');
           }
         } else {
-          this.goToScreen(7); // Default to date bucket if no router
+          this.goToScreen(8); // Skip screen 7, go directly to booking details
         }
       },
 
@@ -2096,12 +2101,12 @@
         if (this.flowRouter) {
           const nextScreen = this.flowRouter.getNextScreen(this.booking);
           if (nextScreen === "schedule") {
-            this.goToScreen(7); // Date bucket screen
+            this.goToScreen(8); // Skip screen 7, go directly to booking details
           } else {
-            this.goToScreen(4); // Default next screen
+            this.goToScreen(8); // Always skip to booking details (screen 8)
           }
         } else {
-          this.goToScreen(7); // Default to date bucket
+          this.goToScreen(8); // Skip screen 7, go directly to booking details
         }
       },
 
@@ -2271,7 +2276,7 @@
           this.booking.electricianHours = this.getElectricianMinimumHours();
         }
         this.saveBookingData();
-        this.goToScreen(7); // Go to date selection
+        this.goToScreen(8); // Skip screen 7, go directly to booking details
       },
     };
   }

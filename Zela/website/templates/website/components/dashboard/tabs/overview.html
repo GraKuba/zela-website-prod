@@ -6,31 +6,94 @@
   x-transition:enter-end="opacity-100 transform translate-y-0"
   class="space-y-6"
 >
-  <!-- Spring Cleaning Special - Keep as is -->
+  <!-- Welcome Offer Banner -->
   <div
-    class="bg-gradient-to-r rounded-xl shadow-sm border p-6"
-    style="background: linear-gradient(135deg, #fdea00 0%, #fff000 100%)"
+    x-data="{ 
+      showBanner: true,
+      copied: false,
+      copyCode() {
+        navigator.clipboard.writeText('BEMVINDO2025');
+        this.copied = true;
+        setTimeout(() => { this.copied = false; }, 2000);
+      }
+    }"
+    x-show="showBanner"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 transform scale-100"
+    x-transition:leave-end="opacity-0 transform scale-95"
+    class="relative bg-gradient-to-r rounded-xl shadow-lg border border-yellow-400/20 overflow-hidden"
+    style="background: linear-gradient(135deg, #F4D35E 0%, #fff000 100%)"
+    role="region"
+    aria-label="Oferta de boas-vindas"
   >
-    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-      <div class="flex-1">
-        <h3 class="text-lg sm:text-xl font-semibold" style="color: #011e41">
-          🎉 Oferta de Boas-Vindas!
-        </h3>
-        <p class="text-sm sm:text-base mt-2" style="color: #011e41">
-          Receba um serviço de limpeza gratuito na sua primeira reserva com a ZELA.
-          Oferta válida por tempo limitado — experimente a diferença sem custos!
-        </p>
-        <p class="mt-2">
-          <span class="inline-block bg-white/80 backdrop-blur-sm px-3 py-1 rounded-md font-semibold text-sm sm:text-base" style="color: #011e41">Código: BEMVINDO2025</span>
-        </p>
+    <!-- Dismiss Button -->
+    <button
+      @click="showBanner = false"
+      class="absolute top-4 right-4 z-10 p-1.5 rounded-full bg-black/10 hover:bg-black/20 transition-colors duration-200 cursor-pointer"
+      aria-label="Fechar banner"
+    >
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <div class="flex flex-col lg:flex-row items-center gap-6 p-6 lg:p-8">
+      <!-- Icon Section -->
+      <div class="flex-shrink-0">
+        <div class="relative">
+          <div class="absolute inset-0 bg-white/20 rounded-full blur-xl animate-pulse"></div>
+          <div class="relative w-20 h-20 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg class="w-12 h-12 text-yellow-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+            </svg>
+          </div>
+        </div>
       </div>
-      <a
-        href="/book/?service=cleaning"
-        class="w-full sm:w-auto text-center px-6 py-3 bg-white rounded-lg font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
-        style="color: #011e41"
-      >
-        Reservar Agora
-      </a>
+
+      <!-- Content Section -->
+      <div class="flex-1 text-center lg:text-left">
+        <h3 class="text-xl sm:text-2xl font-bold mb-2" style="color: #011e41">
+          Oferta de Boas-Vindas!
+        </h3>
+        <p class="text-sm sm:text-base mb-4 max-w-[550px] " style="color: #011e41; opacity: 0.9">
+          Receba um serviço de limpeza gratuito na sua primeira reserva com a ZELA.
+          Oferta válida por tempo limitado - experimente a diferença sem custos!
+        </p>
+        
+        <!-- Promo Code Section -->
+        <div class="inline-flex items-center gap-2 bg-white/40 backdrop-blur-sm px-4 py-2.5 rounded-lg border border-white/50">
+          <span class="text-xs uppercase tracking-wide font-medium" style="color: #011e41; opacity: 0.7">Código:</span>
+          <span class="font-bold text-lg" style="color: #011e41">BEMVINDO2025</span>
+          <button
+            @click="copyCode()"
+            class="ml-2 p-1.5 rounded-md bg-white/50 hover:bg-white/70 transition-all duration-200 group cursor-pointer"
+            :class="{ 'bg-green-500/30 hover:bg-green-500/30': copied }"
+            aria-label="Copiar código promocional"
+          >
+            <svg x-show="!copied" class="w-4 h-4 text-yellow-900 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+            </svg>
+            <svg x-show="copied" class="w-4 h-4 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </button>
+          <span x-show="copied" x-transition class="ml-1 text-xs font-medium text-green-700">Copiado!</span>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="flex-shrink-0">
+        <a
+          href="/book/?service=cleaning"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-gray-50 rounded-full font-bold text-base shadow-xl hover:shadow-2xl transition-all duration-200 group cursor-pointer"
+          style="color: #011e41"
+        >
+          <span>Reservar Agora</span>
+          <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -313,7 +376,7 @@
                   {% if booking.status == 'pending_confirmation' %}
                     style="background-color: #ff9800; color: white"
                   {% elif booking.status == 'pending' %}
-                    style="background-color: #fdea00; color: #035d73"
+                    style="background-color: #F4D35E; color: #035d73"
                   {% elif booking.status == 'accepted' %}
                     style="background-color: #035d73; color: white"
                   {% else %}
@@ -400,7 +463,7 @@
           <a
             href="/book/"
             class="inline-flex items-center px-4 py-2 rounded-full font-semibold text-sm transition-all duration-200 transform hover:-translate-y-1 hover:shadow-lg cursor-pointer"
-            style="background-color: #fdea00; color: #011e41"
+            style="background-color: #F4D35E; color: #011e41"
           >
             Reservar um Serviço
           </a>

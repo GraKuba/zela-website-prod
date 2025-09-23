@@ -591,6 +591,94 @@ class PlacementWorker(Worker):
 
 # Service Package for credit-based services
 
+class WorkerService(models.Model):
+    """Link between workers and service categories they can provide."""
+    
+    worker = models.ForeignKey(
+        Worker,
+        on_delete=models.CASCADE,
+        related_name="worker_services",
+        help_text="Worker who can provide this service"
+    )
+    service_category = models.ForeignKey(
+        'services.ServiceCategory',
+        on_delete=models.CASCADE,
+        related_name="worker_services",
+        help_text="Service category the worker can provide"
+    )
+    is_verified = models.BooleanField(
+        default=False,
+        help_text="Whether worker's ability to provide this service is verified"
+    )
+    priority = models.PositiveIntegerField(
+        default=0,
+        help_text="Priority for this worker in this service category (higher = better match)"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.worker} - {self.service_category}"
+    
+    class Meta:
+        verbose_name = "Worker Service"
+        verbose_name_plural = "Worker Services"
+        unique_together = ['worker', 'service_category']
+        ordering = ['-priority', 'created_at']
+
+
+class WorkerServicePricing(models.Model):
+    """Custom pricing for specific worker-service combinations."""
+    
+    worker_service = models.OneToOneField(
+        WorkerService,
+        on_delete=models.CASCADE,
+        related_name="custom_pricing",
+        help_text="Worker-service relationship this pricing applies to"
+    )
+    pricing_config = models.JSONField(
+        default=dict,
+        help_text="Custom pricing configuration overriding service defaults"
+    )
+    markup_percentage = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=0,
+        help_text="Markup percentage above base price (-50 to +200)"
+    )
+    minimum_price = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text="Minimum price for this worker-service combination"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Whether this custom pricing is active"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Pricing: {self.worker_service}"
+    
+    def calculate_price(self, base_price):
+        """Calculate final price with markup."""
+        if not self.is_active:
+            return base_price
+        
+        # Apply markup percentage
+        final_price = base_price * (1 + (self.markup_percentage / 100))
+        
+        # Apply minimum price if set
+        if self.minimum_price:
+            final_price = max(final_price, self.minimum_price)
+        
+        return int(final_price)
+    
+    class Meta:
+        verbose_name = "Worker Service Pricing"
+        verbose_name_plural = "Worker Service Pricing"
+
+
 class ServicePackage(models.Model):
     """Pre-purchased service packages/credits."""
     

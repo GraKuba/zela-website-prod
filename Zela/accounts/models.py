@@ -103,7 +103,11 @@ class Profile(models.Model):
      
 
 class ProviderProfile(models.Model):
-    """Extended profile for service providers."""
+    """Extended profile for service providers.
+    
+    DEPRECATED: Use workers.Worker models instead.
+    This model is kept for migration compatibility only.
+    """
     
     user = models.OneToOneField(
         User,
@@ -261,7 +265,10 @@ class ProviderProfile(models.Model):
 
 
 class ProviderDocument(models.Model):
-    """KYC and verification documents for providers."""
+    """KYC and verification documents for providers.
+    
+    DEPRECATED: Document verification is now handled in workers.Worker models.
+    """
     
     DOCUMENT_TYPES = [
         ('national_id', 'National ID'),
@@ -350,7 +357,10 @@ class ProviderDocument(models.Model):
 
 
 class ProviderContract(models.Model):
-    """Legal contracts and agreements for providers."""
+    """Legal contracts and agreements for providers.
+    
+    DEPRECATED: Contract management is now handled in workers.Worker models.
+    """
     
     CONTRACT_TYPES = [
         ('service_agreement', 'Service Provider Agreement'),
@@ -496,7 +506,7 @@ class PaymentMethod(models.Model):
 
 
 class DistanceRequest(models.Model):
-    """Track distance-based service requests to/from providers."""
+    """Track distance-based service requests to/from workers."""
     
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -506,11 +516,13 @@ class DistanceRequest(models.Model):
         ('expired', 'Expired'),
     ]
     
-    provider = models.ForeignKey(
-        User,
+    worker = models.ForeignKey(
+        'workers.Worker',
         on_delete=models.CASCADE,
+        null=True,
+        blank=True,
         related_name="distance_requests",
-        help_text="Provider who received this request"
+        help_text="Worker who received this request"
     )
     booking = models.ForeignKey(
         'bookings.Booking',
