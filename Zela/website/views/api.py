@@ -22,9 +22,9 @@ def get_payment_methods(request):
         cards.append({
             'id': str(method.id),
             'last4': method.last4,
-            'brand': method.card_brand,
-            'exp_month': method.exp_month,
-            'exp_year': method.exp_year,
+            'brand': method.brand,
+            'exp_month': method.expiry_month,
+            'exp_year': method.expiry_year,
             'is_default': method.is_default,
         })
     

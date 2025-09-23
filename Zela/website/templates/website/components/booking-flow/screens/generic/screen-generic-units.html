@@ -1,248 +1,178 @@
 {% load static %}
 
 <!-- Generic Unit Selection Screen -->
-<!-- Can be used for AC units, number of items, rooms, etc. -->
-<div class="min-h-screen bg-white flex flex-col">
+<div class="min-h-screen bg-white flex flex-col" x-data="genericUnits()">
   <!-- Progress Header -->
   {% include "website/components/booking-flow/partials/booking-progress-header.html" %}
 
   <!-- Main Content -->
-  <div class="flex-1 max-w-4xl mx-auto w-full px-6 py-8">
-    <!-- Dynamic Title and Description -->
-    <h2 class="text-3xl font-bold mb-2" style="color: #011e41" x-text="unitConfig.title || 'Quantos itens?'"></h2>
-    <p class="text-gray-600 mb-8" x-text="unitConfig.description || 'Selecione o número de unidades que necessitam de serviço.'"></p>
+  <div class="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 lg:py-12">
+    <!-- Title Section with better hierarchy -->
+    <div class="text-center mb-6 sm:mb-8 lg:mb-10">
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3" style="color: #011e41" x-text="unitConfig.title">
+        Quantos itens?
+      </h2>
+      <p class="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto" x-text="unitConfig.description">
+        Selecione o número de unidades
+      </p>
+    </div>
 
-    <!-- Unit Count Selection -->
-    <div class="bg-white rounded-2xl border-2 border-gray-200 p-8 mb-8">
-      <div class="flex items-center justify-between mb-6">
-        <span class="text-lg font-medium" style="color: #011e41" x-text="unitConfig.unitLabel || 'Unidades'"></span>
-        <div class="flex items-center space-x-4">
+    <!-- Unit Count Selection Card -->
+    <div class="bg-white rounded-2xl border-2 border-gray-200 p-6 sm:p-8 mb-6 sm:mb-8 shadow-sm hover:shadow-md transition-shadow">
+      <!-- Unit Counter Section -->
+      <div class="flex flex-col items-center justify-center py-8">
+        <span class="text-lg font-medium mb-6" style="color: #011e41" x-text="unitConfig.unitLabel || 'Unidades'"></span>
+        
+        <!-- Counter Controls -->
+        <div class="flex items-center justify-center space-x-6">
+          <!-- Decrement Button -->
           <button
             @click="decrementUnits()"
-            class="w-12 h-12 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
-            :class="{ 'opacity-50 cursor-not-allowed': unitCount <= (unitConfig.minUnits || 1) }"
-            :disabled="unitCount <= (unitConfig.minUnits || 1)"
+            class="w-16 h-16 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-[#015e73] hover:bg-gray-50 transition-all duration-200 cursor-pointer transform hover:scale-110"
+            :class="{ 'opacity-50 cursor-not-allowed hover:scale-100': unitCount <= unitConfig.minUnits }"
+            :disabled="unitCount <= unitConfig.minUnits"
           >
-            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M20 12H4" />
             </svg>
           </button>
           
-          <input
-            type="number"
-            x-model="unitCount"
-            @input="validateUnitCount()"
-            class="w-20 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg px-2 py-1"
-            style="color: #011e41"
-            :min="unitConfig.minUnits || 1"
-            :max="unitConfig.maxUnits || 99"
-          />
+          <!-- Number Display/Input -->
+          <div class="relative">
+            <input
+              type="number"
+              x-model.number="unitCount"
+              @input="validateUnitCount()"
+              class="w-32 h-20 text-center text-4xl font-bold border-3 border-[#f4d35e] rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#f4d35e] focus:ring-offset-2 cursor-text"
+              style="color: #011e41; border-width: 3px;"
+              :min="unitConfig.minUnits"
+              :max="unitConfig.maxUnits"
+            />
+            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-2">
+              <span class="text-xs text-gray-500">Quantidade</span>
+            </div>
+          </div>
           
+          <!-- Increment Button -->
           <button
             @click="incrementUnits()"
-            class="w-12 h-12 rounded-full border-2 border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
-            :class="{ 'opacity-50 cursor-not-allowed': unitCount >= (unitConfig.maxUnits || 99) }"
-            :disabled="unitCount >= (unitConfig.maxUnits || 99)"
+            class="w-16 h-16 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-[#015e73] hover:bg-gray-50 transition-all duration-200 cursor-pointer transform hover:scale-110"
+            :class="{ 'opacity-50 cursor-not-allowed hover:scale-100': unitCount >= unitConfig.maxUnits }"
+            :disabled="unitCount >= unitConfig.maxUnits"
           >
-            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4" />
             </svg>
           </button>
         </div>
+        
+        <!-- Min/Max Indicators -->
+        <div class="flex justify-center space-x-8 mt-6 text-sm text-gray-500">
+          <span>Mín: <span x-text="unitConfig.minUnits"></span></span>
+          <span>Máx: <span x-text="unitConfig.maxUnits"></span></span>
+        </div>
       </div>
 
-      <!-- Volume Discount Display (if applicable) -->
-      <div x-show="unitConfig.showVolumeDiscounts && getVolumeDiscount() > 0" class="mt-6 p-4 bg-green-50 rounded-lg">
-        <p class="text-green-700 font-medium">
-          <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <!-- Volume Discount Display -->
+      <div x-show="unitConfig.showVolumeDiscounts && getVolumeDiscount() > 0" 
+           class="mt-6 p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-xl border border-green-200"
+           x-transition>
+        <p class="text-green-700 font-medium flex items-center justify-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <span x-text="`Desconto de ${getVolumeDiscount()}% aplicado para ${unitCount} ${unitConfig.unitLabel || 'unidades'}`"></span>
         </p>
       </div>
-
-      <!-- Additional Options (if configured) -->
-      <div x-show="unitConfig.additionalOptions && unitConfig.additionalOptions.length > 0" class="mt-6">
-        <h3 class="text-lg font-medium mb-4" style="color: #011e41">Opções Adicionais</h3>
-        <div class="space-y-3">
-          <template x-for="option in unitConfig.additionalOptions" :key="option.id">
-            <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-              <input
-                type="checkbox"
-                :value="option.id"
-                @change="toggleAdditionalOption(option.id)"
-                class="mr-3 w-5 h-5 text-[#015e73] rounded focus:ring-[#015e73]"
-              />
-              <div class="flex-1">
-                <span class="font-medium" x-text="option.label"></span>
-                <span x-show="option.price" class="ml-2 text-sm text-gray-500" x-text="`+AOA ${option.price}`"></span>
-              </div>
-            </label>
-          </template>
-        </div>
-      </div>
     </div>
 
-    <!-- Price Estimate -->
-    <div class="bg-gray-50 rounded-2xl p-6 mb-8">
-      <h3 class="text-lg font-medium mb-4" style="color: #011e41">Estimativa de Preço</h3>
-      <div class="space-y-2">
-        <div class="flex justify-between">
-          <span class="text-gray-600" x-text="`${unitCount} ${unitConfig.unitLabel || 'unidades'}`"></span>
-          <span class="font-medium" style="color: #011e41" x-text="formatCurrency(calculateUnitPrice())"></span>
+    <!-- Price Estimate Card with improved styling -->
+    <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8 border border-gray-200">
+      <h3 class="text-lg font-medium mb-6" style="color: #011e41">Estimativa de Preço</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+          <span class="text-gray-600">
+            <span x-text="unitCount"></span> <span x-text="unitConfig.unitLabel || 'unidades'"></span>
+          </span>
+          <span class="font-semibold text-lg" style="color: #011e41" x-text="formatCurrency(calculateUnitPrice())"></span>
         </div>
-        <div x-show="selectedAdditionalOptions.length > 0" class="pt-2 border-t">
-          <template x-for="optionId in selectedAdditionalOptions" :key="optionId">
-            <div class="flex justify-between text-sm">
-              <span class="text-gray-600" x-text="getOptionLabel(optionId)"></span>
-              <span class="text-gray-700" x-text="formatCurrency(getOptionPrice(optionId))"></span>
-            </div>
-          </template>
-        </div>
-        <div class="pt-2 border-t font-bold">
-          <div class="flex justify-between">
-            <span style="color: #011e41">Total</span>
-            <span style="color: #011e41" x-text="formatCurrency(calculateTotalPrice())"></span>
+        
+        <!-- Total with emphasis -->
+        <div class="pt-2">
+          <div class="flex justify-between items-center">
+            <span class="text-lg font-bold" style="color: #011e41">Total</span>
+            <span class="text-2xl font-bold" style="color: #015e73" x-text="formatCurrency(calculateTotalPrice())"></span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Navigation Buttons -->
-    <div class="flex justify-between">
-      <button
-        @click="previousScreen()"
-        class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-      >
-        Voltar
-      </button>
+    <!-- Action Section with improved CTA -->
+    <div class="mt-6 sm:mt-8 lg:mt-10">
+      <!-- Continue Button with animation -->
       <button
         @click="saveUnitsAndContinue()"
-        class="px-8 py-3 bg-[#015e73] text-white rounded-lg font-medium hover:bg-[#014a5a] transition-colors"
+        class="w-full min-h-[44px] py-3 sm:py-4 lg:py-5 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#015e73] to-[#017891] text-white font-bold text-sm sm:text-base lg:text-lg rounded-2xl hover:from-[#014a5a] hover:to-[#015e73] transition-all duration-300 shadow-lg transform hover:scale-[1.01] flex items-center justify-center group cursor-pointer"
       >
-        Continuar
+        <span>Continuar</span>
+        <svg
+          class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Back Button with better styling -->
+    <div class="mt-6 text-center">
+      <button
+        @click="previousScreen()"
+        class="inline-flex items-center text-gray-600 hover:text-[#015e73] font-medium transition-colors duration-200 group cursor-pointer"
+      >
+        <svg
+          class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        <span>Voltar ao passo anterior</span>
       </button>
     </div>
   </div>
 </div>
 
+<style>
+/* Custom number input styling */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Focus styles for number input */
+input[type="number"]:focus {
+  background: linear-gradient(to right, #f4d35e08, #f6dd7a08);
+}
+</style>
+
 <script>
-// Add Alpine.js component data extensions for unit selection
-Alpine.data('unitSelection', () => ({
-  unitCount: 1,
-  unitConfig: {},
-  selectedAdditionalOptions: [],
-  
-  init() {
-    // Load configuration from service config
-    if (window.bookingFlowComponent && window.bookingFlowComponent.serviceConfig) {
-      const screenConfig = window.bookingFlowComponent.flowRouter.getScreenConfig('unit_count');
-      this.unitConfig = screenConfig.config || {};
-      this.unitCount = this.unitConfig.defaultUnits || 1;
-    }
-  },
-  
-  incrementUnits() {
-    const max = this.unitConfig.maxUnits || 99;
-    if (this.unitCount < max) {
-      this.unitCount++;
-      this.updateBookingData();
-    }
-  },
-  
-  decrementUnits() {
-    const min = this.unitConfig.minUnits || 1;
-    if (this.unitCount > min) {
-      this.unitCount--;
-      this.updateBookingData();
-    }
-  },
-  
-  validateUnitCount() {
-    const min = this.unitConfig.minUnits || 1;
-    const max = this.unitConfig.maxUnits || 99;
-    
-    if (this.unitCount < min) {
-      this.unitCount = min;
-    } else if (this.unitCount > max) {
-      this.unitCount = max;
-    }
-    
-    this.updateBookingData();
-  },
-  
-  getVolumeDiscount() {
-    if (!this.unitConfig.volumeDiscounts) return 0;
-    
-    // Find applicable discount based on unit count
-    for (const [range, discount] of Object.entries(this.unitConfig.volumeDiscounts)) {
-      if (range.includes('-')) {
-        const [min, max] = range.split('-').map(Number);
-        if (this.unitCount >= min && this.unitCount <= max) {
-          return discount;
-        }
-      } else if (range.includes('+')) {
-        const min = parseInt(range);
-        if (this.unitCount >= min) {
-          return discount;
-        }
-      } else if (this.unitCount === parseInt(range)) {
-        return discount;
-      }
-    }
-    
-    return 0;
-  },
-  
-  calculateUnitPrice() {
-    const basePrice = this.unitConfig.basePrice || 0;
-    const discount = this.getVolumeDiscount();
-    const pricePerUnit = basePrice * (1 - discount / 100);
-    return pricePerUnit * this.unitCount;
-  },
-  
-  toggleAdditionalOption(optionId) {
-    const index = this.selectedAdditionalOptions.indexOf(optionId);
-    if (index > -1) {
-      this.selectedAdditionalOptions.splice(index, 1);
-    } else {
-      this.selectedAdditionalOptions.push(optionId);
-    }
-    this.updateBookingData();
-  },
-  
-  getOptionLabel(optionId) {
-    const option = this.unitConfig.additionalOptions?.find(o => o.id === optionId);
-    return option?.label || '';
-  },
-  
-  getOptionPrice(optionId) {
-    const option = this.unitConfig.additionalOptions?.find(o => o.id === optionId);
-    return option?.price || 0;
-  },
-  
-  calculateTotalPrice() {
-    let total = this.calculateUnitPrice();
-    for (const optionId of this.selectedAdditionalOptions) {
-      total += this.getOptionPrice(optionId);
-    }
-    return total;
-  },
-  
-  updateBookingData() {
-    if (window.bookingFlowComponent) {
-      window.bookingFlowComponent.booking.unitCount = this.unitCount;
-      window.bookingFlowComponent.booking.additionalOptions = this.selectedAdditionalOptions;
-      window.bookingFlowComponent.booking.pricing.bookingCost = this.calculateTotalPrice();
-      window.bookingFlowComponent.saveBookingData();
-    }
-  },
-  
-  saveUnitsAndContinue() {
-    this.updateBookingData();
-    if (window.bookingFlowComponent) {
-      window.bookingFlowComponent.nextScreen();
+// Initialize Alpine component when HTMX loads the content
+document.addEventListener('htmx:afterSwap', function(event) {
+  if (event.detail.target.id === 'booking-screen') {
+    // Re-initialize Alpine for the new content
+    if (typeof Alpine !== 'undefined') {
+      Alpine.initTree(event.detail.target);
     }
   }
-}));
+});
 </script>

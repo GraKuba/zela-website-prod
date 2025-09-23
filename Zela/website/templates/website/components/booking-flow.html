@@ -10,15 +10,25 @@
   style="font-family: Arial, sans-serif"
 >
   <!-- Loading state -->
-  <div x-show="!isInitialized" class="min-h-screen flex items-center justify-center">
+  <div
+    x-show="!isInitialized"
+    class="min-h-screen flex items-center justify-center"
+  >
     <div class="text-center">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#015e73] mx-auto mb-4"></div>
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#015e73] mx-auto mb-4"
+      ></div>
       <p class="text-gray-600">A carregar...</p>
     </div>
   </div>
-  
+
   <!-- Main Content Container -->
-  <div id="booking-screen" class="min-h-screen" x-show="isInitialized" style="display: none;">
+  <div
+    id="booking-screen"
+    class="min-h-screen"
+    x-show="isInitialized"
+    style="display: none"
+  >
     <!-- Screen will be loaded dynamically after initialization -->
   </div>
 
@@ -53,7 +63,7 @@
   </div>
 
   <!-- Worker Profile Modal -->
-  {% include "website/components/booking-flow/screens/modal-worker-profile.html" %}
+  {% include "website/components/booking-flow/screens/modal-worker-profile.html"%}
 
   <!-- Service Scope Modal -->
   {% include "website/components/booking-flow/screens/modal-service-scope.html" %}
@@ -78,7 +88,7 @@
       // Initialization tracking
       isInitialized: false,
       apiCallsInProgress: new Set(),
-      
+
       // Flow router
       flowRouter: null,
       serviceConfig: null,
@@ -162,17 +172,21 @@
         voucher: "",
         // Dog Trainer specific fields
         dogTrainerPackage: null, // 'basic', 'standard', 'premium'
-        dogName: '',
-        dogBreed: '',
-        dogAge: '',
-        dogSize: '',
-        dogBehaviorNotes: '',
+        dogName: "",
+        dogBreed: "",
+        dogAge: "",
+        dogSize: "",
+        dogBehaviorNotes: "",
         selectedPackage: null,
         userPackages: [], // For existing dog training credits
         // Electrician specific fields
-        electricianDescription: '',
+        electricianDescription: "",
         electricianHours: 2,
         electricianEmergency: false,
+        // Pest Control specific fields
+        pestControlType: null, // 'regular' or 'extreme'
+        pestTypes: [], // Array of selected pest types: 'roaches', 'ants', 'rats', 'termites', 'mosquitos', 'other'
+        pestControlNotes: "", // Description of the problem
       },
 
       // Service data
@@ -223,7 +237,7 @@
             ],
           },
         },
-        "outdoor-services": {
+        "outdoor-cleaning": {
           name: "Serviços Exteriores",
           description:
             "Limpeza e manutenção exterior profissional incluindo jardinagem, limpeza de piscinas e lavagem exterior.",
@@ -247,7 +261,7 @@
             "Concluído!",
           ],
         },
-        "moving-cleaning": {
+        "moving": {
           name: "Limpeza de Mudança",
           description:
             "Serviços de limpeza profunda para mudanças de entrada e saída para garantir que o seu espaço esteja impecável.",
@@ -339,21 +353,23 @@
       async init() {
         // Prevent duplicate initialization
         if (this.isInitialized) {
-          console.log('Already initialized, skipping...');
+          console.log("Already initialized, skipping...");
           return;
         }
-        
+
         // Prevent duplicate API calls during initialization
-        if (this.apiCallsInProgress.has('init')) {
-          console.log('Initialization already in progress...');
+        if (this.apiCallsInProgress.has("init")) {
+          console.log("Initialization already in progress...");
           return;
         }
-        
-        this.apiCallsInProgress.add('init');
-        
+
+        this.apiCallsInProgress.add("init");
+
         try {
           // Initialize with service type from URL or default
-          const urlServiceType = new URLSearchParams(window.location.search).get("service") || "indoor-cleaning";
+          const urlServiceType =
+            new URLSearchParams(window.location.search).get("service") ||
+            "indoor-cleaning";
           this.booking.serviceType = urlServiceType;
           this.booking.originalServiceType = urlServiceType; // Store original for icon display
 
@@ -369,8 +385,8 @@
           await this.loadServiceConfiguration();
 
           // Load pricing configuration
-          if (!this.apiCallsInProgress.has('pricing-config')) {
-            this.apiCallsInProgress.add('pricing-config');
+          if (!this.apiCallsInProgress.has("pricing-config")) {
+            this.apiCallsInProgress.add("pricing-config");
             try {
               const pricingResponse = await fetch("/api/pricing/config/");
               if (pricingResponse.ok) {
@@ -383,27 +399,37 @@
             } catch (error) {
               console.error("Error loading pricing config:", error);
             } finally {
-              this.apiCallsInProgress.delete('pricing-config');
+              this.apiCallsInProgress.delete("pricing-config");
             }
           }
 
           // Load saved booking data from session
-          if (!this.apiCallsInProgress.has('booking-data')) {
-            this.apiCallsInProgress.add('booking-data');
+          if (!this.apiCallsInProgress.has("booking-data")) {
+            this.apiCallsInProgress.add("booking-data");
             try {
               const response = await fetch("/booking-flow/get-data/");
               if (response.ok) {
                 const result = await response.json();
                 if (result.data && Object.keys(result.data).length > 0) {
+                  // Store the current service type from URL
+                  const currentServiceType = this.booking.serviceType;
+                  const currentOriginalServiceType = this.booking.originalServiceType;
+                  
                   // Merge saved data with current booking data
                   Object.assign(this.booking, result.data);
+                  
+                  // Restore the service type from URL (don't let saved data override it)
+                  this.booking.serviceType = currentServiceType;
+                  this.booking.originalServiceType = currentOriginalServiceType;
+                  
                   console.log("Loaded saved booking data:", result.data);
+                  console.log("Preserved service type from URL:", currentServiceType);
                 }
               }
             } catch (error) {
               console.error("Error loading booking data:", error);
             } finally {
-              this.apiCallsInProgress.delete('booking-data');
+              this.apiCallsInProgress.delete("booking-data");
             }
           }
 
@@ -412,7 +438,7 @@
 
           // Load user's saved addresses
           await this.loadSavedAddresses();
-          
+
           // Initialize the first screen after all data is loaded
           if (this.flowRouter) {
             const firstScreen = this.flowRouter.getCurrentScreen();
@@ -420,14 +446,13 @@
           }
 
           console.log("Booking flow initialized:", this.booking);
-          
+
           // Mark as initialized
           this.isInitialized = true;
-          
         } catch (error) {
           console.error("Error during initialization:", error);
         } finally {
-          this.apiCallsInProgress.delete('init');
+          this.apiCallsInProgress.delete("init");
         }
       },
 
@@ -440,7 +465,7 @@
           );
           if (response.ok) {
             this.serviceConfig = await response.json();
-            
+
             // Update both serviceType and originalServiceType to use the actual database slug
             if (this.serviceConfig.slug) {
               this.booking.serviceType = this.serviceConfig.slug;
@@ -457,7 +482,10 @@
             console.log("Service type from URL:", this.booking.serviceType);
             console.log("Flow screens:", this.flowRouter.getAllScreens());
             console.log("Current screen name:", this.currentScreenName);
-            console.log("Booking requirements:", this.serviceConfig.booking_requirements);
+            console.log(
+              "Booking requirements:",
+              this.serviceConfig.booking_requirements
+            );
           } else {
             // Fallback to default configuration
             this.serviceConfig = {
@@ -477,7 +505,7 @@
           };
           this.flowRouter = new BookingFlowRouter(this.serviceConfig);
         } finally {
-          this.apiCallsInProgress.delete('service-config');
+          this.apiCallsInProgress.delete("service-config");
         }
       },
 
@@ -485,10 +513,13 @@
       async loadScreen(screenName) {
         const screenConfig = this.flowRouter.getScreenConfig(screenName);
         
+        // Store the original logical screen name before mapping
+        const originalScreenName = screenName;
+
         // Service-aware screen mapping
         const serviceType = this.booking.serviceType;
         let screenNumber = 1; // Default to address screen
-        
+
         // Base screen mappings that work for all services
         const baseScreenMapping = {
           address: 1,
@@ -498,93 +529,98 @@
           payment: 13,
           confirmation: 15,
         };
-        
+
         // Service-specific screen mappings
         const serviceScreenMapping = {
           // Cleaning Services (from image)
-          'indoor-cleaning': {
+          "indoor-cleaning": {
             duration_tasks: 8, // Booking details screen
           },
-          'office-cleaning': {
+          "office-cleaning": {
             duration_tasks: 8, // Booking details screen
           },
-          'outdoor-services': {
+          "outdoor-cleaning": {
             garden_area: "generic-selection",
             service_type: "generic-selection",
           },
-          'moving-cleaning': {
+          "moving": {
             duration_tasks: 8,
             move_type: "generic-selection",
           },
-          'express-cleaning': {
+          "express-cleaning": {
             duration: "generic-duration", // 2-4 hours
           },
-          'laundry-ironing': {
+          "laundry-ironing": {
             items_weight: "generic-units",
             service_options: "generic-selection",
           },
-          
+
           // Trade Services
-          'electrician': {
+          electrician: {
             service_config: 4, // Electrician config screen
           },
-          'ac-repair': {
+          "ac-repair": {
             unit_count: 3, // AC units screen - correct for AC repair
           },
-          'pest-control': {
-            pest_config: 5, // Pest control config screen  
+          "pest-control": {
+            pest_config: 5, // Pest control config screen
           },
-          'dog-trainer': {
+          "dog-trainer": {
             package_selection: 6, // Dog trainer packages
           },
         };
-        
+
         // Check if this is a base screen
         if (baseScreenMapping[screenName] !== undefined) {
           screenNumber = baseScreenMapping[screenName];
         }
         // Check service-specific mapping
-        else if (serviceScreenMapping[serviceType] && serviceScreenMapping[serviceType][screenName] !== undefined) {
+        else if (
+          serviceScreenMapping[serviceType] &&
+          serviceScreenMapping[serviceType][screenName] !== undefined
+        ) {
           screenNumber = serviceScreenMapping[serviceType][screenName];
         }
         // Handle component-based screens from config
         else if (screenConfig && screenConfig.component) {
           // Map component names to screen numbers/ids
           const componentMapping = {
-            'screen-2-property-typology': 2,
-            'screen-3-ac-units': 3,
-            'screen-4-electrician-config': 4,
-            'screen-5-pest-control-config': 5,
-            'screen-6-dog-trainer-packages': 6,
-            'screen-7-date-bucket': 7,
-            'screen-8-booking-details': 8,
-            'screen-generic-duration': "generic-duration",
-            'screen-generic-units': "generic-units",
-            'screen-generic-selection': "generic-selection",
+            "screen-2-property-typology": 2,
+            "screen-3-ac-units": 3,
+            "screen-4-electrician-config": 4,
+            "screen-5-pest-control-config": 5,
+            "screen-6-dog-trainer-packages": 6,
+            "screen-7-date-bucket": 8, // Redirect to booking details instead
+            "screen-8-booking-details": 8,
+            "screen-generic-duration": "generic-duration",
+            "screen-generic-units": "generic-units",
+            "screen-generic-selection": "generic-selection",
           };
           screenNumber = componentMapping[screenConfig.component] || 1;
         }
-        
-        console.log(`Loading screen: ${screenName} -> ${screenNumber} for service: ${serviceType}`);
-        
+
+        console.log(
+          `Loading screen: ${screenName} -> ${screenNumber} for service: ${serviceType}`
+        );
+
         // Update current screen name and calculate progress
-        this.currentScreenName = screenName;
+        this.currentScreenName = originalScreenName; // Use the original logical screen name
         this.calculateProgressStep();
-        
-        this.goToScreen(screenNumber);
+
+        this.goToScreen(screenNumber, originalScreenName); // Pass original name to preserve it
       },
 
       // Navigate to next screen in flow
       async nextScreen() {
-        console.log('Current screen:', this.currentScreenName);
-        console.log('Service type:', this.booking.serviceType);
-        console.log('Flow screens:', this.flowRouter.getAllScreens());
-        console.log('Current index before:', this.flowRouter.currentIndex);
-        
+        console.log("Current screen:", this.currentScreenName);
+        console.log("Service type:", this.booking.serviceType);
+        console.log("Flow screens:", this.flowRouter.getAllScreens());
+        console.log("Current index before:", this.flowRouter.currentIndex);
+
         const nextScreenName = this.flowRouter.getNextScreen(this.booking);
-        console.log('Next screen name:', nextScreenName);
-        console.log('Current index after:', this.flowRouter.currentIndex);
-        
+        console.log("Next screen name:", nextScreenName);
+        console.log("Current index after:", this.flowRouter.currentIndex);
+
         if (nextScreenName) {
           this.currentScreenName = nextScreenName;
           this.calculateProgressStep();
@@ -613,41 +649,56 @@
       // Calculate progress step based on current screen
       calculateProgressStep() {
         const screenName = this.currentScreenName;
-        
+
         // Screen 1 (address) has no progress indicator
-        if (screenName === 'address') {
+        if (screenName === "address") {
           this.progressStep = 0;
           return;
         }
-        
+
         // Details step screens - includes service configuration and scheduling
         const detailsScreens = [
           // Property and area selection
-          'property_typology', 'garden_area',
-          // Service-specific configuration  
-          'service_type', 'move_type', 'service_options', 'service_config',
-          'pest_config', 'package_selection',
+          "property_typology",
+          "garden_area",
+          // Service-specific configuration
+          "service_type",
+          "move_type",
+          "service_options",
+          "service_config",
+          "pest_config",
+          "package_selection",
           // Duration and quantity
-          'duration_tasks', 'duration', 'items_weight', 'unit_count',
+          "duration_tasks",
+          "duration",
+          "items_weight",
+          "unit_count",
           // Scheduling
-          'schedule', 'date_bucket', 'repeat_booking',
+          "schedule",
+          "date_bucket",
+          "repeat_booking",
           // Generic screens
-          'generic-duration', 'generic-units', 'generic-selection'
+          "generic-duration",
+          "generic-units",
+          "generic-selection",
         ];
-        
+
         // Worker step screens
         const workerScreens = [
-          'worker',  // Main worker screen used by all services
-          'worker_selection', 'choose_worker', 'individual_worker',
-          'matchmaking'
+          "worker", // Main worker screen used by all services
+          "worker_selection",
+          "choose_worker",
+          "individual_worker",
+          "matchmaking",
         ];
-        
+
         // Payment step screens
         const paymentScreens = [
-          'payment',  // Main payment screen used by all services
-          'payment_method', 'confirmation'
+          "payment", // Main payment screen used by all services
+          "payment_method",
+          "confirmation",
         ];
-        
+
         if (detailsScreens.includes(screenName)) {
           this.progressStep = 1;
         } else if (workerScreens.includes(screenName)) {
@@ -707,32 +758,36 @@
       },
 
       // Navigation methods
-      goToScreen(screenNumber) {
+      goToScreen(screenNumber, originalScreenName = null) {
         this.currentScreen = screenNumber;
 
         // Map screen numbers to screen names for progress tracking
         const screenNumberToName = {
-          1: 'address',
-          2: 'property_typology', 
-          3: 'ac_units',
-          4: 'electrician_config',
-          5: 'pest_control_config',
-          6: 'dog_trainer_packages',
-          7: 'duration_tasks', // Screen 7 now maps to booking details (was schedule)
-          8: 'duration_tasks',
-          9: 'worker',  // Worker selection screen
-          13: 'payment',  // Payment screen
-          15: 'confirmation',
-          'choose-worker': 'worker',  // Choose worker maps to worker
-          'individual-worker': 'worker',
-          'repeat-booking': 'repeat_booking',
-          'generic-duration': 'generic-duration',
-          'generic-units': 'generic-units',
-          'generic-selection': 'generic-selection'
+          1: "address",
+          2: "property_typology",
+          3: "ac_units",
+          4: "electrician_config",
+          5: "pest_control_config",
+          6: "dog_trainer_packages",
+          7: "duration_tasks", // Screen 7 now maps to booking details (was schedule)
+          8: "duration_tasks",
+          9: "worker", // Worker selection screen
+          13: "payment", // Payment screen
+          15: "confirmation",
+          "choose-worker": "worker", // Choose worker maps to worker
+          "individual-worker": "worker",
+          "repeat-booking": "repeat_booking",
+          "generic-duration": "generic-duration",
+          "generic-units": "generic-units",
+          "generic-selection": "generic-selection",
         };
 
         // Update currentScreenName and calculate progress
-        if (screenNumberToName[screenNumber]) {
+        // Use the original screen name if provided (for generic screens that need to preserve context)
+        if (originalScreenName) {
+          this.currentScreenName = originalScreenName;
+          this.calculateProgressStep();
+        } else if (screenNumberToName[screenNumber]) {
           this.currentScreenName = screenNumberToName[screenNumber];
           this.calculateProgressStep();
         }
@@ -742,12 +797,12 @@
           this.loadGenericDurationScreen();
           return;
         }
-        
+
         if (screenNumber === "generic-units") {
           this.loadGenericUnitsScreen();
           return;
         }
-        
+
         if (screenNumber === "generic-selection") {
           this.loadGenericSelectionScreen();
           return;
@@ -827,25 +882,26 @@
 
         // Store reference to this for use in callback
         const self = this;
-        
+
         // Use HTMX to load the appropriate screen
-        htmx.ajax("GET", `/booking-flow/screen/${screenNumber}/`, {
-          target: "#booking-screen",
-          swap: "innerHTML",
-        }).then(() => {
-          
-          // After screen loads, check if it's the address screen (screen 1) and initialize map
-          if (screenNumber === 1) {
-            // Small delay to ensure DOM is fully ready
-            setTimeout(() => {
-              const mapContainer = document.getElementById("booking-map");
-              if (mapContainer && !self.map) {
-                console.log("Initializing map after screen load");
-                self.initMap();
-              }
-            }, 100);
-          }
-        });
+        htmx
+          .ajax("GET", `/booking-flow/screen/${screenNumber}/`, {
+            target: "#booking-screen",
+            swap: "innerHTML",
+          })
+          .then(() => {
+            // After screen loads, check if it's the address screen (screen 1) and initialize map
+            if (screenNumber === 1) {
+              // Small delay to ensure DOM is fully ready
+              setTimeout(() => {
+                const mapContainer = document.getElementById("booking-map");
+                if (mapContainer && !self.map) {
+                  console.log("Initializing map after screen load");
+                  self.initMap();
+                }
+              }, 100);
+            }
+          });
       },
 
       // Action methods
@@ -951,7 +1007,7 @@
       updateDuration(change) {
         this.booking.details.duration = Math.max(
           1,
-          this.booking.details.duration + change
+          Math.min(8, this.booking.details.duration + change)
         );
         this.calculatePricing();
         // Save state to session
@@ -1111,7 +1167,7 @@
           console.log("Map container not found, skipping initialization");
           return;
         }
-        
+
         // Clean up existing map if it exists
         if (this.map) {
           try {
@@ -1122,7 +1178,7 @@
             console.log("Error removing existing map:", e);
           }
         }
-        
+
         try {
           // Initialize map centered on Luanda, Angola
           this.map = L.map("booking-map").setView([-8.8368, 13.2343], 12);
@@ -1750,12 +1806,12 @@
       // Load saved addresses from user's address book
       async loadSavedAddresses() {
         // Prevent duplicate calls
-        if (this.apiCallsInProgress.has('addresses')) {
+        if (this.apiCallsInProgress.has("addresses")) {
           return;
         }
-        
-        this.apiCallsInProgress.add('addresses');
-        
+
+        this.apiCallsInProgress.add("addresses");
+
         try {
           const response = await fetch("/booking-flow/addresses/");
           if (response.ok) {
@@ -1767,7 +1823,7 @@
         } catch (error) {
           console.error("Error loading saved addresses:", error);
         } finally {
-          this.apiCallsInProgress.delete('addresses');
+          this.apiCallsInProgress.delete("addresses");
         }
       },
 
@@ -1885,7 +1941,7 @@
             }
           } else {
             // End of flow or error
-            console.error('No next screen found in flow');
+            console.error("No next screen found in flow");
           }
         } else {
           this.goToScreen(8); // Skip screen 7, go directly to booking details
@@ -1905,11 +1961,77 @@
         return typologyPricing[typology] || 15000;
       },
 
+      // Pest Control specific functions
+      selectPestControlType(type) {
+        this.booking.pestControlType = type;
+        // Save state to session
+        this.saveBookingData();
+      },
+
+      getPestControlBasePrice(type) {
+        // Base pricing for pest control services
+        const pestControlPricing = {
+          regular: 25000, // Regular service base price
+          extreme: 45000, // Extreme service base price
+        };
+        return pestControlPricing[type] || 25000;
+      },
+
+      getPestControlTotalPrice() {
+        if (!this.booking.pestControlType || !this.booking.propertyTypology) {
+          return 0;
+        }
+
+        // Get base price for selected service type
+        const basePrice = this.getPestControlBasePrice(this.booking.pestControlType);
+        
+        // Apply multiplier based on property size
+        const sizeMultipliers = {
+          'T1': 1.0,
+          'T2': 1.2,
+          'T3': 1.4,
+          'T4+': 1.8,
+        };
+        
+        const multiplier = sizeMultipliers[this.booking.propertyTypology] || 1.0;
+        return Math.round(basePrice * multiplier);
+      },
+
+      proceedFromPestControlConfig() {
+        // Validate selections
+        if (!this.booking.pestControlType) {
+          alert("Por favor, selecione o tipo de serviço");
+          return;
+        }
+        
+        if (!this.booking.pestTypes || this.booking.pestTypes.length === 0) {
+          alert("Por favor, selecione pelo menos um tipo de praga");
+          return;
+        }
+
+        // Save state to session
+        this.saveBookingData();
+        
+        // Navigate to next screen in the flow
+        if (this.flowRouter) {
+          const nextScreen = this.flowRouter.getNextScreen(this.booking);
+          if (nextScreen) {
+            this.currentScreenName = nextScreen;
+            this.loadScreen(nextScreen);
+          }
+        } else {
+          // Default to booking details screen
+          this.goToScreen(8);
+        }
+      },
+
       // Load generic duration screen
       loadGenericDurationScreen() {
-        const screenConfig = this.flowRouter.getScreenConfig(this.currentScreenName);
+        const screenConfig = this.flowRouter.getScreenConfig(
+          this.currentScreenName
+        );
         const serviceType = this.booking.serviceType;
-        
+
         // Configure duration based on service
         let durationConfig = {
           title: "Quanto tempo precisa?",
@@ -1920,9 +2042,9 @@
           step: 0.5,
           hourlyRate: 8000,
         };
-        
+
         // Service-specific configurations
-        if (serviceType === 'express-cleaning') {
+        if (serviceType === "express-cleaning") {
           durationConfig = {
             ...durationConfig,
             title: "Duração da Limpeza Express",
@@ -1932,19 +2054,29 @@
             defaultDuration: 3,
           };
         }
-        
+
+        // Store configuration in window object for the component to access
+        window.genericDurationConfig = durationConfig;
+        console.log("Configuration set for generic duration:", durationConfig);
+
         // Load generic duration screen
-        htmx.ajax("GET", `/booking-flow/screen/generic-duration/?config=${encodeURIComponent(JSON.stringify(durationConfig))}`, {
-          target: "#booking-screen",
-          swap: "innerHTML",
-        });
+        htmx.ajax(
+          "GET",
+          `/booking-flow/screen/generic-duration/`,
+          {
+            target: "#booking-screen",
+            swap: "innerHTML",
+          }
+        );
       },
 
       // Load generic units screen
       loadGenericUnitsScreen() {
-        const screenConfig = this.flowRouter.getScreenConfig(this.currentScreenName);
+        const screenConfig = this.flowRouter.getScreenConfig(
+          this.currentScreenName
+        );
         const serviceType = this.booking.serviceType;
-        
+
         let unitsConfig = {
           title: "Quantas unidades?",
           description: "Selecione o número de unidades",
@@ -1953,9 +2085,9 @@
           maxUnits: 10,
           defaultUnits: 1,
         };
-        
+
         // Service-specific configurations
-        if (serviceType === 'laundry-ironing') {
+        if (serviceType === "laundry-ironing") {
           unitsConfig = {
             ...unitsConfig,
             title: "Quantidade de Roupa",
@@ -1967,30 +2099,44 @@
             alternativeLabel: "Ou número de peças",
           };
         }
-        
+
+        // Store configuration in window object for the component to access
+        window.genericUnitsConfig = unitsConfig;
+        console.log("Configuration set for generic units:", unitsConfig);
+
         // Load generic units screen
-        htmx.ajax("GET", `/booking-flow/screen/generic-units/?config=${encodeURIComponent(JSON.stringify(unitsConfig))}`, {
-          target: "#booking-screen",
-          swap: "innerHTML",
-        });
+        htmx.ajax(
+          "GET",
+          `/booking-flow/screen/generic-units/`,
+          {
+            target: "#booking-screen",
+            swap: "innerHTML",
+          }
+        );
       },
 
-      // Load generic selection screen  
+      // Load generic selection screen
       loadGenericSelectionScreen() {
-        const screenConfig = this.flowRouter.getScreenConfig(this.currentScreenName);
+        const screenConfig = this.flowRouter.getScreenConfig(
+          this.currentScreenName
+        );
         const serviceType = this.booking.serviceType;
         const currentScreenName = this.currentScreenName;
-        
+
+        console.log("Loading generic selection screen:");
+        console.log("  Service type:", serviceType);
+        console.log("  Current screen:", currentScreenName);
+
         let selectionConfig = {
           title: "Selecione uma opção",
           description: "Escolha a opção desejada",
           options: [],
           multiSelect: false,
         };
-        
+
         // Configure based on service and screen
-        if (serviceType === 'outdoor-services') {
-          if (currentScreenName === 'garden_area') {
+        if (serviceType === "outdoor-cleaning") {
+          if (currentScreenName === "garden_area") {
             selectionConfig = {
               title: "Área do Jardim",
               description: "Qual é o tamanho da área exterior?",
@@ -2001,7 +2147,7 @@
                 { id: "xlarge", label: "Muito Grande (300m²+)", price: 50000 },
               ],
             };
-          } else if (currentScreenName === 'service_type') {
+          } else if (currentScreenName === "service_type") {
             selectionConfig = {
               title: "Tipo de Serviço",
               description: "Que serviço exterior precisa?",
@@ -2015,17 +2161,35 @@
               multiSelect: true,
             };
           }
-        } else if (serviceType === 'moving-cleaning' && currentScreenName === 'move_type') {
+        } else if (
+          serviceType === "moving" &&
+          currentScreenName === "move_type"
+        ) {
           selectionConfig = {
             title: "Tipo de Mudança",
             description: "É mudança de entrada ou saída?",
             options: [
-              { id: "move-in", label: "Mudança de Entrada", description: "Limpeza antes de se mudar" },
-              { id: "move-out", label: "Mudança de Saída", description: "Limpeza após sair" },
-              { id: "both", label: "Ambos", description: "Limpeza completa de entrada e saída" },
+              {
+                id: "move-in",
+                label: "Mudança de Entrada",
+                description: "Limpeza antes de se mudar",
+              },
+              {
+                id: "move-out",
+                label: "Mudança de Saída",
+                description: "Limpeza após sair",
+              },
+              {
+                id: "both",
+                label: "Ambos",
+                description: "Limpeza completa de entrada e saída",
+              },
             ],
           };
-        } else if (serviceType === 'laundry-ironing' && currentScreenName === 'service_options') {
+        } else if (
+          serviceType === "laundry-ironing" &&
+          currentScreenName === "service_options"
+        ) {
           selectionConfig = {
             title: "Opções de Serviço",
             description: "Que serviços adicionais deseja?",
@@ -2034,16 +2198,28 @@
               { id: "wash-iron", label: "Lavar e Engomar" },
               { id: "iron-only", label: "Apenas Engomar" },
               { id: "dry-clean", label: "Limpeza a Seco" },
-              { id: "express", label: "Serviço Express (+50%)", priceModifier: 1.5 },
+              {
+                id: "express",
+                label: "Serviço Express (+50%)",
+                priceModifier: 1.5,
+              },
             ],
           };
         }
-        
+
+        // Store configuration in window object for the component to access
+        window.genericSelectionConfig = selectionConfig;
+        console.log("Configuration set for generic selection:", selectionConfig);
+
         // Load generic selection screen
-        htmx.ajax("GET", `/booking-flow/screen/generic-selection/?config=${encodeURIComponent(JSON.stringify(selectionConfig))}`, {
-          target: "#booking-screen",
-          swap: "innerHTML",
-        });
+        htmx.ajax(
+          "GET",
+          `/booking-flow/screen/generic-selection/`,
+          {
+            target: "#booking-screen",
+            swap: "innerHTML",
+          }
+        );
       },
 
       // Format currency
@@ -2179,39 +2355,44 @@
       // Dog Trainer methods
       selectDogTrainerPackage(packageType) {
         this.booking.dogTrainerPackage = packageType;
-        
+
         // Set package details
         const packages = {
-          'basic': {
+          basic: {
             sessions: 4,
             price: 32000,
-            duration: 45
+            duration: 45,
           },
-          'standard': {
+          standard: {
             sessions: 8,
             price: 61200,
-            duration: 60
+            duration: 60,
           },
-          'premium': {
+          premium: {
             sessions: 12,
             price: 90000,
-            duration: 90
-          }
+            duration: 90,
+          },
         };
-        
+
         this.booking.selectedPackage = packages[packageType];
         this.saveBookingData();
       },
-      
+
       useExistingCredits() {
         this.booking.payment.useCredits = true;
         // Navigate to worker selection
         this.goToScreen(9);
       },
-      
+
       proceedFromDogTrainerPackages() {
-        if (!this.booking.dogTrainerPackage || !this.booking.dogName || 
-            !this.booking.dogBreed || !this.booking.dogAge || !this.booking.dogSize) {
+        if (
+          !this.booking.dogTrainerPackage ||
+          !this.booking.dogName ||
+          !this.booking.dogBreed ||
+          !this.booking.dogAge ||
+          !this.booking.dogSize
+        ) {
           alert("Por favor, preencha todos os campos obrigatórios");
           return;
         }
@@ -2221,29 +2402,29 @@
       // Electrician methods
       getElectricianMinimumHours() {
         const minimums = {
-          'T1': 2,
-          'T2': 2,
-          'T3': 3,
-          'T4+': 4
+          T1: 2,
+          T2: 2,
+          T3: 3,
+          "T4+": 4,
         };
         return minimums[this.booking.propertyTypology] || 2;
       },
-      
+
       getElectricianHourlyRate() {
         const rates = {
-          'T1': 5000,
-          'T2': 5000,
-          'T3': 5500,
-          'T4+': 6000
+          T1: 5000,
+          T2: 5000,
+          T3: 5500,
+          "T4+": 6000,
         };
         return rates[this.booking.propertyTypology] || 5000;
       },
-      
+
       incrementElectricianHours() {
         this.booking.electricianHours++;
         this.saveBookingData();
       },
-      
+
       decrementElectricianHours() {
         const minimum = this.getElectricianMinimumHours();
         if (this.booking.electricianHours > minimum) {
@@ -2251,13 +2432,14 @@
           this.saveBookingData();
         }
       },
-      
+
       getElectricianTotalPrice() {
-        const hours = this.booking.electricianHours || this.getElectricianMinimumHours();
+        const hours =
+          this.booking.electricianHours || this.getElectricianMinimumHours();
         const rate = this.getElectricianHourlyRate();
         return hours * rate;
       },
-      
+
       getElectricianFinalPrice() {
         let price = this.getElectricianTotalPrice();
         if (this.booking.electricianEmergency) {
@@ -2265,14 +2447,17 @@
         }
         return price;
       },
-      
+
       proceedFromElectricianConfig() {
         if (!this.booking.electricianDescription) {
           alert("Por favor, descreva o trabalho necessário");
           return;
         }
         // Ensure electricianHours is set to at least the minimum
-        if (!this.booking.electricianHours || this.booking.electricianHours < this.getElectricianMinimumHours()) {
+        if (
+          !this.booking.electricianHours ||
+          this.booking.electricianHours < this.getElectricianMinimumHours()
+        ) {
           this.booking.electricianHours = this.getElectricianMinimumHours();
         }
         this.saveBookingData();
@@ -2711,6 +2896,393 @@
       window.bookingFlowComponent.goToChooseWorker
     ) {
       window.bookingFlowComponent.goToChooseWorker();
+    }
+  });
+
+  // Generic Duration Component - Global function for duration selection
+  window.genericDuration = function() {
+    return {
+      selectedDuration: 3,
+      durationConfig: {
+        title: 'Quanto tempo precisa?',
+        description: 'Selecione a duração do serviço',
+        minDuration: 2,
+        maxDuration: 12,
+        defaultDuration: 3,
+        step: 0.5,
+        hourlyRate: 8000
+      },
+      
+      init() {
+        console.log("Generic duration init called");
+        
+        // Get configuration from URL params or window object
+        const urlParams = new URLSearchParams(window.location.search);
+        const configParam = urlParams.get('config');
+        
+        // Check if config is passed via window object (set by loadGenericDurationScreen)
+        if (window.genericDurationConfig) {
+          Object.assign(this.durationConfig, window.genericDurationConfig);
+          console.log("Duration config loaded from window:", this.durationConfig);
+        } else if (configParam) {
+          try {
+            const parsedConfig = JSON.parse(decodeURIComponent(configParam));
+            Object.assign(this.durationConfig, parsedConfig);
+            console.log("Duration config loaded from URL:", this.durationConfig);
+          } catch (e) {
+            console.error('Failed to parse duration config:', e);
+          }
+        }
+        
+        // Set default duration
+        this.selectedDuration = this.durationConfig.defaultDuration || 3;
+        
+        // Restore previous selection if any
+        if (window.bookingFlowComponent) {
+          const bookingData = window.bookingFlowComponent.booking;
+          if (bookingData.details && bookingData.details.duration) {
+            this.selectedDuration = bookingData.details.duration;
+          }
+        }
+        
+        this.$nextTick(() => {
+          this.updateSliderBackground();
+        });
+      },
+      
+      selectPresetDuration(hours) {
+        this.selectedDuration = hours;
+        this.updateSliderBackground();
+      },
+      
+      adjustDuration(change) {
+        const newDuration = this.selectedDuration + change;
+        const min = this.durationConfig.minDuration || 2;
+        const max = this.durationConfig.maxDuration || 12;
+        
+        if (newDuration >= min && newDuration <= max) {
+          this.selectedDuration = newDuration;
+          this.updateSliderBackground();
+        }
+      },
+      
+      updateSliderBackground() {
+        const slider = this.$el.querySelector('.duration-slider');
+        if (slider) {
+          const min = parseFloat(this.durationConfig.minDuration || 2);
+          const max = parseFloat(this.durationConfig.maxDuration || 12);
+          const percentage = ((this.selectedDuration - min) / (max - min)) * 100;
+          slider.style.setProperty('--value', `${percentage}%`);
+        }
+      },
+      
+      calculateDurationPrice() {
+        const hourlyRate = this.durationConfig.hourlyRate || 8000;
+        return hourlyRate * this.selectedDuration;
+      },
+      
+      calculateTotalPrice() {
+        return this.calculateDurationPrice();
+      },
+      
+      formatCurrency(amount) {
+        return new Intl.NumberFormat('pt-AO', {
+          style: 'currency',
+          currency: 'AOA'
+        }).format(amount);
+      },
+      
+      saveDurationAndContinue() {
+        if (window.bookingFlowComponent) {
+          // Save duration to booking data
+          window.bookingFlowComponent.booking.details = window.bookingFlowComponent.booking.details || {};
+          window.bookingFlowComponent.booking.details.duration = this.selectedDuration;
+          window.bookingFlowComponent.booking.pricing = window.bookingFlowComponent.booking.pricing || {};
+          window.bookingFlowComponent.booking.pricing.bookingCost = this.calculateTotalPrice();
+          window.bookingFlowComponent.saveBookingData();
+          window.bookingFlowComponent.nextScreen();
+        }
+      },
+      
+      previousScreen() {
+        if (window.bookingFlowComponent) {
+          window.bookingFlowComponent.previousScreen();
+        }
+      }
+    };
+  }
+
+  // Generic Units Component - Global function for unit selection
+  window.genericUnits = function() {
+    return {
+      unitCount: 1,
+      unitConfig: {
+        title: 'Quantos itens?',
+        description: 'Selecione o número de unidades',
+        unitLabel: 'Unidades',
+        minUnits: 1,
+        maxUnits: 99,
+        defaultUnits: 1,
+        basePrice: 0
+      },
+      selectedAdditionalOptions: [],
+      
+      init() {
+        console.log("Generic units init called");
+        
+        // Get configuration from URL params or window object
+        const urlParams = new URLSearchParams(window.location.search);
+        const configParam = urlParams.get('config');
+        
+        // Check if config is passed via window object (set by loadGenericUnitsScreen)
+        if (window.genericUnitsConfig) {
+          Object.assign(this.unitConfig, window.genericUnitsConfig);
+          console.log("Units config loaded from window:", this.unitConfig);
+        } else if (configParam) {
+          try {
+            const parsedConfig = JSON.parse(decodeURIComponent(configParam));
+            Object.assign(this.unitConfig, parsedConfig);
+            console.log("Units config loaded from URL:", this.unitConfig);
+          } catch (e) {
+            console.error('Failed to parse units config:', e);
+          }
+        }
+        
+        // Set default unit count
+        this.unitCount = this.unitConfig.defaultUnits || 1;
+        
+        // Restore previous selection if any
+        if (window.bookingFlowComponent) {
+          const bookingData = window.bookingFlowComponent.booking;
+          if (bookingData.unitCount) {
+            this.unitCount = bookingData.unitCount;
+          }
+          if (bookingData.additionalOptions) {
+            this.selectedAdditionalOptions = bookingData.additionalOptions;
+          }
+        }
+      },
+      
+      incrementUnits() {
+        const max = this.unitConfig.maxUnits || 99;
+        if (this.unitCount < max) {
+          this.unitCount++;
+        }
+      },
+      
+      decrementUnits() {
+        const min = this.unitConfig.minUnits || 1;
+        if (this.unitCount > min) {
+          this.unitCount--;
+        }
+      },
+      
+      validateUnitCount() {
+        const min = this.unitConfig.minUnits || 1;
+        const max = this.unitConfig.maxUnits || 99;
+        
+        if (this.unitCount < min) {
+          this.unitCount = min;
+        } else if (this.unitCount > max) {
+          this.unitCount = max;
+        }
+      },
+      
+      getVolumeDiscount() {
+        if (!this.unitConfig.volumeDiscounts) return 0;
+        
+        // Find applicable discount based on unit count
+        for (const [range, discount] of Object.entries(this.unitConfig.volumeDiscounts)) {
+          if (range.includes('-')) {
+            const [min, max] = range.split('-').map(Number);
+            if (this.unitCount >= min && this.unitCount <= max) {
+              return discount;
+            }
+          } else if (range.includes('+')) {
+            const min = parseInt(range);
+            if (this.unitCount >= min) {
+              return discount;
+            }
+          } else if (this.unitCount === parseInt(range)) {
+            return discount;
+          }
+        }
+        
+        return 0;
+      },
+      
+      calculateUnitPrice() {
+        const basePrice = this.unitConfig.basePrice || 0;
+        const discount = this.getVolumeDiscount();
+        const pricePerUnit = basePrice * (1 - discount / 100);
+        return pricePerUnit * this.unitCount;
+      },
+      
+      calculateTotalPrice() {
+        return this.calculateUnitPrice();
+      },
+      
+      formatCurrency(amount) {
+        return new Intl.NumberFormat('pt-AO', {
+          style: 'currency',
+          currency: 'AOA'
+        }).format(amount);
+      },
+      
+      saveUnitsAndContinue() {
+        if (window.bookingFlowComponent) {
+          // Save units to booking data
+          window.bookingFlowComponent.booking.unitCount = this.unitCount;
+          window.bookingFlowComponent.booking.additionalOptions = this.selectedAdditionalOptions;
+          window.bookingFlowComponent.booking.pricing = window.bookingFlowComponent.booking.pricing || {};
+          window.bookingFlowComponent.booking.pricing.bookingCost = this.calculateTotalPrice();
+          window.bookingFlowComponent.saveBookingData();
+          window.bookingFlowComponent.nextScreen();
+        }
+      },
+      
+      previousScreen() {
+        if (window.bookingFlowComponent) {
+          window.bookingFlowComponent.previousScreen();
+        }
+      }
+    };
+  }
+
+  // Generic Selection Component - Global function for dynamic screens
+  window.genericSelection = function() {
+    return {
+      config: {
+        title: 'Selecione uma opção',
+        description: 'Escolha a opção desejada',
+        options: [],
+        multiSelect: false,
+        minSelection: 1,
+        maxSelection: null,
+      },
+      selectedOptions: [],
+      
+      init() {
+        console.log("Generic selection init called");
+        console.log("Window config available:", window.genericSelectionConfig);
+        
+        // Get configuration from URL params or window object
+        const urlParams = new URLSearchParams(window.location.search);
+        const configParam = urlParams.get('config');
+        
+        // Check if config is passed via window object (set by loadGenericSelectionScreen)
+        if (window.genericSelectionConfig) {
+          Object.assign(this.config, window.genericSelectionConfig);
+          console.log("Config loaded from window:", this.config);
+        } else if (configParam) {
+          try {
+            const parsedConfig = JSON.parse(decodeURIComponent(configParam));
+            Object.assign(this.config, parsedConfig);
+            console.log("Config loaded from URL:", this.config);
+          } catch (e) {
+            console.error('Failed to parse config:', e);
+          }
+        }
+        
+        // Get configuration from parent component if available
+        if (window.bookingFlowComponent) {
+          const screenName = window.bookingFlowComponent.currentScreenName;
+          
+          // Restore previous selections if any
+          const bookingData = window.bookingFlowComponent.booking;
+          if (bookingData.selections && bookingData.selections[screenName]) {
+            this.selectedOptions = bookingData.selections[screenName];
+          }
+        }
+      },
+      
+      selectOption(option) {
+        if (this.config.multiSelect) {
+          // Multi-select logic
+          const index = this.selectedOptions.findIndex(o => o.id === option.id);
+          if (index > -1) {
+            this.selectedOptions.splice(index, 1);
+          } else {
+            if (!this.config.maxSelection || this.selectedOptions.length < this.config.maxSelection) {
+              this.selectedOptions.push(option);
+            }
+          }
+        } else {
+          // Single-select logic
+          this.selectedOptions = [option];
+        }
+      },
+      
+      isSelected(optionId) {
+        return this.selectedOptions.some(o => o.id === optionId);
+      },
+      
+      hasValidSelection() {
+        const minRequired = this.config.minSelection || 1;
+        return this.selectedOptions.length >= minRequired;
+      },
+      
+      continueToNext() {
+        if (!this.hasValidSelection()) return;
+        
+        // Save selection to parent component
+        if (window.bookingFlowComponent) {
+          const screenName = window.bookingFlowComponent.currentScreenName;
+          
+          // Initialize selections object if it doesn't exist
+          if (!window.bookingFlowComponent.booking.selections) {
+            window.bookingFlowComponent.booking.selections = {};
+          }
+          
+          // Save the selection
+          window.bookingFlowComponent.booking.selections[screenName] = this.selectedOptions;
+          
+          // Save to specific booking fields based on screen
+          if (screenName === 'garden_area') {
+            window.bookingFlowComponent.booking.gardenArea = this.selectedOptions[0];
+          } else if (screenName === 'service_type') {
+            window.bookingFlowComponent.booking.outdoorServices = this.selectedOptions;
+          } else if (screenName === 'move_type') {
+            window.bookingFlowComponent.booking.moveType = this.selectedOptions[0];
+          } else if (screenName === 'care_requirements') {
+            window.bookingFlowComponent.booking.careRequirements = this.selectedOptions;
+          } else if (screenName === 'medical_needs') {
+            window.bookingFlowComponent.booking.medicalNeeds = this.selectedOptions;
+          } else if (screenName === 'visit_type') {
+            window.bookingFlowComponent.booking.visitType = this.selectedOptions[0];
+          } else if (screenName === 'service_options') {
+            window.bookingFlowComponent.booking.laundryOptions = this.selectedOptions;
+          }
+          
+          // Save booking data and navigate to next screen
+          window.bookingFlowComponent.saveBookingData();
+          window.bookingFlowComponent.nextScreen();
+        }
+      },
+      
+      previousScreen() {
+        if (window.bookingFlowComponent) {
+          window.bookingFlowComponent.previousScreen();
+        }
+      }
+    }
+  };
+
+  // Handle HTMX after swap events to reinitialize Alpine components
+  document.body.addEventListener('htmx:afterSwap', function(event) {
+    // Check if we need to initialize Alpine components in the swapped content
+    if (event.detail.target.id === 'booking-screen') {
+      // Wait for next tick to ensure DOM is ready
+      setTimeout(() => {
+        // Check if there are Alpine components that need initialization
+        const alpineElements = event.detail.target.querySelectorAll('[x-data]');
+        alpineElements.forEach(el => {
+          // If Alpine is available and element isn't already initialized
+          if (window.Alpine && !el._x_dataStack) {
+            window.Alpine.initTree(el);
+          }
+        });
+      }, 0);
     }
   });
 </script>

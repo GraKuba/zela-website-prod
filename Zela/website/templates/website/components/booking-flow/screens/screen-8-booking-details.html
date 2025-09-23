@@ -351,7 +351,9 @@
             <div class="flex items-center space-x-4">
               <button
                 @click="updateDuration(-0.5)"
-                class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
+                :disabled="booking.details.duration <= 1"
+                class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+                :class="booking.details.duration <= 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300 cursor-pointer'"
               >
                 <svg
                   class="w-5 h-5"
@@ -367,13 +369,18 @@
                   />
                 </svg>
               </button>
-              <div
-                class="text-2xl font-bold min-w-[60px] text-center"
-                x-text="booking.details.duration"
-              ></div>
+              <div class="text-center">
+                <div
+                  class="text-2xl font-bold"
+                  x-text="booking.details.duration"
+                ></div>
+                <div x-show="booking.details.duration >= 8" class="text-xs text-gray-500 mt-1">Máximo</div>
+              </div>
               <button
                 @click="updateDuration(0.5)"
-                class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors"
+                :disabled="booking.details.duration >= 8"
+                class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center transition-colors"
+                :class="booking.details.duration >= 8 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300 cursor-pointer'"
               >
                 <svg
                   class="w-5 h-5"
@@ -390,6 +397,7 @@
                 </svg>
               </button>
             </div>
+            <p class="text-sm text-gray-500 mt-2">Entre 1 e 8 horas</p>
           </div>
 
           <!-- Date Selection -->
@@ -397,31 +405,77 @@
             <h4 class="text-base sm:text-lg font-bold mb-3 sm:mb-4" style="color: #011e41">
               Quando precisa de ajuda?
             </h4>
-            <div x-data="{ dateError: false, dateErrorMessage: '' }">
-              <input
-                type="date"
-                x-model="booking.details.date"
-                @change="() => {
-                  const selectedDate = new Date($event.target.value);
-                  const today = new Date();
-                  today.setHours(0, 0, 0, 0);
-                  
-                  if (selectedDate < today) {
-                    dateError = true;
-                    dateErrorMessage = 'Por favor, selecione uma data a partir de hoje';
-                    booking.details.date = '';
-                  } else {
-                    dateError = false;
-                    dateErrorMessage = '';
-                    window.bookingFlowComponent.saveBookingData();
-                  }
-                }"
-                class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer transition-colors"
-                :class="dateError ? 'border-red-500 bg-red-50' : 'border-gray-300'"
-                :min="new Date().toISOString().split('T')[0]"
-                required
-              />
-              <p x-show="dateError" x-text="dateErrorMessage" class="mt-2 text-sm text-red-600"></p>
+            <div x-data="{ 
+              showCalendar: false,
+              getDateLabel(daysFromToday) {
+                if (daysFromToday === 0) return 'Hoje';
+                if (daysFromToday === 1) return 'Amanhã';
+                const date = new Date();
+                date.setDate(date.getDate() + daysFromToday);
+                return date.toLocaleDateString('pt-PT', { weekday: 'short', day: 'numeric', month: 'short' });
+              },
+              getDateValue(daysFromToday) {
+                const date = new Date();
+                date.setDate(date.getDate() + daysFromToday);
+                return date.toISOString().split('T')[0];
+              },
+              selectDate(daysFromToday) {
+                booking.details.date = this.getDateValue(daysFromToday);
+                this.showCalendar = false;
+                window.bookingFlowComponent.saveBookingData();
+              }
+            }">
+              <!-- Quick Date Selection Cards -->
+              <div x-show="!showCalendar" class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                <!-- Tomorrow -->
+                <button
+                  @click="selectDate(1)"
+                  class="p-3 border-2 rounded-lg transition-all text-center cursor-pointer hover:shadow-md"
+                  :class="booking.details.date === getDateValue(1) ? 'border-[#015e73] bg-[#015e73]/10' : 'border-gray-200 hover:border-[#015e73] hover:bg-gray-50'"
+                >
+                  <div class="font-bold text-sm" style="color: #011e41">Amanhã</div>
+                  <div class="text-xs text-gray-500" x-text="(() => { const d = new Date(); d.setDate(d.getDate() + 1); return d.getDate(); })()"></div>
+                </button>
+                
+                <!-- Next 3 days -->
+                <template x-for="day in [2, 3, 4]" :key="day">
+                  <button
+                    @click="selectDate(day)"
+                    class="p-3 border-2 rounded-lg transition-all text-center cursor-pointer hover:shadow-md"
+                    :class="booking.details.date === getDateValue(day) ? 'border-[#015e73] bg-[#015e73]/10' : 'border-gray-200 hover:border-[#015e73] hover:bg-gray-50'"
+                  >
+                    <div class="font-bold text-sm" style="color: #011e41" x-text="getDateLabel(day).split(',')[0]"></div>
+                    <div class="text-xs text-gray-500" x-text="(() => { const d = new Date(); d.setDate(d.getDate() + day); return d.getDate(); })()"></div>
+                  </button>
+                </template>
+              </div>
+              
+              <!-- More dates button -->
+              <button
+                @click="showCalendar = true"
+                x-show="!showCalendar"
+                class="w-full p-3 border-2 border-gray-200 rounded-lg hover:border-[#015e73] hover:bg-gray-50 hover:shadow-md transition-all text-center cursor-pointer"
+              >
+                <span class="text-sm font-medium" style="color: #011e41">Mais datas...</span>
+              </button>
+              
+              <!-- Calendar input (fallback) -->
+              <div x-show="showCalendar">
+                <input
+                  type="date"
+                  x-model="booking.details.date"
+                  @change="window.bookingFlowComponent.saveBookingData()"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#015e73] focus:border-transparent cursor-pointer transition-colors"
+                  :min="(() => { const d = new Date(); d.setDate(d.getDate() + 1); return d.toISOString().split('T')[0]; })()"
+                  required
+                />
+                <button
+                  @click="showCalendar = false"
+                  class="mt-2 text-sm text-gray-500 hover:text-gray-700"
+                >
+                  Voltar às opções rápidas
+                </button>
+              </div>
             </div>
           </div>
 

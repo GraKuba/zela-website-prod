@@ -20,23 +20,23 @@ class BookingFlowRouter {
      */
     static FLOW_TYPES = {
         'standard': {
-            screens: ['address', 'schedule', 'worker', 'payment', 'confirmation'],
+            screens: ['address', 'worker', 'payment', 'confirmation'],
             pricing: 'fixed'
         },
         'property_based': {
-            screens: ['address', 'property_typology', 'schedule', 'worker', 'payment', 'confirmation'],
+            screens: ['address', 'property_typology', 'worker', 'payment', 'confirmation'],
             pricing: 'typology_based'
         },
         'unit_based': {
-            screens: ['address', 'unit_count', 'schedule', 'worker', 'payment', 'confirmation'],
+            screens: ['address', 'unit_count', 'worker', 'payment', 'confirmation'],
             pricing: 'per_unit'
         },
         'time_based': {
-            screens: ['address', 'duration', 'schedule', 'worker', 'payment', 'confirmation'],
+            screens: ['address', 'duration', 'worker', 'payment', 'confirmation'],
             pricing: 'hourly'
         },
         'package_based': {
-            screens: ['address', 'package_selection', 'schedule', 'worker', 'payment', 'confirmation'],
+            screens: ['address', 'package_selection', 'worker', 'payment', 'confirmation'],
             pricing: 'package'
         },
         'custom': {
@@ -97,10 +97,10 @@ class BookingFlowRouter {
                         result.push(screenName);
                     }
                 } else {
-                    // Default: add before schedule
-                    const scheduleIndex = result.indexOf('schedule');
-                    if (scheduleIndex !== -1) {
-                        result.splice(scheduleIndex, 0, screenName);
+                    // Default: add before worker
+                    const workerIndex = result.indexOf('worker');
+                    if (workerIndex !== -1) {
+                        result.splice(workerIndex, 0, screenName);
                     } else {
                         result.push(screenName);
                     }
@@ -191,6 +191,11 @@ class BookingFlowRouter {
      * Check if a screen should be skipped based on conditions
      */
     shouldSkipScreen(screenName, bookingData) {
+        // Always skip the schedule screen (screen 7 date-bucket)
+        if (screenName === 'schedule' || screenName === 'date_bucket') {
+            return true;
+        }
+        
         // Check skip conditions from configuration
         const skipCondition = this.skipConditions[screenName];
         if (!skipCondition) return false;

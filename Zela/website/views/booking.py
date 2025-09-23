@@ -16,9 +16,9 @@ def booking_flow(request):
     # Service slug mapping for URL convenience
     service_mapping = {
         'indoor': 'indoor-cleaning',
-        'outdoor': 'outdoor-services',
+        'outdoor': 'outdoor-cleaning',
         'office': 'office-cleaning',
-        'moving': 'moving-cleaning',
+        'moving': 'moving',
         'express': 'express-cleaning',
         'laundry': 'laundry-ironing',
     }
@@ -140,7 +140,7 @@ def booking_screen(request, screen_number):
             4: 'website/components/booking-flow/screens/screen-4-electrician-config.html',  # Electrician configuration
             5: 'website/components/booking-flow/screens/screen-5-pest-control-config.html',  # Pest control configuration  
             6: 'website/components/booking-flow/screens/screen-6-dog-trainer-packages.html',  # Dog trainer packages
-            7: 'website/components/booking-flow/screens/screen-7-date-bucket.html',
+            7: 'website/components/booking-flow/screens/screen-8-booking-details.html',  # Skip date bucket, go directly to booking details
             8: 'website/components/booking-flow/screens/screen-8-booking-details.html',
             9: 'website/components/booking-flow/screens/screen-9-worker-selection.html',  # Updated worker selection
             10: 'website/components/booking-flow/screens/screen-10-matchmaking.html',  # Worker matchmaking
@@ -177,7 +177,7 @@ def booking_screen(request, screen_number):
             'name': 'Limpeza Interior',
             'description': 'Obtenha 3,5 a 10 horas de limpeza completa e abrangente da sua casa.',
         },
-        'outdoor-services': {
+        'outdoor-cleaning': {
             'name': 'Serviços Exteriores',
             'description': 'Limpeza e manutenção exterior profissional incluindo jardinagem, limpeza de piscinas e lavagem exterior.',
         },
@@ -185,7 +185,7 @@ def booking_screen(request, screen_number):
             'name': 'Limpeza de Escritórios',
             'description': 'Mantenha o seu espaço de trabalho impecável com os nossos serviços abrangentes de limpeza de escritórios.',
         },
-        'moving-cleaning': {
+        'moving': {
             'name': 'Limpeza de Mudança',
             'description': 'Serviços de limpeza profunda para mudanças de entrada e saída para garantir que o seu espaço esteja impecável.',
         },
@@ -338,9 +338,9 @@ def process_payment(request):
         service_type = booking_data.get('serviceType', 'indoor-cleaning')
         service_name_map = {
             'indoor-cleaning': 'Indoor Cleaning',
-            'outdoor-services': 'Outdoor Services',
+            'outdoor-cleaning': 'Outdoor Cleaning',
             'office-cleaning': 'Office Cleaning',
-            'moving-cleaning': 'Moving Cleaning',
+            'moving': 'Moving Cleaning',
             'express-cleaning': 'Express Cleaning',
             'laundry-ironing': 'Laundry & Ironing'
         }
@@ -370,16 +370,19 @@ def process_payment(request):
             )
         
         # Get selected worker if any
-        provider = None
+        worker = None
         worker_id = booking_data.get('selectedWorker')
         if worker_id:
             try:
+                from workers.models import Worker
                 # Worker ID might be a string like "memory-mudede" or an actual ID
                 if isinstance(worker_id, str) and not worker_id.isdigit():
                     # It's a mock worker name, skip for now
-                    provider = None
+                    worker = None
                 else:
-                    provider = User.objects.get(id=int(worker_id), role='provider', is_active=True)
+                    # Get the Worker object (not User object)
+                    user = User.objects.get(id=int(worker_id), role='provider', is_active=True)
+                    worker = Worker.objects.filter(user=user).first()
             except (User.DoesNotExist, ValueError):
                 # Worker not found, will be assigned later
                 pass
@@ -399,7 +402,7 @@ def process_payment(request):
         # Create the booking
         booking = Booking.objects.create(
             customer=request.user,
-            provider=provider,  # May be None if not selected
+            worker=worker,  # May be None if not selected
             service_task=service_task,
             start_at=start_datetime,
             end_at=end_datetime,

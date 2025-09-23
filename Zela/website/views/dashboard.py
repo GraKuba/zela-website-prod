@@ -112,7 +112,7 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
                 'time': next_booking.start_at.strftime('%I:%M %p') if next_booking else '',
                 'service': getattr(next_booking.service_task, 'name', '') if next_booking and hasattr(next_booking, 'service_task') else '',
                 'address': getattr(next_booking, 'address', '') if next_booking else '',
-                'provider': next_booking.provider.get_full_name() if next_booking and hasattr(next_booking, 'provider') and next_booking.provider else '',
+                'provider': next_booking.worker.user.get_full_name() if next_booking and next_booking.worker else '',
                 'customer': next_booking.customer.get_full_name() if next_booking and hasattr(next_booking, 'customer') and next_booking.customer else '',
                 'countdown': ''  # You could implement countdown logic here
             },
@@ -366,24 +366,30 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
                     provider_profile.save(update_fields=['jobs_completed', 'jobs_total', 'completion_rate', 'total_earnings'])
                 
                 # Get job lists for job queue tab
-                upcoming_jobs = user.jobs.filter(
-                    status__in=['accepted']
-                ).select_related('customer', 'service_task__category').order_by('start_at')
-                
-                in_progress_jobs = user.jobs.filter(
-                    status='in_progress'
-                ).select_related('customer', 'service_task__category').order_by('-updated_at')
-                
-                completed_jobs = user.jobs.filter(
-                    status='completed'
-                ).select_related('customer', 'service_task__category').prefetch_related('rating').order_by('-updated_at')[:10]  # Show last 10
+                worker = getattr(user, 'worker_profile', None)
+                if worker:
+                    upcoming_jobs = worker.bookings.filter(
+                        status__in=['accepted']
+                    ).select_related('customer', 'service_task__category').order_by('start_at')
+                    
+                    in_progress_jobs = worker.bookings.filter(
+                        status='in_progress'
+                    ).select_related('customer', 'service_task__category').order_by('-updated_at')
+                    
+                    completed_jobs = worker.bookings.filter(
+                        status='completed'
+                    ).select_related('customer', 'service_task__category').prefetch_related('rating').order_by('-updated_at')[:10]  # Show last 10
+                else:
+                    upcoming_jobs = Booking.objects.none()
+                    in_progress_jobs = Booking.objects.none()
+                    completed_jobs = Booking.objects.none()
                 
                 provider_context['upcoming_jobs'] = upcoming_jobs
                 provider_context['in_progress_jobs'] = in_progress_jobs
                 provider_context['completed_jobs'] = completed_jobs
                 provider_context['upcoming_jobs_count'] = upcoming_jobs.count()
                 provider_context['in_progress_jobs_count'] = in_progress_jobs.count()
-                provider_context['completed_jobs_count'] = user.jobs.filter(status='completed').count()
+                provider_context['completed_jobs_count'] = worker.bookings.filter(status='completed').count() if worker else 0
                 
                 # Get working hours and service areas
                 import json
@@ -638,7 +644,7 @@ class BookingUpdatePartial(LoginRequiredMixin, UpdateView):
             if booking.customer != self.request.user:
                 raise PermissionError("You don't have permission to modify this booking.")
         else:  # provider
-            if booking.provider != self.request.user:
+            if booking.worker and booking.worker.user != self.request.user:
                 raise PermissionError("You don't have permission to modify this booking.")
         
         return booking
@@ -649,9 +655,9 @@ class BookingUpdatePartial(LoginRequiredMixin, UpdateView):
         
         # Create notification for the other party
         if self.request.user.role == 'customer':
-            if booking.provider:
+            if booking.worker:
                 Notification.objects.create(
-                    user=booking.provider,
+                    user=booking.worker.user,
                     title="Booking Updated",
                     message=f"Booking #{booking.pk} has been updated by the customer.",
                     notification_type="booking",
@@ -941,11 +947,11 @@ class RatingCreatePartial(LoginRequiredMixin, CreateView):
         rating = form.save()
         
         # Update provider's rating
-        if booking.provider and hasattr(booking.provider, 'provider'):
-            provider_profile = booking.provider.provider
+        if booking.worker and hasattr(booking.worker.user, 'provider'):
+            provider_profile = booking.worker.user.provider
             
             # Calculate new average
-            ratings = Rating.objects.filter(booking__provider=booking.provider)
+            ratings = Rating.objects.filter(booking__worker=booking.worker)
             avg_rating = ratings.aggregate(Avg('score'))['score__avg']
             
             provider_profile.rating_average = round(avg_rating, 2)
@@ -954,7 +960,7 @@ class RatingCreatePartial(LoginRequiredMixin, CreateView):
             
             # Create notification for provider
             Notification.objects.create(
-                user=booking.provider,
+                user=booking.worker.user,
                 title="New Rating Received",
                 message=f"You received a {rating.score}-star rating for booking #{booking.pk}.",
                 notification_type="rating",

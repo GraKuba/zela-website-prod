@@ -9,7 +9,6 @@ BOOKING_FLOWS = {
         'address',
         'property',
         'duration',
-        'schedule', 
         'worker',
         'payment',
         'review'
@@ -18,7 +17,6 @@ BOOKING_FLOWS = {
         'address',
         'property', 
         'duration',
-        'schedule',
         'worker',
         'payment',
         'review'
@@ -27,24 +25,21 @@ BOOKING_FLOWS = {
         'address',
         'property',
         'duration',
-        'schedule',
         'worker',
         'payment',
         'review'
     ],
-    'outdoor-services': [
+    'outdoor-cleaning': [
         'address',
         'service-config',  # Garden area and service type
-        'schedule',
         'worker',
         'payment',
         'review'
     ],
-    'moving-cleaning': [
+    'moving': [
         'address',
         'property',
         'service-config',  # Move type selection
-        'schedule',
         'worker',
         'payment',
         'review'
@@ -52,7 +47,6 @@ BOOKING_FLOWS = {
     'express-cleaning': [
         'address',
         'duration',  # Simple duration slider
-        'schedule',
         'worker',
         'payment',
         'review'
@@ -60,7 +54,6 @@ BOOKING_FLOWS = {
     'laundry-ironing': [
         'address',
         'service-config',  # Items/weight and service options
-        'schedule',
         'worker',
         'payment',
         'review'
@@ -69,7 +62,6 @@ BOOKING_FLOWS = {
         'address',
         'property',
         'service-config',  # Electrician specific config
-        'schedule',
         'worker',
         'payment',
         'review'
@@ -77,7 +69,6 @@ BOOKING_FLOWS = {
     'ac-repair': [
         'address',
         'service-config',  # AC units count
-        'schedule',
         'worker',
         'payment',
         'review'
@@ -86,7 +77,6 @@ BOOKING_FLOWS = {
         'address',
         'property',
         'service-config',  # Pest type and treatment
-        'schedule',
         'worker',
         'payment',
         'review'
@@ -94,7 +84,6 @@ BOOKING_FLOWS = {
     'dog-trainer': [
         'address',
         'service-config',  # Package selection
-        'schedule',
         'worker',
         'payment',
         'review'
@@ -104,7 +93,6 @@ BOOKING_FLOWS = {
 # Default flow for unknown services
 DEFAULT_FLOW = [
     'address',
-    'schedule',
     'worker',
     'payment',
     'review'

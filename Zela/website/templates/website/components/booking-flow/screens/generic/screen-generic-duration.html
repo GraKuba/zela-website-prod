@@ -1,255 +1,203 @@
 {% load static %}
 
 <!-- Generic Duration Selection Screen -->
-<!-- Can be used for any time-based service -->
-<div class="min-h-screen bg-white flex flex-col">
+<div class="min-h-screen bg-white flex flex-col" x-data="genericDuration()">
   <!-- Progress Header -->
   {% include "website/components/booking-flow/partials/booking-progress-header.html" %}
 
   <!-- Main Content -->
-  <div class="flex-1 max-w-4xl mx-auto w-full px-6 py-8">
-    <!-- Dynamic Title and Description -->
-    <h2 class="text-3xl font-bold mb-2" style="color: #011e41" x-text="durationConfig.title || 'Quanto tempo você precisa?'"></h2>
-    <p class="text-gray-600 mb-8" x-text="durationConfig.description || 'Selecione a duração do serviço.'"></p>
+  <div class="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 lg:py-12">
+    <!-- Title Section with better hierarchy -->
+    <div class="text-center mb-6 sm:mb-8 lg:mb-10">
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3" style="color: #011e41" x-text="durationConfig.title">
+        Quanto tempo precisa?
+      </h2>
+      <p class="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto" x-text="durationConfig.description">
+        Selecione a duração do serviço
+      </p>
+    </div>
 
-    <!-- Duration Selection -->
-    <div class="bg-white rounded-2xl border-2 border-gray-200 p-8 mb-8">
-      <!-- Preset Duration Options -->
-      <div x-show="durationConfig.presetOptions && durationConfig.presetOptions.length > 0" class="mb-8">
-        <h3 class="text-lg font-medium mb-4" style="color: #011e41">Durações Sugeridas</h3>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <template x-for="preset in durationConfig.presetOptions" :key="preset.hours">
-            <button
-              @click="selectPresetDuration(preset.hours)"
-              class="p-4 border-2 rounded-xl transition-all duration-200"
-              :class="selectedDuration === preset.hours ? 'border-[#015e73] bg-[#015e73]/10' : 'border-gray-200 hover:border-gray-300'"
-            >
-              <div class="text-2xl font-bold mb-1" style="color: #011e41" x-text="`${preset.hours}h`"></div>
-              <div class="text-sm text-gray-600" x-text="preset.label"></div>
-              <div x-show="preset.recommended" class="mt-2">
-                <span class="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded">
-                  Recomendado
-                </span>
-              </div>
-            </button>
-          </template>
-        </div>
-      </div>
-
+    <!-- Duration Selection Card -->
+    <div class="bg-white rounded-2xl border-2 border-gray-200 p-6 sm:p-8 mb-6 sm:mb-8 shadow-sm hover:shadow-md transition-shadow">
       <!-- Custom Duration Slider -->
       <div class="mb-8">
-        <h3 class="text-lg font-medium mb-4" style="color: #011e41">Ou escolha uma duração personalizada</h3>
+        <h3 class="text-lg font-medium mb-6" style="color: #011e41">Ou escolha uma duração personalizada</h3>
         
-        <div class="mb-6">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-gray-600">Duração</span>
-            <span class="text-2xl font-bold" style="color: #011e41" x-text="`${selectedDuration} horas`"></span>
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-gray-600 text-base">Duração</span>
+            <span class="text-3xl font-bold" style="color: #011e41">
+              <span x-text="selectedDuration"></span>
+              <span class="text-xl font-normal">horas</span>
+            </span>
           </div>
           
-          <input
-            type="range"
-            x-model="selectedDuration"
-            :min="durationConfig.minDuration || 1"
-            :max="durationConfig.maxDuration || 12"
-            :step="durationConfig.step || 0.5"
-            @input="updateDuration()"
-            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-            style="background: linear-gradient(to right, #015e73 0%, #015e73 var(--value), #e5e7eb var(--value), #e5e7eb 100%)"
-          />
+          <!-- Slider Container with better styling -->
+          <div class="relative px-2">
+            <input
+              type="range"
+              x-model.number="selectedDuration"
+              :min="durationConfig.minDuration"
+              :max="durationConfig.maxDuration"
+              :step="durationConfig.step"
+              @input="updateSliderBackground()"
+              class="duration-slider w-full h-3 bg-gray-200 rounded-full appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#f4d35e] focus:ring-offset-2"
+              style="background: linear-gradient(to right, #015e73 0%, #015e73 var(--value, 30%), #e5e7eb var(--value, 30%), #e5e7eb 100%)"
+            />
+          </div>
           
-          <div class="flex justify-between mt-2 text-sm text-gray-500">
-            <span x-text="`${durationConfig.minDuration || 1}h`"></span>
-            <span x-text="`${durationConfig.maxDuration || 12}h`"></span>
+          <div class="flex justify-between mt-3 text-sm text-gray-500">
+            <span x-text="`${durationConfig.minDuration}h`"></span>
+            <span x-text="`${durationConfig.maxDuration}h`"></span>
           </div>
         </div>
 
-        <!-- Fine-tune buttons -->
+        <!-- Fine-tune buttons with better styling -->
         <div class="flex items-center justify-center space-x-4">
           <button
             @click="adjustDuration(-0.5)"
-            class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            :disabled="selectedDuration <= (durationConfig.minDuration || 1)"
-            :class="{ 'opacity-50 cursor-not-allowed': selectedDuration <= (durationConfig.minDuration || 1) }"
+            class="px-6 py-3 border-2 border-gray-300 rounded-xl hover:border-[#015e73] hover:bg-gray-50 transition-all duration-200 font-medium text-gray-700 hover:text-[#015e73] cursor-pointer transform hover:scale-[1.02]"
+            :disabled="selectedDuration <= durationConfig.minDuration"
+            :class="{ 'opacity-50 cursor-not-allowed hover:scale-100': selectedDuration <= durationConfig.minDuration }"
           >
-            - 30 min
+            <span class="flex items-center">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"></path>
+              </svg>
+              30 min
+            </span>
           </button>
+          
           <button
             @click="adjustDuration(0.5)"
-            class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            :disabled="selectedDuration >= (durationConfig.maxDuration || 12)"
-            :class="{ 'opacity-50 cursor-not-allowed': selectedDuration >= (durationConfig.maxDuration || 12) }"
+            class="px-6 py-3 border-2 border-gray-300 rounded-xl hover:border-[#015e73] hover:bg-gray-50 transition-all duration-200 font-medium text-gray-700 hover:text-[#015e73] cursor-pointer transform hover:scale-[1.02]"
+            :disabled="selectedDuration >= durationConfig.maxDuration"
+            :class="{ 'opacity-50 cursor-not-allowed hover:scale-100': selectedDuration >= durationConfig.maxDuration }"
           >
-            + 30 min
+            <span class="flex items-center">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+              </svg>
+              30 min
+            </span>
           </button>
         </div>
-      </div>
-
-      <!-- Service Scope for Duration -->
-      <div x-show="durationConfig.showScope" class="mt-8 p-4 bg-blue-50 rounded-lg">
-        <h4 class="font-medium text-blue-900 mb-2">O que está incluído:</h4>
-        <ul class="text-sm text-blue-700 space-y-1">
-          <template x-for="item in getScopeForDuration()" :key="item">
-            <li class="flex items-start">
-              <svg class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              <span x-text="item"></span>
-            </li>
-          </template>
-        </ul>
       </div>
     </div>
 
-    <!-- Price Estimate -->
-    <div class="bg-gray-50 rounded-2xl p-6 mb-8">
-      <h3 class="text-lg font-medium mb-4" style="color: #011e41">Estimativa de Preço</h3>
-      <div class="space-y-2">
-        <div class="flex justify-between">
-          <span class="text-gray-600" x-text="`${selectedDuration} horas de serviço`"></span>
-          <span class="font-medium" style="color: #011e41" x-text="formatCurrency(calculateDurationPrice())"></span>
+    <!-- Price Estimate Card with improved styling -->
+    <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 sm:p-8 mb-6 sm:mb-8 border border-gray-200">
+      <h3 class="text-lg font-medium mb-6" style="color: #011e41">Estimativa de Preço</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+          <span class="text-gray-600">
+            <span x-text="selectedDuration"></span> horas de serviço
+          </span>
+          <span class="font-semibold text-lg" style="color: #011e41" x-text="formatCurrency(calculateDurationPrice())"></span>
         </div>
-        <div x-show="durationConfig.minimumCharge && selectedDuration < durationConfig.minimumHours" class="text-sm text-gray-500">
-          <span>Cobrança mínima: <span x-text="`${durationConfig.minimumHours} horas`"></span></span>
-        </div>
-        <div class="pt-2 border-t font-bold">
-          <div class="flex justify-between">
-            <span style="color: #011e41">Total Estimado</span>
-            <span style="color: #011e41" x-text="formatCurrency(calculateTotalPrice())"></span>
+        
+        <!-- Total with emphasis -->
+        <div class="pt-2">
+          <div class="flex justify-between items-center">
+            <span class="text-lg font-bold" style="color: #011e41">Total Estimado</span>
+            <span class="text-2xl font-bold" style="color: #015e73" x-text="formatCurrency(calculateTotalPrice())"></span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Navigation Buttons -->
-    <div class="flex justify-between">
-      <button
-        @click="previousScreen()"
-        class="px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-      >
-        Voltar
-      </button>
+    <!-- Action Section with improved CTA -->
+    <div class="mt-6 sm:mt-8 lg:mt-10">
+      <!-- Continue Button with animation -->
       <button
         @click="saveDurationAndContinue()"
-        class="px-8 py-3 bg-[#015e73] text-white rounded-lg font-medium hover:bg-[#014a5a] transition-colors"
+        class="w-full min-h-[44px] py-3 sm:py-4 lg:py-5 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#015e73] to-[#017891] text-white font-bold text-sm sm:text-base lg:text-lg rounded-2xl hover:from-[#014a5a] hover:to-[#015e73] transition-all duration-300 shadow-lg transform hover:scale-[1.01] flex items-center justify-center group cursor-pointer"
       >
-        Continuar
+        <span>Continuar</span>
+        <svg
+          class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Back Button with better styling -->
+    <div class="mt-6 text-center">
+      <button
+        @click="previousScreen()"
+        class="inline-flex items-center text-gray-600 hover:text-[#015e73] font-medium transition-colors duration-200 group cursor-pointer"
+      >
+        <svg
+          class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        <span>Voltar ao passo anterior</span>
       </button>
     </div>
   </div>
 </div>
 
 <style>
-/* Custom slider styling */
-.slider::-webkit-slider-thumb {
+/* Custom slider styling with Zela colors */
+.duration-slider::-webkit-slider-thumb {
   appearance: none;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: #015e73;
+  background: linear-gradient(135deg, #f4d35e 0%, #f6dd7a 100%);
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+  border: 3px solid white;
+  transition: all 0.2s ease;
 }
 
-.slider::-moz-range-thumb {
-  width: 24px;
-  height: 24px;
+.duration-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.duration-slider::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: #015e73;
+  background: linear-gradient(135deg, #f4d35e 0%, #f6dd7a 100%);
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  border: none;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+  border: 3px solid white;
+  transition: all 0.2s ease;
+}
+
+.duration-slider::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.1);
+}
+
+/* Track styling */
+.duration-slider::-webkit-slider-runnable-track {
+  border-radius: 9999px;
+}
+
+.duration-slider::-moz-range-track {
+  border-radius: 9999px;
 }
 </style>
 
 <script>
-// Add Alpine.js component data extensions for duration selection
-Alpine.data('durationSelection', () => ({
-  selectedDuration: 2,
-  durationConfig: {},
-  
-  init() {
-    // Load configuration from service config
-    if (window.bookingFlowComponent && window.bookingFlowComponent.serviceConfig) {
-      const screenConfig = window.bookingFlowComponent.flowRouter.getScreenConfig('duration');
-      this.durationConfig = screenConfig.config || {};
-      this.selectedDuration = this.durationConfig.defaultDuration || 2;
-      this.updateSliderBackground();
-    }
-  },
-  
-  selectPresetDuration(hours) {
-    this.selectedDuration = hours;
-    this.updateDuration();
-  },
-  
-  adjustDuration(change) {
-    const newDuration = this.selectedDuration + change;
-    const min = this.durationConfig.minDuration || 1;
-    const max = this.durationConfig.maxDuration || 12;
-    
-    if (newDuration >= min && newDuration <= max) {
-      this.selectedDuration = newDuration;
-      this.updateDuration();
-    }
-  },
-  
-  updateDuration() {
-    this.updateSliderBackground();
-    this.updateBookingData();
-  },
-  
-  updateSliderBackground() {
-    // Update slider visual progress
-    const slider = this.$el.querySelector('.slider');
-    if (slider) {
-      const min = parseFloat(slider.min);
-      const max = parseFloat(slider.max);
-      const percentage = ((this.selectedDuration - min) / (max - min)) * 100;
-      slider.style.setProperty('--value', `${percentage}%`);
-    }
-  },
-  
-  getScopeForDuration() {
-    if (!this.durationConfig.scopeByDuration) {
-      return this.durationConfig.defaultScope || [];
-    }
-    
-    // Find appropriate scope based on duration
-    for (const [range, scope] of Object.entries(this.durationConfig.scopeByDuration)) {
-      if (range.includes('-')) {
-        const [min, max] = range.split('-').map(Number);
-        if (this.selectedDuration >= min && this.selectedDuration <= max) {
-          return scope;
-        }
-      }
-    }
-    
-    return this.durationConfig.defaultScope || [];
-  },
-  
-  calculateDurationPrice() {
-    const hourlyRate = this.durationConfig.hourlyRate || 0;
-    const hours = Math.max(this.selectedDuration, this.durationConfig.minimumHours || 0);
-    return hourlyRate * hours;
-  },
-  
-  calculateTotalPrice() {
-    return this.calculateDurationPrice();
-  },
-  
-  updateBookingData() {
-    if (window.bookingFlowComponent) {
-      window.bookingFlowComponent.booking.details.duration = this.selectedDuration;
-      window.bookingFlowComponent.booking.pricing.bookingCost = this.calculateTotalPrice();
-      window.bookingFlowComponent.saveBookingData();
-    }
-  },
-  
-  saveDurationAndContinue() {
-    this.updateBookingData();
-    if (window.bookingFlowComponent) {
-      window.bookingFlowComponent.nextScreen();
+// Initialize Alpine component when HTMX loads the content
+document.addEventListener('htmx:afterSwap', function(event) {
+  if (event.detail.target.id === 'booking-screen') {
+    // Re-initialize Alpine for the new content
+    if (typeof Alpine !== 'undefined') {
+      Alpine.initTree(event.detail.target);
     }
   }
-}));
+});
 </script>

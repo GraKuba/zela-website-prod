@@ -13,15 +13,15 @@ class BookingAdmin(admin.ModelAdmin):
     )
     list_filter = ('status', 'start_at', 'created_at', 'service_task__category')
     search_fields = (
-        'customer__username', 'customer__email', 'provider__username', 
-        'provider__email', 'service_task__name', 'address'
+        'customer__username', 'customer__email', 'worker__user__username', 
+        'worker__user__email', 'service_task__name', 'address'
     )
     date_hierarchy = 'start_at'
     ordering = ('-created_at',)
     
     fieldsets = (
         ('Booking Information', {
-            'fields': ('customer', 'provider', 'service_task', 'extras'),
+            'fields': ('customer', 'worker', 'service_task', 'extras'),
         }),
         ('Schedule', {
             'fields': ('start_at', 'end_at', 'address'),
@@ -49,13 +49,13 @@ class BookingAdmin(admin.ModelAdmin):
     
     def provider_display(self, obj):
         """Display provider info."""
-        if not obj.provider:
+        if not obj.worker:
             return format_html('<em>Not assigned</em>')
         
-        name = obj.provider.get_full_name() or obj.provider.username
+        name = obj.worker.user.get_full_name() or obj.worker.user.username
         return format_html(
             '<strong>{}</strong><br><small>{}</small>',
-            name, obj.provider.email
+            name, obj.worker.user.email
         )
     provider_display.short_description = 'Provider'
     
@@ -101,7 +101,7 @@ class RatingAdmin(admin.ModelAdmin):
     )
     list_filter = ('score', 'created')
     search_fields = (
-        'booking__customer__username', 'booking__provider__username',
+        'booking__customer__username', 'booking__worker__user__username',
         'comment'
     )
     ordering = ('-created',)
@@ -144,10 +144,10 @@ class RatingAdmin(admin.ModelAdmin):
     
     def provider_display(self, obj):
         """Display provider info."""
-        if not obj.booking.provider:
+        if not obj.booking.worker:
             return 'No provider'
         
-        provider = obj.booking.provider
+        provider = obj.booking.worker.user
         name = provider.get_full_name() or provider.username
         return name
     provider_display.short_description = 'Provider'

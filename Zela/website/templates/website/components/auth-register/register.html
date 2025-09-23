@@ -23,7 +23,7 @@
         <!-- Step Badge -->
         <div
           class="inline-block px-4 py-2 rounded-full text-sm font-medium mb-8"
-          style="background-color: #fdea00; color: #035d73"
+          style="background-color: #F4D35E; color: #035d73"
         >
           Passo <span x-text="currentStep"></span> de 2 –
           <span
@@ -358,8 +358,8 @@
           <button
             type="button"
             @click="currentStep = 2"
-            class="w-full py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 cursor-pointer"
-            style="background-color: #035d73; color: #fdea00"
+            class="w-full py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl hover:opacity-90 cursor-pointer"
+            style="background-color: #035d73; color: #F4D35E"
           >
             Continuar
           </button>
@@ -484,7 +484,7 @@
             <button
               type="button"
               @click="currentStep = 1"
-              class="flex-1 py-4 rounded-full font-semibold text-lg border-2 transition-all duration-200 cursor-pointer"
+              class="flex-1 py-4 rounded-full font-semibold text-lg border-2 transition-all duration-200 hover:bg-gray-50 cursor-pointer"
               style="border-color: #035d73; color: #035d73"
             >
               Voltar
@@ -492,8 +492,8 @@
             <button
               type="submit"
               :disabled="isSubmitting"
-              class="flex-1 py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 cursor-pointer"
-              style="background-color: #035d73; color: #fdea00"
+              class="flex-1 py-4 rounded-full font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl hover:opacity-90 disabled:opacity-50 cursor-pointer"
+              style="background-color: #035d73; color: #F4D35E"
             >
               <span x-show="!isSubmitting">Criar Conta</span>
               <span x-show="isSubmitting">A criar...</span>

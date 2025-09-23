@@ -40,7 +40,7 @@ class Command(BaseCommand):
             },
             {
                 'name': 'Serviços Externos',
-                'slug': 'outdoor-services',
+                'slug': 'outdoor-cleaning',
                 'icon': '🌳',
                 'description': 'Manutenção de jardins, limpeza de piscinas e serviços externos',
                 'pricing_model': 'hourly',
@@ -88,7 +88,7 @@ class Command(BaseCommand):
             },
             {
                 'name': 'Limpeza de Mudança',
-                'slug': 'moving-cleaning',
+                'slug': 'moving',
                 'icon': '📦',
                 'description': 'Limpeza profunda para mudanças de entrada e saída',
                 'pricing_model': 'fixed',

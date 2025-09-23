@@ -21,9 +21,9 @@ def get_service_config(request):
         # Short URL slugs to database slugs
         'indoor-cleaning': 'indoor-cleaning',          # Limpeza Interna
         'indoor': 'indoor-cleaning',                   # Alternative short form
-        'outdoor': 'outdoor-services',                 # Serviços Externos
+        'outdoor': 'outdoor-cleaning',                 # Serviços Externos
         'office': 'office-cleaning',                   # Limpeza de Escritório
-        'moving': 'moving-cleaning',                   # Limpeza de Mudança
+        'moving': 'moving',                            # Limpeza de Mudança
         'express': 'express-cleaning',                 # Limpeza Expresso
         'laundry': 'laundry-ironing',                  # Lavandaria e Engomadoria
         'electrician': 'electrician',                  # Eletricista
@@ -44,7 +44,6 @@ def get_service_config(request):
                     {'name': 'address', 'component': 'screen-1-address-capture'},
                     {'name': 'property_typology', 'component': 'screen-2-property-typology'},
                     {'name': 'duration_tasks', 'component': 'screen-8-booking-details'},
-                    {'name': 'schedule', 'component': 'screen-7-date-bucket'},
                     {'name': 'worker', 'component': 'screen-choose-worker'},
                     {'name': 'payment', 'component': 'screen-13-payment-method'}
                 ],
@@ -61,7 +60,6 @@ def get_service_config(request):
                     {'name': 'address', 'component': 'screen-1-address-capture'},
                     {'name': 'property_typology', 'component': 'screen-2-property-typology'},
                     {'name': 'duration_tasks', 'component': 'screen-8-booking-details'},
-                    {'name': 'schedule', 'component': 'screen-7-date-bucket'},
                     {'name': 'worker', 'component': 'screen-choose-worker'},
                     {'name': 'payment', 'component': 'screen-13-payment-method'}
                 ],
@@ -72,13 +70,12 @@ def get_service_config(request):
                     'max_duration': 8
                 }
             },
-            'outdoor-services': {  # Serviços Externos
+            'outdoor-cleaning': {  # Serviços Externos
                 'flow_type': 'custom',
                 'required_screens': [
                     {'name': 'address', 'component': 'screen-1-address-capture'},
                     {'name': 'garden_area', 'component': 'screen-generic-selection'},
                     {'name': 'service_type', 'component': 'screen-generic-selection'},
-                    {'name': 'schedule', 'component': 'screen-7-date-bucket'},
                     {'name': 'worker', 'component': 'screen-choose-worker'},
                     {'name': 'payment', 'component': 'screen-13-payment-method'}
                 ],
@@ -87,13 +84,12 @@ def get_service_config(request):
                     'require_area_size': True
                 }
             },
-            'moving-cleaning': {  # Limpeza de Mudança
+            'moving': {  # Limpeza de Mudança
                 'flow_type': 'custom',  # Changed to custom for full control
                 'required_screens': [
                     {'name': 'address', 'component': 'screen-1-address-capture'},
                     {'name': 'property_typology', 'component': 'screen-2-property-typology'},
                     {'name': 'move_type', 'component': 'screen-generic-selection'},
-                    {'name': 'schedule', 'component': 'screen-7-date-bucket'},
                     {'name': 'worker', 'component': 'screen-choose-worker'},
                     {'name': 'payment', 'component': 'screen-13-payment-method'}
                 ],
@@ -107,7 +103,6 @@ def get_service_config(request):
                 'required_screens': [
                     {'name': 'address', 'component': 'screen-1-address-capture'},
                     {'name': 'duration', 'component': 'screen-generic-duration'},
-                    {'name': 'schedule', 'component': 'screen-7-date-bucket'},
                     {'name': 'worker', 'component': 'screen-choose-worker'},
                     {'name': 'payment', 'component': 'screen-13-payment-method'}
                 ],
@@ -123,7 +118,6 @@ def get_service_config(request):
                     {'name': 'address', 'component': 'screen-1-address-capture'},
                     {'name': 'items_weight', 'component': 'screen-generic-units'},
                     {'name': 'service_options', 'component': 'screen-generic-selection'},
-                    {'name': 'schedule', 'component': 'screen-7-date-bucket'},
                     {'name': 'worker', 'component': 'screen-choose-worker'},
                     {'name': 'payment', 'component': 'screen-13-payment-method'}
                 ],
@@ -140,7 +134,6 @@ def get_service_config(request):
                     {'name': 'address', 'component': 'screen-1-address-capture'},
                     {'name': 'property_typology', 'component': 'screen-2-property-typology'},
                     {'name': 'service_config', 'component': 'screen-4-electrician-config'},
-                    {'name': 'schedule', 'component': 'screen-7-date-bucket'},
                     {'name': 'worker', 'component': 'screen-choose-worker'},
                     {'name': 'payment', 'component': 'screen-13-payment-method'}
                 ],
@@ -162,7 +155,6 @@ def get_service_config(request):
                 'required_screens': [
                     {'name': 'address', 'component': 'screen-1-address-capture'},
                     {'name': 'unit_count', 'component': 'screen-3-ac-units'},
-                    {'name': 'schedule', 'component': 'screen-7-date-bucket'},
                     {'name': 'worker', 'component': 'screen-choose-worker'},
                     {'name': 'payment', 'component': 'screen-13-payment-method'}
                 ],
@@ -184,7 +176,6 @@ def get_service_config(request):
                     {'name': 'address', 'component': 'screen-1-address-capture'},
                     {'name': 'property_typology', 'component': 'screen-2-property-typology'},
                     {'name': 'pest_config', 'component': 'screen-5-pest-control-config'},
-                    {'name': 'schedule', 'component': 'screen-7-date-bucket'},
                     {'name': 'worker', 'component': 'screen-choose-worker'},
                     {'name': 'payment', 'component': 'screen-13-payment-method'}
                 ],
@@ -213,7 +204,6 @@ def get_service_config(request):
                 'required_screens': [
                     {'name': 'address', 'component': 'screen-1-address-capture'},
                     {'name': 'package_selection', 'component': 'screen-6-dog-trainer-packages'},
-                    {'name': 'schedule', 'component': 'screen-7-date-bucket'},
                     {'name': 'worker', 'component': 'screen-choose-worker'},
                     {'name': 'payment', 'component': 'screen-13-payment-method'}
                 ],
@@ -292,8 +282,8 @@ def get_service_config(request):
             service_name_map = {
                 'indoor-cleaning': 'Limpeza Interna',
                 'office-cleaning': 'Limpeza de Escritório',
-                'outdoor-services': 'Serviços Externos',
-                'moving-cleaning': 'Limpeza de Mudança',
+                'outdoor-cleaning': 'Serviços Externos',
+                'moving': 'Limpeza de Mudança',
                 'express-cleaning': 'Limpeza Express',
                 'laundry-ironing': 'Lavandaria e Engomadoria',
                 'electrician': 'Eletricista',
