@@ -22,29 +22,58 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Create and start virtual environment
         run: |
           python -m venv venv
           source venv/bin/activate
       
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      - name: Install Python dependencies
+        run: |
+          source venv/bin/activate
+          cd Zela
+          pip install -r requirements.txt
+          
+      - name: Set up Node.js for Tailwind CSS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Build Tailwind CSS
+        run: |
+          cd Zela/theme/static_src
+          npm install
+          npm run build
+          cd ../../..
+          
+      - name: Collect static files
+        run: |
+          source venv/bin/activate
+          cd Zela
+          python manage.py collectstatic --noinput
+        env:
+          SECRET_KEY: 'temporary-key-for-collectstatic'
+          DEBUG: 'False'
+          DATABASE_URL: 'sqlite:///db.sqlite3'
 
-      - name: Upload artifact for deployment jobs
+      - name: Zip artifact for deployment
+        run: zip release.zip ./* -r
+
+      - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
-            .
+            release.zip
             !venv/
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
@@ -54,6 +83,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: python-app
+
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -68,4 +100,5 @@ jobs:
         with:
           app-name: 'app-zela-prod'
           slot-name: 'Production'
-          
+          package: .
+          startup-command: 'cd Zela && gunicorn --bind=0.0.0.0:8000 --timeout 600 --workers=2 Zela.wsgi:application'

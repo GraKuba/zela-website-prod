@@ -11,7 +11,7 @@ from .views.dashboard import (
     set_default_payment_method, update_provider_availability,
     update_provider_schedule, update_service_areas, upload_document,
     update_profile, ProviderRatingsPartial, update_settings,
-    booking_details_modal
+    booking_details_modal, mark_notification_read, mark_all_notifications_read
 )
 from .views.providers import ProviderLandingView, ProviderApplicationWizard, ApplyWorkerView
 from .views.booking import booking_flow, booking_screen, save_booking_data, get_booking_data, process_payment, get_available_workers, get_user_addresses
@@ -68,6 +68,10 @@ urlpatterns = [
     path('dashboard/upload-document/', upload_document, name='upload-document'),
     path('dashboard/update-profile/', update_profile, name='profile-update'),
     path('dashboard/settings/update/', update_settings, name='update-settings'),
+    
+    # Notification management
+    path('dashboard/notification/<int:notification_id>/read/', mark_notification_read, name='mark-notification-read'),
+    path('dashboard/notifications/mark-all-read/', mark_all_notifications_read, name='mark-all-notifications-read'),
     
     # Provider onboarding
     path('providers/', ProviderLandingView.as_view(), name='providers'),

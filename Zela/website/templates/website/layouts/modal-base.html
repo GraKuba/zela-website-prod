@@ -1,0 +1,62 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{{ title|default:"Modal - Zela" }}{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'zela-logo.png' %}" />
+
+    <!-- Alpine.js for interactivity -->
+    <script
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+      defer
+    ></script>
+    
+    <!-- HTMX for dynamic content -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    
+    <!-- Tailwind CSS -->
+    {% tailwind_css %}
+    
+    <!-- Custom styles for modals -->
+    <style>
+      [x-cloak] { 
+        display: none !important; 
+      }
+      
+      body {
+        background-color: #f9fafb;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      
+      /* Modal animation styles */
+      .modal-enter {
+        animation: modalEnter 0.3s ease-out;
+      }
+      
+      @keyframes modalEnter {
+        from {
+          opacity: 0;
+          transform: scale(0.95) translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+    </style>
+    
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+    
+    {% block extra_scripts %}{% endblock %}
+  </body>
+</html>

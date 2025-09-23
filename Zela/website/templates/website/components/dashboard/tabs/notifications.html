@@ -5,26 +5,353 @@
   x-transition:enter-start="opacity-0 transform translate-y-4"
   x-transition:enter-end="opacity-100 transform translate-y-0"
   class="space-y-6"
+  x-data="{
+    selectedFilter: 'all',
+    filters: [
+      { id: 'all', label: 'Todas', icon: '📋' },
+      { id: 'booking', label: 'Reservas', icon: '🏠' },
+      { id: 'payment', label: 'Pagamentos', icon: '💳' },
+      { id: 'rating', label: 'Avaliações', icon: '⭐' },
+      { id: 'system', label: 'Sistema', icon: '🔔' },
+      { id: 'promotion', label: 'Promoções', icon: '🎉' },
+      { id: 'reminder', label: 'Lembretes', icon: '⏰' }
+    ],
+    getNotificationIcon(type) {
+      const icons = {
+        'booking': '🏠',
+        'payment': '💳', 
+        'rating': '⭐',
+        'system': '🔔',
+        'promotion': '🎉',
+        'reminder': '⏰'
+      };
+      return icons[type] || '📋';
+    },
+    getNotificationColor(type) {
+      const colors = {
+        'booking': '#015e73', // Teal
+        'payment': '#059669', // Green
+        'rating': '#f4d35e', // Yellow
+        'system': '#6b7280', // Gray
+        'promotion': '#8b5cf6', // Purple
+        'reminder': '#3b82f6' // Blue
+      };
+      return colors[type] || '#6b7280';
+    },
+    markAsRead(notificationId) {
+      fetch(`/dashboard/notification/${notificationId}/read/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        }
+      }).then(response => response.json())
+        .then(data => {
+          if (data.ok) {
+            // Update UI - remove unread indicator
+            const notifEl = document.querySelector(`#notification-${notificationId}`);
+            if (notifEl) {
+              notifEl.querySelector('.unread-indicator')?.remove();
+              notifEl.classList.remove('border-l-4', 'border-l-[#f4d35e]');
+            }
+            // Update unread count in sidebar
+            dashboardData.notificationsCount = data.unread_count;
+          }
+        });
+    },
+    markAllAsRead() {
+      fetch('/dashboard/notifications/mark-all-read/', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        }
+      }).then(response => response.json())
+        .then(data => {
+          if (data.ok) {
+            // Update UI - remove all unread indicators
+            document.querySelectorAll('.unread-indicator').forEach(el => el.remove());
+            document.querySelectorAll('.notification-card').forEach(el => {
+              el.classList.remove('border-l-4', 'border-l-[#f4d35e]');
+            });
+            // Update unread count
+            dashboardData.notificationsCount = 0;
+          }
+        });
+    }
+  }"
 >
-  <div
-    class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center"
-  >
-    <svg
-      class="mx-auto h-16 w-16 text-gray-400 mb-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M15 17h5l-3.5-3.5a1.5 1.5 0 0 1 0-2.12L19 9H15v8z"
-      />
-    </svg>
-    <h3 class="text-lg font-semibold text-gray-900 mb-2">Notificações</h3>
-    <p class="text-gray-600">
-      Veja atualizações de reservas, promoções e alertas do sistema.
-    </p>
+  <!-- Header Section -->
+  <div class="bg-white rounded-2xl border border-gray-300 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-2xl font-bold" style="color: #011e41">Notificações</h2>
+        <p class="text-sm text-gray-600 mt-1">
+          {% if unread_notifications > 0 %}
+            Você tem <span class="font-semibold text-[#015e73]">{{ unread_notifications }}</span> notificações não lidas
+          {% else %}
+            Todas as notificações foram lidas
+          {% endif %}
+        </p>
+      </div>
+      {% if all_notifications %}
+      <button
+        @click="markAllAsRead()"
+        class="px-4 py-2 text-sm font-medium text-[#015e73] hover:text-white border border-[#015e73] hover:bg-[#015e73] rounded-lg transition-all duration-200 cursor-pointer"
+      >
+        Marcar todas como lidas
+      </button>
+      {% endif %}
+    </div>
+
+    <!-- Filter Pills -->
+    <div class="flex flex-wrap gap-2">
+      <template x-for="filter in filters" :key="filter.id">
+        <button
+          @click="selectedFilter = filter.id"
+          class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer transform hover:scale-[1.02]"
+          :class="selectedFilter === filter.id 
+            ? 'bg-gradient-to-r from-[#015e73] to-[#017891] text-white shadow-md' 
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+        >
+          <span x-text="filter.icon" class="mr-1"></span>
+          <span x-text="filter.label"></span>
+        </button>
+      </template>
+    </div>
   </div>
+
+  <!-- Notifications List -->
+  {% if all_notifications %}
+    <!-- Today Section -->
+    {% if grouped_notifications.today %}
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold text-gray-700">Hoje</h3>
+      <div class="space-y-3">
+        {% for notification in grouped_notifications.today %}
+        <div
+          id="notification-{{ notification.id }}"
+          x-show="selectedFilter === 'all' || selectedFilter === '{{ notification.notification_type }}'"
+          @click="{% if notification.link %}window.location.href = '{{ notification.link }}'; {% endif %}markAsRead({{ notification.id }})"
+          class="notification-card bg-white border rounded-2xl p-4 transition-all duration-200 transform hover:scale-[1.005] {% if not notification.is_read %}border-l-4 border-l-[#f4d35e]{% else %}border-gray-300{% endif %} hover:border-gray-600 {% if notification.link %}cursor-pointer{% endif %}"
+        >
+          <div class="flex items-start">
+            <!-- Icon Container -->
+            <div 
+              class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 flex-shrink-0"
+              :style="`background-color: ${getNotificationColor('{{ notification.notification_type }}')}20;`"
+            >
+              <span 
+                class="text-xl"
+                x-text="getNotificationIcon('{{ notification.notification_type }}')"
+              ></span>
+            </div>
+            
+            <!-- Content -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h4 class="text-base font-semibold text-gray-900">
+                    {{ notification.title }}
+                    {% if not notification.is_read %}
+                    <span class="unread-indicator inline-block w-2 h-2 bg-[#f4d35e] rounded-full ml-2"></span>
+                    {% endif %}
+                  </h4>
+                  <p class="text-sm text-gray-600 mt-1">{{ notification.message }}</p>
+                  <p class="text-xs text-gray-500 mt-2">{{ notification.time_since_created }}</p>
+                </div>
+                
+                {% if notification.is_important %}
+                <div class="ml-4">
+                  <span class="px-2 py-1 text-xs font-semibold text-[#015e73] bg-[#015e73]/10 rounded-full">
+                    Importante
+                  </span>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Yesterday Section -->
+    {% if grouped_notifications.yesterday %}
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold text-gray-700">Ontem</h3>
+      <div class="space-y-3">
+        {% for notification in grouped_notifications.yesterday %}
+        <div
+          id="notification-{{ notification.id }}"
+          x-show="selectedFilter === 'all' || selectedFilter === '{{ notification.notification_type }}'"
+          @click="{% if notification.link %}window.location.href = '{{ notification.link }}'; {% endif %}markAsRead({{ notification.id }})"
+          class="notification-card bg-white border rounded-2xl p-4 transition-all duration-200 transform hover:scale-[1.005] {% if not notification.is_read %}border-l-4 border-l-[#f4d35e]{% else %}border-gray-300{% endif %} hover:border-gray-600 {% if notification.link %}cursor-pointer{% endif %}"
+        >
+          <div class="flex items-start">
+            <!-- Icon Container -->
+            <div 
+              class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 flex-shrink-0"
+              :style="`background-color: ${getNotificationColor('{{ notification.notification_type }}')}20;`"
+            >
+              <span 
+                class="text-xl"
+                x-text="getNotificationIcon('{{ notification.notification_type }}')"
+              ></span>
+            </div>
+            
+            <!-- Content -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h4 class="text-base font-semibold text-gray-900">
+                    {{ notification.title }}
+                    {% if not notification.is_read %}
+                    <span class="unread-indicator inline-block w-2 h-2 bg-[#f4d35e] rounded-full ml-2"></span>
+                    {% endif %}
+                  </h4>
+                  <p class="text-sm text-gray-600 mt-1">{{ notification.message }}</p>
+                  <p class="text-xs text-gray-500 mt-2">{{ notification.time_since_created }}</p>
+                </div>
+                
+                {% if notification.is_important %}
+                <div class="ml-4">
+                  <span class="px-2 py-1 text-xs font-semibold text-[#015e73] bg-[#015e73]/10 rounded-full">
+                    Importante
+                  </span>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- This Week Section -->
+    {% if grouped_notifications.this_week %}
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold text-gray-700">Esta Semana</h3>
+      <div class="space-y-3">
+        {% for notification in grouped_notifications.this_week %}
+        <div
+          id="notification-{{ notification.id }}"
+          x-show="selectedFilter === 'all' || selectedFilter === '{{ notification.notification_type }}'"
+          @click="{% if notification.link %}window.location.href = '{{ notification.link }}'; {% endif %}markAsRead({{ notification.id }})"
+          class="notification-card bg-white border rounded-2xl p-4 transition-all duration-200 transform hover:scale-[1.005] {% if not notification.is_read %}border-l-4 border-l-[#f4d35e]{% else %}border-gray-300{% endif %} hover:border-gray-600 {% if notification.link %}cursor-pointer{% endif %}"
+        >
+          <div class="flex items-start">
+            <!-- Icon Container -->
+            <div 
+              class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 flex-shrink-0"
+              :style="`background-color: ${getNotificationColor('{{ notification.notification_type }}')}20;`"
+            >
+              <span 
+                class="text-xl"
+                x-text="getNotificationIcon('{{ notification.notification_type }}')"
+              ></span>
+            </div>
+            
+            <!-- Content -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h4 class="text-base font-semibold text-gray-900">
+                    {{ notification.title }}
+                    {% if not notification.is_read %}
+                    <span class="unread-indicator inline-block w-2 h-2 bg-[#f4d35e] rounded-full ml-2"></span>
+                    {% endif %}
+                  </h4>
+                  <p class="text-sm text-gray-600 mt-1">{{ notification.message }}</p>
+                  <p class="text-xs text-gray-500 mt-2">{{ notification.time_since_created }}</p>
+                </div>
+                
+                {% if notification.is_important %}
+                <div class="ml-4">
+                  <span class="px-2 py-1 text-xs font-semibold text-[#015e73] bg-[#015e73]/10 rounded-full">
+                    Importante
+                  </span>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Older Section -->
+    {% if grouped_notifications.older %}
+    <div class="space-y-4">
+      <h3 class="text-lg font-semibold text-gray-700">Mais Antigas</h3>
+      <div class="space-y-3">
+        {% for notification in grouped_notifications.older %}
+        <div
+          id="notification-{{ notification.id }}"
+          x-show="selectedFilter === 'all' || selectedFilter === '{{ notification.notification_type }}'"
+          @click="{% if notification.link %}window.location.href = '{{ notification.link }}'; {% endif %}markAsRead({{ notification.id }})"
+          class="notification-card bg-white border rounded-2xl p-4 transition-all duration-200 transform hover:scale-[1.005] {% if not notification.is_read %}border-l-4 border-l-[#f4d35e]{% else %}border-gray-300{% endif %} hover:border-gray-600 {% if notification.link %}cursor-pointer{% endif %}"
+        >
+          <div class="flex items-start">
+            <!-- Icon Container -->
+            <div 
+              class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 flex-shrink-0"
+              :style="`background-color: ${getNotificationColor('{{ notification.notification_type }}')}20;`"
+            >
+              <span 
+                class="text-xl"
+                x-text="getNotificationIcon('{{ notification.notification_type }}')"
+              ></span>
+            </div>
+            
+            <!-- Content -->
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h4 class="text-base font-semibold text-gray-900">
+                    {{ notification.title }}
+                    {% if not notification.is_read %}
+                    <span class="unread-indicator inline-block w-2 h-2 bg-[#f4d35e] rounded-full ml-2"></span>
+                    {% endif %}
+                  </h4>
+                  <p class="text-sm text-gray-600 mt-1">{{ notification.message }}</p>
+                  <p class="text-xs text-gray-500 mt-2">{{ notification.time_since_created }}</p>
+                </div>
+                
+                {% if notification.is_important %}
+                <div class="ml-4">
+                  <span class="px-2 py-1 text-xs font-semibold text-[#015e73] bg-[#015e73]/10 rounded-full">
+                    Importante
+                  </span>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  {% else %}
+    <!-- Empty State -->
+    <div class="bg-white rounded-2xl border-2 border-dashed border-gray-300 p-12 text-center">
+      <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mb-2">Nenhuma notificação ainda</h3>
+      <p class="text-gray-600 mb-6">Você receberá notificações sobre suas reservas, pagamentos e atualizações do sistema aqui.</p>
+      <button
+        @click="window.location.href = '/book/'"
+        class="px-6 py-3 bg-gradient-to-r from-[#015e73] to-[#017891] text-white font-semibold rounded-full hover:from-[#014a5a] hover:to-[#015e73] transition-all duration-300 cursor-pointer"
+      >
+        Fazer uma Reserva
+      </button>
+    </div>
+  {% endif %}
 </div>

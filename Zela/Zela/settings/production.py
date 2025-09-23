@@ -9,7 +9,12 @@ from .base import *
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Allowed hosts - configured from environment
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='').split(',')
+ALLOWED_HOSTS = [
+    'app-zela-prod.azurewebsites.net',
+    '.azurewebsites.net',
+    'localhost',
+    '127.0.0.1',
+] + config('ALLOWED_HOSTS', default='').split(',')
 
 # Database configuration using DATABASE_URL
 DATABASES = {
@@ -30,7 +35,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@zela.com')
 
 # Security settings for production
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
 SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
@@ -39,6 +44,16 @@ SECURE_BROWSER_XSS_FILTER = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'
+
+# Azure-specific settings
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# CSRF Trusted Origins for Azure
+CSRF_TRUSTED_ORIGINS = [
+    'https://app-zela-prod.azurewebsites.net',
+    'https://*.azurewebsites.net',
+]
 
 # Logging configuration
 LOGGING = {

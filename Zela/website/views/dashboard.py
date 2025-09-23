@@ -96,8 +96,29 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
                 'rating_count': provider_profile.rating_count if provider_profile else 0,
             }
         
-        # Get unread notifications
+        # Get unread notifications count
         unread_notifications = user.notifications.filter(is_read=False).count()
+        
+        # Get all notifications for the notifications tab
+        all_notifications = user.notifications.all()[:20]  # Get last 20 notifications
+        
+        # Group notifications by date
+        from collections import defaultdict
+        grouped_notifications = defaultdict(list)
+        today = timezone.now().date()
+        yesterday = today - timedelta(days=1)
+        week_start = today - timedelta(days=7)
+        
+        for notification in all_notifications:
+            notification_date = notification.created_at.date()
+            if notification_date == today:
+                grouped_notifications['today'].append(notification)
+            elif notification_date == yesterday:
+                grouped_notifications['yesterday'].append(notification)
+            elif notification_date >= week_start:
+                grouped_notifications['this_week'].append(notification)
+            else:
+                grouped_notifications['older'].append(notification)
         
         # Get or create user profile
         profile, created = Profile.objects.get_or_create(user=user)
@@ -246,7 +267,6 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
                 
                 # Calculate additional provider stats if needed
                 from django.db.models import Count, Q
-                from datetime import timedelta
                 
                 # Get jobs completed count
                 jobs_completed = user.jobs.filter(status='completed').count()
@@ -549,6 +569,8 @@ class DashboardShellView(LoginRequiredMixin, TemplateView):
             'dashboard_stats': dashboard_stats,
             'dashboard_data': dashboard_data,  # Added for template compatibility
             'unread_notifications': unread_notifications,
+            'all_notifications': all_notifications,  # Add all notifications
+            'grouped_notifications': dict(grouped_notifications),  # Add grouped notifications
             'is_provider': user.role == 'provider',
             'recent_transactions': recent_transactions,  # Added for all tabs
             'profile': profile,
@@ -1516,7 +1538,7 @@ def update_settings(request):
 
 @login_required
 def booking_details_modal(request, booking_id):
-    """Render booking details modal via HTMX."""
+    """Render booking details modal via HTMX or as standalone page."""
     try:
         # Get the booking, ensuring it belongs to the current user
         booking = get_object_or_404(
@@ -1525,8 +1547,13 @@ def booking_details_modal(request, booking_id):
             customer=request.user
         )
         
+        # Check if this is an HTMX request
+        is_htmx = request.headers.get('HX-Request', 'false') == 'true'
+        
         context = {
-            'booking': booking
+            'booking': booking,
+            'is_htmx_request': is_htmx,
+            'title': f'Detalhes da Reserva #{booking.id} - Zela'
         }
         
         return render(
@@ -1537,3 +1564,49 @@ def booking_details_modal(request, booking_id):
         
     except Booking.DoesNotExist:
         return HttpResponse("Reserva não encontrada", status=404)
+
+
+@login_required
+@require_http_methods(["POST"])
+def mark_notification_read(request, notification_id):
+    """Mark a notification as read."""
+    try:
+        notification = get_object_or_404(
+            Notification,
+            id=notification_id,
+            user=request.user
+        )
+        notification.mark_as_read()
+        
+        return JsonResponse({
+            'ok': 1,
+            'message': 'Notification marked as read',
+            'unread_count': request.user.notifications.filter(is_read=False).count()
+        })
+    except Exception as e:
+        return JsonResponse({
+            'ok': 0,
+            'error': str(e)
+        }, status=400)
+
+
+@login_required
+@require_http_methods(["POST"])
+def mark_all_notifications_read(request):
+    """Mark all notifications as read for the current user."""
+    try:
+        request.user.notifications.filter(is_read=False).update(
+            is_read=True,
+            read_at=timezone.now()
+        )
+        
+        return JsonResponse({
+            'ok': 1,
+            'message': 'All notifications marked as read',
+            'unread_count': 0
+        })
+    except Exception as e:
+        return JsonResponse({
+            'ok': 0,
+            'error': str(e)
+        }, status=400)

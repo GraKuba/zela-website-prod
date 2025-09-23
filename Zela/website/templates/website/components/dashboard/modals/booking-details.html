@@ -1,18 +1,26 @@
+{% extends is_htmx_request|yesno:",website/layouts/modal-base.html" %}
+{% load static tailwind_tags %}
+
+{% block title %}Detalhes da Reserva #{{ booking.id }} - Zela{% endblock %}
+
+{% block content %}
 <!-- Booking Details Modal -->
 <div
   id="booking-details-modal"
-  class="fixed inset-0 z-50 overflow-y-auto"
+  class="{% if not is_htmx_request %}relative{% else %}fixed inset-0 z-50 overflow-y-auto{% endif %}"
   x-data="{ 
     showModal: true,
+    isHtmx: {{ is_htmx_request|lower }},
     init() {
       this.showModal = true;
     }
   }"
   x-show="showModal"
   x-cloak
-  @keydown.escape.window="showModal = false; setTimeout(() => htmx.remove('#booking-details-modal'), 300)"
+  @keydown.escape.window="isHtmx ? (showModal = false, setTimeout(() => htmx.remove('#booking-details-modal'), 300)) : window.history.back()"
 >
   <!-- Background overlay -->
+  {% if is_htmx_request %}
   <div
     x-show="showModal"
     x-transition:enter="ease-out duration-300"
@@ -24,6 +32,7 @@
     class="fixed inset-0 bg-black/40 transition-opacity"
     @click="showModal = false; setTimeout(() => htmx.remove('#booking-details-modal'), 300)"
   ></div>
+  {% endif %}
 
   <!-- Modal panel container -->
   <div
@@ -46,7 +55,7 @@
             Detalhes da Reserva
           </h3>
           <button
-            @click="showModal = false; setTimeout(() => htmx.remove('#booking-details-modal'), 300)"
+            @click="isHtmx ? (showModal = false, setTimeout(() => htmx.remove('#booking-details-modal'), 300)) : window.location.href='/dashboard/'"
             class="p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
           >
             <svg
@@ -242,7 +251,7 @@
           {% endif %}
 
           <button
-            @click="showModal = false; setTimeout(() => htmx.remove('#booking-details-modal'), 300)"
+            @click="isHtmx ? (showModal = false, setTimeout(() => htmx.remove('#booking-details-modal'), 300)) : window.location.href='/dashboard/'"
             class="flex-1 px-4 py-2 rounded-lg font-medium text-white transition-colors cursor-pointer"
             style="background-color: #035d73"
           >
@@ -264,3 +273,4 @@
     </div>
   </div>
 </div>
+{% endblock %}
