@@ -98,4 +98,4 @@ jobs:
           app-name: 'app-zela-prod'
           slot-name: 'Production'
           package: .
-          startup-command: 'bash /home/site/wwwroot/Zela/startup.sh'
+          startup-command: 'bash /home/site/wwwroot/Zela/azure-startup.sh'

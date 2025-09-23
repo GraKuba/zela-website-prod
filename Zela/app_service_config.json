@@ -1,0 +1,29 @@
+{
+  "appCommandLine": "bash /home/site/wwwroot/Zela/azure-startup.sh",
+  "numberOfWorkers": 2,
+  "defaultDocuments": [],
+  "netFrameworkVersion": null,
+  "phpVersion": null,
+  "pythonVersion": "3.11",
+  "nodeVersion": null,
+  "linuxFxVersion": "PYTHON|3.11",
+  "requestTracingEnabled": false,
+  "remoteDebuggingEnabled": false,
+  "httpLoggingEnabled": true,
+  "detailedErrorLoggingEnabled": true,
+  "publishingUsername": null,
+  "appSettings": [
+    {
+      "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+      "value": "true"
+    },
+    {
+      "name": "ENABLE_ORYX_BUILD",
+      "value": "true"
+    },
+    {
+      "name": "ORYX_DISABLE_COMPRESS",
+      "value": "true"
+    }
+  ]
+}
