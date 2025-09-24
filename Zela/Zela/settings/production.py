@@ -11,6 +11,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # Allowed hosts - configured from environment
 ALLOWED_HOSTS = [
     'app-zela-prod.azurewebsites.net',
+    'app-zela-prod-bydye9czddhwgff2.southafricanorth-01.azurewebsites.net',
     '.azurewebsites.net',
     'localhost',
     '127.0.0.1',
@@ -79,6 +80,16 @@ LOGGING = {
         'django': {
             'handlers': ['console'],
             'level': 'INFO',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
             'propagate': False,
         },
     },
