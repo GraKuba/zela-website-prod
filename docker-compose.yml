@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=Zela.settings.production
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-for-local-testing}
+      - DATABASE_URL=${DATABASE_URL:-sqlite:///db.sqlite3}
+      - DEBUG=${DEBUG:-False}
+      - ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+    volumes:
+      # For development, you can mount these to persist data
+      - ./Zela/media:/app/media
+      - ./Zela/staticfiles:/app/staticfiles
+    command: >
+      sh -c "
+        python manage.py migrate --noinput &&
+        python manage.py collectstatic --noinput &&
+        gunicorn --bind 0.0.0.0:8000 --workers 2 --threads 4 --reload Zela.wsgi:application
+      "
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
