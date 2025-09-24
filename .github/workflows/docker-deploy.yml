@@ -1,4 +1,4 @@
-name: Build and Deploy Docker to Azure
+name: Build and Push Docker to ACR
 
 on:
   push:
@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
     
     steps:
       - name: Checkout code
@@ -41,28 +40,11 @@ jobs:
           cache-from: type=registry,ref=${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:buildcache,mode=max
           platforms: linux/amd64
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build-and-push
-    permissions:
-      id-token: write
-      contents: read
-    
-    steps:
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F838379E9CA74C11A5DB6838EF13240F }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F26E3D9809314E398DF12CC2821831BA }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_92E5C5D602BC4DD3825FB0C3F6825883 }}
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'app-zela-prod'
-          images: '${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}'
-
-      - name: Azure logout
+      
+      - name: Summary
         run: |
-          az logout
+          echo "### Docker Image Published! 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Image:** \`${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Azure App Service will automatically pull and deploy this image." >> $GITHUB_STEP_SUMMARY
