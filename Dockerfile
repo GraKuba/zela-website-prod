@@ -8,6 +8,10 @@ WORKDIR /app
 COPY Zela/theme/static_src/package*.json ./theme/static_src/
 COPY Zela/theme/static_src/ ./theme/static_src/
 
+# Copy all template files so Tailwind can scan them for classes
+COPY Zela/website/templates/ ./website/templates/
+COPY Zela/theme/templates/ ./theme/templates/
+
 # Install dependencies and build Tailwind CSS
 WORKDIR /app/theme/static_src
 RUN npm ci && npm run build
